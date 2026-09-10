@@ -109,11 +109,15 @@ function service_album_list_mediagallery($args, &$output, &$svc_msg)
     }
 
     if ($root === 'member' || $root === '') {
-        if (empty($_MG_CONF['member_albums']) || empty($_MG_CONF['member_album_root'])) {
+        if (empty($_MG_CONF['member_albums'])) {
             return PLG_RET_OK;
         }
 
-        $memberRoot = intval($_MG_CONF['member_album_root']);
+        // Zero is a valid root album id and is the historical/default value.
+        $memberRoot = isset($_MG_CONF['member_album_root'])
+            ? intval($_MG_CONF['member_album_root'])
+            : 0;
+
         $sql = "SELECT album_id FROM {$_TABLES['mg_albums']} "
              . "WHERE owner_id = " . intval($uid)
              . " AND album_parent = " . $memberRoot
