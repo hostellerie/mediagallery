@@ -55,7 +55,12 @@ jobs:
             zip -qr "../dist/${ARCHIVE}" mediagallery
           )
 
-          sha256sum "dist/${ARCHIVE}" > "dist/${ARCHIVE}.sha256"
+          # Write a portable checksum that can be verified directly after the
+          # GitHub artifact is extracted, without requiring a dist/ directory.
+          (
+            cd dist
+            sha256sum "${ARCHIVE}" > "${ARCHIVE}.sha256"
+          )
 
           echo "ARCHIVE=${ARCHIVE}" >> "$GITHUB_ENV"
           echo "Created dist/${ARCHIVE}"
@@ -69,6 +74,7 @@ jobs:
           unzip -Z1 "dist/${ARCHIVE}" | grep -qx 'mediagallery/autoinstall.php'
           unzip -Z1 "dist/${ARCHIVE}" | grep -qx 'mediagallery/public_html/mediaobjects/generic.png'
           unzip -Z1 "dist/${ARCHIVE}" | grep -qx 'mediagallery/public_html/mediaobjects/missing.png'
+          (cd dist && sha256sum -c "${ARCHIVE}.sha256")
 
       - name: Upload dist artifact
         uses: actions/upload-artifact@v4
