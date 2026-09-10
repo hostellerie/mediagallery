@@ -1,0 +1,2 @@
+Simplify SWF/FLV rendering to the generic download fallback and fix generic thumbnail size variables.
+Requested: 2026-09-10
