@@ -7,6 +7,9 @@ on:
         description: Archive version label
         required: false
         default: 1.8.0-dev
+  push:
+    branches:
+      - dist-build
 
 permissions:
   contents: read
@@ -26,6 +29,9 @@ jobs:
           set -euo pipefail
 
           VERSION="${{ inputs.version }}"
+          if [ -z "${VERSION}" ]; then
+            VERSION="1.8.0-test-${GITHUB_SHA::7}"
+          fi
           VERSION="${VERSION//[^0-9A-Za-z._-]/-}"
           ARCHIVE="mediagallery-${VERSION}.zip"
 
@@ -41,6 +47,7 @@ jobs:
             --exclude='dist/' \
             --exclude='package/' \
             --exclude='.idea/' \
+            --exclude='.dist-trigger' \
             --exclude='tmp/'
 
           (
