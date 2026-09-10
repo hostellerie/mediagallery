@@ -24,7 +24,10 @@ function MG_buildModerationEmail180($aid, $albumTitle, $username)
 {
     global $_CONF, $_MG_CONF, $LANG_MG01, $LANG31;
 
-    $template = COM_newTemplate(MG_getTemplatePath($aid), 'emails');
+    // Follow the same template lookup pattern as current Geeklog plugins so a
+    // theme can override MediaGallery's email presentation without modifying
+    // plugin PHP code.
+    $template = COM_newTemplate(CTL_plugin_templatePath('mediagallery', 'emails'));
     $template->set_file(array(
         'email_html' => 'moderation-html.thtml',
     ));
@@ -40,20 +43,20 @@ function MG_buildModerationEmail180($aid, $albumTitle, $username)
         . '/admin.php?album_id=' . intval($aid) . '&mode=moderate';
 
     $template->set_var(array(
-        'LB'                => LB,
-        'email_divider'     => isset($LANG31['email_divider']) ? $LANG31['email_divider'] : '----------------------------------------',
-        'email_divider_html'=> isset($LANG31['email_divider_html']) ? $LANG31['email_divider_html'] : '<hr>',
-        'lang_new_upload'   => $LANG_MG01['new_upload_body'],
-        'lang_details'      => $LANG_MG01['details'],
-        'lang_album_title'  => 'Album',
-        'lang_uploaded_by'  => $LANG_MG01['uploaded_by'],
-        'lang_review'       => 'Review submission',
-        'username'          => $username,
-        'album_title'       => strip_tags($albumTitle),
-        'moderation_url'    => $moderationUrl,
-        'site_name'         => $_CONF['site_name'],
-        'site_slogan'       => $_CONF['site_slogan'],
-        'site_url'          => $_CONF['site_url'],
+        'LB'                 => LB,
+        'email_divider'      => isset($LANG31['email_divider']) ? $LANG31['email_divider'] : '----------------------------------------',
+        'email_divider_html' => isset($LANG31['email_divider_html']) ? $LANG31['email_divider_html'] : '<hr>',
+        'lang_new_upload'    => $LANG_MG01['new_upload_body'],
+        'lang_details'       => $LANG_MG01['details'],
+        'lang_album_title'   => 'Album',
+        'lang_uploaded_by'   => $LANG_MG01['uploaded_by'],
+        'lang_review'        => 'Review submission',
+        'username'           => $username,
+        'album_title'        => strip_tags($albumTitle),
+        'moderation_url'     => $moderationUrl,
+        'site_name'          => $_CONF['site_name'],
+        'site_slogan'        => $_CONF['site_slogan'],
+        'site_url'           => $_CONF['site_url'],
     ));
 
     return array(
@@ -77,6 +80,6 @@ function MG_sendModerationEmail180($email, $subject, $message)
     }
 
     // Passing true tells COM_mail that $message contains HTML and plaintext
-    // variants, matching the pattern used by current Geeklog plugins.
+    // variants, matching current Geeklog Calendar/Links behavior.
     return COM_mail($email, $subject, $message, '', true);
 }
