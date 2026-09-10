@@ -64,21 +64,21 @@ function MG_applyRuntimeConfiguration180()
 function MG_getConfigSettings180()
 {
     return array(
-        array('link_to_member_album',        1,                              'select', 0),
-        array('rating_speedlimit',           45,                             'text',   0),
-        array('mediamanage_items',           200,                            'text',   0),
-        array('use_default_resolution',      0,                              'select', 0),
-        array('use_large_stars',             0,                              'select', 0),
-        array('use_upload_time',             0,                              'select', 0),
-        array('ffmpeg_command_args',         ' -i %s -f mjpeg -t 0.01 -y %s', 'text',  0),
-        array('disable_lightbox',            0,                              'select', 0),
-        array('update_parent_lastupdated',   1,                              'select', 0),
-        array('allow_user_edit',             0,                              'select', 0),
-        array('enable_remote_images',        1,                              'select', 0),
-        array('click_image_and_go_next',     1,                              'select', 0),
-        array('hide_jumpbox_on_mediaview',   1,                              'select', 0),
-        array('enable_loop_pagination',      1,                              'select', 0),
-        array('random_img_ratio',            0,                              'select', 0),
+        array('link_to_member_album',        1,                               'select', 0),
+        array('rating_speedlimit',           45,                              'text',   0),
+        array('mediamanage_items',           200,                             'text',   0),
+        array('use_default_resolution',      0,                               'select', 0),
+        array('use_large_stars',             0,                               'select', 0),
+        array('use_upload_time',             0,                               'select', 0),
+        array('ffmpeg_command_args',         ' -i %s -f mjpeg -t 0.01 -y %s','text',   0),
+        array('disable_lightbox',            0,                               'select', 0),
+        array('update_parent_lastupdated',   1,                               'select', 0),
+        array('allow_user_edit',             0,                               'select', 0),
+        array('enable_remote_images',        1,                               'select', 0),
+        array('click_image_and_go_next',     1,                               'select', 0),
+        array('hide_jumpbox_on_mediaview',   1,                               'select', 0),
+        array('enable_loop_pagination',      1,                               'select', 0),
+        array('random_img_ratio',            0,                               'select', 0),
     );
 }
 
@@ -90,8 +90,15 @@ function MG_updateConfig180()
 
     $c = config::get_instance();
     $group = 'mediagallery';
-    $existing = $c->get_config($group);
 
+    // During a fresh plugin installation the base configuration group is
+    // created by plugin_initconfig_mediagallery(). Do not try to add 1.8
+    // entries before that base group exists.
+    if (!$c->group_exists($group)) {
+        return false;
+    }
+
+    $existing = $c->get_config($group);
     if (!is_array($existing)) {
         $existing = array();
     }
@@ -136,16 +143,22 @@ function MG_ensureConfig180()
     require_once $_CONF['path_system'] . 'classes/config.class.php';
 
     $c = config::get_instance();
+
+    // functions.inc can be loaded while the installer is still creating the
+    // plugin. The normal install hook will create the base configuration first.
+    if (!$c->group_exists('mediagallery')) {
+        return;
+    }
+
     $existing = $c->get_config('mediagallery');
 
     if (!is_array($existing) || !array_key_exists('rating_speedlimit', $existing)) {
-        MG_updateConfig180();
+        if (!MG_updateConfig180()) {
+            return;
+        }
         $existing = $c->get_config('mediagallery');
     }
 
-    // Refresh only the new 1.8 settings into runtime configuration. This keeps
-    // administrator values authoritative even on the first request after an
-    // installation or upgrade.
     if (is_array($existing)) {
         foreach (MG_getConfigSettings180() as $setting) {
             $name = $setting[0];
