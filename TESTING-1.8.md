@@ -41,6 +41,7 @@ With `discard_original = 1`, repeat one PNG/JPEG upload and confirm no orphan or
 ## Legacy media playback
 
 - Open an existing MP3/WMA media item and verify HTML5 audio playback/fallback.
+- Exercise MP3 popup, download and MMS/legacy modes and confirm no undefined thumbnail-size warning appears.
 - Open MOV/MP4/MPEG media inline and verify HTML5 video rendering.
 - Exercise MOV/ASF popup and download modes and confirm no `media_size_disp` warning appears.
 - Open existing SWF and FLV items and verify they are offered through the generic download fallback without Flash/FlowPlayer execution or PHP warnings.
