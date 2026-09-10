@@ -5,12 +5,12 @@
 <title>{lang_new_upload} {site_name}</title>
 </head>
 <body>
-<p>{lang_new_upload}<strong>{album_title}</strong></p>
+<p>{lang_new_upload}<strong>{album_title_html}</strong></p>
 {email_divider_html}
 <p><strong>{lang_details}</strong></p>
-<p><strong>{lang_album_title}:</strong> {album_title}<br>
-<strong>{lang_uploaded_by}:</strong> {username}</p>
-<p><a href="{moderation_url}">{lang_review}</a></p>
+<p><strong>{lang_album_title}:</strong> {album_title_html}<br>
+<strong>{lang_uploaded_by}:</strong> {username_html}</p>
+<p><a href="{moderation_url_html}">{lang_review}</a></p>
 {email_divider_html}
 <p>{site_name}{!if site_slogan} — {site_slogan}{!endif}<br>
 <a href="{site_url}">{site_url}</a></p>
