@@ -6,48 +6,52 @@ on:
       version:
         description: Archive version label
         required: false
-        default: 1.8.0-dev
+        default: ''
   push:
     branches:
-      - dist-build
+      - modernize-1.8.0
+    paths:
+      - '.github/dist-trigger'
+      - '.github/workflows/build-dist.yml'
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   build-dist:
-    name: Build installable ZIP
+    name: Build and commit installable ZIP
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout selected ref
+      - name: Checkout modernize branch
         uses: actions/checkout@v4
+        with:
+          ref: modernize-1.8.0
+          fetch-depth: 0
 
       - name: Build dist archive
         shell: bash
         run: |
           set -euo pipefail
 
+          SOURCE_SHA="$(git rev-parse HEAD)"
+          SHORT_SHA="$(git rev-parse --short=7 HEAD)"
           VERSION="${{ inputs.version }}"
           if [ -z "${VERSION}" ]; then
-            VERSION="1.8.0-test-${GITHUB_SHA::7}"
+            VERSION="1.8.0-test-${SHORT_SHA}"
           fi
           VERSION="${VERSION//[^0-9A-Za-z._-]/-}"
           ARCHIVE="mediagallery-${VERSION}.zip"
 
-          rm -rf dist package
-          mkdir -p dist package/mediagallery
+          rm -rf package
+          mkdir -p package/mediagallery dist
 
-          # A checkout only contains tracked files, so public_html/mediaobjects/
-          # is safe to include. Its tracked generic icons and placeholder assets
-          # are required by MediaGallery, while user media are ignored by Git.
           rsync -a ./ package/mediagallery/ \
             --exclude='.git/' \
             --exclude='.github/' \
             --exclude='dist/' \
             --exclude='package/' \
             --exclude='.idea/' \
-            --exclude='.dist-trigger' \
             --exclude='tmp/'
 
           (
@@ -55,18 +59,15 @@ jobs:
             zip -qr "../dist/${ARCHIVE}" mediagallery
           )
 
-          # Write a portable checksum that can be verified directly after the
-          # GitHub artifact is extracted, without requiring a dist/ directory.
           (
             cd dist
             sha256sum "${ARCHIVE}" > "${ARCHIVE}.sha256"
           )
 
+          echo "SOURCE_SHA=${SOURCE_SHA}" >> "$GITHUB_ENV"
           echo "ARCHIVE=${ARCHIVE}" >> "$GITHUB_ENV"
-          echo "Created dist/${ARCHIVE}"
-          unzip -l "dist/${ARCHIVE}" | head -80
 
-      - name: Verify required install files
+      - name: Verify installable archive
         shell: bash
         run: |
           set -euo pipefail
@@ -74,14 +75,35 @@ jobs:
           unzip -Z1 "dist/${ARCHIVE}" | grep -qx 'mediagallery/autoinstall.php'
           unzip -Z1 "dist/${ARCHIVE}" | grep -qx 'mediagallery/public_html/mediaobjects/generic.png'
           unzip -Z1 "dist/${ARCHIVE}" | grep -qx 'mediagallery/public_html/mediaobjects/missing.png'
+          ! unzip -Z1 "dist/${ARCHIVE}" | grep -q '^mediagallery/.github/'
+          ! unzip -Z1 "dist/${ARCHIVE}" | grep -q '^mediagallery/dist/'
           (cd dist && sha256sum -c "${ARCHIVE}.sha256")
 
-      - name: Upload dist artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: mediagallery-dist-${{ github.run_number }}
-          path: |
-            dist/${{ env.ARCHIVE }}
-            dist/${{ env.ARCHIVE }}.sha256
-          if-no-files-found: error
-          retention-days: 14
+      - name: Keep only current test archive
+        shell: bash
+        run: |
+          set -euo pipefail
+          find dist -maxdepth 1 -type f -name 'mediagallery-*.zip' ! -name "${ARCHIVE}" -delete
+          find dist -maxdepth 1 -type f -name 'mediagallery-*.zip.sha256' ! -name "${ARCHIVE}.sha256" -delete
+
+      - name: Commit archive to modernize-1.8.0
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -f dist/
+          if git diff --cached --quiet; then
+            echo 'No dist changes to commit.'
+            exit 0
+          fi
+          git commit -m "Build installable MediaGallery archive for ${SOURCE_SHA} [skip ci]"
+          git push origin HEAD:modernize-1.8.0
+
+      - name: Remove obsolete dist-build branch
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          gh api -X DELETE "repos/${GITHUB_REPOSITORY}/git/refs/heads/dist-build" || true
