@@ -1,0 +1,1 @@
+Temporary note: functions.inc is being restored from the master blob before the 1.8.0 refactor is applied. This file can be removed once the restoration/refactor commit is complete.
