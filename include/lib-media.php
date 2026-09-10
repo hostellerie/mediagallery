@@ -387,9 +387,9 @@ function MG_displayMP3($I, $opt=array())
     }
 
     $retval = MG_getFramedImage($opt['display_skin'], $I['media_title'],
-                  $u_pic, $u_image, $media_size_disp[0], $media_size_disp[1]);
+                  $u_pic, $u_image, $media_size_orig[0], $media_size_orig[1]);
 
-    return array($retval, $u_image, $media_size_disp[0], $media_size_disp[1], $u_pic);
+    return array($retval, $u_image, $media_size_orig[0], $media_size_orig[1], $u_pic);
 }
 
 function MG_displayGeneric($I, $opt=array())
