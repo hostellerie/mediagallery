@@ -41,6 +41,7 @@ require_once $_CONF['path'] . 'plugins/mediagallery/include/classAlbum.php';
 require_once $_CONF['path'] . 'plugins/mediagallery/include/lib-upload.php';
 require_once $_CONF['path'] . 'plugins/mediagallery/include/sort.php';
 require_once $_CONF['path'] . 'plugins/mediagallery/include/lib/imglib/lib-image.php';
+require_once $_CONF['path'] . 'plugins/mediagallery/include/upload_security_180.php';
 
 function _processDirectory($album_id, $directory, $parse_sub, $delete, $userid)
 {
@@ -74,6 +75,11 @@ function _processDirectory($album_id, $directory, $parse_sub, $delete, $userid)
                 $retmsg .= _processDirectory($album_id, $srcFile, $parse_sub, $delete, $userid) . LB;
             }
         } else {
+            if (!MG_validateUploadFilename180($baseSrcFile)) {
+                $retmsg .= $baseSrcFile . ' - File format not allowed' . LB;
+                continue;
+            }
+
             $album = new mgAlbum($album_id);
 
             if ($album->max_filesize != 0 && filesize($srcFile) > $album->max_filesize) {
@@ -87,9 +93,6 @@ function _processDirectory($album_id, $directory, $parse_sub, $delete, $userid)
             //This will set the Content-Type to the appropriate setting for the file
             $file_extension = strtolower(substr(strrchr($baseSrcFile, '.'), 1));
             switch ($file_extension) {
-                case "exe":
-                    $filetype="application/octet-stream";
-                    break;
                 case "zip":
                     $filetype="application/zip";
                     break;
@@ -124,6 +127,10 @@ function _MG_getFile($filename, $file, $album_id, $caption = '', $description = 
                      $keywords='', $category=0, $dnc=0, $replace=0, $userid)
 {
     global $_CONF, $_MG_CONF, $_USER, $_TABLES, $LANG_MG01, $LANG_MG02;
+
+    if (!MG_validateUploadFilename180($file)) {
+        return array(false, 'File format not allowed');
+    }
 
     $artist                     = '';
     $musicAlbum                 = '';

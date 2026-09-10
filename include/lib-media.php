@@ -642,11 +642,7 @@ function MG_displayMP3($I, $opt=array())
             } else {
                 $mp3_artist = '';
             }
-
-            $S = COM_newTemplate(MG_getTemplatePath_byName($opt['skin']));
-            $S->set_file('swf', 'swfobject.thtml');
-            $S->set_var('site_url', $_MG_CONF['site_url']);
-            $u_image = $S->finish($S->parse('output', 'swf'));
+            $u_image = '';
 
             $V = COM_newTemplate(MG_getTemplatePath_byName($opt['skin']));
             $tfile = 'view_mp3_swf.thtml';
@@ -682,7 +678,7 @@ function MG_displayMP3($I, $opt=array())
                 'lang_noflash'      => $LANG_MG03['no_flash'],
                 'swf_version'       => '9',
             ));
-            $u_image .= $V->finish($V->parse('output', 'video'));
+            $u_image = $V->finish($V->parse('output', 'video'));
             return array($u_image, '', $win_width, $win_height, '');
             break;
         case 3: // use mms links

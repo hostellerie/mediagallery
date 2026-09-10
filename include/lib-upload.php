@@ -40,6 +40,7 @@ require_once $_CONF['path'] . 'plugins/mediagallery/include/lib-exif.php';
 require_once $_CONF['path'] . 'plugins/mediagallery/include/lib-watermark.php';
 require_once $_CONF['path'] . 'plugins/mediagallery/include/common.php';
 require_once $_CONF['path'] . 'plugins/mediagallery/include/lib/imglib/lib-image.php';
+require_once $_CONF['path'] . 'plugins/mediagallery/include/upload_security_180.php';
 
 global $_SPECIAL_IMAGES_MIMETYPE;
 $_SPECIAL_IMAGES_MIMETYPE = array(
@@ -431,9 +432,6 @@ function MG_getFileTypeFromExt($file_ext, $default='')
 {
     //This will set the Content-Type to the appropriate setting for the file
     switch ($file_ext) {
-        case 'exe':
-            return 'application/octet-stream';
-            break;
         case 'zip':
             return 'application/zip';
             break;
@@ -474,6 +472,11 @@ function MG_getFile($filename, $file, $album_id, $opt = array())
     $category    = isset($opt['category'])    ? $opt['category']    : 0;
     $dnc         = isset($opt['dnc'])         ? $opt['dnc']         : 0;
     $replace     = isset($opt['replace'])     ? $opt['replace']     : 0;
+
+    if (!MG_validateUploadFilename180($file)) {
+        COM_errorLog('MediaGallery 1.8: rejected unsafe filename in MG_getFile(): ' . basename($file), 1);
+        return array(false, $LANG_MG02['format_not_allowed']);
+    }
 
     $artist                     = '';
     $musicAlbum                 = '';
@@ -1306,125 +1309,6 @@ function MG_attachThumbnail($aid, $thumbnail, $mediaFilename)
     }
     $attach_tn = $mediaFilename . $tnExt;
     list($rc,$msg) = MG_resizeImage($thumbnail, $attach_tn, $tnHeight, $tnWidth, $tn_mime_type['mime_type'], 1, $_MG_CONF['tn_jpg_quality']);
-    return true;
-}
-
-function MG_notifyModerators($aid)
-{
-    global $LANG_DIRECTION, $_USER, $_MG_CONF, $_CONF, $_TABLES, $LANG_MG01;
-
-    $sql = "SELECT moderate, album_title, mod_group_id "
-         . "FROM {$_TABLES['mg_albums']} WHERE album_id = " . intval($aid);
-    $result = DB_query($sql);
-    $A = DB_fetchArray($result);
-    
-    if ($A['moderate'] != 1 || SEC_hasRights('mediagallery.admin')) {
-        return true;
-    }
-
-    require_once $_CONF['path'] . 'plugins/mediagallery/include/lib/phpmailer/class.phpmailer.php';
-
-    $media_user_id = $_USER['uid'];
-
-    if( empty( $LANG_DIRECTION )) {
-        // default to left-to-right
-        $direction = 'ltr';
-    } else {
-        $direction = $LANG_DIRECTION;
-    }
-
-    $charset = COM_getCharset();
-
-    COM_clearSpeedlimit(600,'mgnotify');
-    $last = COM_checkSpeedlimit ('mgnotify');
-    if ( $last == 0 ) {
-        $mail = new PHPMailer();
-        $mail->CharSet = $charset;
-        if ($_CONF['mail_settings']['backend'] == 'smtp' ) {
-            $mail->Host     = $_CONF['mail_settings']['host'] . ':' . $_CONF['mail_settings']['port'];
-            $mail->SMTPAuth = $_CONF['mail_settings']['auth'];
-            $mail->Username = $_CONF['mail_settings']['username'];
-            $mail->Password = $_CONF['mail_settings']['password'];
-            $mail->Mailer = "smtp";
-        } elseif ($_CONF['mail_settings']['backend'] == 'sendmail') {
-            $mail->Mailer = "sendmail";
-            $mail->Sendmail = $_CONF['mail_settings']['sendmail_path'];
-        } else {
-            $mail->Mailer = "mail";
-        }
-        $mail->WordWrap = 76;
-        $mail->IsHTML(true);
-        $mail->Subject = $LANG_MG01['new_upload_subject'] . $_CONF['site_name'];
-
-        if (!isset($_USER['uid']) || $_USER['uid'] < 2  ) {
-            $uname = 'Anonymous';
-        } else {
-            $uname = DB_getItem($_TABLES['users'], 'username', 'uid=' . intval($media_user_id));
-        }
-        // build the template...
-        $T = COM_newTemplate( MG_getTemplatePath($aid) );
-        $T->set_file('email', 'modemail.thtml');
-        $T->set_var(array(
-            'direction'         =>  $direction,
-            'charset'           =>  $charset,
-            'lang_new_upload'   =>  $LANG_MG01['new_upload_body'],
-            'lang_details'      =>  $LANG_MG01['details'],
-            'lang_album_title'  =>  'Album',
-            'lang_uploaded_by'  =>  $LANG_MG01['uploaded_by'],
-            'username'          =>  $uname,
-            'album_title'       =>  strip_tags($A['title']),
-            'url_moderate'      =>  '<a href="' . $_MG_CONF['site_url'] . '/admin.php?album_id=' . $aid . '&mode=moderate">Click here to view</a>',
-            'site_name'         =>  $_CONF['site_name'] . ' - ' . $_CONF['site_slogan'],
-            'site_url'          =>  $_CONF['site_url'],
-        ));
-        $body .= $T->finish($T->parse('output','email'));
-        $mail->Body = $body;
-
-        $altbody  = $LANG_MG01['new_upload_body'] . $A['title'];
-        $altbody .= "\n\r\n\r";
-        $altbody .= $LANG_MG01['details'];
-        $altbody .= "\n\r";
-        $altbody .= $LANG_MG01['uploaded_by'] . ' ' . $uname . "\n\r";
-        $altbody .= "\n\r\n\r";
-        $altbody .= $_CONF['site_name'] . "\n\r";
-        $altbody .= $_CONF['site_url'] . "\n\r";
-
-        $mail->AltBody = $altbody;
-
-        $mail->From = $_CONF['site_mail'];
-        $mail->FromName = $_CONF['site_name'];
-
-        $groups = MG_getGroupList($A['mod_group_id']);
-        $groupList = implode(',',$groups);
-
-        $sql = "SELECT DISTINCT {$_TABLES['users']}.uid,username,fullname,email "
-              ."FROM {$_TABLES['group_assignments']},{$_TABLES['users']} "
-              ."WHERE {$_TABLES['users']}.uid > 1 "
-              ."AND {$_TABLES['users']}.uid = {$_TABLES['group_assignments']}.ug_uid "
-              ."AND ({$_TABLES['group_assignments']}.ug_main_grp_id IN ({$groupList}))";
-
-        $result = DB_query($sql);
-        $nRows = DB_numRows($result);
-        $toCount = 0;
-        for ($i=0;$i < $nRows; $i++ ) {
-            $row = DB_fetchArray($result);
-            if ( $row['email'] != '' ) {
-                if ($_MG_CONF['verbose'] ) {
-                    COM_errorLog("MG Upload: Sending notification email to: " . $row['email'] . " - " . $row['username']);
-                }
-                $toCount++;
-                $mail->AddAddress($row['email'], $row['username']);
-            }
-        }
-        if ( $toCount > 0 ) {
-            if(!$mail->Send()) {
-                COM_errorLog("MG Upload: Unable to send moderation email - error:" . $mail->ErrorInfo);
-            }
-        } else {
-            COM_errorLog("MG Upload: Error - Did not find any moderators to email");
-        }
-        COM_updateSpeedlimit ('mgnotify');
-    }
     return true;
 }
 
