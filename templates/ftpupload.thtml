@@ -4,14 +4,15 @@
 <form method="post" enctype="multipart/form-data" name="mediaupload" action="{s_form_action}" class="compact uk-form">
 <div>
   <div>
+    <input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}>
     <fieldset>
         <dl class="form_block">
-          <dt><label>{lang_directory}</label></dt>
+          <dt><label for="directory">{lang_directory}</label></dt>
           <dd><span>{ftp_path}</span> <input type="text" name="directory" id="directory" class="size2"{xhtml}></dd>
 
-          <dt><label>{lang_delete_files}</label></dt>
-          <dd><input type="radio" name="purgefiles" value="0" checked="checked"{xhtml}>{lang_no}&nbsp;&nbsp;
-              <input type="radio" name="purgefiles" value="1"{xhtml}>{lang_yes}</dd>
+          <dt><span>{lang_delete_files}</span></dt>
+          <dd><label><input type="radio" name="purgefiles" value="0" checked="checked"{xhtml}> {lang_no}</label>&nbsp;&nbsp;
+              <label><input type="radio" name="purgefiles" value="1"{xhtml}> {lang_yes}</label></dd>
         </dl>
     </fieldset>
 
