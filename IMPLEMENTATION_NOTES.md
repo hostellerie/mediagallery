@@ -29,10 +29,14 @@ This file tracks implementation decisions made while modernizing the plugin.
 - Fixed the old moderation email album-title mismatch (`album_title` was selected but `title` was read).
 - Preserved the historical 10-minute moderation notification throttle using Geeklog's speed-limit API.
 - Added a compatibility fallback for email template lookup when `CTL_plugin_templatePath()` is unavailable on an older Geeklog runtime.
-- Added a GitHub Actions PHP syntax-lint workflow for PHP 7.4, 8.1 and 8.3. A run result has not yet been verified from this working session.
 - Added Geeklog CSRF protection to the active browser upload form using `SEC_createToken()`, `CSRF_TOKEN` and `SEC_checkToken()`.
 - Removed the unreachable SWFUpload form-rendering block that lived after an unconditional return in `MG_uploadForm()`.
 - Hardened the legacy asynchronous upload endpoint so user identity comes from the authenticated Geeklog session rather than a POSTed `uid`.
+- Added a manual GitHub Actions workflow that builds an installable `dist/mediagallery-VERSION.zip`, creates a SHA-256 checksum and publishes both as a 14-day workflow artifact.
+- Added a `dist/README.md` and ignores for generated distribution binaries.
+- Expanded syntax linting to PHP 5.6, 7.4, 8.1 and 8.3.
+- Fixed the invalid Geeklog 2.2.2 user/user_attributes query in `admin/purgealbums.php` that caused a parse error.
+- Verified one complete CI syntax-lint run successfully on PHP 5.6, 7.4, 8.1 and 8.3 after that fix.
 
 ## Configuration loading
 
@@ -109,6 +113,19 @@ The active upload entry points now use `MG_notifyModerators180()`, which builds 
 
 The old `MG_notifyModerators()` implementation remains in `include/lib-upload.php` as legacy/dead code. It still references the historical bundled PHPMailer path, but that `include/lib/phpmailer/` directory is no longer present in the current repository tree. The legacy function should therefore be removed after functional verification of the new mail path rather than preserving or restoring the obsolete PHPMailer dependency.
 
+## Distribution archives
+
+Use the GitHub Actions workflow **Build MediaGallery installable archive** when a package is needed for online testing.
+
+The workflow is manual (`workflow_dispatch`) and creates:
+
+```text
+dist/mediagallery-VERSION.zip
+dist/mediagallery-VERSION.zip.sha256
+```
+
+The archive contains a single top-level `mediagallery/` directory. Generated binaries are uploaded as workflow artifacts for 14 days and are not committed to Git.
+
 ## Template / SEO work
 
 Completed:
@@ -136,10 +153,16 @@ Completed in the current pass:
 - the legacy asynchronous upload endpoint no longer trusts a POSTed user ID;
 - `MG_getFile()` remains the final album permission check for uploaded media.
 
+Current finding:
+
+- if getID3 cannot identify a file, the legacy upload pipeline can fall back to the client-supplied MIME type or file extension;
+- the generic-file path stores the original extension under the public media tree on traditional installations;
+- current executable-extension rewriting only covers a small legacy list (`php`, `pl`, `cgi`, `py`, `sh`, `rb`) and must be broadened before 1.8.0 release.
+
 Still review:
 
 - whether the legacy async upload endpoint can be removed completely after confirming there are no active callers;
-- upload MIME/extension validation;
+- upload MIME/extension validation and executable extension handling;
 - remote-media URL validation;
 - permission checks around album mutations;
 - temporary file names and cleanup;
@@ -162,4 +185,5 @@ Still review:
 - Test album page titles/canonical URLs on page 1, page 2+ and sort variants.
 - Test browser upload success and rejection of invalid/missing CSRF tokens.
 - Test the hardened legacy async upload endpoint with an authenticated session and a mismatched POSTed `uid`.
-- PHP 7.4, PHP 8.1 and PHP 8.3 syntax/warning/deprecation pass.
+- Test executable and ambiguous uploads (`php`, `phtml`, `phar`, double extensions, unknown MIME) after upload hardening is implemented.
+- Keep PHP 5.6, PHP 7.4, PHP 8.1 and PHP 8.3 syntax lint green.
