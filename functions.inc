@@ -18,4 +18,5 @@ require_once __DIR__ . '/functions_legacy.inc';
 require_once __DIR__ . '/include/config_180.php';
 
 MG_addConfigLanguage180();
+MG_ensureConfig180();
 MG_applyRuntimeConfiguration180();
