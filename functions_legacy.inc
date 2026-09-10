@@ -97,16 +97,6 @@ $_MG_CONF['watermark_types'] = array('image/jpeg','image/jpg','image/png','image
 $_MG_CONF['link_to_member_album'] = 1;
 
 
-/*
- * By default, Media Gallery plays MP4 video files as QuickTime
- * videos, using the QuickTime player.
- *
- * If you prefer to use the Flash Video Player for MP4 files,
- * set this value to true.
- *
- */
-$_MG_CONF['play_mp4_flv'] = false;
-//$_MG_CONF['play_mp4_flv'] = true;
 
 /*
  * Number of seconds to wait between ratings
@@ -132,13 +122,6 @@ $_MG_CONF['use_default_resolution'] = 0;
 
 $_MG_CONF['use_large_stars'] = 0;
 
-/*
- * By default, Media Gallery will play MPEG videos with Apple's QuickTime
- * player. If you wish to use Microsoft's Windows Media Player instead,
- * set this variable to 1.
- */
-
-$_MG_CONF['use_wmp_mpeg'] = 0;
 
 /*
  * By default, Media Gallery will attempt to extract the actual image capture

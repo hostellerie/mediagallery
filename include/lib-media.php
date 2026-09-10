@@ -918,19 +918,12 @@ function MG_buildContent($media, &$opt)
         case 'video/mpeg' :
         case 'video/x-mpeg' :
         case 'video/x-mpeq2a' :
-            if ($_MG_CONF['use_wmp_mpeg'] == 1) {
-                $function = 'MG_displayASF';
-                break;
-            }
         case 'video/x-motion-jpeg' :
         case 'video/quicktime' :
         case 'video/x-qtc' :
         case 'video/x-m4v' :
+            // MediaGallery 1.8 uses the HTML5 video renderer for MPEG/MOV/MP4.
             $function = 'MG_displayMOV';
-            if ($media['media_mime_ext'] == 'mp4' &&
-                isset($_MG_CONF['play_mp4_flv']) && $_MG_CONF['play_mp4_flv'] == true) {
-                $function = 'MG_displayFLV';
-            }
             break;
         case 'embed' :
             $function = 'MG_displayEmbed';
