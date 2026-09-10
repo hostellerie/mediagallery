@@ -47,14 +47,14 @@ function MG_serviceCollectAlbumTree180($albumId, $depth, $recursive, $visibleOnl
     }
 
     $output[] = array(
-        'id'        => intval($album->id),
-        'title'     => strip_tags($album->title),
-        'parent_id' => intval($album->parent),
-        'owner_id'  => intval($album->owner_id),
-        'hidden'    => (bool) $album->hidden,
-        'access'    => intval($album->access),
-        'depth'     => intval($depth),
-        'url'       => $_MG_CONF['site_url'] . '/album.php?aid=' . intval($album->id),
+        'id'       => intval($album->id),
+        'title'    => strip_tags($album->title),
+        'parent'   => intval($album->parent),
+        'owner_id' => intval($album->owner_id),
+        'hidden'   => (bool) $album->hidden,
+        'access'   => intval($album->access),
+        'depth'    => intval($depth),
+        'url'      => $_MG_CONF['site_url'] . '/album.php?aid=' . intval($album->id),
     );
 
     if (!$recursive) {
@@ -75,21 +75,6 @@ function MG_serviceCollectAlbumTree180($albumId, $depth, $recursive, $visibleOnl
  * - root: 'member' (default) or a numeric album id
  * - recursive: include descendants, default true
  * - visible: omit albums not visible to the current caller, default true
- *
- * Examples:
- *
- * PLG_invokeService(
- *     'mediagallery',
- *     'album_list',
- *     array(
- *         'uid'       => $uid,
- *         'root'      => 'member',
- *         'recursive' => true,
- *         'visible'   => true,
- *     ),
- *     $output,
- *     $svc_msg
- * );
  *
  * @param array $args
  * @param array $output
