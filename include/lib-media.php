@@ -266,18 +266,18 @@ function MG_displaySWF($I, $opt=array())
     global $_TABLES, $_CONF, $_MG_CONF, $LANG_MG03;
 
     // set the default playback options...
-    $playback_options['play']        = $_MG_CONF['swf_play'];
-    $playback_options['menu']        = $_MG_CONF['swf_menu'];
-    $playback_options['quality']     = $_MG_CONF['swf_quality'];
-    $playback_options['height']      = $_MG_CONF['swf_height'];
-    $playback_options['width']       = $_MG_CONF['swf_width'];
-    $playback_options['loop']        = $_MG_CONF['swf_loop'];
-    $playback_options['scale']       = $_MG_CONF['swf_scale'];
-    $playback_options['wmode']       = $_MG_CONF['swf_wmode'];
-    $playback_options['allowscriptaccess'] = $_MG_CONF['swf_allowscriptaccess'];
-    $playback_options['bgcolor']     = $_MG_CONF['swf_bgcolor'];
-    $playback_options['swf_version'] = $_MG_CONF['swf_version'];
-    $playback_options['flashvars']   = $_MG_CONF['swf_flashvars'];
+    $playback_options['play']        = 1;
+    $playback_options['menu']        = 0;
+    $playback_options['quality']     = 'high';
+    $playback_options['height']      = 480;
+    $playback_options['width']       = 640;
+    $playback_options['loop']        = 0;
+    $playback_options['scale']       = 'showall';
+    $playback_options['wmode']       = 'transparent';
+    $playback_options['allowscriptaccess'] = 'sameDomain';
+    $playback_options['bgcolor']     = '#FFFFFF';
+    $playback_options['swf_version'] = 6;
+    $playback_options['flashvars']   = '';
 
     $poResult = DB_query("SELECT * FROM {$_TABLES['mg_playback_options']} WHERE media_id='" . DB_escapeString($I['media_id']) . "'");
     while ($poRow = DB_fetchArray($poResult)) {
@@ -371,18 +371,18 @@ function MG_displayFLV($I, $opt=array())
     global $_TABLES, $_CONF, $_MG_CONF, $LANG_MG03;
 
     // set the default playback options...
-    $playback_options['play']    = $_MG_CONF['swf_play'];
-    $playback_options['menu']    = $_MG_CONF['swf_menu'];
-    $playback_options['quality'] = $_MG_CONF['swf_quality'];
-    $playback_options['height']  = $_MG_CONF['swf_height'];
-    $playback_options['width']   = $_MG_CONF['swf_width'];
-    $playback_options['loop']    = $_MG_CONF['swf_loop'];
-    $playback_options['scale']   = $_MG_CONF['swf_scale'];
-    $playback_options['wmode']   = $_MG_CONF['swf_wmode'];
-    $playback_options['allowscriptaccess'] = $_MG_CONF['swf_allowscriptaccess'];
-    $playback_options['bgcolor']     = $_MG_CONF['swf_bgcolor'];
-    $playback_options['swf_version'] = $_MG_CONF['swf_version'];
-    $playback_options['flashvars']   = $_MG_CONF['swf_flashvars'];
+    $playback_options['play']    = 1;
+    $playback_options['menu']    = 0;
+    $playback_options['quality'] = 'high';
+    $playback_options['height']  = 480;
+    $playback_options['width']   = 640;
+    $playback_options['loop']    = 0;
+    $playback_options['scale']   = 'showall';
+    $playback_options['wmode']   = 'transparent';
+    $playback_options['allowscriptaccess'] = 'sameDomain';
+    $playback_options['bgcolor']     = '#FFFFFF';
+    $playback_options['swf_version'] = 6;
+    $playback_options['flashvars']   = '';
 
     $poResult = DB_query("SELECT * FROM {$_TABLES['mg_playback_options']} WHERE media_id='" . DB_escapeString($I['media_id']) . "'");
     while ($poRow = DB_fetchArray($poResult)) {
