@@ -10,15 +10,6 @@ if (strpos(strtolower($_SERVER['PHP_SELF']), strtolower(basename(__FILE__))) !==
     die('This file can not be used on its own!');
 }
 
-/**
- * Create a private working directory when multisite storage is enabled.
- *
- * Failure is logged but does not abort normal read-only MediaGallery pages.
- * Upload/processing code can then report its usual writable-directory error.
- *
- * @param string $path Absolute directory path
- * @return bool
- */
 function MG_prepareWorkDirectory180($path)
 {
     if (is_dir($path)) {
@@ -33,11 +24,6 @@ function MG_prepareWorkDirectory180($path)
     return false;
 }
 
-/**
- * Apply MediaGallery 1.8.0 runtime configuration.
- *
- * @return void
- */
 function MG_applyRuntimeConfiguration180()
 {
     global $_CONF, $_MG_CONF;
@@ -49,8 +35,6 @@ function MG_applyRuntimeConfiguration180()
         '>='
     );
 
-    // Runtime/derived locations. These are intentionally not stored in the
-    // Geeklog Configuration API.
     $_MG_CONF['path_html'] = $_CONF['path_html'] . 'mediagallery/';
     $_MG_CONF['site_url'] = $_CONF['site_url'] . '/mediagallery';
     $_MG_CONF['admin_url'] = $_CONF['site_admin_url'] . '/plugins/mediagallery/';
@@ -63,8 +47,6 @@ function MG_applyRuntimeConfiguration180()
         $_MG_CONF['path_mediaobjects'] = rtrim($_CONF['path_images'], '/\\') . '/mediagallery/';
         $_MG_CONF['mediaobjects_url'] = rtrim($_CONF['images_url'], '/') . '/mediagallery';
 
-        // In a multisite setup path_data should already be site-specific.
-        // Keep non-public work files out of the shared plugin directory.
         if (!empty($_CONF['path_data'])) {
             $workRoot = rtrim($_CONF['path_data'], '/\\') . '/mediagallery/';
             $_MG_CONF['tmp_path'] = $workRoot . 'tmp/';
@@ -74,20 +56,32 @@ function MG_applyRuntimeConfiguration180()
             MG_prepareWorkDirectory180($_MG_CONF['ftp_path']);
         }
     } else {
-        // Historical behavior for normal/single-site installations.
         $_MG_CONF['path_mediaobjects'] = $_CONF['path_html'] . 'mediagallery/mediaobjects/';
         $_MG_CONF['mediaobjects_url'] = $_CONF['site_url'] . '/mediagallery/mediaobjects';
     }
 }
 
-/**
- * Add the live 1.8.0 settings that were historically hard-coded.
- *
- * The migration is idempotent: existing administrator values are never
- * overwritten, and valid false/zero values are not mistaken for missing keys.
- *
- * @return bool
- */
+function MG_getConfigSettings180()
+{
+    return array(
+        array('link_to_member_album',        1,                              'select', 0),
+        array('rating_speedlimit',           45,                             'text',   0),
+        array('mediamanage_items',           200,                            'text',   0),
+        array('use_default_resolution',      0,                              'select', 0),
+        array('use_large_stars',             0,                              'select', 0),
+        array('use_upload_time',             0,                              'select', 0),
+        array('ffmpeg_command_args',         ' -i %s -f mjpeg -t 0.01 -y %s', 'text',  0),
+        array('disable_lightbox',            0,                              'select', 0),
+        array('update_parent_lastupdated',   1,                              'select', 0),
+        array('allow_user_edit',             0,                              'select', 0),
+        array('enable_remote_images',        1,                              'select', 0),
+        array('click_image_and_go_next',     1,                              'select', 0),
+        array('hide_jumpbox_on_mediaview',   1,                              'select', 0),
+        array('enable_loop_pagination',      1,                              'select', 0),
+        array('random_img_ratio',            0,                              'select', 0),
+    );
+}
+
 function MG_updateConfig180()
 {
     global $_CONF;
@@ -102,34 +96,12 @@ function MG_updateConfig180()
         $existing = array();
     }
 
-    // Put the new settings in a separate fieldset under the existing General
-    // tab. This avoids reshuffling existing Configuration API entries during
-    // upgrade and keeps the migration safe for 1.7.x installations.
     if (!array_key_exists('rating_speedlimit', $existing)) {
         $c->add('fs_runtime180', NULL, 'fieldset', 0, 3, NULL, 0, true, $group, 0);
     }
 
-    $settings = array(
-        // name                       default                         type      select set
-        array('link_to_member_album',        1,                             'select', 0),
-        array('rating_speedlimit',           45,                            'text',   0),
-        array('mediamanage_items',           200,                           'text',   0),
-        array('use_default_resolution',      0,                             'select', 0),
-        array('use_large_stars',             0,                             'select', 0),
-        array('use_upload_time',             0,                             'select', 0),
-        array('ffmpeg_command_args',         ' -i %s -f mjpeg -t 0.01 -y %s','text',  0),
-        array('disable_lightbox',            0,                             'select', 0),
-        array('update_parent_lastupdated',   1,                             'select', 0),
-        array('allow_user_edit',             0,                             'select', 0),
-        array('enable_remote_images',        1,                             'select', 0),
-        array('click_image_and_go_next',     1,                             'select', 0),
-        array('hide_jumpbox_on_mediaview',   1,                             'select', 0),
-        array('enable_loop_pagination',      1,                             'select', 0),
-        array('random_img_ratio',            0,                             'select', 0),
-    );
-
     $order = 900;
-    foreach ($settings as $setting) {
+    foreach (MG_getConfigSettings180() as $setting) {
         list($name, $default, $type, $selectSet) = $setting;
 
         if (array_key_exists($name, $existing)) {
@@ -154,13 +126,36 @@ function MG_updateConfig180()
 }
 
 /**
- * Provide readable labels for the 1.8.0 Configuration API additions.
- *
- * These English fallbacks are used until each translation file is updated.
- * Existing translated MediaGallery labels are left untouched.
- *
- * @return void
+ * Ensure fresh 1.8.0 installations receive the same Configuration API keys
+ * as upgraded installations. This is intentionally idempotent.
  */
+function MG_ensureConfig180()
+{
+    global $_CONF, $_MG_CONF;
+
+    require_once $_CONF['path_system'] . 'classes/config.class.php';
+
+    $c = config::get_instance();
+    $existing = $c->get_config('mediagallery');
+
+    if (!is_array($existing) || !array_key_exists('rating_speedlimit', $existing)) {
+        MG_updateConfig180();
+        $existing = $c->get_config('mediagallery');
+    }
+
+    // Refresh only the new 1.8 settings into runtime configuration. This keeps
+    // administrator values authoritative even on the first request after an
+    // installation or upgrade.
+    if (is_array($existing)) {
+        foreach (MG_getConfigSettings180() as $setting) {
+            $name = $setting[0];
+            if (array_key_exists($name, $existing)) {
+                $_MG_CONF[$name] = $existing[$name];
+            }
+        }
+    }
+}
+
 function MG_addConfigLanguage180()
 {
     global $LANG_configsections, $LANG_confignames;
@@ -201,11 +196,6 @@ function MG_addConfigLanguage180()
     }
 }
 
-/**
- * Return runtime storage information for diagnostics/admin UI.
- *
- * @return array
- */
 function MG_getStorageInfo180()
 {
     global $_CONF, $_MG_CONF;
