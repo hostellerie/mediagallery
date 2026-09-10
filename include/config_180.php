@@ -11,6 +11,29 @@ if (strpos(strtolower($_SERVER['PHP_SELF']), strtolower(basename(__FILE__))) !==
 }
 
 /**
+ * Create a private working directory when multisite storage is enabled.
+ *
+ * Failure is logged but does not abort normal read-only MediaGallery pages.
+ * Upload/processing code can then report its usual writable-directory error.
+ *
+ * @param string $path Absolute directory path
+ * @return bool
+ */
+function MG_prepareWorkDirectory180($path)
+{
+    if (is_dir($path)) {
+        return is_writable($path);
+    }
+
+    if (@mkdir($path, 0755, true)) {
+        return true;
+    }
+
+    COM_errorLog('Media Gallery 1.8.0: unable to create working directory ' . $path);
+    return false;
+}
+
+/**
  * Apply MediaGallery 1.8.0 runtime configuration.
  *
  * @return void
@@ -46,6 +69,9 @@ function MG_applyRuntimeConfiguration180()
             $workRoot = rtrim($_CONF['path_data'], '/\\') . '/mediagallery/';
             $_MG_CONF['tmp_path'] = $workRoot . 'tmp/';
             $_MG_CONF['ftp_path'] = $workRoot . 'uploads/';
+
+            MG_prepareWorkDirectory180($_MG_CONF['tmp_path']);
+            MG_prepareWorkDirectory180($_MG_CONF['ftp_path']);
         }
     } else {
         // Historical behavior for normal/single-site installations.
