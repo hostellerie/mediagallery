@@ -483,7 +483,7 @@ function MG_getFile($filename, $file, $album_id, $opt = array())
     $genre                      = '';
     $video_attached_thumbnail   = 0;
     $successfulWatermark        = 0;
-    $dnc                        = 1; // What is this?
+    $dnc                        = ((int) $dnc === 1) ? 1 : 0;
     $errors                     = 0;
     $errMsg                     = '';
 
@@ -909,8 +909,26 @@ function MG_getFile($filename, $file, $album_id, $opt = array())
                             }
                         }
                     }
-                    if ($dnc != 1) {
-                        if (!in_array($mimeType, $_SPECIAL_IMAGES_MIMETYPE)) {
+                    if ($dnc != 1 && $_MG_CONF['discard_original'] != 1
+                        && !in_array($mimeType, $_SPECIAL_IMAGES_MIMETYPE)) {
+                        $jpegOriginal = MG_getFilePath('orig', $media_filename, 'jpg');
+                        list($convertRc, $convertMsg) = MG_convertImageFormat(
+                            $media_orig,
+                            $jpegOriginal,
+                            'image/jpeg',
+                            0
+                        );
+
+                        if ($convertRc == false) {
+                            @unlink($jpegOriginal);
+                            $errors++;
+                            $errMsg .= $convertMsg;
+                        } else {
+                            @chmod($jpegOriginal, 0644);
+                            if ($jpegOriginal != $media_orig) {
+                                @unlink($media_orig);
+                            }
+                            $media_orig = $jpegOriginal;
                             $mimeExt = 'jpg';
                             $mimeType = 'image/jpeg';
                         }
