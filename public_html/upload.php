@@ -4,7 +4,7 @@
 // +--------------------------------------------------------------------------+
 // | upload.php                                                               |
 // |                                                                          |
-// | Processes media files uploaded via SWFUpload                             |
+// | Legacy asynchronous upload endpoint                                      |
 // +--------------------------------------------------------------------------+
 // | Copyright (C) 2015-2019 by the following authors:                        |
 // |                                                                          |
@@ -36,56 +36,52 @@
 
 require_once '../../lib-common.php';
 
-// main
 if (!in_array('mediagallery', $_PLUGINS)) {
-    COM_errorLog( 'Upload: MediaGallery is disabled', 1);
+    COM_errorLog('Upload: MediaGallery is disabled', 1);
     COM_404();
     exit;
 }
 
-$uid = (isset($_POST['uid'])) ? COM_applyFilter($_POST['uid'], true)  : '';
-$sid = (isset($_POST['sid'])) ? COM_applyFilter($_POST['sid'], false) : '';
-$aid = (isset($_POST['aid'])) ? COM_applyFilter($_POST['aid'], true)  : '';
+$postedUid = isset($_POST['uid']) ? COM_applyFilter($_POST['uid'], true) : 0;
+$aid = isset($_POST['aid']) ? COM_applyFilter($_POST['aid'], true) : 0;
 
-if ($_MG_CONF['verbose']) {
-    COM_errorLog('***Inside SWFUpload main()***', 1);
-    COM_errorLog('received uid=' . $uid, 1);
-    COM_errorLog('received sid=' . $sid, 1);
-    COM_errorLog('received aid=' . $aid, 1);
-}
-
-// let's try to set the $_USER array
-$_USER = SESS_getUserDataFromId($uid);
-if ($_USER['error'] == '1') {
-    COM_errorLog('Upload: User identified by uid=' . $uid . ' not found.', 1);
-    echo $LANG_MG01['upload_err_session'];
-    exit (0);
-} elseif (!isset($_USER['uid']) || ($_USER['uid'] < 2)) {
+// The authenticated Geeklog session is authoritative. MediaGallery 1.7.x
+// replaced $_USER using a uid supplied by POST, which allowed the request to
+// select another Geeklog identity. 1.8.0 never trusts posted identity data.
+$sessionUid = isset($_USER['uid']) ? intval($_USER['uid']) : 1;
+if ($sessionUid < 2) {
     COM_errorLog('Upload: Anonymous upload rejection.', 1);
     echo 'Anonymous upload rejected';
     exit(0);
 }
 
-// ok, we have a valid uid, but now check the token.  if it is invalid, then
-// return the user to the swfupload page.
-//if( !(SEC_checkTokenGeneral( $sid, 'swfupload' )) ) {
-//    COM_errorLog( 'SWFUpload: Invalid token=' . $sid . ' for uid=' . $uid, 1 );
-//    echo "Session has expired, please reload the page";
-//    exit(0);
-//}
-
-// the upload is authenticated
-
-if ($_MG_CONF['verbose']) {
-    COM_errorLog('The upload is authentic', 1);
-    COM_errorLog('Retrieved ' . count($_USER) . ' user data values', 1);
-    COM_errorLog('***Leaving Upload main()***', 1);
+// Keep accepting the legacy uid field for old clients, but require it to
+// identify the already authenticated session user when it is supplied.
+if ($postedUid > 0 && intval($postedUid) !== $sessionUid) {
+    COM_errorLog(
+        'Upload: Rejected posted uid ' . intval($postedUid)
+        . ' because authenticated uid is ' . $sessionUid,
+        1
+    );
+    echo 'Invalid upload session';
+    exit(0);
 }
 
-$_GROUPS = SEC_getUserGroups($_USER['uid']);
+if ($aid < 1) {
+    COM_errorLog('Upload: Invalid album id.', 1);
+    echo 'Invalid album';
+    exit(0);
+}
+
+if ($_MG_CONF['verbose']) {
+    COM_errorLog('*** Inside MediaGallery upload endpoint ***', 1);
+    COM_errorLog('authenticated uid=' . $sessionUid, 1);
+    COM_errorLog('received aid=' . $aid, 1);
+}
+
+$_GROUPS = SEC_getUserGroups($sessionUid);
 $_RIGHTS = explode(',', SEC_getUserPermissions());
 
-// now that we're sure we have the right user
 require_once $_CONF['path'] . 'plugins/mediagallery/include/newmedia.php';
 
 $rc = MG_saveUpload($aid);
