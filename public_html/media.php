@@ -63,7 +63,15 @@ if ($msg != '') {
     $display .= COM_showMessage($msg, 'mediagallery');
 }
 $display .= $content;
-$display = MG_createHTMLDocument($display, $ptitle);
+
+// Use one stable public URL for each media item. Parameters controlling
+// sorting, pagination or display mode must not create duplicate indexable URLs.
+$canonicalUrl = $_MG_CONF['site_url'] . '/media.php?s=' . rawurlencode((string) $mid);
+$meta = '<link rel="canonical" href="'
+      . htmlspecialchars($canonicalUrl, ENT_QUOTES, COM_getCharset())
+      . '"' . XHTML . '>' . LB;
+
+$display = MG_createHTMLDocument($display, $ptitle, $meta);
 
 COM_output($display);
 ?>
