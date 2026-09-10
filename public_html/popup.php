@@ -27,7 +27,6 @@
 // | GNU General Public License for more details.                             |
 // |                                                                          |
 // | You should have received a copy of the GNU General Public License        |
-// | along with this program; if not, write to the Free Software Foundation,  |
 // | Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.          |
 // |                                                                          |
 // +--------------------------------------------------------------------------+
@@ -48,10 +47,6 @@ if (COM_isAnonUser() && $_MG_CONF['loginrequired'] == 1) {
 
 require_once $_CONF['path'] . 'plugins/mediagallery/include/common.php';
 
-/*
-* Main
-*/
-
 function MG_access_denied()
 {
     global $LANG_MG00, $LANG_ACCESS;
@@ -68,38 +63,43 @@ if (!isset($_USER['uid'])) {
     $_USER['uid'] = 1;
 }
 
-$s   = COM_applyFilter($_GET['s']);
-$aid = DB_getItem($_TABLES['mg_media_albums'], 'album_id', 'media_id="' . DB_escapeString($s) . '"');
+$s = isset($_GET['s']) ? COM_applyFilter($_GET['s']) : '';
+if ($s === '') {
+    MG_access_denied();
+}
 
+$aid = DB_getItem($_TABLES['mg_media_albums'], 'album_id', 'media_id="' . DB_escapeString($s) . '"');
 $album_data = MG_getAlbumData($aid, array('full_display'), true);
 
 if ($album_data['access'] == 0) {
     MG_access_denied();
-    exit;
 }
-if ($album_data['full_display'] == 2 || $_MG_CONF['discard_original'] == 1 || ($album_data['full_display'] == 1 && $_USER['uid'] < 2)) {
+if ($album_data['full_display'] == 2 || $_MG_CONF['discard_original'] == 1 ||
+        ($album_data['full_display'] == 1 && $_USER['uid'] < 2)) {
     MG_access_denied();
-    exit;
 }
 
 $sql = "SELECT media_filename, media_mime_ext, media_title "
      . "FROM {$_TABLES['mg_media']} WHERE media_id='" . DB_escapeString($s) . "'";
 $result = DB_query($sql);
 $A = DB_fetchArray($result);
-if (empty($A)) exit;
+if (empty($A)) {
+    exit;
+}
 
 $src = MG_getFileUrl('orig', $A['media_filename'], $A['media_mime_ext']);
+$mediaTitleAttr = htmlspecialchars(strip_tags($A['media_title']), ENT_QUOTES, COM_getCharset());
 
 $T = COM_newTemplate(MG_getTemplatePath($aid));
 $T->set_file('property', 'property.thtml');
 $T->set_var(array(
-    'media_thumbnail' => '<img src="' . $src . '" alt="' . $A['media_title'] . '">',
+    'media_thumbnail' => '<img src="' . htmlspecialchars($src, ENT_QUOTES, COM_getCharset())
+                       . '" alt="' . $mediaTitleAttr . '">',
     'media_title'     => $A['media_title'],
     'lang_close'      => $LANG_MG03['close'],
 ));
-$display .= $T->finish($T->parse('output', 'property'));
+$display = $T->finish($T->parse('output', 'property'));
 
 header('Content-Type: text/html; charset=' . COM_getCharset());
-
 echo $display;
 ?>
