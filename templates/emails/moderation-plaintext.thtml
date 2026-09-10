@@ -1,0 +1,1 @@
+{lang_new_upload}{album_title}{LB}{LB}{email_divider}{LB}{lang_details}{LB}{lang_album_title}: {album_title}{LB}{lang_uploaded_by}: {username}{LB}{LB}{lang_review}: {moderation_url}{LB}{LB}{email_divider}{LB}{site_name}{!if site_slogan} - {site_slogan}{!endif}{LB}{site_url}{LB}
