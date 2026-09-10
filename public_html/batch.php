@@ -40,6 +40,7 @@ if (!in_array('mediagallery', $_PLUGINS)) {
 
 require_once $_CONF['path'] . 'plugins/mediagallery/include/common.php';
 require_once $_CONF['path'] . 'plugins/mediagallery/include/lib-batch.php';
+require_once $_CONF['path'] . 'plugins/mediagallery/include/upload_security_180.php';
 
 if (COM_isAnonUser() && $_MG_CONF['loginrequired'] == 1) {
     $display = SEC_loginRequiredForm();
@@ -80,6 +81,23 @@ if (isset($_POST['item_limit'])) {
     $item_limit = COM_applyFilter($_POST['item_limit'], true);
 } else if (isset($_GET['limit'])) {
     $item_limit = COM_applyFilter($_GET['limit'], true);
+}
+
+// MediaGallery 1.8 validates every pending FTP source before a batch cycle.
+// This protects recursive imports too: newly discovered entries are checked
+// on the next batch request before they can be processed.
+$ftpValidationReason = '';
+if (!MG_validateFtpBatchSession180($session_id, $ftpValidationReason)) {
+    if ($ftpValidationReason === 'access_denied') {
+        $display = COM_showMessageText($LANG_MG00['access_denied_msg']);
+    } else {
+        $display = COM_showMessageText(
+            'MediaGallery: FTP import stopped because an invalid or unsafe source path was detected.'
+        );
+    }
+    $display = MG_createHTMLDocument($display);
+    COM_output($display);
+    exit;
 }
 
 $display = MG_continueSession($session_id, $item_limit, $refresh_rate);
