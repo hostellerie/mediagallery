@@ -1,0 +1,163 @@
+name: Apply MediaGallery 1.8 modernization patch
+
+on:
+  push:
+    branches:
+      - modernize-1.8.0
+    paths:
+      - '.github/modernize-patch-trigger'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: modernize-1.8.0
+          fetch-depth: 0
+
+      - name: Apply asserted source patches
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 <<'PY'
+          from pathlib import Path
+          import re
+
+          def replace_once(path, old, new, label):
+              p = Path(path)
+              text = p.read_text(encoding='utf-8', errors='surrogateescape')
+              count = text.count(old)
+              if count != 1:
+                  raise SystemExit('%s: expected exactly 1 occurrence, found %d' % (label, count))
+              p.write_text(text.replace(old, new, 1), encoding='utf-8', errors='surrogateescape')
+
+          # 1) Stop registering SWFObject globally. All active default playback
+          # templates are HTML5/fallback-only in 1.8.0.
+          replace_once(
+              'functions_legacy.inc',
+              "    $_SCRIPTS->setJavaScriptFile('swfobject', '/mediagallery/js/swfobject_2.1.js', false);\n\n",
+              '',
+              'remove global SWFObject include'
+          )
+          replace_once(
+              'functions_legacy.inc',
+              "    $swfjsinclude = 1;\n",
+              '',
+              'remove SWFObject loaded flag'
+          )
+
+          # 2) Remove the now-empty SWFObject bootstrap from MP3 inline display.
+          p = Path('include/lib-media.php')
+          text = p.read_text(encoding='utf-8', errors='surrogateescape')
+          pattern = re.compile(
+              r"\n\s*\$S = COM_newTemplate\(MG_getTemplatePath_byName\(\$opt\['skin'\]\)\);\n"
+              r"\s*\$S->set_file\('swf', 'swfobject\.thtml'\);\n"
+              r"\s*\$S->set_var\('site_url', \$_MG_CONF\['site_url'\]\);\n"
+              r"\s*\$u_image = \$S->finish\(\$S->parse\('output', 'swf'\)\);\n"
+          )
+          text, n = pattern.subn("\n            $u_image = '';\n", text, count=1)
+          if n != 1:
+              raise SystemExit('remove MP3 SWFObject bootstrap: expected 1 match, found %d' % n)
+          old = "            $u_image .= $V->finish($V->parse('output', 'video'));"
+          if text.count(old) != 1:
+              raise SystemExit('replace MP3 output append: expected exactly 1 occurrence')
+          text = text.replace(old, "            $u_image = $V->finish($V->parse('output', 'video'));", 1)
+          p.write_text(text, encoding='utf-8', errors='surrogateescape')
+
+          # 3) Harden the central upload function and remove dead PHPMailer code.
+          p = Path('include/lib-upload.php')
+          text = p.read_text(encoding='utf-8', errors='surrogateescape')
+          require_line = "require_once $_CONF['path'] . 'plugins/mediagallery/include/upload_security_180.php';\n"
+          anchor = "require_once $_CONF['path'] . 'plugins/mediagallery/include/lib/imglib/lib-image.php';\n"
+          if require_line not in text:
+              if text.count(anchor) != 1:
+                  raise SystemExit('lib-upload security require anchor missing/ambiguous')
+              text = text.replace(anchor, anchor + require_line, 1)
+
+          anchor = "    $replace     = isset($opt['replace'])     ? $opt['replace']     : 0;\n"
+          guard = (
+              "\n    if (!MG_validateUploadFilename180($file)) {\n"
+              "        COM_errorLog('MediaGallery 1.8: rejected unsafe filename in MG_getFile(): ' . basename($file), 1);\n"
+              "        return array(false, $LANG_MG02['format_not_allowed']);\n"
+              "    }\n"
+          )
+          if guard.strip() not in text:
+              if text.count(anchor) != 1:
+                  raise SystemExit('MG_getFile guard anchor missing/ambiguous')
+              text = text.replace(anchor, anchor + guard, 1)
+
+          exe_case = "        case 'exe':\n            return 'application/octet-stream';\n            break;\n"
+          if text.count(exe_case) != 1:
+              raise SystemExit('legacy exe MIME case missing/ambiguous')
+          text = text.replace(exe_case, '', 1)
+
+          notifier = re.compile(
+              r"\nfunction MG_notifyModerators\(\$aid\)\n\{.*?\n\}\n\n/\*\*\n\* Get a list \(actually an array\) of all groups this group belongs to\.",
+              re.S
+          )
+          replacement = "\n/**\n* Get a list (actually an array) of all groups this group belongs to."
+          text, n = notifier.subn(replacement, text, count=1)
+          if n != 1:
+              raise SystemExit('dead MG_notifyModerators removal: expected 1 match, found %d' % n)
+          p.write_text(text, encoding='utf-8', errors='surrogateescape')
+
+          # 4) Apply the same unsafe-filename protection to the standalone CLI importer.
+          p = Path('climport.php')
+          text = p.read_text(encoding='utf-8', errors='surrogateescape')
+          require_line = "require_once $_CONF['path'] . 'plugins/mediagallery/include/upload_security_180.php';\n"
+          anchor = "require_once $_CONF['path'] . 'plugins/mediagallery/include/lib/imglib/lib-image.php';\n"
+          if require_line not in text:
+              if text.count(anchor) != 1:
+                  raise SystemExit('climport security require anchor missing/ambiguous')
+              text = text.replace(anchor, anchor + require_line, 1)
+
+          anchor = "        } else {\n            $album = new mgAlbum($album_id);\n"
+          guard = (
+              "        } else {\n"
+              "            if (!MG_validateUploadFilename180($baseSrcFile)) {\n"
+              "                $retmsg .= $baseSrcFile . ' - File format not allowed' . LB;\n"
+              "                continue;\n"
+              "            }\n\n"
+              "            $album = new mgAlbum($album_id);\n"
+          )
+          if text.count(anchor) != 1:
+              raise SystemExit('climport directory guard anchor missing/ambiguous')
+          text = text.replace(anchor, guard, 1)
+
+          exe_case = "                case \"exe\":\n                    $filetype=\"application/octet-stream\";\n                    break;\n"
+          if text.count(exe_case) != 1:
+              raise SystemExit('climport exe MIME case missing/ambiguous')
+          text = text.replace(exe_case, '', 1)
+
+          anchor = "    global $_CONF, $_MG_CONF, $_USER, $_TABLES, $LANG_MG01, $LANG_MG02;\n"
+          guard = (
+              "\n    if (!MG_validateUploadFilename180($file)) {\n"
+              "        return array(false, 'File format not allowed');\n"
+              "    }\n"
+          )
+          # This global line appears in the private CLI _MG_getFile() once in this file.
+          if text.count(anchor) != 1:
+              raise SystemExit('climport _MG_getFile guard anchor missing/ambiguous: %d' % text.count(anchor))
+          text = text.replace(anchor, anchor + guard, 1)
+          p.write_text(text, encoding='utf-8', errors='surrogateescape')
+
+          print('All asserted MediaGallery 1.8 source patches applied successfully.')
+          PY
+
+      - name: Remove temporary patch machinery
+        run: |
+          rm -f .github/workflows/apply-modernize-patch.yml .github/modernize-patch-trigger
+
+      - name: Commit source modernization
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git diff --cached --check
+          git commit -m 'Complete MediaGallery 1.8 legacy playback and upload cleanup'
+          git push origin HEAD:modernize-1.8.0
