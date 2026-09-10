@@ -32,13 +32,15 @@ jobs:
           rm -rf dist package
           mkdir -p dist package/mediagallery
 
+          # A checkout only contains tracked files, so public_html/mediaobjects/
+          # is safe to include. Its tracked generic icons and placeholder assets
+          # are required by MediaGallery, while user media are ignored by Git.
           rsync -a ./ package/mediagallery/ \
             --exclude='.git/' \
             --exclude='.github/' \
             --exclude='dist/' \
             --exclude='package/' \
             --exclude='.idea/' \
-            --exclude='public_html/mediaobjects/' \
             --exclude='tmp/'
 
           (
@@ -51,6 +53,15 @@ jobs:
           echo "ARCHIVE=${ARCHIVE}" >> "$GITHUB_ENV"
           echo "Created dist/${ARCHIVE}"
           unzip -l "dist/${ARCHIVE}" | head -80
+
+      - name: Verify required install files
+        shell: bash
+        run: |
+          set -euo pipefail
+          unzip -Z1 "dist/${ARCHIVE}" | grep -qx 'mediagallery/functions.inc'
+          unzip -Z1 "dist/${ARCHIVE}" | grep -qx 'mediagallery/autoinstall.php'
+          unzip -Z1 "dist/${ARCHIVE}" | grep -qx 'mediagallery/public_html/mediaobjects/generic.png'
+          unzip -Z1 "dist/${ARCHIVE}" | grep -qx 'mediagallery/public_html/mediaobjects/missing.png'
 
       - name: Upload dist artifact
         uses: actions/upload-artifact@v4
