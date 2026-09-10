@@ -32,7 +32,7 @@ This file tracks implementation decisions made while modernizing the plugin.
 - Added Geeklog CSRF protection to the active browser upload form using `SEC_createToken()`, `CSRF_TOKEN` and `SEC_checkToken()`.
 - Removed the unreachable SWFUpload form-rendering block that lived after an unconditional return in `MG_uploadForm()`.
 - Hardened the legacy asynchronous upload endpoint so user identity comes from the authenticated Geeklog session rather than a POSTed `uid`.
-- Added `include/upload_security_180.php` with reusable filename and remote-fetch validation helpers.
+- Added `include/upload_security_180.php` with reusable filename, local-import and remote-fetch validation helpers.
 - Reject executable/server-side upload extensions before user uploads enter the MediaGallery processing/storage pipeline.
 - Fixed the four-slot browser upload form so file, caption, description, keywords, category, attached thumbnail and `do not convert original` values remain associated with the correct file.
 - Fixed `dnc` handling: the form submits `value="1"` and 1.8.0 now tests the value correctly instead of expecting the legacy string `on`.
@@ -41,12 +41,25 @@ This file tracks implementation decisions made while modernizing the plugin.
 - Disabled redirects during remote thumbnail fetching and added connection/read timeouts plus a 10 MB download limit.
 - Fixed the legacy `enabled_remote_images` typo in remote thumbnail handling.
 - Switched Remote Media moderation notifications to `MG_notifyModerators180()`.
-- Added a manual GitHub Actions workflow that builds an installable `dist/mediagallery-VERSION.zip`, creates a SHA-256 checksum and publishes both as a 14-day workflow artifact.
+- Added local FTP/import path validation based on `realpath()` and confinement below the configured `ftp_path`.
+- Added FTP batch preflight before each continuation cycle so forged paths and recursive symlink escapes are rejected before processing.
+- Added CSRF protection to both FTP workflow forms: directory selection and file selection/import.
+- Reworked FTP listing so unsafe/out-of-root entries are skipped, displayed names/paths are escaped and the undefined extra `MG_listDir()` argument is removed.
+- Validate hidden FTP file paths again when the import session is registered rather than trusting posted values.
+- Validate batch-session ownership before continue/cancel operations and clean up the session on cancel.
+- Replaced legacy QuickTime and Windows Media inline objects with HTML5 `<video>` plus download fallback.
+- Replaced the Flash MP3 player with HTML5 `<audio>`.
+- Replaced direct SWF execution and both Flash FLV players with safe download fallbacks.
+- Kept the historical `fslideshow.php` URL as a compatibility route, forwarding it to the maintained slideshow implementation without executing Flash.
+- Added a GitHub Actions workflow that builds an installable `dist/mediagallery-VERSION.zip`, creates a SHA-256 checksum and publishes both as a 14-day workflow artifact.
 - Added a `dist/README.md` and ignores for generated distribution binaries.
 - Corrected the distribution workflow so tracked generic assets in `public_html/mediaobjects/` are included in installable archives; the workflow verifies core files and required placeholder assets before publishing the artifact.
+- Added a controlled `dist-build` branch trigger in addition to `workflow_dispatch` so test archives can be generated from the connected development workflow.
+- Corrected the SHA-256 file so it is portable after artifact extraction and verify it during the build.
+- Generated real test archives with the workflow and verified archive layout, required files and checksum.
 - Expanded syntax linting to PHP 5.6, 7.4, 8.1 and 8.3.
 - Fixed the invalid Geeklog 2.2.2 user/user_attributes query in `admin/purgealbums.php` that caused a parse error.
-- Verified CI syntax lint successfully on PHP 5.6, 7.4, 8.1 and 8.3 after the latest Remote Media security changes.
+- Verified CI syntax lint successfully on PHP 5.6, 7.4, 8.1 and 8.3 after the FTP/batch/slideshow compatibility changes.
 
 ## Configuration loading
 
@@ -121,22 +134,22 @@ The service applies MediaGallery access rules and avoids requiring consumers suc
 
 The active upload entry points now use `MG_notifyModerators180()`, which builds HTML/plaintext templates and delegates transport to Geeklog `COM_mail()`.
 
-The old `MG_notifyModerators()` implementation remains in `include/lib-upload.php` as legacy/dead code. It still references the historical bundled PHPMailer path, but that `include/lib/phpmailer/` directory is no longer present in the current repository tree. The legacy function should therefore be removed after functional verification of the new mail path rather than preserving or restoring the obsolete PHPMailer dependency.
+Repository audit confirms there are no active callers of the historical `MG_notifyModerators()` function. The old implementation remains in `include/lib-upload.php` as dead code and still references the removed bundled PHPMailer path. Remove that function before the release candidate; do not restore PHPMailer.
 
 ## Distribution archives
 
 Use the GitHub Actions workflow **Build MediaGallery installable archive** when a package is needed for online testing.
 
-The workflow is manual (`workflow_dispatch`) and creates:
+It can be started manually (`workflow_dispatch`) or by advancing the technical `dist-build` branch to a reviewed development commit. The branch-triggered archive receives a traceable version label:
 
 ```text
-dist/mediagallery-VERSION.zip
-dist/mediagallery-VERSION.zip.sha256
+mediagallery-1.8.0-test-<short-sha>.zip
+mediagallery-1.8.0-test-<short-sha>.zip.sha256
 ```
 
 The archive contains a single top-level `mediagallery/` directory. It includes tracked generic MediaGallery assets but no user media. Generated binaries are uploaded as workflow artifacts for 14 days and are not committed to Git.
 
-The build workflow has been statically reviewed but has not yet been manually dispatched in this development session. Its first actual run should be performed when an online test archive is requested.
+The build checks required install files and validates the SHA-256 checksum before publishing the artifact. The checksum references only the archive basename so it can be verified after extracting the GitHub artifact.
 
 ## Template / SEO work
 
@@ -148,36 +161,45 @@ Completed:
 - canonical URL for individual media pages;
 - self-canonical album pagination with sort parameters excluded;
 - album HTML titles with page-number suffixes for page 2+;
-- confirmed default/none frame templates already use the media title as image `alt` text.
+- confirmed default/none frame templates already use the media title as image `alt` text;
+- QuickTime/WMP/SWF/Flash-MP3/Flash-FLV inline renderers no longer require browser plugins;
+- legacy public `fslideshow.php` routes to the maintained slideshow instead of Flash.
 
 Still to do:
 
+- convert the `fslideshow` autotag itself to the non-Flash slideshow implementation (`fsat.thtml` still represents the historical player path);
+- audit other old Flash/XSPF/podcast templates before deleting bundled player assets;
+- remove the global SWFObject include from the transitional `functions_legacy.inc` once all remaining callers are gone;
 - audit escaping of `{media_tag}` before it is placed in `alt`/`title` attributes;
 - move remaining inline presentation CSS into plugin stylesheets where safe;
-- audit obsolete audio-player/SWF/QuickTime/WMP/MooTools/legacy JavaScript includes before removal;
 - avoid adding invented meta descriptions where MediaGallery does not have suitable source content.
 
 ## Security audit items
 
 Completed in the current pass:
 
-- browser and Remote Media forms carry and validate Geeklog's standard CSRF token;
+- browser, Remote Media and both FTP workflow forms carry and validate Geeklog's standard CSRF token;
 - the legacy asynchronous upload endpoint no longer trusts a POSTed user ID;
 - executable/server-side filename extensions are rejected before user-upload processing;
+- FTP/local import sources are confined to `ftp_path` with `realpath()` checks;
+- recursive FTP batch sources are revalidated before every batch cycle;
+- posted hidden FTP source paths are revalidated before session registration;
+- batch ownership is checked before continuation or cancellation;
 - Remote Media server-side fetches reject localhost/private/reserved targets and URL credentials;
 - remote thumbnail redirects are disabled and downloads are bounded by timeout and size;
 - `MG_getFile()` remains the final album permission check for uploaded media.
 
 Still review:
 
-- defense-in-depth validation inside `MG_getFile()` itself so administrator FTP/batch imports receive equivalent executable-extension protection;
+- defense-in-depth validation inside `MG_getFile()` itself for every non-web caller;
+- the separate command-line importer `climport.php`, which still contains its own legacy `_MG_getFile()` implementation and must receive equivalent unsafe-extension handling;
 - whether the legacy async upload endpoint can be removed completely after confirming there are no active callers;
 - MIME/extension consistency for ambiguous generic files;
-- remote embed/legacy streaming formats as part of the QuickTime/FLV/WMP modernization;
+- remote embed/legacy streaming formats;
 - permission checks around album mutations;
 - temporary file names and cleanup;
 - HTML attribute escaping in frame templates;
-- obsolete executable media formats and legacy playback paths.
+- obsolete executable media formats and remaining legacy playback assets.
 
 ## Required tests before merging
 
@@ -198,5 +220,8 @@ Still review:
 - Test the hardened legacy async upload endpoint with an authenticated session and a mismatched POSTed `uid`.
 - Test executable and ambiguous uploads (`php`, `phtml`, `phar`, double extensions, unknown MIME).
 - Test Remote Media with a normal public image, localhost/private IP, credential-bearing URL, redirect and oversized response.
-- Run the manual distribution workflow once and install its ZIP on a disposable Geeklog test instance.
+- Test FTP import with a valid source, a forged path outside `ftp_path`, an unsafe extension and a symlink escaping the import root.
+- Test batch session continuation/cancellation as owner, another user and MediaGallery administrator.
+- Test legacy `fslideshow.php` bookmarks against the maintained slideshow.
+- Install a generated distribution ZIP on disposable Geeklog 2.1.1 and 2.2.2 test instances.
 - Keep PHP 5.6, PHP 7.4, PHP 8.1 and PHP 8.3 syntax lint green.
