@@ -39,13 +39,6 @@
 * @package Media Gallery
 */
 
-/**
-* Plugin autoinstall function
-*
-* @param    string  $pi_name    Plugin name
-* @return   array               Plugin information
-*
-*/
 function plugin_autoinstall_mediagallery($pi_name)
 {
     $pi_name         = 'mediagallery';
@@ -56,9 +49,9 @@ function plugin_autoinstall_mediagallery($pi_name)
     $info = array(
         'pi_name'         => $pi_name,
         'pi_display_name' => $pi_display_name,
-        'pi_version'      => '1.7.3',
+        'pi_version'      => '1.8.0',
         'pi_gl_version'   => '2.0.0',
-        'pi_homepage'     => 'https://github.com/Geeklog-Plugins/MediaGallery'
+        'pi_homepage'     => 'https://github.com/hostellerie/mediagallery'
     );
 
     $groups = array(
@@ -102,7 +95,7 @@ function plugin_autoinstall_mediagallery($pi_name)
         )
     );
 
-    $inst_parms = array(
+    return array(
         'info'      => $info,
         'groups'    => $groups,
         'features'  => $features,
@@ -110,18 +103,8 @@ function plugin_autoinstall_mediagallery($pi_name)
         'tables'    => $tables,
         'requires'  => $requires
     );
-
-    return $inst_parms;
 }
 
-/**
-* Load plugin configuration from database
-*
-* @param    string  $pi_name    Plugin name
-* @return   boolean             true on success, otherwise false
-* @see      plugin_initconfig_mediagallery
-*
-*/
 function plugin_load_configuration_mediagallery($pi_name)
 {
     global $_CONF;
@@ -134,15 +117,6 @@ function plugin_load_configuration_mediagallery($pi_name)
     return plugin_initconfig_mediagallery();
 }
 
-/**
-* Plugin postinstall
-*
-* We're inserting our default data here since it depends on other stuff that
-* has to happen first ...
-*
-* @return   boolean     true = proceed with install, false = an error occured
-*
-*/
 function plugin_postinstall_mediagallery($pi_name)
 {
     global $_TABLES;
@@ -154,17 +128,10 @@ function plugin_postinstall_mediagallery($pi_name)
 
     $MG_SQL = array();
 
-    // create random image block
     $MG_SQL[] = "INSERT INTO {$_TABLES['blocks']} (is_enabled, name, type, title, blockorder, content, rdfurl, rdfupdated, onleft, phpblockfn, help, group_id, owner_id, perm_owner, perm_group, perm_members,perm_anon) VALUES (0, 'mgrandom', 'phpblock', 'Random Image',        0, '', '', 0, 1, 'phpblock_mg_randommedia','', 4, 2, 3, 3, 2, 2);";
     $MG_SQL[] = "INSERT INTO {$_TABLES['blocks']} (is_enabled, name, type, title, blockorder, content, rdfurl, rdfupdated, onleft, phpblockfn, help, group_id, owner_id, perm_owner, perm_group, perm_members,perm_anon) VALUES (0, 'mgenroll', 'phpblock', 'Member Album Enroll', 0, '', '', 0, 1, 'phpblock_mg_maenroll',   '', 4, 2, 3, 3, 2, 0);";
-
-    // Save the grp id for later uninstall
     $MG_SQL[] = "INSERT INTO {$_TABLES['vars']} VALUES ('{$pi_name}_gid', $admin_group_id)";
-
-    // Save the grp id for later uninstall
     $MG_SQL[] = "INSERT INTO {$_TABLES['vars']} VALUES ('{$pi_name}_cid', $config_group_id)";
-
-    // Save the mg_last_usage_purge for usage tracking
     $MG_SQL[] = "INSERT INTO {$_TABLES['vars']} VALUES ('mg_last_usage_purge', 0)";
 
     foreach ($MG_SQL as $sql) {
@@ -178,20 +145,11 @@ function plugin_postinstall_mediagallery($pi_name)
     return true;
 }
 
-/**
-* Check if the plugin is compatible with this Geeklog version
-*
-* @param    string  $pi_name    Plugin name
-* @return   boolean             true: plugin compatible; false: not compatible
-*
-*/
 function plugin_compatible_with_this_version_mediagallery($pi_name)
 {
     global $_CONF, $_DB_dbms;
 
-    // check if we support the DBMS the site is running on
-    $dbFile = $_CONF['path'] . 'plugins/' . $pi_name . '/sql/'
-            . $_DB_dbms . '_install.php';
+    $dbFile = $_CONF['path'] . 'plugins/' . $pi_name . '/sql/' . $_DB_dbms . '_install.php';
     if (!file_exists($dbFile)) {
         return false;
     }
@@ -214,58 +172,103 @@ function MG_upgrade()
     $pi_gl_version = $inst_parms['info']['pi_gl_version'];
     $pi_homepage   = $inst_parms['info']['pi_homepage'];
     $installed_version = DB_getItem($_TABLES['plugins'], 'pi_version', "pi_name = '$pi_name'");
-    if ($installed_version == $code_version) return true;
+
+    if ($installed_version == $code_version) {
+        return true;
+    }
+
     $func = "plugin_compatible_with_this_version_$pi_name";
-    if (!$func($pi_name)) return 3002;
+    if (!$func($pi_name)) {
+        return 3002;
+    }
 
     $current_version = $installed_version;
-    if (COM_versionCompare($current_version, '1.6.5', '<')) return 3;
+    if (COM_versionCompare($current_version, '1.6.5', '<')) {
+        return 3;
+    }
 
     $done = false;
     while (!$done) {
         switch ($current_version) {
-        case "1.6.5" :
-        case "1.6.6" :
-        case "1.6.7" :
-        case "1.6.8" :
-        case "1.6.9" :
-        case "1.6.10" :
-        case "1.6.11" :
-            if (MG_upgrade_1612() != 0) break 2;
-            $current_version = "1.6.12";
+        case '1.6.5':
+        case '1.6.6':
+        case '1.6.7':
+        case '1.6.8':
+        case '1.6.9':
+        case '1.6.10':
+        case '1.6.11':
+            if (MG_upgrade_1612() != 0) {
+                break 2;
+            }
+            $current_version = '1.6.12';
             break;
 
-        case "1.6.12" :
-        case "1.6.13" :
-        case "1.6.14" :
-        case "1.6.15" :
-        case "1.6.16" :
-        case "1.6.17" :
-            if (MG_upgrade_170() != 0) break 2;
-            $current_version = "1.7.2.1";
+        case '1.6.12':
+        case '1.6.13':
+        case '1.6.14':
+        case '1.6.15':
+        case '1.6.16':
+        case '1.6.17':
+            if (MG_upgrade_170() != 0) {
+                break 2;
+            }
+            $current_version = '1.7.0';
             break;
 
-        case "1.7.2.1" :
-        case "1.7.2.2" :
-        case "1.7.2.3" :
-        case "1.7.2.4" :
-		case "1.7.2.5" :
-            $current_version = "1.7.3";
+        // 1.8.0 deliberately accepts all known 1.7.x release identifiers.
+        // No media files are moved here. The new runtime storage resolver
+        // decides whether legacy or site-specific storage is used.
+        case '1.7.0':
+        case '1.7.1':
+        case '1.7.2':
+        case '1.7.2.1':
+        case '1.7.2.2':
+        case '1.7.2.3':
+        case '1.7.2.4':
+        case '1.7.2.5':
+        case '1.7.3':
+            if (MG_upgrade_180() != 0) {
+                break 2;
+            }
+            $current_version = '1.8.0';
             break;
 
-        default :
+        case '1.8.0':
+        default:
             $done = true;
             break;
         }
     }
 
     DB_query("UPDATE {$_TABLES['plugins']} "
-           . "SET pi_version = '$code_version', "
-               . "pi_gl_version = '$pi_gl_version', "
-               . "pi_homepage = '$pi_homepage' "
-           . "WHERE pi_name = '$pi_name'");
+           . "SET pi_version = '" . DB_escapeString($code_version) . "', "
+           . "pi_gl_version = '" . DB_escapeString($pi_gl_version) . "', "
+           . "pi_homepage = '" . DB_escapeString($pi_homepage) . "' "
+           . "WHERE pi_name = '" . DB_escapeString($pi_name) . "'");
 
     return 1;
+}
+
+/**
+ * Upgrade 1.7.x configuration/data to 1.8.0.
+ *
+ * Phase 1 intentionally performs no media relocation and no destructive
+ * configuration rewrite. Additional Configuration API entries will be added
+ * here as they are migrated from legacy hard-coded defaults.
+ *
+ * @return int 0 on success
+ */
+function MG_upgrade_180()
+{
+    global $_CONF;
+
+    require_once $_CONF['path'] . 'plugins/mediagallery/include/config_180.php';
+
+    // Runtime paths are derived from Geeklog configuration. There is no DB
+    // storage migration here by design.
+    COM_errorLog('Media Gallery 1.8.0: configuration/storage upgrade completed without moving media files.');
+
+    return 0;
 }
 
 function MG_upgrade_1612()
@@ -277,13 +280,12 @@ function MG_upgrade_1612()
     $_SQL = array();
     $_SQL[] = "REPLACE INTO {$_TABLES['mg_config']} VALUES ('ad_group_id', '$grp_id')";
 
-    // Execute SQL now to perform the upgrade
     foreach ($_SQL as $sql) {
         COM_errorLOG("Media Gallery plugin 1.6.11 update: Executing SQL => " . $sql);
         DB_query($sql, 1);
 
         if (DB_error()) {
-            COM_errorLog("SQL Error during Media Gallery plugin update", 1);
+            COM_errorLog('SQL Error during Media Gallery plugin update', 1);
             return 1;
         }
     }
@@ -306,10 +308,8 @@ function MG_upgrade_170()
     $name_src  = $_DB_table_prefix . 'mg_config';
     $_SQL[] = "DROP TABLE `$name_src`";
 
-
     $name_src  = $_DB_table_prefix . 'mg_albums';
     $_SQL[] = "ALTER TABLE `$name_src` DROP `enable_shutterfly`";
-
 
     $name_src  = $_DB_table_prefix . 'mg_media_queue';
     $name_dest = $_DB_table_prefix . 'mg_mediaqueue';
@@ -330,42 +330,32 @@ function MG_upgrade_170()
     $name_src  = $_DB_table_prefix . 'mg_batch_session_items2';
     $_SQL[] = "DROP TABLE `$name_src`";
 
-    $skins = array('border', 'default', 'mgAlbum',
-        'mgShadow', 'new_border', 'new_shadow', 'none');
+    $skins = array('border', 'default', 'mgAlbum', 'mgShadow', 'new_border', 'new_shadow', 'none');
     $sql = "SELECT * FROM {$_TABLES['mg_albums']}";
     $result = DB_query($sql);
 
     while ($A = DB_fetchArray($result)) {
-        $_SQL[] = "UPDATE {$_TABLES['mg_albums']} "
-                . "SET skin='default' "
-                . "WHERE album_id=" . $A['album_id'];
+        $_SQL[] = "UPDATE {$_TABLES['mg_albums']} SET skin='default' WHERE album_id=" . $A['album_id'];
 
         if (!in_array($A['image_skin'], $skins)) {
-            $_SQL[] = "UPDATE {$_TABLES['mg_albums']} "
-                    . "SET image_skin='default' "
-                    . "WHERE album_id=" . $A['album_id'];
+            $_SQL[] = "UPDATE {$_TABLES['mg_albums']} SET image_skin='default' WHERE album_id=" . $A['album_id'];
         }
 
         if (!in_array($A['display_skin'], $skins)) {
-            $_SQL[] = "UPDATE {$_TABLES['mg_albums']} "
-                    . "SET display_skin='default' "
-                    . "WHERE album_id=" . $A['album_id'];
+            $_SQL[] = "UPDATE {$_TABLES['mg_albums']} SET display_skin='default' WHERE album_id=" . $A['album_id'];
         }
 
         if (!in_array($A['album_skin'], $skins)) {
-            $_SQL[] = "UPDATE {$_TABLES['mg_albums']} "
-                    . "SET album_skin='default' "
-                    . "WHERE album_id=" . $A['album_id'];
+            $_SQL[] = "UPDATE {$_TABLES['mg_albums']} SET album_skin='default' WHERE album_id=" . $A['album_id'];
         }
     }
 
-    // Execute SQL now to perform the upgrade
     foreach ($_SQL as $sql) {
         COM_errorLOG("Media Gallery plugin 1.7.0 update: Executing SQL => " . $sql);
         DB_query($sql, 1);
 
         if (DB_error()) {
-            COM_errorLog("SQL Error during Media Gallery plugin update", 1);
+            COM_errorLog('SQL Error during Media Gallery plugin update', 1);
             return 1;
         }
     }
