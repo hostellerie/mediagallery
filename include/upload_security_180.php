@@ -143,6 +143,82 @@ function MG_validateLocalImportSource180($source, $allowedRoot, $allowDirectory 
 }
 
 /**
+ * Validate every pending source in an FTP batch session before processing.
+ *
+ * A recursive import may discover new files/directories on a later request.
+ * Running this preflight before each MG_continueSession() call ensures that
+ * symlinks or forged session data can never escape the configured ftp_path.
+ *
+ * @param string $sessionId
+ * @param string $reason Receives a short failure reason.
+ * @return bool
+ */
+function MG_validateFtpBatchSession180($sessionId, &$reason)
+{
+    global $_TABLES, $_USER, $_MG_CONF;
+
+    $reason = '';
+    $sessionId = (string) $sessionId;
+
+    if ($sessionId === '') {
+        $reason = 'missing_session';
+        return false;
+    }
+
+    $escapedId = DB_escapeString($sessionId);
+    $result = DB_query(
+        "SELECT session_uid, session_action FROM {$_TABLES['mg_sessions']} "
+        . "WHERE session_id='" . $escapedId . "'"
+    );
+
+    if (DB_numRows($result) !== 1) {
+        $reason = 'invalid_session';
+        return false;
+    }
+
+    $session = DB_fetchArray($result);
+    if ((int) $session['session_uid'] !== (int) $_USER['uid']
+        && !SEC_hasRights('mediagallery.admin')) {
+        $reason = 'access_denied';
+        return false;
+    }
+
+    if ($session['session_action'] !== 'ftpimport') {
+        return true;
+    }
+
+    if (empty($_MG_CONF['ftp_path']) || realpath($_MG_CONF['ftp_path']) === false) {
+        $reason = 'invalid_ftp_root';
+        return false;
+    }
+
+    $items = DB_query(
+        "SELECT data, mid FROM {$_TABLES['mg_session_items']} "
+        . "WHERE session_id='" . $escapedId . "' AND status=0"
+    );
+
+    while ($item = DB_fetchArray($items)) {
+        $source = $item['data'];
+        $isDirectory = ((int) $item['mid'] === 1);
+
+        if (!MG_validateLocalImportSource180(
+            $source,
+            $_MG_CONF['ftp_path'],
+            $isDirectory
+        )) {
+            COM_errorLog(
+                'MediaGallery 1.8: rejected FTP batch source outside ftp_path or with unsafe filename: '
+                . $source
+            );
+            $reason = 'invalid_source';
+            return false;
+        }
+    }
+
+    return true;
+}
+
+/**
  * Return true when an IP address is public and routable.
  *
  * @param string $ip
