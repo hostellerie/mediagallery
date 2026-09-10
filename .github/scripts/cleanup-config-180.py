@@ -13,45 +13,28 @@ for pattern in patterns:
     if count != 1:
         raise SystemExit('expected use_flowplayer line not found exactly once: ' + pattern)
 
-swf_defaults = """    // Flash Media Player
-    'swf_play'                   => '1',
-    'swf_menu'                   => '0',
-    'swf_scale'                  => 'showall',
-    'swf_wmode'                  => 'transparent',
-    'swf_allowscriptaccess'      => 'sameDomain',
-    'swf_quality'                => 'high',
-    'swf_loop'                   => '0',
-    'swf_bgcolor'                => '#FFFFFF',
-    'swf_width'                  => '640',
-    'swf_height'                 => '480',
-    'swf_flashvars'              => '',
-    'swf_version'                => '6',
+swf_names = [
+    'swf_play', 'swf_menu', 'swf_scale', 'swf_wmode', 'swf_allowscriptaccess',
+    'swf_quality', 'swf_loop', 'swf_bgcolor', 'swf_width', 'swf_height',
+    'swf_flashvars', 'swf_version'
+]
+for name in swf_names:
+    default_pattern = r"^\s*'" + re.escape(name) + r"'\s*=>.*$"
+    text, count = re.subn(default_pattern, '', text, count=1, flags=re.MULTILINE)
+    if count != 1:
+        raise SystemExit('SWF default not found exactly once: ' + name)
 
-"""
-if text.count(swf_defaults) != 1:
-    raise SystemExit('SWF defaults block not found exactly once')
-text = text.replace(swf_defaults, '', 1)
+    add_pattern = r"^\s*\$c->add\('" + re.escape(name) + r"'.*$"
+    text, count = re.subn(add_pattern, '', text, count=1, flags=re.MULTILINE)
+    if count != 1:
+        raise SystemExit('SWF config entry not found exactly once: ' + name)
 
-swf_add = """        // ----------------------------------
-        $c->add('tab_flashmedia',        NULL,                                     'tab',      2,  0, NULL, 0,    true, $n, 13);
-        $c->add('fs_flashmedia',         NULL,                                     'fieldset', 2,  0, NULL, 0,    true, $n, 13);
+for structural in ('tab_flashmedia', 'fs_flashmedia'):
+    pattern = r"^\s*\$c->add\('" + structural + r"'.*$"
+    text, count = re.subn(pattern, '', text, count=1, flags=re.MULTILINE)
+    if count != 1:
+        raise SystemExit('Flash config structure not found exactly once: ' + structural)
 
-        $c->add('swf_play',              $_MG_DEFAULT['swf_play'],                 'select',   2,  0, 0,    $o++, true, $n, 13);
-        $c->add('swf_menu',              $_MG_DEFAULT['swf_menu'],                 'select',   2,  0, 0,    $o++, true, $n, 13);
-        $c->add('swf_scale',             $_MG_DEFAULT['swf_scale'],                'select',   2,  0, 26,   $o++, true, $n, 13);
-        $c->add('swf_wmode',             $_MG_DEFAULT['swf_wmode'],                'select',   2,  0, 27,   $o++, true, $n, 13);
-        $c->add('swf_allowscriptaccess', $_MG_DEFAULT['swf_allowscriptaccess'],    'select',   2,  0, 28,   $o++, true, $n, 13);
-        $c->add('swf_quality',           $_MG_DEFAULT['swf_quality'],              'select',   2,  0, 29,   $o++, true, $n, 13);
-        $c->add('swf_loop',              $_MG_DEFAULT['swf_loop'],                 'select',   2,  0, 0,    $o++, true, $n, 13);
-        $c->add('swf_bgcolor',           $_MG_DEFAULT['swf_bgcolor'],              'text',     2,  0, 0,    $o++, true, $n, 13);
-        $c->add('swf_width',             $_MG_DEFAULT['swf_width'],                'text',     2,  0, 0,    $o++, true, $n, 13);
-        $c->add('swf_height',            $_MG_DEFAULT['swf_height'],               'text',     2,  0, 0,    $o++, true, $n, 13);
-        $c->add('swf_flashvars',         $_MG_DEFAULT['swf_flashvars'],            'text',     2,  0, 0,    $o++, true, $n, 13);
-        $c->add('swf_version',           $_MG_DEFAULT['swf_version'],              'text',     2,  0, 0,    $o++, true, $n, 13);
-
-"""
-if text.count(swf_add) != 1:
-    raise SystemExit('SWF config block not found exactly once')
-text = text.replace(swf_add, '', 1)
+text = text.replace('    // Flash Media Player\n', '', 1)
 
 p.write_text(text, encoding='utf-8', errors='surrogateescape')
