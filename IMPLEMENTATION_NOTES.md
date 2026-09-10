@@ -22,9 +22,12 @@ Implemented:
 - historical `public_html/mediagallery/mediaobjects/` storage preserved when `images_url` is absent;
 - site-specific `tmp` and FTP/upload staging under `$_CONF['path_data']/mediagallery/` when multisite storage is active;
 - controlled creation of private work directories with error logging;
-- no automatic relocation of existing media during upgrade.
+- no automatic relocation of existing media during upgrade;
+- fresh 1.8.0 installations no longer create the obsolete FlowPlayer option or the Flash Media configuration tab/`swf_*` controls.
 
 The configuration migration adds missing administrator-facing settings without overwriting existing values, including valid `0`/`false` values. Runtime/calculated paths remain outside the Configuration API.
+
+Upgraded 1.7.x sites may temporarily retain obsolete Flash/FlowPlayer rows in `conf_values`. They are ignored by the 1.8 runtime. Do not delete those rows during upgrade until the deletion path has been verified on both Geeklog 2.1.1 and 2.2.2.
 
 ## Upload and import security
 
@@ -33,6 +36,10 @@ Implemented:
 - Geeklog CSRF tokens on browser upload, Remote Media and both FTP import forms;
 - browser upload slot alignment fixed for captions, descriptions, keywords, category, attached thumbnail and DNC flags;
 - DNC now correctly interprets the submitted `value="1"`;
+- DNC no longer gets overwritten internally;
+- when DNC is disabled and originals are retained, a supported original image is actually converted to JPEG through the configured image backend before its stored extension/MIME are changed;
+- when DNC is enabled, the original image format is preserved;
+- conversion failure leaves the original format intact and reports an upload error instead of recording a false JPEG MIME/extension;
 - legacy async upload identity comes from the authenticated Geeklog session rather than a POSTed `uid`;
 - reusable security helpers in `include/upload_security_180.php`;
 - executable/server-side filename extensions rejected on browser/async uploads;
@@ -65,6 +72,7 @@ Default MediaGallery rendering no longer executes Flash, QuickTime ActiveX or Wi
 Implemented:
 
 - QuickTime/Windows Media video templates moved to HTML5 `<video>` or download fallback;
+- MPEG/MOV/MP4 routing now consistently uses the HTML5 MOV/video renderer rather than legacy WMP/FLV routing flags;
 - MP3/WMA/QuickTime audio templates moved to HTML5 `<audio>`;
 - podcast MP3 playback moved to HTML5 `<audio>`;
 - FLV and SWF formats use safe download fallbacks instead of executing Flash;
@@ -73,11 +81,19 @@ Implemented:
 - the `fslideshow` autotag no longer embeds Flash and links to the maintained slideshow;
 - the legacy Flash markup in `fslideshow.thtml` has been removed;
 - the empty SWFObject bootstrap was removed from MP3 display;
-- global registration of `swfobject_2.1.js` has been removed;
+- SWFObject/QuickTime helper JavaScript files and unused duplicate jQuery Cycle builds have been removed;
 - obsolete SWF binaries for MP3, FLV, XSPF, SimpleViewer and legacy slideshow playback have been removed;
-- the Flash-specific `audio-player.js` helper has been removed.
+- the Flash-specific `audio-player.js` helper has been removed;
+- `MG_displaySWF()` and `MG_displayFLV()` are decoupled from removed `swf_*` configuration keys so fresh 1.8 installs cannot generate undefined-key warnings;
+- legacy ASF/MOV popup/download rendering now uses the thumbnail size actually returned by `Media::getThumbInfo()` instead of the undefined `$media_size_disp` variable.
 
-`public_html/players/` now contains only the non-executable placeholder/index files still retained for compatibility. The remaining SWFObject JavaScript files can be removed after a final reference audit.
+`public_html/players/` now contains only the non-executable placeholder/index files still retained for compatibility.
+
+Still review before RC:
+
+- which remaining ASF/MOV/MP3 playback controls have meaningful HTML5 equivalents and should remain visible;
+- whether legacy per-media playback options should be normalized or simply ignored when no HTML5 equivalent exists;
+- whether the old `mms` playback mode should be retired.
 
 ## Templates, accessibility and SEO
 
@@ -133,7 +149,7 @@ dist/mediagallery_1.8.0_2.0.0.zip
 
 The ZIP contains one top-level `mediagallery/` directory, includes required tracked placeholder assets, and excludes `.github/`, `dist/` and build directories. No separate checksum file is retained in `dist/`.
 
-Do not regenerate the archive after every source commit. Regenerate it when an online/install test is actually needed so `dist/` remains an intentional tested snapshot.
+Do not regenerate the archive after every source commit. Regenerate it when an online/install test is actually needed so `dist/` remains an intentional test snapshot.
 
 ## Required live tests before merging
 
@@ -141,12 +157,17 @@ Do not regenerate the archive after every source commit. Regenerate it when an o
 - upgrade a 1.7.3 installation;
 - fresh 1.8.0 installation;
 - Geeklog 2.1.1 and 2.2.2 Configuration API behavior;
+- fresh Configuration UI has no FlowPlayer or Flash Media controls and no undefined-key warnings;
+- upgraded 1.7.x Configuration UI remains usable even if obsolete Flash rows still exist in `conf_values`;
 - standard single-site install with legacy media paths;
 - multisite with separate database/table prefix, `path_images`, `images_url` and `path_data`;
 - `tmp`/uploads directory creation and permissions;
 - all new Configuration API controls save/reload correctly;
 - browser upload success plus invalid/missing CSRF rejection;
 - four-slot browser upload option association;
+- DNC off: upload PNG/GIF/BMP and verify the retained original is a real JPEG with `.jpg` extension/MIME;
+- DNC on: verify PNG/GIF/BMP original format is preserved;
+- DNC behavior with `discard_original = 1`;
 - executable/double-extension/unknown-MIME rejection;
 - Remote Media public/private/redirect/oversize cases;
 - FTP valid source, forged outside path, unsafe extension and escaping symlink;
@@ -155,6 +176,7 @@ Do not regenerate the archive after every source commit. Regenerate it when an o
 - `album_list` as owner, non-owner, anonymous and administrator;
 - media/album canonical output with multiple skins and paginated sort variants;
 - MP3/WMA/MOV/ASF/SWF/FLV legacy-media rendering after HTML5/fallback conversion;
+- ASF/MOV popup/download paths do not emit undefined `$media_size_disp` warnings;
 - old `fslideshow.php` URLs and existing `fslideshow` autotags;
 - install the current `dist/mediagallery_1.8.0_2.0.0.zip` on disposable Geeklog 2.1.1 and 2.2.2 instances when the next online test point is reached.
 
@@ -163,8 +185,8 @@ Do not regenerate the archive after every source commit. Regenerate it when an o
 Before an RC:
 
 - fold the transitional `functions_legacy.inc` split back into a clean final bootstrap if practical;
-- remove verified-unused SWFObject/QuickTime-era JavaScript assets;
 - review/remove obsolete Configuration API controls whose playback technologies no longer exist;
+- verify whether obsolete 1.7.x `conf_values` rows can be safely removed during upgrade on both supported Geeklog versions;
 - complete template/accessibility cleanup without breaking custom skins;
 - update CHANGELOG/README/UPGRADE for final 1.8.0 behavior;
 - keep PHP syntax CI green for every version still claimed by the compatibility policy.
