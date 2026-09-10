@@ -3,9 +3,5 @@
     <source src="{movie}" type="audio/mpeg">
     <p><a href="{movie}">{lang_download}</a></p>
   </audio>
-  <div class="mg-media-audio-meta">
-    <strong>{mp3_title}</strong><br{xhtml}>
-    {lang_artist}: {mp3_artist}<br{xhtml}>
-    {lang_album}: {mp3_album}
-  </div>
+  <noscript><p><a href="{movie}">{lang_download}</a></p></noscript>
 </div>
