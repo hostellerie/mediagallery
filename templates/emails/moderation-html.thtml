@@ -1,0 +1,18 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>{lang_new_upload} {site_name}</title>
+</head>
+<body>
+<p>{lang_new_upload}<strong>{album_title}</strong></p>
+{email_divider_html}
+<p><strong>{lang_details}</strong></p>
+<p><strong>{lang_album_title}:</strong> {album_title}<br>
+<strong>{lang_uploaded_by}:</strong> {username}</p>
+<p><a href="{moderation_url}">{lang_review}</a></p>
+{email_divider_html}
+<p>{site_name}{!if site_slogan} — {site_slogan}{!endif}<br>
+<a href="{site_url}">{site_url}</a></p>
+</body>
+</html>
