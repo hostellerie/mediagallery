@@ -25,18 +25,28 @@ This file tracks implementation decisions made while modernizing the plugin.
 - Corrected the sort form so it preserves the visible one-based page number instead of the internal zero-based index.
 - Added the native Geeklog `album_list` service requested by issue #10 and documented it in `docs/SERVICES.md`.
 - Added HTML and plaintext moderation email templates under `templates/emails/`.
-- Added a native `COM_mail()` moderation notification path and switched all current upload entry points to it.
+- Added a native `COM_mail()` moderation notification path and switched current upload entry points to it.
 - Fixed the old moderation email album-title mismatch (`album_title` was selected but `title` was read).
 - Preserved the historical 10-minute moderation notification throttle using Geeklog's speed-limit API.
 - Added a compatibility fallback for email template lookup when `CTL_plugin_templatePath()` is unavailable on an older Geeklog runtime.
 - Added Geeklog CSRF protection to the active browser upload form using `SEC_createToken()`, `CSRF_TOKEN` and `SEC_checkToken()`.
 - Removed the unreachable SWFUpload form-rendering block that lived after an unconditional return in `MG_uploadForm()`.
 - Hardened the legacy asynchronous upload endpoint so user identity comes from the authenticated Geeklog session rather than a POSTed `uid`.
+- Added `include/upload_security_180.php` with reusable filename and remote-fetch validation helpers.
+- Reject executable/server-side upload extensions before user uploads enter the MediaGallery processing/storage pipeline.
+- Fixed the four-slot browser upload form so file, caption, description, keywords, category, attached thumbnail and `do not convert original` values remain associated with the correct file.
+- Fixed `dnc` handling: the form submits `value="1"` and 1.8.0 now tests the value correctly instead of expecting the legacy string `on`.
+- Added CSRF protection to the Remote Media form and save path.
+- Restricted server-side remote thumbnail fetching to public HTTP(S) destinations, rejecting localhost, private/reserved IP space and URLs containing credentials.
+- Disabled redirects during remote thumbnail fetching and added connection/read timeouts plus a 10 MB download limit.
+- Fixed the legacy `enabled_remote_images` typo in remote thumbnail handling.
+- Switched Remote Media moderation notifications to `MG_notifyModerators180()`.
 - Added a manual GitHub Actions workflow that builds an installable `dist/mediagallery-VERSION.zip`, creates a SHA-256 checksum and publishes both as a 14-day workflow artifact.
 - Added a `dist/README.md` and ignores for generated distribution binaries.
+- Corrected the distribution workflow so tracked generic assets in `public_html/mediaobjects/` are included in installable archives; the workflow verifies core files and required placeholder assets before publishing the artifact.
 - Expanded syntax linting to PHP 5.6, 7.4, 8.1 and 8.3.
 - Fixed the invalid Geeklog 2.2.2 user/user_attributes query in `admin/purgealbums.php` that caused a parse error.
-- Verified one complete CI syntax-lint run successfully on PHP 5.6, 7.4, 8.1 and 8.3 after that fix.
+- Verified CI syntax lint successfully on PHP 5.6, 7.4, 8.1 and 8.3 after the latest Remote Media security changes.
 
 ## Configuration loading
 
@@ -124,7 +134,9 @@ dist/mediagallery-VERSION.zip
 dist/mediagallery-VERSION.zip.sha256
 ```
 
-The archive contains a single top-level `mediagallery/` directory. Generated binaries are uploaded as workflow artifacts for 14 days and are not committed to Git.
+The archive contains a single top-level `mediagallery/` directory. It includes tracked generic MediaGallery assets but no user media. Generated binaries are uploaded as workflow artifacts for 14 days and are not committed to Git.
+
+The build workflow has been statically reviewed but has not yet been manually dispatched in this development session. Its first actual run should be performed when an online test archive is requested.
 
 ## Template / SEO work
 
@@ -149,21 +161,19 @@ Still to do:
 
 Completed in the current pass:
 
-- the active browser upload form now carries and validates Geeklog's standard CSRF token;
+- browser and Remote Media forms carry and validate Geeklog's standard CSRF token;
 - the legacy asynchronous upload endpoint no longer trusts a POSTed user ID;
+- executable/server-side filename extensions are rejected before user-upload processing;
+- Remote Media server-side fetches reject localhost/private/reserved targets and URL credentials;
+- remote thumbnail redirects are disabled and downloads are bounded by timeout and size;
 - `MG_getFile()` remains the final album permission check for uploaded media.
-
-Current finding:
-
-- if getID3 cannot identify a file, the legacy upload pipeline can fall back to the client-supplied MIME type or file extension;
-- the generic-file path stores the original extension under the public media tree on traditional installations;
-- current executable-extension rewriting only covers a small legacy list (`php`, `pl`, `cgi`, `py`, `sh`, `rb`) and must be broadened before 1.8.0 release.
 
 Still review:
 
+- defense-in-depth validation inside `MG_getFile()` itself so administrator FTP/batch imports receive equivalent executable-extension protection;
 - whether the legacy async upload endpoint can be removed completely after confirming there are no active callers;
-- upload MIME/extension validation and executable extension handling;
-- remote-media URL validation;
+- MIME/extension consistency for ambiguous generic files;
+- remote embed/legacy streaming formats as part of the QuickTime/FLV/WMP modernization;
 - permission checks around album mutations;
 - temporary file names and cleanup;
 - HTML attribute escaping in frame templates;
@@ -184,6 +194,9 @@ Still review:
 - Test media canonical output and album H1 with multiple skins.
 - Test album page titles/canonical URLs on page 1, page 2+ and sort variants.
 - Test browser upload success and rejection of invalid/missing CSRF tokens.
+- Verify all four browser upload slots preserve their own category, DNC flag and attached thumbnail association.
 - Test the hardened legacy async upload endpoint with an authenticated session and a mismatched POSTed `uid`.
-- Test executable and ambiguous uploads (`php`, `phtml`, `phar`, double extensions, unknown MIME) after upload hardening is implemented.
+- Test executable and ambiguous uploads (`php`, `phtml`, `phar`, double extensions, unknown MIME).
+- Test Remote Media with a normal public image, localhost/private IP, credential-bearing URL, redirect and oversized response.
+- Run the manual distribution workflow once and install its ZIP on a disposable Geeklog test instance.
 - Keep PHP 5.6, PHP 7.4, PHP 8.1 and PHP 8.3 syntax lint green.
