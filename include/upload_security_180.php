@@ -79,6 +79,70 @@ function MG_validateUploadFilename180($filename)
 }
 
 /**
+ * Validate a local import source against an allowed root directory.
+ *
+ * Both paths are resolved with realpath(). The source must exist and resolve
+ * either to the root itself or to a descendant of that root. This prevents a
+ * forged FTP/batch form field from importing arbitrary local server files.
+ *
+ * @param string $source
+ * @param string $allowedRoot
+ * @param bool   $allowDirectory
+ * @return bool
+ */
+function MG_validateLocalImportPath180($source, $allowedRoot, $allowDirectory = true)
+{
+    if ($source === '' || $allowedRoot === '') {
+        return false;
+    }
+
+    if (strpos($source, "\0") !== false || strpos($allowedRoot, "\0") !== false) {
+        return false;
+    }
+
+    $root = realpath($allowedRoot);
+    $path = realpath($source);
+
+    if ($root === false || $path === false) {
+        return false;
+    }
+
+    if (!$allowDirectory && !is_file($path)) {
+        return false;
+    }
+
+    $root = rtrim(str_replace('\\', '/', $root), '/') . '/';
+    $pathNormalized = str_replace('\\', '/', $path);
+
+    if ($pathNormalized === rtrim($root, '/')) {
+        return $allowDirectory;
+    }
+
+    return strpos($pathNormalized . (is_dir($path) ? '/' : ''), $root) === 0;
+}
+
+/**
+ * Validate an FTP/batch import filename and its resolved path.
+ *
+ * @param string $source
+ * @param string $allowedRoot
+ * @param bool   $allowDirectory
+ * @return bool
+ */
+function MG_validateLocalImportSource180($source, $allowedRoot, $allowDirectory = true)
+{
+    if (!MG_validateLocalImportPath180($source, $allowedRoot, $allowDirectory)) {
+        return false;
+    }
+
+    if (is_dir($source)) {
+        return $allowDirectory;
+    }
+
+    return MG_validateUploadFilename180(basename($source));
+}
+
+/**
  * Return true when an IP address is public and routable.
  *
  * @param string $ip
