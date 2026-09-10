@@ -1,6 +1,10 @@
-#Ignore files created by PhpStorm
+# Ignore files created by PhpStorm
 .idea
 
-#Ignore user data files
+# Ignore user data files
 public_html/mediaobjects/**/*.*
 tmp/**/*.tmp
+
+# Ignore locally generated distribution archives
+dist/*.zip
+dist/*.zip.sha256
