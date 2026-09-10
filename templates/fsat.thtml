@@ -1,17 +1,13 @@
-<script type="text/javascript">
-    var flashvars = {};
-    var params = {
-    wmode: "transparent"
-    };
-    var attributes = {};
-
-    flashvars.action="true";
-
-    flashvars.xmlUrl="{movie}&amp;showDropShadow={dropshadow}&amp;delay={delay}&amp;transInType=Fade&amp;transOutType=Fade&amp;noLink={nolink}&amp;showControls=true{showtitle}";
-    swfobject.embedSWF("{site_url}/players/minislideshow.swf", "{id}", "{width}", "{height}", "9.0.115.0", "expressInstall.swf", flashvars, params, attributes);
-</script>
-<div id="{id}">
-    <a href="http://www.adobe.com/go/getflashplayer">
-        <img src="http://www.adobe.com/images/shared/download_buttons/get_flash_player.gif" alt="Get Adobe Flash player"{xhtml}>
-    </a>
+<div class="mg-fslideshow-legacy" id="{id}" style="max-width:{width}px;min-height:2.5em;">
+  <a id="{id2}" href="{site_url}/index.php">Open slideshow</a>
 </div>
+<script type="text/javascript">
+(function () {
+    var source = '{movie}';
+    var match = source.match(/[?&]aid=([^%&]+)/);
+    var link = document.getElementById('{id2}');
+    if (match && link) {
+        link.href = '{site_url}/slideshow.php?aid=' + encodeURIComponent(match[1]);
+    }
+}());
+</script>
