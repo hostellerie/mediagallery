@@ -2,11 +2,6 @@ name: Build MediaGallery installable archive
 
 on:
   workflow_dispatch:
-    inputs:
-      version:
-        description: Archive version label
-        required: false
-        default: ''
   push:
     branches:
       - modernize-1.8.0
@@ -34,16 +29,13 @@ jobs:
           set -euo pipefail
 
           SOURCE_SHA="$(git rev-parse HEAD)"
-          SHORT_SHA="$(git rev-parse --short=7 HEAD)"
-          VERSION="${{ inputs.version }}"
-          if [ -z "${VERSION}" ]; then
-            VERSION="1.8.0-test-${SHORT_SHA}"
-          fi
-          VERSION="${VERSION//[^0-9A-Za-z._-]/-}"
-          ARCHIVE="mediagallery-${VERSION}.zip"
+          ARCHIVE="mediagallery_1.8.0_2.0.0.zip"
 
           rm -rf package
           mkdir -p package/mediagallery dist
+
+          # Keep only the single current installable archive in dist/.
+          find dist -maxdepth 1 -type f \( -name 'mediagallery-*.zip' -o -name 'mediagallery_*.zip' -o -name '*.zip.sha256' \) -delete
 
           rsync -a ./ package/mediagallery/ \
             --exclude='.git/' \
@@ -58,10 +50,9 @@ jobs:
             zip -qr "../dist/${ARCHIVE}" mediagallery
           )
 
-          (
-            cd dist
-            sha256sum "${ARCHIVE}" > "${ARCHIVE}.sha256"
-          )
+          # Verify archive integrity without keeping a separate checksum file.
+          CHECKSUM="$(sha256sum "dist/${ARCHIVE}" | awk '{print $1}')"
+          echo "Archive SHA-256: ${CHECKSUM}"
 
           echo "SOURCE_SHA=${SOURCE_SHA}" >> "$GITHUB_ENV"
           echo "ARCHIVE=${ARCHIVE}" >> "$GITHUB_ENV"
@@ -70,20 +61,13 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          unzip -t "dist/${ARCHIVE}" >/dev/null
           unzip -Z1 "dist/${ARCHIVE}" | grep -qx 'mediagallery/functions.inc'
           unzip -Z1 "dist/${ARCHIVE}" | grep -qx 'mediagallery/autoinstall.php'
           unzip -Z1 "dist/${ARCHIVE}" | grep -qx 'mediagallery/public_html/mediaobjects/generic.png'
           unzip -Z1 "dist/${ARCHIVE}" | grep -qx 'mediagallery/public_html/mediaobjects/missing.png'
           ! unzip -Z1 "dist/${ARCHIVE}" | grep -q '^mediagallery/.github/'
           ! unzip -Z1 "dist/${ARCHIVE}" | grep -q '^mediagallery/dist/'
-          (cd dist && sha256sum -c "${ARCHIVE}.sha256")
-
-      - name: Keep only current test archive
-        shell: bash
-        run: |
-          set -euo pipefail
-          find dist -maxdepth 1 -type f -name 'mediagallery-*.zip' ! -name "${ARCHIVE}" -delete
-          find dist -maxdepth 1 -type f -name 'mediagallery-*.zip.sha256' ! -name "${ARCHIVE}.sha256" -delete
 
       - name: Commit archive to modernize-1.8.0
         shell: bash
@@ -96,5 +80,5 @@ jobs:
             echo 'No dist changes to commit.'
             exit 0
           fi
-          git commit -m "Build installable MediaGallery archive for ${SOURCE_SHA} [skip ci]"
+          git commit -m "Build mediagallery_1.8.0_2.0.0.zip for ${SOURCE_SHA} [skip ci]"
           git push origin HEAD:modernize-1.8.0
