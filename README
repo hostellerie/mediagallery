@@ -124,8 +124,23 @@ Email notifications
 -------------------
 MediaGallery notification emails will be reviewed for migration to Geeklog-supported email templates, including plaintext and HTML variants where supported by the target Geeklog version.
 
+Installable test archives
+-------------------------
+A manual GitHub Actions workflow named **Build MediaGallery installable archive** is available on this branch.
+
+Run it from the GitHub Actions interface when an online installation package is needed. An optional version label can be supplied; the default is `1.8.0-dev`.
+
+The workflow builds:
+
+    dist/mediagallery-VERSION.zip
+    dist/mediagallery-VERSION.zip.sha256
+
+The ZIP contains a single top-level `mediagallery/` directory and excludes repository metadata, GitHub workflow files, generated distribution files, IDE data, local media objects and temporary files.
+
+The generated ZIP and SHA-256 file are published as a GitHub Actions artifact for 14 days. Generated binary archives are not committed to the repository.
+
 Compatibility target
 --------------------
-The intended compatibility range is Geeklog 2.1.1 through 2.2.2 where practical, with current PHP 8.1 behavior retained and PHP 8.2/8.3 audited before release.
+The intended compatibility range is Geeklog 2.1.1 through 2.2.2 where practical. PHP 5.6 is included in syntax linting to protect legacy Geeklog 2.1.1 deployments, while PHP 7.4, 8.1 and 8.3 are also checked during development.
 
 For the detailed implementation plan, see ROADMAP.md.
