@@ -16,6 +16,7 @@ if (strpos(strtolower($_SERVER['PHP_SELF']), strtolower(basename(__FILE__))) !==
  */
 require_once __DIR__ . '/functions_legacy.inc';
 require_once __DIR__ . '/include/config_180.php';
+require_once __DIR__ . '/services.inc.php';
 
 MG_addConfigLanguage180();
 MG_ensureConfig180();
