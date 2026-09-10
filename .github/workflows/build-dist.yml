@@ -12,7 +12,6 @@ on:
       - modernize-1.8.0
     paths:
       - '.github/dist-trigger'
-      - '.github/workflows/build-dist.yml'
 
 permissions:
   contents: write
@@ -99,11 +98,3 @@ jobs:
           fi
           git commit -m "Build installable MediaGallery archive for ${SOURCE_SHA} [skip ci]"
           git push origin HEAD:modernize-1.8.0
-
-      - name: Remove obsolete dist-build branch
-        shell: bash
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          set -euo pipefail
-          gh api -X DELETE "repos/${GITHUB_REPOSITORY}/git/refs/heads/dist-build" || true
