@@ -2,7 +2,7 @@
 
 This file tracks implementation decisions made while modernizing the plugin.
 
-## Implemented in the first 1.8.0 batch
+## Implemented
 
 - Created a transitional 1.8.0 bootstrap in `functions.inc`.
 - Preserved the complete 1.7.3 implementation as `functions_legacy.inc` while modernization is introduced incrementally.
@@ -12,9 +12,21 @@ This file tracks implementation decisions made while modernizing the plugin.
 - Added optional multisite storage based on `$_CONF['path_images']` + `$_CONF['images_url']`.
 - Preserved the historical `mediagallery/mediaobjects/` location when `images_url` is absent.
 - Isolated multisite temporary and FTP/upload staging paths under site-specific `$_CONF['path_data']` when available.
+- Added controlled creation of multisite `tmp` and `uploads` work directories, with logging on failure.
 - Added idempotent Configuration API migration for live settings that were previously hard-coded.
+- Guarded Configuration API migration so it does not run before the plugin configuration group exists during installation.
+- Ensured fresh 1.8.0 installs receive the same additional settings as upgraded installations.
 - Added English fallback labels for the new configuration entries until translation files are updated.
-- Modernized the main album template with a semantic H1, nav elements and a more accessible search control.
+- Modernized the main album template with a semantic H1, navigation landmarks and a more accessible search control.
+- Modernized album/media cell markup without changing existing template variables.
+- Added a canonical URL to individual media pages so display/sort/pagination variants do not create duplicate indexable media URLs.
+- Added the native Geeklog `album_list` service requested by issue #10 and documented it in `docs/SERVICES.md`.
+- Added HTML and plaintext moderation email templates under `templates/emails/`.
+- Added a native `COM_mail()` moderation notification path and switched all current upload entry points to it.
+- Fixed the old moderation email album-title mismatch (`album_title` was selected but `title` was read).
+- Preserved the historical 10-minute moderation notification throttle using Geeklog's speed-limit API.
+- Added a compatibility fallback for email template lookup when `CTL_plugin_templatePath()` is unavailable on an older Geeklog runtime.
+- Added a GitHub Actions PHP syntax-lint workflow for PHP 7.4, 8.1 and 8.3. A run result has not yet been verified from this working session.
 
 ## Configuration loading
 
@@ -40,13 +52,11 @@ When site-specific media storage is active and `$_CONF['path_data']` is availabl
 {path_data}/mediagallery/uploads/
 ```
 
-This prevents sites sharing one plugin code tree from sharing temporary upload data.
-
-The plugin still needs a dedicated directory check/creation step before release so an administrator gets a clear error instead of an upload failure when these directories do not exist or are not writable.
+The runtime attempts to create these private working directories when missing and logs an error if creation fails. Upload code must still report a useful writable-directory error when the server permissions prevent their use.
 
 ## Configuration API migration
 
-The first batch adds these previously hard-coded settings when missing:
+The current migration adds these previously hard-coded settings when missing:
 
 - `link_to_member_album`
 - `rating_speedlimit`
@@ -66,16 +76,64 @@ The first batch adds these previously hard-coded settings when missing:
 
 Existing administrator values are never overwritten. False/zero values are preserved because migration checks key existence rather than truthiness.
 
-## Template / SEO work started
+## Interoperability service
 
-`templates/album_page.thtml` now uses a semantic album `<h1>` and navigation landmarks. The next template/SEO batch should:
+MediaGallery 1.8.0 now implements Geeklog's native service convention:
+
+```php
+PLG_invokeService(
+    'mediagallery',
+    'album_list',
+    array(
+        'uid'       => $uid,
+        'root'      => 'member',
+        'recursive' => true,
+        'visible'   => true,
+    ),
+    $output,
+    $svc_msg
+);
+```
+
+The service applies MediaGallery access rules and avoids requiring consumers such as Documents to query `mg_*` tables directly. `member_album_root = 0` is treated as a valid root value.
+
+## Email modernization
+
+The active upload entry points now use `MG_notifyModerators180()`, which builds HTML/plaintext templates and delegates transport to Geeklog `COM_mail()`.
+
+The old `MG_notifyModerators()` implementation and bundled PHPMailer files still exist in the repository as legacy/dead code. They should only be removed after confirming there are no remaining call sites and after testing the new mail path on the supported Geeklog versions.
+
+## Template / SEO work
+
+Completed:
+
+- semantic `<h1>` for album title;
+- navigation landmarks and accessible album search field;
+- semantic wrappers for album/media thumbnail cells;
+- canonical URL for individual media pages;
+- confirmed default/none frame templates already use the media title as image `alt` text.
+
+Still to do:
 
 - pass the album title to `MG_createHTMLDocument()` as the page title;
-- review individual media page headings and titles;
-- review alt text generation in media and album thumbnails;
+- add self-canonical album pagination while canonicalizing sort variants to the same page;
+- audit escaping of `{media_tag}` before it is placed in `alt`/`title` attributes;
 - move remaining inline presentation CSS into plugin stylesheets where safe;
-- audit obsolete audio-player/SWF/legacy JavaScript includes before removal;
-- review canonical URL and pagination behavior through Geeklog-supported header metadata.
+- audit obsolete audio-player/SWF/QuickTime/WMP/MooTools/legacy JavaScript includes before removal;
+- avoid adding invented meta descriptions where MediaGallery does not have suitable source content.
+
+## Security audit items
+
+`public_html/upload.php` still contains an old commented-out token validation block. Do not simply re-enable it until the currently active upload UI is confirmed to submit the corresponding token correctly. The 1.8 security pass must trace the active upload request end-to-end, then restore CSRF/session-token validation without breaking uploads.
+
+Also review:
+
+- upload MIME/extension validation;
+- remote-media URL validation;
+- permission checks around album mutations;
+- temporary file names and cleanup;
+- HTML attribute escaping in frame templates;
+- obsolete executable media formats and legacy playback paths.
 
 ## Required tests before merging
 
@@ -85,6 +143,10 @@ Existing administrator values are never overwritten. False/zero values are prese
 - Geeklog 2.1.1 and 2.2.2 Configuration API behavior.
 - Multisite with separate table prefixes/databases and separate `path_images` / `images_url` / `path_data`.
 - Standard site with no `images_url` to confirm legacy media paths remain unchanged.
-- Verify `tmp` and `uploads` directory existence/writability handling.
+- Verify `tmp` and `uploads` creation/writability handling.
 - Verify all added configuration controls display and save correctly.
-- PHP 8.1 and PHP 8.3 warning/deprecation pass.
+- Test moderator email in both HTML-capable and plaintext clients and with Geeklog SMTP/sendmail configuration.
+- Test `album_list` for owner, anonymous/non-owner, administrator and hidden albums.
+- Test media canonical output and album H1 with multiple skins.
+- Verify current upload flow before enabling token validation.
+- PHP 7.4, PHP 8.1 and PHP 8.3 syntax/warning/deprecation pass.
