@@ -33,12 +33,6 @@
 // |                                                                          |
 // +--------------------------------------------------------------------------+
 
-/**
-* Autoinstall API functions for the Media Gallery plugin
-*
-* @package Media Gallery
-*/
-
 function plugin_autoinstall_mediagallery($pi_name)
 {
     $pi_name         = 'mediagallery';
@@ -114,7 +108,14 @@ function plugin_load_configuration_mediagallery($pi_name)
     require_once $_CONF['path_system'] . 'classes/config.class.php';
     require_once $base_path . 'install_defaults.php';
 
-    return plugin_initconfig_mediagallery();
+    if (!plugin_initconfig_mediagallery()) {
+        return false;
+    }
+
+    // Add the 1.8.0 settings on fresh installs as well as upgrades without
+    // duplicating them or resetting values.
+    require_once $base_path . 'include/config_180.php';
+    return MG_updateConfig180();
 }
 
 function plugin_postinstall_mediagallery($pi_name)
@@ -215,9 +216,6 @@ function MG_upgrade()
             $current_version = '1.7.0';
             break;
 
-        // 1.8.0 deliberately accepts all known 1.7.x release identifiers.
-        // No media files are moved here. The new runtime storage resolver
-        // decides whether legacy or site-specific storage is used.
         case '1.7.0':
         case '1.7.1':
         case '1.7.2':
@@ -249,23 +247,17 @@ function MG_upgrade()
     return 1;
 }
 
-/**
- * Upgrade 1.7.x configuration/data to 1.8.0.
- *
- * Phase 1 intentionally performs no media relocation and no destructive
- * configuration rewrite. Additional Configuration API entries will be added
- * here as they are migrated from legacy hard-coded defaults.
- *
- * @return int 0 on success
- */
 function MG_upgrade_180()
 {
     global $_CONF;
 
     require_once $_CONF['path'] . 'plugins/mediagallery/include/config_180.php';
 
-    // Runtime paths are derived from Geeklog configuration. There is no DB
-    // storage migration here by design.
+    if (!MG_updateConfig180()) {
+        COM_errorLog('Media Gallery 1.8.0: unable to update Configuration API entries.', 1);
+        return 1;
+    }
+
     COM_errorLog('Media Gallery 1.8.0: configuration/storage upgrade completed without moving media files.');
 
     return 0;
