@@ -20,6 +20,9 @@ This file tracks implementation decisions made while modernizing the plugin.
 - Modernized the main album template with a semantic H1, navigation landmarks and a more accessible search control.
 - Modernized album/media cell markup without changing existing template variables.
 - Added a canonical URL to individual media pages so display/sort/pagination variants do not create duplicate indexable media URLs.
+- Added self-canonical album URLs, keeping page 2+ canonicalized to their own pagination URL while dropping sort variants.
+- Added album HTML page titles and page-number suffixes on paginated album pages.
+- Corrected the sort form so it preserves the visible one-based page number instead of the internal zero-based index.
 - Added the native Geeklog `album_list` service requested by issue #10 and documented it in `docs/SERVICES.md`.
 - Added HTML and plaintext moderation email templates under `templates/emails/`.
 - Added a native `COM_mail()` moderation notification path and switched all current upload entry points to it.
@@ -27,6 +30,9 @@ This file tracks implementation decisions made while modernizing the plugin.
 - Preserved the historical 10-minute moderation notification throttle using Geeklog's speed-limit API.
 - Added a compatibility fallback for email template lookup when `CTL_plugin_templatePath()` is unavailable on an older Geeklog runtime.
 - Added a GitHub Actions PHP syntax-lint workflow for PHP 7.4, 8.1 and 8.3. A run result has not yet been verified from this working session.
+- Added Geeklog CSRF protection to the active browser upload form using `SEC_createToken()`, `CSRF_TOKEN` and `SEC_checkToken()`.
+- Removed the unreachable SWFUpload form-rendering block that lived after an unconditional return in `MG_uploadForm()`.
+- Hardened the legacy asynchronous upload endpoint so user identity comes from the authenticated Geeklog session rather than a POSTed `uid`.
 
 ## Configuration loading
 
@@ -101,7 +107,7 @@ The service applies MediaGallery access rules and avoids requiring consumers suc
 
 The active upload entry points now use `MG_notifyModerators180()`, which builds HTML/plaintext templates and delegates transport to Geeklog `COM_mail()`.
 
-The old `MG_notifyModerators()` implementation and bundled PHPMailer files still exist in the repository as legacy/dead code. They should only be removed after confirming there are no remaining call sites and after testing the new mail path on the supported Geeklog versions.
+The old `MG_notifyModerators()` implementation remains in `include/lib-upload.php` as legacy/dead code. It still references the historical bundled PHPMailer path, but that `include/lib/phpmailer/` directory is no longer present in the current repository tree. The legacy function should therefore be removed after functional verification of the new mail path rather than preserving or restoring the obsolete PHPMailer dependency.
 
 ## Template / SEO work
 
@@ -111,12 +117,12 @@ Completed:
 - navigation landmarks and accessible album search field;
 - semantic wrappers for album/media thumbnail cells;
 - canonical URL for individual media pages;
+- self-canonical album pagination with sort parameters excluded;
+- album HTML titles with page-number suffixes for page 2+;
 - confirmed default/none frame templates already use the media title as image `alt` text.
 
 Still to do:
 
-- pass the album title to `MG_createHTMLDocument()` as the page title;
-- add self-canonical album pagination while canonicalizing sort variants to the same page;
 - audit escaping of `{media_tag}` before it is placed in `alt`/`title` attributes;
 - move remaining inline presentation CSS into plugin stylesheets where safe;
 - audit obsolete audio-player/SWF/QuickTime/WMP/MooTools/legacy JavaScript includes before removal;
@@ -124,10 +130,15 @@ Still to do:
 
 ## Security audit items
 
-`public_html/upload.php` still contains an old commented-out token validation block. Do not simply re-enable it until the currently active upload UI is confirmed to submit the corresponding token correctly. The 1.8 security pass must trace the active upload request end-to-end, then restore CSRF/session-token validation without breaking uploads.
+Completed in the current pass:
 
-Also review:
+- the active browser upload form now carries and validates Geeklog's standard CSRF token;
+- the legacy asynchronous upload endpoint no longer trusts a POSTed user ID;
+- `MG_getFile()` remains the final album permission check for uploaded media.
 
+Still review:
+
+- whether the legacy async upload endpoint can be removed completely after confirming there are no active callers;
 - upload MIME/extension validation;
 - remote-media URL validation;
 - permission checks around album mutations;
@@ -148,5 +159,7 @@ Also review:
 - Test moderator email in both HTML-capable and plaintext clients and with Geeklog SMTP/sendmail configuration.
 - Test `album_list` for owner, anonymous/non-owner, administrator and hidden albums.
 - Test media canonical output and album H1 with multiple skins.
-- Verify current upload flow before enabling token validation.
+- Test album page titles/canonical URLs on page 1, page 2+ and sort variants.
+- Test browser upload success and rejection of invalid/missing CSRF tokens.
+- Test the hardened legacy async upload endpoint with an authenticated session and a mismatched POSTed `uid`.
 - PHP 7.4, PHP 8.1 and PHP 8.3 syntax/warning/deprecation pass.
