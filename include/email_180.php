@@ -24,12 +24,23 @@ function MG_buildModerationEmail180($aid, $albumTitle, $username)
 {
     global $_CONF, $_MG_CONF, $LANG_MG01, $LANG31;
 
-    $template = COM_newTemplate(CTL_plugin_templatePath('mediagallery', 'emails'));
+    // Geeklog 2.2.x exposes CTL_plugin_templatePath(). Keep a direct plugin
+    // template fallback so the 1.8 branch can still be tested on older 2.1.x
+    // installations without making the email path a hard dependency.
+    if (function_exists('CTL_plugin_templatePath')) {
+        $templatePath = CTL_plugin_templatePath('mediagallery', 'emails');
+    } else {
+        $templatePath = $_CONF['path'] . 'plugins/mediagallery/templates/emails/';
+    }
+
+    $template = COM_newTemplate($templatePath);
     $template->set_file(array(
         'email_html' => 'moderation-html.thtml',
     ));
 
-    $template->preprocess_fn = 'CTL_removeLineFeeds';
+    if (function_exists('CTL_removeLineFeeds')) {
+        $template->preprocess_fn = 'CTL_removeLineFeeds';
+    }
     $template->set_file(array(
         'email_plaintext' => 'moderation-plaintext.thtml',
     ));
@@ -89,9 +100,6 @@ function MG_sendModerationEmail180($email, $subject, $message)
 /**
  * Native replacement for the legacy PHPMailer-based moderator notification.
  *
- * This function is intentionally separate during the 1.8 transition. Once all
- * upload entry points call it, the bundled PHPMailer path can be removed.
- *
  * @param int $aid Album ID
  * @return bool
  */
@@ -117,7 +125,9 @@ function MG_notifyModerators180($aid)
     $subject = $LANG_MG01['new_upload_subject'] . $_CONF['site_name'];
     $message = MG_buildModerationEmail180($aid, $album['album_title'], $username);
 
-    // Preserve the existing notification throttle behavior at plugin level.
+    // Keep the historical 10 minute throttle. Geeklog's own callers first
+    // clear expired entries, then check whether a matching recent entry exists.
+    COM_clearSpeedlimit(600, 'mgnotify');
     $last = COM_checkSpeedlimit('mgnotify');
     if ($last > 0) {
         return true;
