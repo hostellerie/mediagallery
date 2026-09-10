@@ -56,16 +56,40 @@ if (COM_isAnonUser() && $_MG_CONF['loginrequired'] == 1) {
 $mode       = isset($_REQUEST['mode']) ? COM_applyFilter($_REQUEST['mode']) : '';
 $session_id = isset($_GET['sid'])      ? COM_applyFilter($_GET['sid'])      : '';
 
+if (empty($session_id)) {
+    COM_redirect($_MG_CONF['site_url'] . '/index.php');
+}
+
+$escapedSessionId = DB_escapeString($session_id);
+$sessionResult = DB_query(
+    "SELECT session_uid, session_origin FROM {$_TABLES['mg_sessions']} "
+    . "WHERE session_id='" . $escapedSessionId . "'"
+);
+
+if (DB_numRows($sessionResult) !== 1) {
+    COM_errorLog('MediaGallery: unable to retrieve batch session data.');
+    COM_redirect($_MG_CONF['site_url'] . '/index.php');
+}
+
+$sessionInfo = DB_fetchArray($sessionResult);
+if ((int) $sessionInfo['session_uid'] !== (int) $_USER['uid']
+    && !SEC_hasRights('mediagallery.admin')) {
+    $display = COM_showMessageText($LANG_MG00['access_denied_msg']);
+    $display = MG_createHTMLDocument($display);
+    COM_output($display);
+    exit;
+}
+
 if (isset($_POST['cancel_button'])) {
-    $session_origin = DB_getItem($_TABLES['mg_sessions'], 'session_origin', 'session_id = ' . DB_escapeString($session_id));
-    if (empty($session_origin)) { // no session found
-        COM_errorLog("Media Gallery Error - Unable to retrieve batch session data");
+    $session_origin = $sessionInfo['session_origin'];
+    if (empty($session_origin)) {
         COM_redirect($_MG_CONF['site_url'] . '/index.php');
     }
+    MG_endSession($session_id);
     COM_redirect($session_origin);
 }
 
-if ($mode != 'continue' || empty($session_id)) {
+if ($mode != 'continue') {
     COM_redirect($_MG_CONF['site_url'] . '/index.php');
 }
 
