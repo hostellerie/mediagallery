@@ -216,7 +216,7 @@ function MG_saveUpload($album_id)
     }
 
     if ($successfull_upload) {
-        MG_notifyModerators($album_id);
+        MG_notifyModerators180($album_id);
     }
 
     // failsafe check - after all the uploading is done, double check that the database counts
@@ -453,7 +453,7 @@ function MG_saveUserUpload($album_id)
     }
 
     if ($successfull_upload) {
-        MG_notifyModerators($album_id);
+        MG_notifyModerators180($album_id);
     }
 
     // failsafe check - after all the uploading is done, double check that the database counts
@@ -593,7 +593,7 @@ function MG_saveFileUpload($album_id)
     }
 
     if ($successfull_upload) {
-        MG_notifyModerators($album_id);
+        MG_notifyModerators180($album_id);
     }
 
     // failsafe check - after all the uploading is done, double check that the database counts
