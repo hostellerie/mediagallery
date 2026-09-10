@@ -1,0 +1,63 @@
+name: Build MediaGallery installable archive
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Archive version label
+        required: false
+        default: 1.8.0-dev
+
+permissions:
+  contents: read
+
+jobs:
+  build-dist:
+    name: Build installable ZIP
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout selected ref
+        uses: actions/checkout@v4
+
+      - name: Build dist archive
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          VERSION="${{ inputs.version }}"
+          VERSION="${VERSION//[^0-9A-Za-z._-]/-}"
+          ARCHIVE="mediagallery-${VERSION}.zip"
+
+          rm -rf dist package
+          mkdir -p dist package/mediagallery
+
+          rsync -a ./ package/mediagallery/ \
+            --exclude='.git/' \
+            --exclude='.github/' \
+            --exclude='dist/' \
+            --exclude='package/' \
+            --exclude='.idea/' \
+            --exclude='public_html/mediaobjects/' \
+            --exclude='tmp/'
+
+          (
+            cd package
+            zip -qr "../dist/${ARCHIVE}" mediagallery
+          )
+
+          sha256sum "dist/${ARCHIVE}" > "dist/${ARCHIVE}.sha256"
+
+          echo "ARCHIVE=${ARCHIVE}" >> "$GITHUB_ENV"
+          echo "Created dist/${ARCHIVE}"
+          unzip -l "dist/${ARCHIVE}" | head -80
+
+      - name: Upload dist artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: mediagallery-dist-${{ github.run_number }}
+          path: |
+            dist/${{ env.ARCHIVE }}
+            dist/${{ env.ARCHIVE }}.sha256
+          if-no-files-found: error
+          retention-days: 14
