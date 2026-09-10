@@ -2,16 +2,23 @@ from pathlib import Path
 
 p = Path('include/lib-media.php')
 text = p.read_text(encoding='utf-8', errors='surrogateescape')
-old = """    $retval = MG_getFramedImage($opt['display_skin'], $I['media_title'],
-                  $u_pic, $u_image, $media_size_disp[0], $media_size_disp[1]);
 
-    return array($retval, $u_image, $media_size_disp[0], $media_size_disp[1],"""
-new = """    $retval = MG_getFramedImage($opt['display_skin'], $I['media_title'],
-                  $u_pic, $u_image, $media_size_orig[0], $media_size_orig[1]);
+def patch_function(source, start_name, end_name):
+    start_marker = 'function ' + start_name + '('
+    end_marker = 'function ' + end_name + '('
+    start = source.find(start_marker)
+    end = source.find(end_marker, start + len(start_marker))
+    if start == -1 or end == -1 or end <= start:
+        raise SystemExit('unable to isolate ' + start_name)
 
-    return array($retval, $u_image, $media_size_orig[0], $media_size_orig[1],"""
-count = text.count(old)
-if count != 2:
-    raise SystemExit('expected ASF/MOV return block twice, found %d' % count)
-text = text.replace(old, new)
+    block = source[start:end]
+    count = block.count('$media_size_disp')
+    if count != 4:
+        raise SystemExit('%s expected 4 media_size_disp references, found %d' % (start_name, count))
+    block = block.replace('$media_size_disp', '$media_size_orig')
+    return source[:start] + block + source[end:]
+
+text = patch_function(text, 'MG_displayASF', 'MG_displayMOV')
+text = patch_function(text, 'MG_displayMOV', 'MG_displaySWF')
+
 p.write_text(text, encoding='utf-8', errors='surrogateescape')
