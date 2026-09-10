@@ -15,25 +15,25 @@
     <legend>{lang_file_number}1</legend>
     <dl class="form_block">
       <dt><label>{lang_file}</label></dt>
-      <dd><input type="file" name="newmedia[]"{xhtml}></dd>
+      <dd><input type="file" name="newmedia[0]"{xhtml}></dd>
 
       <dt><label>{lang_do_not_convert_orig}</label></dt>
-      <dd><input type="checkbox" name="dnc[]" value="1"{xhtml}></dd>
+      <dd><input type="checkbox" name="dnc[0]" value="1"{xhtml}></dd>
 
       <dt><label>{lang_attached_tn}</label></dt>
-      <dd><input type="checkbox" name="attachtn[]"{xhtml}> <input type="file" name="thumbnail[]"{xhtml}></dd>
+      <dd><input type="checkbox" name="attachtn[0]" value="1"{xhtml}> <input type="file" name="thumbnail[0]"{xhtml}></dd>
 
       <dt><label>{lang_caption}</label></dt>
-      <dd><input type="text" name="caption[]" class="size6" value=""{xhtml}></dd>
+      <dd><input type="text" name="caption[0]" class="size6" value=""{xhtml}></dd>
 
       <dt><label>{lang_description}</label></dt>
-      <dd><textarea name="description[]" cols="60" rows="2" class="size6"></textarea></dd>
+      <dd><textarea name="description[0]" cols="60" rows="2" class="size6"></textarea></dd>
 
       <dt><label>{lang_keywords}</label></dt>
-      <dd><input type="text" name="keywords[]" class="size6" value=""{xhtml}></dd>
+      <dd><input type="text" name="keywords[0]" class="size6" value=""{xhtml}></dd>
 
       <dt><label>{lang_category}</label></dt>
-      <dd>{cat_select}</dd>
+      <dd>{cat_select_0}</dd>
     </dl>
   </fieldset>
 
@@ -41,25 +41,25 @@
     <legend>{lang_file_number}2</legend>
     <dl class="form_block">
       <dt><label>{lang_file}</label></dt>
-      <dd><input type="file" name="newmedia[]"{xhtml}></dd>
+      <dd><input type="file" name="newmedia[1]"{xhtml}></dd>
 
       <dt><label>{lang_do_not_convert_orig}</label></dt>
-      <dd><input type="checkbox" name="dnc[]" value="1"{xhtml}></dd>
+      <dd><input type="checkbox" name="dnc[1]" value="1"{xhtml}></dd>
 
       <dt><label>{lang_attached_tn}</label></dt>
-      <dd><input type="checkbox" name="attachtn[]"{xhtml}> <input type="file" name="thumbnail[]"{xhtml}></dd>
+      <dd><input type="checkbox" name="attachtn[1]" value="1"{xhtml}> <input type="file" name="thumbnail[1]"{xhtml}></dd>
 
       <dt><label>{lang_caption}</label></dt>
-      <dd><input type="text" name="caption[]" class="size6" value=""{xhtml}></dd>
+      <dd><input type="text" name="caption[1]" class="size6" value=""{xhtml}></dd>
 
       <dt><label>{lang_description}</label></dt>
-      <dd><textarea name="description[]" cols="60" rows="2" class="size6"></textarea></dd>
+      <dd><textarea name="description[1]" cols="60" rows="2" class="size6"></textarea></dd>
 
       <dt><label>{lang_keywords}</label></dt>
-      <dd><input type="text" name="keywords[]" class="size6" value=""{xhtml}></dd>
+      <dd><input type="text" name="keywords[1]" class="size6" value=""{xhtml}></dd>
 
       <dt><label>{lang_category}</label></dt>
-      <dd>{cat_select}</dd>
+      <dd>{cat_select_1}</dd>
     </dl>
   </fieldset>
 
@@ -67,25 +67,25 @@
     <legend>{lang_file_number}3</legend>
     <dl class="form_block">
       <dt><label>{lang_file}</label></dt>
-      <dd><input type="file" name="newmedia[]"{xhtml}></dd>
+      <dd><input type="file" name="newmedia[2]"{xhtml}></dd>
 
       <dt><label>{lang_do_not_convert_orig}</label></dt>
-      <dd><input type="checkbox" name="dnc[]" value="1"{xhtml}></dd>
+      <dd><input type="checkbox" name="dnc[2]" value="1"{xhtml}></dd>
 
       <dt><label>{lang_attached_tn}</label></dt>
-      <dd><input type="checkbox" name="attachtn[]"{xhtml}> <input type="file" name="thumbnail[]"{xhtml}></dd>
+      <dd><input type="checkbox" name="attachtn[2]" value="1"{xhtml}> <input type="file" name="thumbnail[2]"{xhtml}></dd>
 
       <dt><label>{lang_caption}</label></dt>
-      <dd><input type="text" name="caption[]" class="size6" value=""{xhtml}></dd>
+      <dd><input type="text" name="caption[2]" class="size6" value=""{xhtml}></dd>
 
       <dt><label>{lang_description}</label></dt>
-      <dd><textarea name="description[]" cols="60" rows="2" class="size6"></textarea></dd>
+      <dd><textarea name="description[2]" cols="60" rows="2" class="size6"></textarea></dd>
 
       <dt><label>{lang_keywords}</label></dt>
-      <dd><input type="text" name="keywords[]" class="size6" value=""{xhtml}></dd>
+      <dd><input type="text" name="keywords[2]" class="size6" value=""{xhtml}></dd>
 
       <dt><label>{lang_category}</label></dt>
-      <dd>{cat_select}</dd>
+      <dd>{cat_select_2}</dd>
     </dl>
   </fieldset>
 
@@ -93,25 +93,25 @@
     <legend>{lang_file_number}4</legend>
     <dl class="form_block">
       <dt><label>{lang_file}</label></dt>
-      <dd><input type="file" name="newmedia[]"{xhtml}></dd>
+      <dd><input type="file" name="newmedia[3]"{xhtml}></dd>
 
       <dt><label>{lang_do_not_convert_orig}</label></dt>
-      <dd><input type="checkbox" name="dnc[]" value="1"{xhtml}></dd>
+      <dd><input type="checkbox" name="dnc[3]" value="1"{xhtml}></dd>
 
       <dt><label>{lang_attached_tn}</label></dt>
-      <dd><input type="checkbox" name="attachtn[]"{xhtml}> <input type="file" name="thumbnail[]"{xhtml}></dd>
+      <dd><input type="checkbox" name="attachtn[3]" value="1"{xhtml}> <input type="file" name="thumbnail[3]"{xhtml}></dd>
 
       <dt><label>{lang_caption}</label></dt>
-      <dd><input type="text" name="caption[]" class="size6" value=""{xhtml}></dd>
+      <dd><input type="text" name="caption[3]" class="size6" value=""{xhtml}></dd>
 
       <dt><label>{lang_description}</label></dt>
-      <dd><textarea name="description[]" cols="60" rows="2" class="size6"></textarea></dd>
+      <dd><textarea name="description[3]" cols="60" rows="2" class="size6"></textarea></dd>
 
       <dt><label>{lang_keywords}</label></dt>
-      <dd><input type="text" name="keywords[]" class="size6" value=""{xhtml}></dd>
+      <dd><input type="text" name="keywords[3]" class="size6" value=""{xhtml}></dd>
 
       <dt><label>{lang_category}</label></dt>
-      <dd>{cat_select}</dd>
+      <dd>{cat_select_3}</dd>
     </dl>
   </fieldset>
 
