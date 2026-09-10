@@ -1,81 +1,59 @@
 -----------------------------------------------------------------------
 - Media Gallery Plugin for Geeklog
-- development version: 1.8.0
-- branch: modernize-1.8.0
-- original author: Yoshinori Tahara - dengen <taharaxp AT gmail DOT com>
+- development branch: 1.8.0
+- based on: 1.7.3
 - license: GPLv2
 -----------------------------------------------------------------------
 
-MediaGallery 1.8.0 is currently under development.
+Status
+------
+This branch is the active development line for MediaGallery 1.8.0.
+Do not deploy it to production without testing and a full backup.
 
-This branch modernizes the plugin while preserving compatibility with existing
-MediaGallery 1.7.x installations. The work is intentionally split into a
-planning/documentation phase followed by implementation and regression testing.
+See ROADMAP.md for the implementation plan and compatibility policy.
 
-See ROADMAP.md for the detailed 1.8.0 plan.
+Goals for 1.8.0
+---------------
+MediaGallery 1.8.0 modernizes the plugin while preserving upgrade safety for existing installations.
 
-Overview
---------
-The Geeklog Media Gallery Plugin (formerly called Media Gallery WKZ) is an
-integration of Media Gallery v1.6.1 Japanese version and Media Gallery v1.6.8
-from glFusion CMS, subsequently adapted and maintained for Geeklog.
+Main goals:
 
-MediaGallery provides album and media management, thumbnails, image and video
-handling, comments, RSS, search integration, member albums, permissions,
-autotags and administrative media tools.
+* keep compatibility with existing 1.7.x installations;
+* support standard single-site Geeklog installations without configuration changes;
+* support multisite deployments with per-site media storage;
+* migrate remaining administrator preferences away from hard-coded values and into the Geeklog Configuration API;
+* modernize templates, JavaScript dependencies, accessibility and SEO where needed;
+* retain current bug fixes and improve PHP 8.x compatibility;
+* improve interoperability with other Geeklog plugins through public plugin services;
+* modernize MediaGallery email notifications using Geeklog-supported templates.
 
-MediaGallery 1.8.0 goals
-------------------------
-The 1.8.0 release focuses on the following areas:
-
-* safer upgrade from MediaGallery 1.7.x;
-* multisite-aware media storage without requiring hostname-specific plugin code;
-* cleanup and migration of remaining hard-coded plugin preferences to the
-  Geeklog Configuration API;
-* removal or replacement of obsolete playback and JavaScript technologies;
-* modernization of .thtml templates, markup and responsive behavior;
-* accessibility and SEO improvements where MediaGallery generates indexable
-  public pages;
-* better PHP 8.x compatibility;
-* modernization of email notifications using Geeklog-supported templates;
-* a public MediaGallery service API for album discovery by other plugins;
-* preservation of existing permissions and media data.
-
-Compatibility policy
---------------------
-MediaGallery 1.8.0 must remain safe for normal single-site Geeklog installations.
-
-A standard installation that does not define any multisite-specific image URL
-must continue to use the historical storage location:
-
-    public_html/mediagallery/mediaobjects/
-
-with the public URL:
-
-    {site_url}/mediagallery/mediaobjects
-
-The upgrade process must not automatically move media files.
-
-Multisite support
------------------
-Geeklog already exposes the physical site image path through:
+Multisite media storage
+-----------------------
+Geeklog already exposes a physical image path through:
 
     $_CONF['path_images']
 
-MediaGallery 1.8.0 can additionally use an optional site-specific public image
-URL defined by the site configuration:
+MediaGallery 1.8.0 can optionally use a matching public image URL supplied by the site configuration:
 
     $_CONF['images_url'] = $_CONF['site_url'] . '/images/SITE';
 
-When both `path_images` and `images_url` are available, MediaGallery derives the
-site-specific media location from them instead of relying on HTTP_HOST checks.
+When both path_images and images_url are available, MediaGallery derives a site-specific media location:
+
+    $_MG_CONF['path_mediaobjects']
+        = rtrim($_CONF['path_images'], '/\\') . '/mediagallery/';
+
+    $_MG_CONF['mediaobjects_url']
+        = rtrim($_CONF['images_url'], '/') . '/mediagallery';
 
 Example:
 
-    $_CONF['path_images'] = $_CONF['path'] . 'public_html/images/example/';
-    $_CONF['images_url']  = $_CONF['site_url'] . '/images/example';
+    $_CONF['path_images']
+        = $_CONF['path'] . 'public_html/images/example/';
 
-MediaGallery then resolves its media location as:
+    $_CONF['images_url']
+        = $_CONF['site_url'] . '/images/example';
+
+MediaGallery then uses:
 
     .../public_html/images/example/mediagallery/
 
@@ -83,135 +61,71 @@ and:
 
     https://example.com/images/example/mediagallery
 
-This mechanism is optional. Sites without `images_url` keep the legacy
-MediaGallery path unchanged.
+Standard / legacy compatibility
+-------------------------------
+If images_url is not defined, MediaGallery must keep the historical storage layout:
 
-Configuration modernization
----------------------------
-Older MediaGallery versions exposed many settings in a manually edited
-`config.php`. Current releases no longer ship that file and already use the
-Geeklog Configuration API for many options.
+    public_html/mediagallery/mediaobjects/
 
-Version 1.8.0 will complete that migration where appropriate.
+with the public URL:
 
-Administrator preferences still hard-coded in `functions.inc` will be reviewed
-and moved to the online Geeklog configuration when they are still relevant.
-Derived paths, plugin metadata, table mappings, media constants and other
-internal values will remain code-controlled.
+    {site_url}/mediagallery/mediaobjects
 
-Obsolete settings will not be restored merely for historical compatibility.
-Options tied only to retired technologies such as Flash, QuickTime-specific
-playback, Windows Media Player, MooTools or SimpleViewer will be removed when
-no supported code path still needs them.
+This is intentional. A standard Geeklog installation must not need a new setting to upgrade to 1.8.0.
 
-Existing administrator configuration values must never be reset during a
-1.8.0 upgrade. New configuration entries must be added only when missing.
+MediaGallery will not automatically move existing media during upgrade.
 
-Templates, accessibility and SEO
---------------------------------
-The 1.8.0 work includes an audit of MediaGallery .thtml templates and frontend
-output.
-
-The modernization goals are:
-
-* use current HTML5 markup;
-* remove presentation-only table layouts where practical;
-* improve responsive behavior;
-* reduce obsolete or duplicated JavaScript dependencies;
-* preserve theme/template overrides;
-* improve form labels and keyboard accessibility;
-* improve heading hierarchy and alternative text;
-* review album and media page titles, metadata, canonical behavior and
-  pagination for search engines;
-* preserve and verify XML Sitemap integration;
-* avoid duplicate structured data when Geeklog core or the active theme
-  already provides it.
-
-SEO changes must only use metadata actually available from MediaGallery and
-must not invent descriptions or structured data.
-
-Plugin interoperability
------------------------
-MediaGallery 1.8.0 plans to expose a public service for retrieving visible album
-trees through the Geeklog plugin service mechanism. This will allow plugins
-such as Documents and future integrations to use MediaGallery without querying
-its internal tables directly.
-
-The target service concept is documented in ROADMAP.md.
-
-Email modernization
--------------------
-MediaGallery notifications will be reviewed so messages can use the current
-Geeklog email template mechanisms, including plaintext and HTML variants where
-supported, instead of embedding presentation directly in PHP.
-
-Upgrade notes
+Configuration
 -------------
-Before any upgrade, back up both the MediaGallery database tables and media
-files.
+Recent MediaGallery versions no longer use the historical manually edited plugin config.php file.
 
-Media files in traditional MediaGallery installations are normally stored in:
+MediaGallery 1.8.0 continues this direction. Administrator preferences that remain hard-coded in functions.inc will be reviewed and moved to the Geeklog Configuration API when still relevant.
+
+Derived values such as plugin URLs, template paths and media storage paths should remain runtime values and should not become arbitrary administrator-editable settings.
+
+Obsolete settings related only to legacy technologies such as Flash, QuickTime, Windows Media Player, MooTools or SimpleViewer will be removed where the current code no longer requires them.
+
+Upgrade policy
+--------------
+Before upgrading:
+
+* back up the Geeklog database;
+* back up MediaGallery media files;
+* record any local modifications;
+* test the upgrade on a staging or local installation first.
+
+The 1.8.0 upgrade must preserve existing configuration values, add only missing Configuration API settings, avoid duplicate settings and never move media automatically.
+
+Existing media directories
+--------------------------
+Traditional installations use these directories:
 
     public_html/mediagallery/mediaobjects/covers
     public_html/mediagallery/mediaobjects/disp
     public_html/mediagallery/mediaobjects/orig
     public_html/mediagallery/mediaobjects/tn
 
-During development of 1.8.0 these existing locations must remain valid unless
-an administrator explicitly configures a site-specific image location.
+Multisite installations may instead use the same internal MediaGallery layout beneath the site-specific image path, for example:
 
-Do not manually move media files merely to test the 1.8.0 branch.
+    public_html/images/site-a/mediagallery/covers
+    public_html/images/site-a/mediagallery/disp
+    public_html/images/site-a/mediagallery/orig
+    public_html/images/site-a/mediagallery/tn
 
-Current stable baseline
------------------------
-The 1.8.0 development branch is based on MediaGallery 1.7.3.
+Templates, accessibility and SEO
+--------------------------------
+The 1.8.0 work includes an audit of the MediaGallery .thtml templates and associated JavaScript, with current HTML5 markup, responsive output, accessibility, meaningful image alt text, clear heading structure, canonical/stable URLs where needed, continued XML Sitemap compatibility and removal of obsolete dependencies where safe.
 
-Important fixes already present in that baseline include:
-
-* remote media upload fixes;
-* PHP 7 and PHP 8.1 compatibility fixes;
-* permission fixes for comments;
-* Geeklog 2.2.2 compatibility work;
-* XML Sitemap integration fixes;
-* fixes for thumbnail filenames containing multiple periods;
-* fixes related to upload size handling and other 1.7.x maintenance work.
-
-These fixes must be retained in 1.8.0.
-
-Installation and upgrade documentation
---------------------------------------
-See docs/INSTALL for the historical installation and upgrade instructions.
-These documents will be reviewed and updated before the 1.8.0 release candidate.
-
-Development workflow
---------------------
-The `modernize-1.8.0` branch is the working branch for this release.
-
-Implementation order is defined in ROADMAP.md. In summary:
-
-1. configuration and path refactoring;
-2. multisite-safe storage handling;
-3. Configuration API migration;
-4. removal of confirmed obsolete code paths;
-5. template and frontend modernization;
-6. SEO and accessibility review;
-7. public album service API;
-8. email template modernization;
-9. PHP/Geeklog compatibility and regression testing;
-10. release documentation and 1.8.0 release candidate.
-
-Change Log for Version 1.7.3
-----------------------------
-* Fixed remote upload of media issue.
-* Fixes for PHP 7 and PHP 8.1.
-* Fix for comments not taking into account user permissions on item.
-
-Historical notes
+Interoperability
 ----------------
-MediaGallery has evolved through several generations of Geeklog and glFusion
-integration. Older documentation and changelog material remains under `docs/`
-and `docs/older/` for reference.
+MediaGallery 1.8.0 plans to expose supported album information through the Geeklog Plugin API instead of requiring other plugins to query mg_* tables directly.
 
-Some historical documentation describes technologies and configuration methods
-that are no longer appropriate for 1.8.0. The 1.8.0 roadmap intentionally
-reviews those areas instead of carrying them forward automatically.
+Email notifications
+-------------------
+MediaGallery notification emails will be reviewed for migration to Geeklog-supported email templates, including plaintext and HTML variants where supported by the target Geeklog version.
+
+Compatibility target
+--------------------
+The intended compatibility range is Geeklog 2.1.1 through 2.2.2 where practical, with current PHP 8.1 behavior retained and PHP 8.2/8.3 audited before release.
+
+For the detailed implementation plan, see ROADMAP.md.
