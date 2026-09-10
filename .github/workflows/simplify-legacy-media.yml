@@ -1,0 +1,33 @@
+name: Simplify MediaGallery legacy media rendering
+
+on:
+  push:
+    branches:
+      - modernize-1.8.0
+    paths:
+      - '.github/legacy-media-trigger'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: modernize-1.8.0
+          fetch-depth: 0
+      - name: Apply simplification
+        run: python3 .github/scripts/simplify-legacy-media.py
+      - name: Remove temporary files
+        run: rm -f .github/scripts/simplify-legacy-media.py .github/workflows/simplify-legacy-media.yml .github/legacy-media-trigger
+      - name: Commit cleanup
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git diff --cached --check
+          git commit -m 'Simplify legacy SWF and FLV rendering'
+          git push origin HEAD:modernize-1.8.0
