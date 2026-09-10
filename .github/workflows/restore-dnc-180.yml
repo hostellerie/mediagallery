@@ -1,0 +1,33 @@
+name: Restore MediaGallery DNC behavior
+
+on:
+  push:
+    branches:
+      - modernize-1.8.0
+    paths:
+      - '.github/restore-dnc-trigger'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: modernize-1.8.0
+          fetch-depth: 0
+      - name: Apply DNC restoration
+        run: python3 .github/scripts/restore-dnc-180.py
+      - name: Remove temporary files
+        run: rm -f .github/scripts/restore-dnc-180.py .github/workflows/restore-dnc-180.yml .github/restore-dnc-trigger
+      - name: Commit DNC restoration
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git diff --cached --check
+          git commit -m 'Restore do-not-convert-original behavior'
+          git push origin HEAD:modernize-1.8.0
