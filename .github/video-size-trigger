@@ -1,3 +1,0 @@
-Fix undefined media_size_disp references in ASF/MOV non-inline playback.
-Requested: 2026-09-10
-Retry: function-scoped replacement
