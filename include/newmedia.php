@@ -97,6 +97,11 @@ function MG_saveUpload($album_id)
             COM_errorLog('error=' . $error, 1);
         }
 
+        if (!MG_validateUploadFilename180($filename)) {
+            COM_errorLog('MediaGallery: rejected unsafe upload filename: ' . basename($filename), 1);
+            return $LANG_MG02['format_not_allowed'];
+        }
+
         if (($album->max_filesize != 0) && ($filesize > $album->max_filesize)) {
             COM_errorLog('MediaGallery: File ' . $filename . ' exceeds maximum allowed filesize for this album');
             COM_errorLog('MediaGallery: Max filesize for this album=' . $album->max_filesize);
@@ -266,6 +271,12 @@ function MG_saveUserUpload($album_id)
             continue;
         }
 
+        if (!MG_validateUploadFilename180($filename)) {
+            COM_errorLog('MediaGallery: rejected unsafe upload filename: ' . basename($filename), 1);
+            $statusMsg .= $filename . ' ' . $LANG_MG02['format_not_allowed'] . $br;
+            continue;
+        }
+
         if ($album->max_filesize != 0 && $filesize > $album->max_filesize) {
             COM_errorLog('MG Upload: File ' . $filename . ' exceeds maximum allowed filesize for this album');
             $statusMsg .= sprintf($LANG_MG02['upload_exceeds_max_filesize'], $filename) . $br;
@@ -411,6 +422,11 @@ function MG_saveFileUpload($album_id)
         $filetmp = $object['tmp_name'];
         $caption = 'No Name';
         $description = 'No Description';
+
+        if (!MG_validateUploadFilename180($filename)) {
+            COM_errorLog('MediaGallery: rejected unsafe upload filename: ' . basename($filename), 1);
+            return $LANG_MG02['format_not_allowed'];
+        }
 
         if ($album->max_filesize != 0 && $filesize > $album->max_filesize) {
             COM_errorLog('MediaGallery: File ' . $filename . ' exceeds maximum allowed filesize for this album');
