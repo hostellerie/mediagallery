@@ -1,0 +1,2 @@
+Fix MG_displayMP3 non-inline thumbnail size return variables.
+Requested: 2026-09-10
