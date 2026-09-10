@@ -161,15 +161,17 @@ function MG_userUpload($album_id)
     }
 
     $cRows = count($catRow);
+    $cat_selects = array('', '', '', '');
     if ($cRows > 0) {
-        $cat_select = '<select name="cat_id[]">';
-        $cat_select .= '<option value="0">' . $LANG_MG01['no_category'] . '</option>';
-        foreach ($catRow as $row) {
-            $cat_select .= '<option value="' . $row['cat_id'] . '">' . $row['cat_name'] . '</option>';
+        for ($slot = 0; $slot < 4; $slot++) {
+            $select = '<select name="cat_id[' . $slot . ']">';
+            $select .= '<option value="0">' . $LANG_MG01['no_category'] . '</option>';
+            foreach ($catRow as $row) {
+                $select .= '<option value="' . intval($row['cat_id']) . '">' . $row['cat_name'] . '</option>';
+            }
+            $select .= '</select>';
+            $cat_selects[$slot] = $select;
         }
-        $cat_select .= '</select>';
-    } else {
-        $cat_select = '';
     }
 
     $user_quota = DB_getItem($_TABLES['mg_userprefs'], 'quota', 'uid=' . intval($_USER['uid']));
@@ -211,7 +213,10 @@ function MG_userUpload($album_id)
         'lang_destination_album' => $LANG_MG01['destination_album'],
         'lang_do_not_convert_orig' => $LANG_MG01['do_not_convert_orig'],
         'lang_file_number' => $LANG_MG01['file_number'],
-        'cat_select' => $cat_select,
+        'cat_select_0' => $cat_selects[0],
+        'cat_select_1' => $cat_selects[1],
+        'cat_select_2' => $cat_selects[2],
+        'cat_select_3' => $cat_selects[3],
         'album_id' => $album_id,
         'action' => 'upload',
         'max_file_size' => '<input type="hidden" name="MAX_FILE_SIZE" value="' . $upload_max_size_b . '"' . XHTML . '>',
@@ -247,25 +252,35 @@ function MG_saveUserUpload($album_id)
     $T->set_file('mupload', 'useruploadstatus.thtml');
 
     $statusMsg = '';
-    $file = $_FILES['newmedia'];
-    $thumbs = $_FILES['thumbnail'];
+    $file = isset($_FILES['newmedia']) ? $_FILES['newmedia'] : array();
+    $thumbs = isset($_FILES['thumbnail']) ? $_FILES['thumbnail'] : array();
+    $captions = (isset($_POST['caption']) && is_array($_POST['caption'])) ? $_POST['caption'] : array();
+    $descriptions = (isset($_POST['description']) && is_array($_POST['description'])) ? $_POST['description'] : array();
+    $keywordsValues = (isset($_POST['keywords']) && is_array($_POST['keywords'])) ? $_POST['keywords'] : array();
+    $categories = (isset($_POST['cat_id']) && is_array($_POST['cat_id'])) ? $_POST['cat_id'] : array();
+    $attachValues = (isset($_POST['attachtn']) && is_array($_POST['attachtn'])) ? $_POST['attachtn'] : array();
+    $dncValues = (isset($_POST['dnc']) && is_array($_POST['dnc'])) ? $_POST['dnc'] : array();
+
+    if (!isset($file['name']) || !is_array($file['name'])) {
+        return COM_showMessageText($LANG_MG02['generic_error']);
+    }
+
     $album = new mgAlbum($album_id);
     $successfull_upload = 0;
     $br = '<br' . XHTML . '>';
 
     foreach ($file['name'] as $key => $name) {
-        $filename = $file['name'][$key];
-        $filetype = $file['type'][$key];
-        $filesize = $file['size'][$key];
-        $filetmp = $file['tmp_name'][$key];
-        $error = $file['error'][$key];
-        $caption = COM_stripslashes($_POST['caption'][$key]);
-        $description = COM_stripslashes($_POST['description'][$key]);
-        $keywords = COM_stripslashes($_POST['keywords'][$key]);
-        $category = (int) Input::fPost('cat_id', 0);
-        $attachtn = isset($_POST['attachtn'][$key]) ? $_POST['attachtn'][$key] : '';
+        $filename = isset($file['name'][$key]) ? $file['name'][$key] : '';
+        $filetype = isset($file['type'][$key]) ? $file['type'][$key] : '';
+        $filesize = isset($file['size'][$key]) ? $file['size'][$key] : 0;
+        $filetmp = isset($file['tmp_name'][$key]) ? $file['tmp_name'][$key] : '';
+        $error = isset($file['error'][$key]) ? $file['error'][$key] : UPLOAD_ERR_NO_FILE;
+        $caption = isset($captions[$key]) ? COM_stripslashes($captions[$key]) : '';
+        $description = isset($descriptions[$key]) ? COM_stripslashes($descriptions[$key]) : '';
+        $keywords = isset($keywordsValues[$key]) ? COM_stripslashes($keywordsValues[$key]) : '';
+        $category = isset($categories[$key]) ? intval($categories[$key]) : 0;
         $thumbnail = isset($thumbs['tmp_name'][$key]) ? $thumbs['tmp_name'][$key] : '';
-        $dnc = (isset($_POST['dnc'][$key]) && $_POST['dnc'][$key] == 'on') ? 1 : 0;
+        $dnc = !empty($dncValues[$key]) ? 1 : 0;
 
         if ($filename == '') {
             continue;
@@ -283,7 +298,7 @@ function MG_saveUserUpload($album_id)
             continue;
         }
 
-        $attach_tn = ($attachtn == 'on') ? 1 : 0;
+        $attach_tn = !empty($attachValues[$key]) ? 1 : 0;
 
         if ($error != UPLOAD_ERR_OK) {
             switch ($error) {
