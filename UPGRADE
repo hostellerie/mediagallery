@@ -1,1 +1,113 @@
-See the docs/INSTALL file for Upgrading instructions.
+MediaGallery 1.8.0 upgrade notes
+===============================
+
+MediaGallery 1.8.0 is intended to support upgrades from the 1.7.x line while
+preserving the historical single-site layout by default.
+
+Before upgrading
+----------------
+
+1. Back up the Geeklog database.
+2. Back up the complete MediaGallery media tree.
+3. Record any local MediaGallery modifications.
+4. Test the upgrade on a staging or local copy before production.
+5. Confirm the target PHP/Geeklog combination is supported by your test build.
+
+Standard single-site installations
+----------------------------------
+
+No new siteconfig.php entry is required.
+
+If $_CONF['images_url'] is not defined, MediaGallery keeps the historical media
+location:
+
+    public_html/mediagallery/mediaobjects/
+
+and the historical public URL:
+
+    {site_url}/mediagallery/mediaobjects
+
+MediaGallery 1.8.0 does not automatically move existing media files.
+
+Multisite / site-specific image storage
+---------------------------------------
+
+Shared-code multisite installations can opt in to site-specific MediaGallery
+storage by defining both a physical image path and its matching public URL in
+the site's siteconfig.php:
+
+    $_CONF['path_images'] = $_CONF['path'] . 'public_html/images/SITE/';
+    $_CONF['images_url']  = $_CONF['site_url'] . '/images/SITE';
+
+When both values are present, MediaGallery 1.8.0 derives:
+
+    $_MG_CONF['path_mediaobjects']
+        = rtrim($_CONF['path_images'], '/\\') . '/mediagallery/';
+
+    $_MG_CONF['mediaobjects_url']
+        = rtrim($_CONF['images_url'], '/') . '/mediagallery';
+
+If $_CONF['path_data'] is also site-specific, MediaGallery derives private
+working directories below it for temporary/upload staging files.
+
+Important: adding $_CONF['images_url'] prepares a site for the 1.8.0 behavior
+but does not move media. Existing installations must ensure their current media
+files already exist at the path that 1.8.0 will resolve, or copy them manually
+during a controlled migration.
+
+Configuration migration
+-----------------------
+
+The 1.8.0 upgrade adds missing MediaGallery Configuration API values without
+overwriting existing administrator values. Zero/false values are preserved.
+
+The historical manually edited MediaGallery config.php is not restored.
+Derived paths and URLs remain runtime values rather than arbitrary
+administrator settings.
+
+Security changes to test
+------------------------
+
+The 1.8.0 development line includes stricter upload handling:
+
+* browser uploads use Geeklog CSRF protection;
+* executable/server-side filename extensions are rejected in user upload flows;
+* remote image fetching rejects localhost/private/reserved targets;
+* remote-media forms use Geeklog CSRF protection;
+* legacy asynchronous uploads no longer trust a POSTed user ID.
+
+FTP/batch import validation is still part of the active 1.8.0 hardening work
+and must be tested before a release candidate is considered production-ready.
+
+Recommended test sequence
+-------------------------
+
+1. Upgrade a copy of MediaGallery 1.7.0.
+2. Upgrade a copy of MediaGallery 1.7.3.
+3. Perform a fresh 1.8.0 installation.
+4. Test on Geeklog 2.1.1 / PHP 5.6 when legacy compatibility is required.
+5. Test on Geeklog 2.2.2 / PHP 8.1 or 8.3.
+6. Verify album display, thumbnails, originals, media editing and deletion.
+7. Verify browser upload, moderation email and upload rejection cases.
+8. Verify Remote Media with normal public URLs and rejected local/private URLs.
+9. Verify multisite paths independently for every configured site.
+10. Verify a standard site with no $_CONF['images_url'] still uses the legacy
+    media path unchanged.
+
+Test archives
+-------------
+
+Development test packages are generated manually from GitHub Actions using the
+workflow:
+
+    Build MediaGallery installable archive
+
+The workflow creates an installable ZIP with a single mediagallery/ top-level
+directory plus a SHA-256 checksum. Generated archives are workflow artifacts
+and are not committed to the repository.
+
+Production warning
+------------------
+
+The modernize-1.8.0 branch is a development branch. Do not deploy it to a
+production site without a full backup and successful staging tests.
