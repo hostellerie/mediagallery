@@ -1,16 +1,17 @@
 from pathlib import Path
+import re
 
 p = Path('install_defaults.php')
 text = p.read_text(encoding='utf-8', errors='surrogateescape')
 
-single_lines = [
-    "    'use_flowplayer'             => '0',\n",
-    "        $c->add('use_flowplayer',       $_MG_DEFAULT['use_flowplayer'],           'select',   0,  0, 13,   $o++, true, $n, 1);\n",
+patterns = [
+    r"^\s*'use_flowplayer'\s*=>\s*'0',\s*$",
+    r"^\s*\$c->add\('use_flowplayer'.*$",
 ]
-for old in single_lines:
-    if text.count(old) != 1:
-        raise SystemExit('expected line not found exactly once: ' + old.strip())
-    text = text.replace(old, '', 1)
+for pattern in patterns:
+    text, count = re.subn(pattern, '', text, count=1, flags=re.MULTILINE)
+    if count != 1:
+        raise SystemExit('expected use_flowplayer line not found exactly once: ' + pattern)
 
 swf_defaults = """    // Flash Media Player
     'swf_play'                   => '1',
