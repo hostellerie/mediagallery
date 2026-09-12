@@ -1,0 +1,38 @@
+name: MediaGallery accessibility cleanup
+
+on:
+  push:
+    paths:
+      - '.github/a11y-search-trigger'
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: modernize-1.8.0
+          fetch-depth: 0
+      - name: Apply accessibility cleanup
+        run: python tools/a11y_search_180.py
+      - name: Validate changes
+        shell: bash
+        run: |
+          php -l include/common.php
+          php -l public_html/search.php
+          if grep -nE 'DXImageTransform|msieversion|browserCanBlend|transitionType' templates/slideshow.thtml; then
+            echo 'Legacy IE slideshow code remains' >&2
+            exit 1
+          fi
+          grep -n 'for="mg-search-' templates/search_page.thtml
+          grep -n "'id'      => 'mg-search-" public_html/search.php
+      - name: Commit cleanup
+        run: |
+          git config user.name 'hostellerie'
+          git config user.email 'hostellerie.org@gmail.com'
+          git add include/common.php public_html/search.php templates/search_page.thtml ROADMAP.md
+          git commit -m 'Improve MediaGallery slideshow and search accessibility'
+          git push origin HEAD:modernize-1.8.0
