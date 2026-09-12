@@ -120,7 +120,7 @@ function plugin_load_configuration_mediagallery($pi_name)
 
 function plugin_postinstall_mediagallery($pi_name)
 {
-    global $_TABLES;
+    global $_CONF, $_TABLES;
 
     $pi_name = 'mediagallery';
 
@@ -141,6 +141,14 @@ function plugin_postinstall_mediagallery($pi_name)
             COM_errorLog("SQL error in Media Gallery plugin postinstall, SQL: " . $sql);
             return false;
         }
+    }
+
+    // Seed the persistent images storage with the packaged MediaGallery assets.
+    // New user uploads will then live outside the replaceable plugin directory.
+    require_once $_CONF['path'] . 'plugins/mediagallery/include/config_180.php';
+    if (!MG_migrateMediaStorage180(MG_getLegacyMediaStorage180())) {
+        COM_errorLog('Media Gallery 1.8.0: unable to prepare persistent media storage after install.', 1);
+        return false;
     }
 
     return true;
@@ -198,8 +206,9 @@ function MG_upgrade()
         case '1.6.9':
         case '1.6.10':
         case '1.6.11':
-            if (MG_upgrade_1612() != 0) {
-                break 2;
+            $result = MG_upgrade_1612();
+            if ($result != 0) {
+                return $result;
             }
             $current_version = '1.6.12';
             break;
@@ -210,8 +219,9 @@ function MG_upgrade()
         case '1.6.15':
         case '1.6.16':
         case '1.6.17':
-            if (MG_upgrade_170() != 0) {
-                break 2;
+            $result = MG_upgrade_170();
+            if ($result != 0) {
+                return $result;
             }
             $current_version = '1.7.0';
             break;
@@ -225,8 +235,9 @@ function MG_upgrade()
         case '1.7.2.4':
         case '1.7.2.5':
         case '1.7.3':
-            if (MG_upgrade_180() != 0) {
-                break 2;
+            $result = MG_upgrade_180();
+            if ($result != 0) {
+                return $result;
             }
             $current_version = '1.8.0';
             break;
@@ -238,27 +249,74 @@ function MG_upgrade()
         }
     }
 
+    if ($current_version !== $code_version) {
+        COM_errorLog(
+            'Media Gallery upgrade stopped before reaching code version ' . $code_version
+            . ' (current migration state: ' . $current_version . ').',
+            1
+        );
+        return 0;
+    }
+
     DB_query("UPDATE {$_TABLES['plugins']} "
            . "SET pi_version = '" . DB_escapeString($code_version) . "', "
            . "pi_gl_version = '" . DB_escapeString($pi_gl_version) . "', "
            . "pi_homepage = '" . DB_escapeString($pi_homepage) . "' "
            . "WHERE pi_name = '" . DB_escapeString($pi_name) . "'");
 
+    if (DB_error()) {
+        COM_errorLog('Media Gallery upgrade: unable to update plugin version metadata.', 1);
+        return 0;
+    }
+
     return 1;
 }
 
 function MG_upgrade_180()
 {
-    global $_CONF;
+    global $_CONF, $_TABLES;
 
     require_once $_CONF['path'] . 'plugins/mediagallery/include/config_180.php';
+
+    $target = MG_getMediaStorageTarget180();
+    if ($target === false) {
+        COM_errorLog('Media Gallery 1.8.0: persistent media storage cannot be resolved.', 1);
+        return 1;
+    }
+
+    $legacy = MG_getLegacyMediaStorage180();
+    $legacyHasUserMedia = MG_mediaStorageHasUserContent180($legacy);
+    $targetHasUserMedia = MG_mediaStorageHasUserContent180($target['path']);
+    $mediaRows = isset($_TABLES['mg_media']) ? DB_count($_TABLES['mg_media']) : 0;
+
+    /*
+     * Geeklog's native plugin uploader removes <plugin>.previous before it
+     * invokes PLG_upgrade(). Therefore an old 1.7.x site with real media must
+     * be pre-migrated before uploading the 1.8.0 ZIP. Refuse to mark the
+     * database upgraded when media rows exist but neither storage location
+     * contains user media. This cannot recover files already removed by Core,
+     * but it prevents a silent successful upgrade over missing media.
+     */
+    if ($mediaRows > 0 && !$legacyHasUserMedia && !$targetHasUserMedia) {
+        COM_errorLog(
+            'Media Gallery 1.8.0: media database rows exist but no user media files are available. '
+            . 'Run the 1.8 pre-upgrade media migration before using Geeklog\'s plugin ZIP uploader.',
+            1
+        );
+        return 1;
+    }
+
+    if (!MG_migrateMediaStorage180($legacy)) {
+        COM_errorLog('Media Gallery 1.8.0: media migration to persistent images storage failed.', 1);
+        return 1;
+    }
 
     if (!MG_updateConfig180()) {
         COM_errorLog('Media Gallery 1.8.0: unable to update Configuration API entries.', 1);
         return 1;
     }
 
-    COM_errorLog('Media Gallery 1.8.0: configuration/storage upgrade completed without moving media files.');
+    COM_errorLog('Media Gallery 1.8.0: configuration and persistent media storage upgrade completed.');
 
     return 0;
 }
