@@ -125,7 +125,7 @@ function MG_saveUpload($album_id)
         }
     }
 
-    if (!empty($_CONF['debug_image_upload'])) {
+    if (!empty($_MG_CONF['verbose'])) {
         COM_errorLog(
             'MG DEBUG saveUserUpload after files: success=' . intval($successfull_upload)
             . ' status_length=' . strlen((string) $statusMsg)
@@ -133,11 +133,11 @@ function MG_saveUpload($album_id)
     }
 
     if ($successfull_upload) {
-        if (!empty($_CONF['debug_image_upload'])) {
+        if (!empty($_MG_CONF['verbose'])) {
             COM_errorLog('MG DEBUG saveUserUpload before moderator notification');
         }
         MG_notifyModerators180($album_id);
-        if (!empty($_CONF['debug_image_upload'])) {
+        if (!empty($_MG_CONF['verbose'])) {
             COM_errorLog('MG DEBUG saveUserUpload after moderator notification');
         }
     }
@@ -259,7 +259,7 @@ function MG_saveUserUpload($album_id)
         return COM_showMessageText($LANG_MG02['generic_error']);
     }
 
-    if (!empty($_CONF['debug_image_upload'])) {
+    if (!empty($_MG_CONF['verbose'])) {
         COM_errorLog('MG DEBUG saveUserUpload: CSRF accepted album_id=' . intval($album_id));
     }
 
@@ -384,11 +384,11 @@ function MG_saveUserUpload($album_id)
         COM_errorLog("MediaGallery: Upload processing - Counts don't match - dbCount = $dbCount aCount = $aCount");
     }
 
-    if (!empty($_CONF['debug_image_upload'])) {
+    if (!empty($_MG_CONF['verbose'])) {
         COM_errorLog('MG DEBUG saveUserUpload before MG_SortMedia');
     }
     MG_SortMedia($album_id);
-    if (!empty($_CONF['debug_image_upload'])) {
+    if (!empty($_MG_CONF['verbose'])) {
         COM_errorLog('MG DEBUG saveUserUpload after MG_SortMedia');
     }
 
@@ -396,13 +396,13 @@ function MG_saveUserUpload($album_id)
     $tmp = $_MG_CONF['site_url'] . '/album.php?aid=' . $album_id . '&amp;page=1';
     $T->set_var('redirect', sprintf($LANG_MG03['album_redirect'], $tmp));
     $T->parse('output', 'mupload');
-    if (!empty($_CONF['debug_image_upload'])) {
+    if (!empty($_MG_CONF['verbose'])) {
         COM_errorLog('MG DEBUG saveUserUpload parsed template length=' . strlen((string) $T->get_var('output')));
     }
     $retval .= $T->finish($T->get_var('output'));
     $retval .= COM_endBlock(COM_getBlockTemplate('_admin_block', 'footer'));
 
-    if (!empty($_CONF['debug_image_upload'])) {
+    if (!empty($_MG_CONF['verbose'])) {
         COM_errorLog('MG DEBUG saveUserUpload return length=' . strlen((string) $retval));
     }
 

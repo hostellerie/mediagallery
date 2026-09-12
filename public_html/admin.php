@@ -231,7 +231,7 @@ if ($mode === 'edit') {
         case 'upload' :
             require_once $include . 'newmedia.php';
             $uploadResult = MG_saveUserUpload($album_id);
-            if (!empty($_CONF['debug_image_upload'])) {
+            if (!empty($_MG_CONF['verbose'])) {
                 COM_errorLog(
                     'MG DEBUG admin after MG_saveUserUpload: type=' . gettype($uploadResult)
                     . ' length=' . strlen((string) $uploadResult)
@@ -306,11 +306,11 @@ if ($mode === 'edit') {
             break;
     }
 
-    if (isset($action) && $action === 'upload' && !empty($_CONF['debug_image_upload'])) {
+    if (isset($action) && $action === 'upload' && !empty($_MG_CONF['verbose'])) {
         COM_errorLog('MG DEBUG admin before MG_createHTMLDocument: length=' . strlen((string) $display));
     }
     $display = MG_createHTMLDocument($display);
-    if (isset($action) && $action === 'upload' && !empty($_CONF['debug_image_upload'])) {
+    if (isset($action) && $action === 'upload' && !empty($_MG_CONF['verbose'])) {
         COM_errorLog(
             'MG DEBUG admin after MG_createHTMLDocument: type=' . gettype($display)
             . ' length=' . strlen((string) $display)
