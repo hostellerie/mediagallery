@@ -10,6 +10,8 @@ if (strpos(strtolower($_SERVER['PHP_SELF']), strtolower(basename(__FILE__))) !==
     die('This file can not be used on its own!');
 }
 
+require_once __DIR__ . '/storage_180.php';
+
 function MG_prepareDirectory180($path)
 {
     if (is_dir($path)) {
@@ -26,6 +28,8 @@ function MG_prepareDirectory180($path)
 
 function MG_prepareMediaStorage180($root)
 {
+    $root = rtrim($root, '/\\') . '/';
+
     if (!MG_prepareDirectory180($root)) {
         return false;
     }
@@ -89,20 +93,31 @@ function MG_applyRuntimeConfiguration180()
     $_MG_CONF['template_path'] = $_CONF['path'] . 'plugins/mediagallery/templates';
 
     /*
-     * Public media storage:
-     * - explicit path_images + images_url => site-specific storage (multisite)
-     * - otherwise => historical MediaGallery storage for full compatibility
-     *
-     * There is deliberately no automatic URL derivation from path_images.
-     * A standard single-site installation therefore keeps its existing media
-     * location unless the site explicitly opts in to site-specific storage.
+     * MediaGallery 1.8.0 keeps all persistent public media below Geeklog's
+     * images root, outside the replaceable public_html/mediagallery directory.
+     * This protects media from Geeklog's native plugin ZIP upgrade process and
+     * naturally isolates shared-code multisite installations when each site
+     * has its own path_images/images_url pair.
      */
-    if (!empty($_CONF['path_images']) && !empty($_CONF['images_url'])) {
-        $_MG_CONF['path_mediaobjects'] = rtrim($_CONF['path_images'], '/\\') . '/mediagallery/';
-        $_MG_CONF['mediaobjects_url'] = rtrim($_CONF['images_url'], '/') . '/mediagallery';
-        MG_prepareMediaStorage180($_MG_CONF['path_mediaobjects']);
+    $storage = MG_getMediaStorageTarget180();
+    if ($storage !== false) {
+        $_MG_CONF['path_mediaobjects'] = $storage['path'];
+        $_MG_CONF['mediaobjects_url'] = $storage['url'];
+        if (!MG_prepareMediaStorage180($_MG_CONF['path_mediaobjects'])) {
+            COM_errorLog(
+                'Media Gallery 1.8.0: persistent media storage is not writable: '
+                . $_MG_CONF['path_mediaobjects'],
+                1
+            );
+        }
     } else {
-        $_MG_CONF['path_mediaobjects'] = $_CONF['path_html'] . 'mediagallery/mediaobjects/';
+        /*
+         * Keep the site readable when its images URL configuration is invalid,
+         * but do not silently migrate into the replaceable legacy directory.
+         * MG_upgrade_180() will refuse to complete until the persistent target
+         * can be resolved safely.
+         */
+        $_MG_CONF['path_mediaobjects'] = MG_getLegacyMediaStorage180();
         $_MG_CONF['mediaobjects_url'] = $_CONF['site_url'] . '/mediagallery/mediaobjects';
     }
 
@@ -289,12 +304,16 @@ function MG_addConfigLanguage180()
 
 function MG_getStorageInfo180()
 {
-    global $_CONF, $_MG_CONF;
+    global $_MG_CONF;
+
+    $target = MG_getMediaStorageTarget180();
+    $targetPath = ($target !== false) ? rtrim(str_replace('\\', '/', $target['path']), '/') : '';
+    $currentPath = isset($_MG_CONF['path_mediaobjects'])
+        ? rtrim(str_replace('\\', '/', $_MG_CONF['path_mediaobjects']), '/')
+        : '';
 
     return array(
-        'mode' => (!empty($_CONF['path_images']) && !empty($_CONF['images_url']))
-            ? 'site-images'
-            : 'legacy',
+        'mode' => ($targetPath !== '' && $currentPath === $targetPath) ? 'site-images' : 'legacy',
         'media_path' => isset($_MG_CONF['path_mediaobjects']) ? $_MG_CONF['path_mediaobjects'] : '',
         'media_url' => isset($_MG_CONF['mediaobjects_url']) ? $_MG_CONF['mediaobjects_url'] : '',
         'tmp_path' => isset($_MG_CONF['tmp_path']) ? $_MG_CONF['tmp_path'] : '',
