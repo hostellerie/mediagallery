@@ -24,46 +24,6 @@ function MG_prepareDirectory180($path)
     return false;
 }
 
-/**
- * Resolve the public URL that corresponds to Geeklog's path_images.
- *
- * images_url is supported when a site explicitly defines it. Otherwise the
- * URL is derived from path_images when that directory is inside path_html.
- * No host-name or site-id heuristics are used.
- *
- * @return string Empty string when no safe public URL can be derived.
- */
-function MG_getImagesUrl180()
-{
-    global $_CONF;
-
-    if (!empty($_CONF['images_url'])) {
-        return rtrim($_CONF['images_url'], '/');
-    }
-
-    if (empty($_CONF['path_images']) || empty($_CONF['path_html']) || empty($_CONF['site_url'])) {
-        return '';
-    }
-
-    $imagesPath = rtrim(str_replace('\\', '/', $_CONF['path_images']), '/');
-    $htmlPath = rtrim(str_replace('\\', '/', $_CONF['path_html']), '/');
-
-    if ($imagesPath === $htmlPath) {
-        return rtrim($_CONF['site_url'], '/');
-    }
-
-    if (strpos($imagesPath . '/', $htmlPath . '/') !== 0) {
-        return '';
-    }
-
-    $relativePath = ltrim(substr($imagesPath, strlen($htmlPath)), '/');
-    if ($relativePath === '') {
-        return rtrim($_CONF['site_url'], '/');
-    }
-
-    return rtrim($_CONF['site_url'], '/') . '/' . $relativePath;
-}
-
 function MG_applyRuntimeConfiguration180()
 {
     global $_CONF, $_MG_CONF, $_TABLES;
@@ -102,23 +62,28 @@ function MG_applyRuntimeConfiguration180()
     $_MG_CONF['template_path'] = $_CONF['path'] . 'plugins/mediagallery/templates';
 
     /*
-     * Paths that identify a site are runtime values, never shared plugin
-     * configuration. Public media follows path_images. Private working files
-     * follow path_data. This keeps shared-code multisite installations isolated
-     * without introducing a MediaGallery-specific site identifier.
+     * Public media storage:
+     * - explicit path_images + images_url => site-specific storage (multisite)
+     * - otherwise => historical MediaGallery storage for full compatibility
+     *
+     * There is deliberately no automatic URL derivation from path_images.
+     * A standard single-site installation therefore keeps its existing media
+     * location unless the site explicitly opts in to site-specific storage.
      */
-    $imagesUrl = MG_getImagesUrl180();
-
-    if (!empty($_CONF['path_images']) && $imagesUrl !== '') {
+    if (!empty($_CONF['path_images']) && !empty($_CONF['images_url'])) {
         $_MG_CONF['path_mediaobjects'] = rtrim($_CONF['path_images'], '/\\') . '/mediagallery/';
-        $_MG_CONF['mediaobjects_url'] = $imagesUrl . '/mediagallery';
+        $_MG_CONF['mediaobjects_url'] = rtrim($_CONF['images_url'], '/') . '/mediagallery';
         MG_prepareDirectory180($_MG_CONF['path_mediaobjects']);
     } else {
-        // Standard / legacy MediaGallery location.
         $_MG_CONF['path_mediaobjects'] = $_CONF['path_html'] . 'mediagallery/mediaobjects/';
         $_MG_CONF['mediaobjects_url'] = $_CONF['site_url'] . '/mediagallery/mediaobjects';
     }
 
+    /*
+     * Private working directories are site runtime values and are never stored
+     * in the shared Configuration API. path_data keeps them isolated in a
+     * shared-code multisite setup while remaining harmless on a single site.
+     */
     if (!empty($_CONF['path_data'])) {
         $workRoot = rtrim($_CONF['path_data'], '/\\') . '/mediagallery/';
         $_MG_CONF['tmp_path'] = $workRoot . 'tmp/';
@@ -299,10 +264,8 @@ function MG_getStorageInfo180()
 {
     global $_CONF, $_MG_CONF;
 
-    $imagesUrl = MG_getImagesUrl180();
-
     return array(
-        'mode' => (!empty($_CONF['path_images']) && $imagesUrl !== '')
+        'mode' => (!empty($_CONF['path_images']) && !empty($_CONF['images_url']))
             ? 'site-images'
             : 'legacy',
         'media_path' => isset($_MG_CONF['path_mediaobjects']) ? $_MG_CONF['path_mediaobjects'] : '',
