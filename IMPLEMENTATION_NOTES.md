@@ -5,7 +5,7 @@ This document tracks the current state of the `modernize-1.8.0` branch and the d
 ## Compatibility target
 
 - Upgrade existing MediaGallery 1.7.x installations without resetting administrator settings.
-- Target Geeklog 2.1.1 through 2.2.2 where practical.
+- Require Geeklog 2.1.1 or newer; Geeklog 2.0.x is not a supported target for MediaGallery 1.8.0.
 - Keep syntax compatible with PHP 5.6, 7.4, 8.1 and 8.3 while the compatibility policy remains in force.
 - Do not require changes to Geeklog core.
 - Do not reintroduce the historical MediaGallery `config.php`.
@@ -144,7 +144,7 @@ When an installable package is needed for online testing, update `.github/dist-t
 The workflow builds the current `modernize-1.8.0` code, validates the archive and checksum internally, removes older generated packages, and commits one fixed archive to the same branch:
 
 ```text
-dist/mediagallery_1.8.0_2.0.0.zip
+dist/mediagallery_1.8.0_2.1.1.zip
 ```
 
 The ZIP contains one top-level `mediagallery/` directory, includes required tracked placeholder assets, and excludes `.github/`, `dist/` and build directories. No separate checksum file is retained in `dist/`.
@@ -178,7 +178,7 @@ Do not regenerate the archive after every source commit. Regenerate it when an o
 - MP3/WMA/MOV/ASF/SWF/FLV legacy-media rendering after HTML5/fallback conversion;
 - ASF/MOV popup/download paths do not emit undefined `$media_size_disp` warnings;
 - old `fslideshow.php` URLs and existing `fslideshow` autotags;
-- install the current `dist/mediagallery_1.8.0_2.0.0.zip` on disposable Geeklog 2.1.1 and 2.2.2 instances when the next online test point is reached.
+- install the current `dist/mediagallery_1.8.0_2.1.1.zip` on disposable Geeklog 2.1.1 and 2.2.2 instances when the next online test point is reached.
 
 ## Release-candidate cleanup
 

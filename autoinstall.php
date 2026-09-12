@@ -44,7 +44,7 @@ function plugin_autoinstall_mediagallery($pi_name)
         'pi_name'         => $pi_name,
         'pi_display_name' => $pi_display_name,
         'pi_version'      => '1.8.0',
-        'pi_gl_version'   => '2.0.0',
+        'pi_gl_version'   => '2.1.1',
         'pi_homepage'     => 'https://github.com/hostellerie/mediagallery'
     );
 
@@ -155,7 +155,7 @@ function plugin_compatible_with_this_version_mediagallery($pi_name)
         return false;
     }
 
-    if (COM_versionCompare(VERSION, '2.0.0', '<')) {
+    if (COM_versionCompare(VERSION, '2.1.1', '<')) {
         return false;
     }
 

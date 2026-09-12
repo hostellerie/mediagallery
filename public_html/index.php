@@ -55,9 +55,6 @@ function MG_buildAdminbox(&$root_album)
     global $_TABLES, $_MG_CONF, $_USER, $LANG_MG01, $LANG_MG03;
 
     $options = '';
-    if ($root_album->member_uploads || $root_album->access == 3) {
-        $options .= '<option value="upload">' . $LANG_MG01['add_media'] . '</option>' . LB;
-    }
     if ($root_album->owner_id) {
         $options .= '<option value="albumsort">'  . $LANG_MG01['sort_albums'] . '</option>' . LB;
         $options .= '<option value="globalattr">' . $LANG_MG01['globalattr'] . '</option>' . LB;

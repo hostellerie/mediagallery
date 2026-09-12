@@ -7,7 +7,7 @@ To request a new archive, update `.github/dist-trigger` or run the workflow manu
 The workflow always replaces the previous generated package with exactly one installable archive:
 
 ```text
-dist/mediagallery_1.8.0_2.0.0.zip
+dist/mediagallery_1.8.0_2.1.1.zip
 ```
 
 The ZIP contains a single top-level `mediagallery/` directory suitable for Geeklog plugin installation/testing.

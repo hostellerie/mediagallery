@@ -1,5 +1,5 @@
 Build requested for MediaGallery installable archive.
 Source target: modernize-1.8.0
-Archive: mediagallery_1.8.0_2.0.0.zip
+Archive: mediagallery_1.8.0_2.1.1.zip
 Requested: 2026-09-12
 Reason: add Geeklog 2.1.1 Input compatibility and reject media uploads to virtual root album

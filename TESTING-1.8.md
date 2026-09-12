@@ -1,6 +1,6 @@
 # MediaGallery 1.8.0 online test checklist
 
-Use the installable archive in `dist/mediagallery_1.8.0_2.0.0.zip` only after the distribution workflow has rebuilt it from the current `modernize-1.8.0` branch.
+Use the installable archive in `dist/mediagallery_1.8.0_2.1.1.zip` only after the distribution workflow has rebuilt it from the current `modernize-1.8.0` branch.
 
 ## Fresh installation
 
