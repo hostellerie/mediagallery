@@ -48,6 +48,11 @@ function px($var)
     exit;
 }
 
+function MG_getRemoteAddress()
+{
+    return isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '';
+}
+
 // read user prefs
 function MG_getUserPrefs()
 {

@@ -1436,6 +1436,7 @@ class HTMLCreator extends FeedCreator {
 		}
 
 		//set an openInNewWindow_token_to be inserted or not
+		$targetInsert = "";
 		if ($this->openInNewWindow) {
 			$targetInsert = " target='_blank'";
 		}

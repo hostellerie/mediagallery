@@ -196,7 +196,7 @@ function MG_saveAlbumSort($album_id)
 
     if (!SEC_hasRights('mediagallery.admin')) {
         COM_errorLog("MediaGallery: Someone has tried to illegally sort albums in Media Gallery. "
-                   . "User id: {$_USER['uid']}, Username: {$_USER['username']}, IP: $REMOTE_ADDR",1);
+                   . "User id: {$_USER['uid']}, Username: {$_USER['username']}, IP: " . MG_getRemoteAddress(),1);
         return COM_showMessageText($LANG_MG00['access_denied_msg']);
     }
     if (!SEC_checkToken()) {
@@ -244,7 +244,7 @@ function MG_staticSortMedia($album_id, $actionURL='')
     $album = new mgAlbum($album_id);
     if ($album->access != 3) {
         COM_errorLog("Someone has tried to illegally sort albums in Media Gallery. "
-                   . "User id: {$_USER['uid']}, Username: {$_USER['username']}, IP: $REMOTE_ADDR",1);
+                   . "User id: {$_USER['uid']}, Username: {$_USER['username']}, IP: " . MG_getRemoteAddress(),1);
         return COM_showMessageText($LANG_MG00['access_denied_msg']);
     }
 

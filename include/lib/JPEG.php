@@ -1666,8 +1666,7 @@ class JPEG // extends PEAR
         $ifdEntries = array();
         $entryCount = 0;
 
-        reset($EXIFNames);
-        while (list($tag, $name) = each($EXIFNames)) {
+        foreach ($EXIFNames as $tag => $name) {
             $type = $EXIFTypeInfo[$tag][0];
             $count = $EXIFTypeInfo[$tag][1];
             $value = null;
@@ -2177,8 +2176,7 @@ class JPEG // extends PEAR
             $data = "Photoshop 3.0\0";
             $pos = 14;
 
-            reset($this->_info['adobe']['raw']);
-            while (list($key) = each($this->_info['adobe']['raw'])) {
+            foreach (array_keys($this->_info['adobe']['raw']) as $key) {
                 $pos = $this->_write8BIM(
                             $data,
                             $pos,
@@ -2224,10 +2222,7 @@ class JPEG // extends PEAR
 
         $IPTCNames =& $this->_iptcNameTags();
 
-        reset($this->_info['iptc']);
-
-
-        while (list($label) = each($this->_info['iptc'])) {
+        foreach (array_keys($this->_info['iptc']) as $label) {
             $value =& $this->_info['iptc'][$label];
             $type = -1;
 
@@ -2692,8 +2687,7 @@ class JPEG // extends PEAR
     function _names2Tags($tags2Names)
     {
         $names2Tags = array();
-        reset($tags2Names);
-        while (list($tag, $name) = each($tags2Names)) {
+        foreach ($tags2Names as $tag => $name) {
             $names2Tags[$name] = $tag;
         }
 

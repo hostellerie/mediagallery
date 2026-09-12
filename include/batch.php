@@ -334,7 +334,7 @@ function MG_batchDeleteMedia($album_id, $media_id_array, $actionURL = '')
 
     if ($access != 3 && !SEC_hasRights('mediagallery.admin')) {
         COM_errorLog("Someone has tried to illegally delete items from album in Media Gallery. "
-                   . "User id: {$_USER['uid']}, Username: {$_USER['username']}, IP: $REMOTE_ADDR",1);
+                   . "User id: {$_USER['uid']}, Username: {$_USER['username']}, IP: " . MG_getRemoteAddress(),1);
         return COM_showMessageText($LANG_MG00['access_denied_msg']);
     }
     if (!SEC_checkToken()) {
@@ -387,7 +387,7 @@ function MG_batchMoveMedia($album_id, $destination, $media_id_array, $actionURL 
 
     if ($access != 3 && !SEC_hasRights('mediagallery.admin')) {
         COM_errorLog("Someone has tried to illegally delete items from album in Media Gallery. "
-                   . "User id: {$_USER['uid']}, Username: {$_USER['username']}, IP: $REMOTE_ADDR",1);
+                   . "User id: {$_USER['uid']}, Username: {$_USER['username']}, IP: " . MG_getRemoteAddress(),1);
         return COM_showMessageText($LANG_MG00['access_denied_msg']);
     }
     if (!SEC_checkToken()) {
@@ -411,7 +411,7 @@ function MG_batchMoveMedia($album_id, $destination, $media_id_array, $actionURL 
 
     if ($access != 3 && !SEC_hasRights('mediagallery.admin')) {
         COM_errorLog("Someone has tried to illegally move items from album in Media Gallery. "
-                   . "User id: {$_USER['uid']}, Username: {$_USER['username']}, IP: $REMOTE_ADDR",1);
+                   . "User id: {$_USER['uid']}, Username: {$_USER['username']}, IP: " . MG_getRemoteAddress(),1);
         return COM_showMessageText($LANG_MG00['access_denied_msg']);
     }
 
@@ -496,13 +496,13 @@ function MG_deleteAlbumConfirm($album_id, $actionURL = '')
 
     if ($album->access != 3) {
         COM_errorLog("MediaGallery: Someone has tried to delete a album they do not have permissions. "
-                   . "User id: {$_USER['uid']}, Username: {$_USER['username']}, IP: $REMOTE_ADDR",1);
+                   . "User id: {$_USER['uid']}, Username: {$_USER['username']}, IP: " . MG_getRemoteAddress(),1);
         return COM_showMessageText($LANG_MG00['access_denied_msg']);
     }
 
     if (!isset($album->id)) {
         COM_errorLog("MediaGallery: Someone has tried to delete a album to non-existent parent album. "
-                   . "User id: {$_USER['uid']}, Username: {$_USER['username']}, IP: $REMOTE_ADDR",1);
+                   . "User id: {$_USER['uid']}, Username: {$_USER['username']}, IP: " . MG_getRemoteAddress(),1);
         return COM_showMessageText($LANG_MG00['access_denied_msg']);
     }
 
@@ -555,7 +555,7 @@ function MG_deleteAlbum($album_id, $target_id, $actionURL='')
 
     if ($album->access != 3) {
         COM_errorLog("MediaGallery: Someone has tried to illegally delete an album in Media Gallery. "
-                   . "User id: {$_USER['uid']}, Username: {$_USER['username']}, IP: $REMOTE_ADDR",1);
+                   . "User id: {$_USER['uid']}, Username: {$_USER['username']}, IP: " . MG_getRemoteAddress(),1);
         return COM_showMessageText($LANG_MG00['access_denied_msg']);
     }
     if (!SEC_checkToken()) {

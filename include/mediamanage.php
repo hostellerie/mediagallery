@@ -71,7 +71,7 @@ function MG_imageAdmin($album_id, $page, $actionURL = '')
     // -- Get Album Cover Info..
     if ($album->access != 3) {
         COM_errorLog("Someone has tried to illegally edit media in Media Gallery. "
-                   . "User id: {$_USER['uid']}, Username: {$_USER['username']}, IP: $REMOTE_ADDR",1);
+                   . "User id: {$_USER['uid']}, Username: {$_USER['username']}, IP: " . MG_getRemoteAddress(),1);
         return COM_showMessageText($LANG_MG00['access_denied_msg']);
     }
 
@@ -309,7 +309,7 @@ function MG_saveMedia($album_id, $actionURL = '')
 
     if ($access != 3 && !SEC_hasRights('mediagallery.admin')) {
         COM_errorLog("Someone has tried to illegally manage (save) Media Gallery. "
-                   . "User id: {$_USER['uid']}, Username: {$_USER['username']}, IP: $REMOTE_ADDR",1);
+                   . "User id: {$_USER['uid']}, Username: {$_USER['username']}, IP: " . MG_getRemoteAddress(),1);
         return COM_showMessageText($LANG_MG00['access_denied_msg']);
     }
     if (!SEC_checkToken()) {
@@ -470,7 +470,7 @@ function MG_mediaEdit($album_id, $media_id, $actionURL='', $mqueue=0, $view=0, $
 
     if ($album->access != 3 && !SEC_inGroup($album->mod_group_id) && $row['media_user_id'] != $_USER['uid']) {
         COM_errorLog("Someone has tried to illegally sort albums in Media Gallery. "
-                   . "User id: {$_USER['uid']}, Username: {$_USER['username']}, IP: $REMOTE_ADDR",1);
+                   . "User id: {$_USER['uid']}, Username: {$_USER['username']}, IP: " . MG_getRemoteAddress(),1);
         return COM_showMessageText($LANG_MG00['access_denied_msg']);
     }
 

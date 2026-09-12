@@ -118,7 +118,7 @@ function MG_editAlbum($mode ='', $actionURL='', $oldaid = 0)
         // If edit, pull up the existing album information...
         if ($album->access != 3) {
             COM_errorLog("MediaGallery: Someone has tried to illegally edit a Media Gallery Album. "
-                       . "User id: {$_USER['uid']}, Username: {$_USER['username']}, IP: $REMOTE_ADDR",1);
+                       . "User id: {$_USER['uid']}, Username: {$_USER['username']}, IP: " . MG_getRemoteAddress(),1);
             return COM_showMessageText($LANG_MG00['access_denied_msg']);
         }
     }
@@ -134,7 +134,7 @@ function MG_editAlbum($mode ='', $actionURL='', $oldaid = 0)
     $album_selectbox .= '</select>';
     if ($valid_albums == 0) {
         COM_errorLog("MediaGallery: Someone has tried to illegally create a Media Gallery Album. "
-                   . "User id: {$_USER['uid']}, Username: {$_USER['username']}, IP: $REMOTE_ADDR",1);
+                   . "User id: {$_USER['uid']}, Username: {$_USER['username']}, IP: " . MG_getRemoteAddress(),1);
         return COM_showMessageText($LANG_MG00['access_denied_msg']);
     }
 
@@ -857,13 +857,13 @@ function MG_quickCreate($parent, $title, $desc='')
         // see if we are mediagallery.admin
         if (!SEC_hasRights('mediagallery.admin')) {
             COM_errorLog("MediaGallery: Someone has tried to illegally save a Media Gallery Album in Root. "
-                       . "User id: {$_USER['uid']}, Username: {$_USER['username']}, IP: $REMOTE_ADDR",1);
+                       . "User id: {$_USER['uid']}, Username: {$_USER['username']}, IP: " . MG_getRemoteAddress(),1);
             return COM_showMessageText($LANG_MG00['access_denied_msg']);
         }
     } elseif ($parent != 0) {
         if (!isset($parent_album->id)) {    // does not exist...
             COM_errorLog("MediaGallery: Someone has tried to save a album to non-existent parent album. "
-                       . "User id: {$_USER['uid']}, Username: {$_USER['username']}, IP: $REMOTE_ADDR",1);
+                       . "User id: {$_USER['uid']}, Username: {$_USER['username']}, IP: " . MG_getRemoteAddress(),1);
             return COM_showMessageText($LANG_MG00['access_denied_msg']);
         } else {
             if ($parent_album->access != 3 &&
@@ -871,7 +871,7 @@ function MG_quickCreate($parent, $title, $desc='')
                 !$_MG_CONF['member_albums'] &&
                 !$_MG_CONF['member_album_root'] == $parent_album->id) {
                 COM_errorLog("MediaGallery: Someone has tried to illegally save a Media Gallery Album. "
-                           . "User id: {$_USER['uid']}, Username: {$_USER['username']}, IP: $REMOTE_ADDR",1);
+                           . "User id: {$_USER['uid']}, Username: {$_USER['username']}, IP: " . MG_getRemoteAddress(),1);
                 return COM_showMessageText($LANG_MG00['access_denied_msg']);
             }
         }
@@ -1092,13 +1092,13 @@ function MG_saveAlbum($album_id)
         // see if we are mediagallery.admin
         if (!SEC_hasRights('mediagallery.admin')) {
             COM_errorLog("MediaGallery: Someone has tried to illegally save a Media Gallery Album in Root. "
-                       . "User id: {$_USER['uid']}, Username: {$_USER['username']}, IP: $REMOTE_ADDR",1);
+                       . "User id: {$_USER['uid']}, Username: {$_USER['username']}, IP: " . MG_getRemoteAddress(),1);
             return COM_showMessageText($LANG_MG00['access_denied_msg']);
         }
     } elseif ($album->parent != 0) {
         if (!isset($parent_album->id)) {    // does not exist...
             COM_errorLog("MediaGallery: Someone has tried to save a album to non-existent parent album. "
-                       . "User id: {$_USER['uid']}, Username: {$_USER['username']}, IP: $REMOTE_ADDR",1);
+                       . "User id: {$_USER['uid']}, Username: {$_USER['username']}, IP: " . MG_getRemoteAddress(),1);
             return COM_showMessageText($LANG_MG00['access_denied_msg']);
         } else {
             if ($parent_album->access != 3 &&
@@ -1106,7 +1106,7 @@ function MG_saveAlbum($album_id)
                 !$_MG_CONF['member_albums'] &&
                 !($_MG_CONF['member_album_root'] == $parent_album->id)) {
                 COM_errorLog("MediaGallery: Someone has tried to illegally save a Media Gallery Album. "
-                           . "User id: {$_USER['uid']}, Username: {$_USER['username']}, IP: $REMOTE_ADDR",1);
+                           . "User id: {$_USER['uid']}, Username: {$_USER['username']}, IP: " . MG_getRemoteAddress(),1);
                 return COM_showMessageText($LANG_MG00['access_denied_msg']);
             }
         }
