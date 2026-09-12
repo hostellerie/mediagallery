@@ -75,7 +75,8 @@ Geeklog's plugin uploader replaces the old public plugin directory before loadin
 - [x] CLI import filename protection.
 - [x] Remote Media restricted to public HTTP(S), with private/reserved/localhost rejection, redirect blocking and bounded downloads.
 - [x] Root Album (`album_id=0`) upload prevention.
-- [ ] Review MIME/extension consistency for ambiguous generic files.
+- [x] Prefer content-derived MIME (`getID3`, then `fileinfo`) and validate MIME/extension coherence for explicitly handled formats while leaving unknown extensions generic.
+- [ ] Live-test MIME mismatch rejection and generic-file compatibility on Geeklog 2.1.1 and 2.2.2.
 - [x] Clean deterministic upload-failure and special-image `wip` temporary files.
 - [x] Add conservative stale-temp cleanup for genuinely interrupted/killed requests: private MediaGallery tmp only, 48-hour age threshold, no symlink traversal, and at most one scan per hour.
 - [ ] Live-test stale-temp cleanup with old and recent files/directories on Geeklog 2.1.1 and 2.2.2.

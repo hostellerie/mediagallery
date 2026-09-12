@@ -70,7 +70,8 @@ Implemented:
 
 Still review before RC:
 
-- MIME/extension consistency for ambiguous generic files;
+- MIME/extension consistency now prefers getID3, falls back to local PHP fileinfo when getID3 is inconclusive, and rejects known-extension mismatches while preserving generic unknown-extension files;
+- live regression tests remain for mismatch rejection and generic-file compatibility;
 - deterministic upload failure paths now remove the main `tmpPath`, and special-image thumbnail conversion removes its `wip*.jpg` file on success/failure;
 - still define a stale-temp policy for genuinely interrupted/killed PHP requests;
 - permissions around less common album mutation/admin paths;

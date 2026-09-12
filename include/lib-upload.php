@@ -585,11 +585,24 @@ function MG_getFile($filename, $file, $album_id, $opt = array())
     $mimeExt = strtolower(substr(strrchr($file, '.'), 1));
     $mimeInfo['type'] = $mimeExt;
 
+    // Prefer content-derived MIME information. If getID3 cannot identify the
+    // file, use PHP fileinfo before falling back to browser/import metadata.
+    $localMime = MG_detectLocalMime180($filename);
+    $detectedMime = isset($mimeInfo['mime_type']) ? strtolower(trim($mimeInfo['mime_type'])) : '';
+    if (($detectedMime === '' || $detectedMime === 'application/octet-stream')
+        && $localMime !== '' && $localMime !== 'application/octet-stream') {
+        $mimeInfo['mime_type'] = $localMime;
+        $detectedMime = $localMime;
+        if ($_MG_CONF['verbose']) {
+            COM_errorLog('MG Upload: fileinfo detected mime type: ' . $localMime);
+        }
+    }
+
     // override the determination for some filetypes
     $filetype = MG_getFileTypeFromExt($mimeExt, $filetype);
 
     if (empty($mimeInfo['mime_type'])) {
-        COM_errorLog("MG Upload: getID3 was unable to detect mime type - using PHP detection");
+        COM_errorLog("MG Upload: content MIME detection was inconclusive - using upload/import metadata");
         $mimeInfo['mime_type'] = $filetype;
     }
 
@@ -701,6 +714,16 @@ function MG_getFile($filename, $file, $album_id, $opt = array())
             COM_errorLog("MG Upload: override mime type to: " . $mimeInfo['type']
                        . ' based upon file extension of: ' . $filetype);
         }
+    }
+
+    if (!MG_validateMimeExtension180($file, $mimeInfo['mime_type'])) {
+        COM_errorLog(
+            'MediaGallery 1.8: rejected MIME/extension mismatch for ' . basename($file)
+            . ' (detected ' . $mimeInfo['mime_type'] . ', extension .' . $mimeExt . ')',
+            1
+        );
+        @unlink($tmpPath);
+        return array(false, $LANG_MG02['format_not_allowed']);
     }
 
     switch ($mimeInfo['mime_type']) {
