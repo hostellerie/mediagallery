@@ -2,4 +2,4 @@ Build requested for MediaGallery installable archive.
 Source target: modernize-1.8.0
 Archive: mediagallery_1.8.0_2.0.0.zip
 Requested: 2026-09-12
-Reason: initialize orig disp tn and cover directories for site-specific media storage
+Reason: fix manage-media JPEG fallback and multisite missing image asset path
