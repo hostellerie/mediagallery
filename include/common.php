@@ -250,7 +250,7 @@ function MG_updateUsage($application, $album_title, $media_title, $media_id)
 
     $log_time    = $now;
     $user_id     = intval($_USER['uid']);
-    $user_ip     = DB_escapeString($REMOTE_ADDR);
+    $user_ip     = DB_escapeString(isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '');
     $user_name   = DB_escapeString($_USER['username']);
     $application = DB_escapeString($application);
     $title       = DB_escapeString($album_title);

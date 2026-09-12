@@ -126,7 +126,7 @@ class mgAlbum {
         }
 
         if ($album_id > 0) {
-            $this->loadFromDB($album_id, $groups);
+            $this->loadFromDB($album_id);
         }
     }
 

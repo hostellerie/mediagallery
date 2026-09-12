@@ -329,6 +329,7 @@ class Media {
     // Testing!
     static public function getThumbPath($path, $tn_size)
     {
+        $postfix = '';
         switch ($tn_size) {
             case '0':
                 $postfix = '_100.';
@@ -433,6 +434,8 @@ class Media {
                     if (isset($_MG_USERPREFS['mp3_player']) && $_MG_USERPREFS['mp3_player'] != -1) {
                         $player = $_MG_USERPREFS['mp3_player'];
                     }
+                    $new_y = 360;
+                    $new_x = 580;
                     switch ($player) {
                         case 0 :    // WMP
                             $new_y = 260;
@@ -467,8 +470,8 @@ class Media {
                     $resolution_y = $new_y;
                 } else { // must be a video...
 
-                    $playback_options['height'] = $_MG_CONF['swf_height'];
-                    $playback_options['width']  = $_MG_CONF['swf_width'];
+                    $playback_options['height'] = isset($_MG_CONF['swf_height']) ? $_MG_CONF['swf_height'] : 320;
+                    $playback_options['width']  = isset($_MG_CONF['swf_width']) ? $_MG_CONF['swf_width'] : 480;
                     $poResult = DB_query("SELECT * FROM {$_TABLES['mg_playback_options']} "
                                        . "WHERE media_id='" . DB_escapeString($this->id) . "'");
                     while ($poRow = DB_fetchArray($poResult)) {
@@ -479,12 +482,12 @@ class Media {
                         $resolution_x = $this->resolution_x;
                         $resolution_y = $this->resolution_y;
                     } else {
-                        if ($this->resolution_x == 0 && $this->remote_media != 1) {
+                        if ($this->resolution_x == 0 && $this->remote != 1) {
                             $filepath = self::getFilePath('orig', $this->filename, $this->mime_ext);
                             $size = @filesize($filepath);
                             
                             // skip files over 8M in size..
-                            if ($size < 8388608) {
+                            if ($size !== false && $size < 8388608) {
                                 list($resolution_x, $resolution_y) = self::getResolutionID3($filepath);
                             }
                         } else {
@@ -502,7 +505,8 @@ class Media {
                         $resolution_x = $resolution_x + 40;
                         $resolution_y = $resolution_y + 40;
                     }
-                    if ($this->mime_type == 'video/x-flv' && $_MG_CONF['use_flowplayer'] != 1) {
+                    $use_flowplayer = isset($_MG_CONF['use_flowplayer']) ? $_MG_CONF['use_flowplayer'] : 0;
+                    if ($this->mime_type == 'video/x-flv' && $use_flowplayer != 1) {
                         $resolution_x = $resolution_x + 60;
                         if ($resolution_x < 590) {
                             $resolution_x = 590;
@@ -545,7 +549,9 @@ class Media {
 
         list($tn_width, $tn_height) = self::getTNSize($tn_size, $album->tnWidth, $album->tnHeight);
 
-        list($newwidth, $newheight) = self::getImageWH($this->media_size[0], $this->media_size[1], $tn_width, $tn_height);
+        $media_size = (is_array($this->media_size) && isset($this->media_size[0], $this->media_size[1]))
+                    ? $this->media_size : array($tn_width, $tn_height);
+        list($newwidth, $newheight) = self::getImageWH($media_size[0], $media_size[1], $tn_width, $tn_height);
         if (!isset($resolution_x)) {
             $resolution_x = $newwidth;
         }
@@ -774,7 +780,9 @@ class Media {
             return array($this->media_thumbnail, $this->media_thumbnail_file);
         }
 
-        list($newwidth, $newheight) = self::getImageWH($this->media_size[0], $this->media_size[1], 100, 100);
+        $media_size = (is_array($this->media_size) && isset($this->media_size[0], $this->media_size[1]))
+                    ? $this->media_size : array(100, 100);
+        list($newwidth, $newheight) = self::getImageWH($media_size[0], $media_size[1], 100, 100);
         $media_dim = 'width="' . $newwidth . '" height="' . $newheight . '"';
         $title = strip_tags($this->title);
         return '<img src="' .$this->media_thumbnail . '" ' . $media_dim
@@ -815,6 +823,15 @@ class Media {
 
     static public function getImageWH($imgwidth, $imgheight, $maxwidth, $maxheight, $stretch=true)
     {
+        $imgwidth = (int) $imgwidth;
+        $imgheight = (int) $imgheight;
+        $maxwidth = max(1, (int) $maxwidth);
+        $maxheight = max(1, (int) $maxheight);
+
+        if ($imgwidth < 1 || $imgheight < 1) {
+            return array($maxwidth, $maxheight);
+        }
+
         if ($imgwidth > $maxwidth || $imgheight > $maxheight) {
 
             $ratio_width  = $imgwidth / $maxwidth;
@@ -891,8 +908,8 @@ class Media {
 
         $FileInfo = self::getID3($filepath);
 
-        $resolution_x = $FileInfo['video']['resolution_x'];
-        $resolution_y = $FileInfo['video']['resolution_y'];
+        $resolution_x = isset($FileInfo['video']['resolution_x']) ? $FileInfo['video']['resolution_x'] : 0;
+        $resolution_y = isset($FileInfo['video']['resolution_y']) ? $FileInfo['video']['resolution_y'] : 0;
         if ($resolution_x < 1 || $resolution_y < 1) {
             $resolution_x = -1;
             $resolution_y = -1;
@@ -902,14 +919,6 @@ class Media {
                 $resolution_y = $FileInfo['meta']['onMetaData']['height'];
             }
         }
-        if ($resolution_x != 0) {
-            $sql = "UPDATE " . $_TABLES['mg_media']
-                 . " SET media_resolution_x=" . intval($resolution_x)
-                     . ",media_resolution_y=" . intval($resolution_y)
-                 . " WHERE media_id='" . DB_escapeString($I['media_id']) . "'";
-            DB_query($sql);
-        }
-
         return array($resolution_x, $resolution_y);
     }
 }
