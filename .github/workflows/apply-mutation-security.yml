@@ -1,0 +1,58 @@
+name: Apply MediaGallery mutation security hardening
+
+on:
+  push:
+    branches:
+      - modernize-1.8.0
+    paths:
+      - '.github/mutation-security-trigger'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: modernize-1.8.0
+          fetch-depth: 0
+
+      - name: Apply patch
+        run: python3 .github/mutation-security-patch.py
+
+      - name: Validate targeted files
+        shell: bash
+        run: |
+          set -euo pipefail
+          php -l include/batch.php
+          php -l include/mediamanage.php
+          php -l include/lib-media.php
+          php -l public_html/admin.php
+          grep -q 'batch mutation rejected because of an invalid CSRF token' include/batch.php
+          grep -q 'album resize rejected because of an invalid CSRF token' include/batch.php
+          grep -q 'thumbnail rebuild rejected because of an invalid CSRF token' include/batch.php
+          grep -q 'media deletion rejected because of an invalid CSRF token' include/batch.php
+          grep -q 'media move rejected because of an invalid CSRF token' include/batch.php
+          grep -q 'album deletion rejected because of an invalid CSRF token' include/batch.php
+          grep -q 'media manager save rejected because of an invalid CSRF token' include/mediamanage.php
+          grep -q 'media edit save rejected because of an invalid CSRF token' include/mediamanage.php
+          grep -q 'rating reset rejected because of an invalid CSRF token' include/mediamanage.php
+          grep -q 'view reset rejected because of an invalid CSRF token' include/mediamanage.php
+          grep -q 'rotate rejected because media' include/lib-media.php
+          grep -q "Input::fPost('media_id'" public_html/admin.php
+          grep -q 'name="{gltoken_name}" value="{gltoken}"' templates/confirm.thtml
+          grep -q 'name="{gltoken_name}" value="{gltoken}"' templates/mediamanage.thtml
+          grep -q 'name="{gltoken_name}" value="{gltoken}"' templates/mediaedit.thtml
+          grep -q 'name="{gltoken_name}" value="{gltoken}"' templates/deletealbum.thtml
+
+      - name: Commit
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add include/batch.php include/mediamanage.php include/lib-media.php public_html/admin.php templates/confirm.thtml templates/mediamanage.thtml templates/mediaedit.thtml templates/deletealbum.thtml ROADMAP.md IMPLEMENTATION_NOTES.md
+          git commit -m 'Harden MediaGallery media mutation paths'
+          git push origin HEAD:modernize-1.8.0
