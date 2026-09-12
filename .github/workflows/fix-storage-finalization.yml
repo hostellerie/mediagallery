@@ -1,0 +1,101 @@
+name: Fix MediaGallery storage finalization
+
+on:
+  push:
+    branches:
+      - modernize-1.8.0
+    paths:
+      - '.github/fix-storage-trigger'
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: modernize-1.8.0
+          fetch-depth: 0
+
+      - name: Fix upgrade semantics and stray tracing
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+
+          p = Path('autoinstall.php')
+          text = p.read_text(encoding='utf-8')
+
+          # Internal migration helpers use 0 = success. Never expose their
+          # numeric result directly through PLG_upgrade(): Geeklog considers
+          # only boolean true a successful plugin upgrade.
+          text = text.replace(
+              """            $result = MG_upgrade_1612();\n            if ($result != 0) {\n                return $result;\n            }\n""",
+              """            $result = MG_upgrade_1612();\n            if ($result != 0) {\n                COM_errorLog('Media Gallery upgrade failed while migrating to 1.6.12.', 1);\n                return 72;\n            }\n"""
+          )
+          text = text.replace(
+              """            $result = MG_upgrade_170();\n            if ($result != 0) {\n                return $result;\n            }\n""",
+              """            $result = MG_upgrade_170();\n            if ($result != 0) {\n                COM_errorLog('Media Gallery upgrade failed while migrating to 1.7.0.', 1);\n                return 72;\n            }\n"""
+          )
+          text = text.replace(
+              """            $result = MG_upgrade_180();\n            if ($result != 0) {\n                return $result;\n            }\n""",
+              """            $result = MG_upgrade_180();\n            if ($result != 0) {\n                COM_errorLog('Media Gallery upgrade failed while migrating to 1.8.0.', 1);\n                return 72;\n            }\n"""
+          )
+          text = text.replace(
+              """        return 0;\n    }\n\n    DB_query(\"UPDATE {$_TABLES['plugins']} \""" ,
+              """        return 72;\n    }\n\n    DB_query(\"UPDATE {$_TABLES['plugins']} \""",
+              1
+          )
+          text = text.replace(
+              """        COM_errorLog('Media Gallery upgrade: unable to update plugin version metadata.', 1);\n        return 0;\n    }\n\n    return 1;\n""",
+              """        COM_errorLog('Media Gallery upgrade: unable to update plugin version metadata.', 1);\n        return 72;\n    }\n\n    return true;\n""",
+              1
+          )
+
+          # Only local media rows require files in persistent storage. Remote
+          # media records can legitimately exist without orig/disp/tn files.
+          old = """    $mediaRows = isset($_TABLES['mg_media']) ? DB_count($_TABLES['mg_media']) : 0;\n"""
+          new = """    $localMediaRows = 0;\n    if (isset($_TABLES['mg_media'])) {\n        $result = DB_query(\"SELECT COUNT(*) AS local_count FROM {$_TABLES['mg_media']} WHERE remote_media = 0\");\n        if ($result !== false) {\n            $row = DB_fetchArray($result);\n            $localMediaRows = isset($row['local_count']) ? (int) $row['local_count'] : 0;\n        }\n    }\n"""
+          if old not in text:
+              raise SystemExit('mediaRows anchor not found')
+          text = text.replace(old, new, 1)
+          text = text.replace(
+              "if ($mediaRows > 0 && !$legacyHasUserMedia && !$targetHasUserMedia) {",
+              "if ($localMediaRows > 0 && !$legacyHasUserMedia && !$targetHasUserMedia) {",
+              1
+          )
+          p.write_text(text, encoding='utf-8')
+
+          # Remove the tracing that was accidentally injected into legacy
+          # MG_saveUpload(); it even referenced a non-existent $statusMsg.
+          p = Path('include/newmedia.php')
+          text = p.read_text(encoding='utf-8')
+          old = """    if (!empty($_MG_CONF['verbose'])) {\n        COM_errorLog(\n            'MG DEBUG saveUserUpload after files: success=' . intval($successfull_upload)\n            . ' status_length=' . strlen((string) $statusMsg)\n        );\n    }\n\n    if ($successfull_upload) {\n        if (!empty($_MG_CONF['verbose'])) {\n            COM_errorLog('MG DEBUG saveUserUpload before moderator notification');\n        }\n        MG_notifyModerators180($album_id);\n        if (!empty($_MG_CONF['verbose'])) {\n            COM_errorLog('MG DEBUG saveUserUpload after moderator notification');\n        }\n    }\n"""
+          new = """    if ($successfull_upload) {\n        MG_notifyModerators180($album_id);\n    }\n"""
+          if old not in text:
+              raise SystemExit('legacy upload debug block not found')
+          text = text.replace(old, new, 1)
+          p.write_text(text, encoding='utf-8')
+          PY
+
+      - name: Validate
+        shell: bash
+        run: |
+          set -euo pipefail
+          php -l autoinstall.php
+          php -l include/newmedia.php
+          grep -q 'return true;' autoinstall.php
+          grep -q 'remote_media = 0' autoinstall.php
+
+      - name: Commit
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add autoinstall.php include/newmedia.php
+          git commit -m 'Harden MediaGallery 1.8 storage upgrade semantics'
+          git push origin HEAD:modernize-1.8.0
