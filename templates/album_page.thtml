@@ -28,7 +28,7 @@
 <nav class="mg_navbar" aria-label="Album actions and pagination">
 
   {!if url_slideshow}
-  <a class="button" href="{url_slideshow}">{lang_slideshow}</a>
+  <a class="button" href="{url_slideshow}"{slideshow_onclick}>{lang_slideshow}</a>
   {!endif}
 
   {!if edit_album}

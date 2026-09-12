@@ -120,7 +120,7 @@ function MG_buildAdminbox(&$album, &$root_album, &$T)
     }
 
     if ($isShowAdminMenu) {
-        $url_edit = $_MG_CONF['site_url'] . '/admin.php?album_id=' . $album->id . '&amp;mode=edit';
+        $url_edit = MG_escapeHTML($_MG_CONF['site_url'] . '/admin.php?album_id=' . $album->id . '&amp;mode=edit');
         $lang_edit = $LANG_MG01['edit'];
         $edit_album = '<a href="' . $url_edit . '">' . $lang_edit . '</a>';
     } else {
@@ -359,6 +359,7 @@ $T->set_var(array(
     'album_owner'        => $ownername,
     'media_count'        => $album->getMediaCount(),
     'lang_search'        => $LANG_MG01['search'],
+    'keywords'           => '',
     'rsslink'            => $rsslink,
     'list_title'         => $LANG_MG03['list_title'],
     'list_desc'          => $LANG_MG03['list_desc'],

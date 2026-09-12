@@ -1230,6 +1230,7 @@ function MG_buildSlideshow(&$album, &$T, $sortOrder)
 
     $lbSlideShow = '';
     $url_slideshow = '';
+    $slideshow_onclick = '';
     $lang_slideshow = '';
     $mgLightBox = 0; // global variable
     switch ($enable_slideshow) {
@@ -1251,7 +1252,8 @@ function MG_buildSlideshow(&$album, &$T, $sortOrder)
             list($lbss_count) = DB_fetchArray($result);
             if ($lbss_count != 0) {
                 $mgLightBox = 1; // global variable
-                $url_slideshow  = '#" onclick="return openGallery1()';
+                $url_slideshow = '#';
+                $slideshow_onclick = ' onclick="return openGallery1()"';
                 $lang_slideshow = $LANG_MG03['slide_show'];
             }
             break;
@@ -1271,8 +1273,9 @@ function MG_buildSlideshow(&$album, &$T, $sortOrder)
 
     $T->set_var(array(
         'lbslideshow'    => $lbSlideShow,
-        'lang_slideshow' => $lang_slideshow,
-        'url_slideshow'  => $url_slideshow,
+        'lang_slideshow'    => $lang_slideshow,
+        'url_slideshow'     => MG_escapeHTML($url_slideshow),
+        'slideshow_onclick' => $slideshow_onclick,
     ));
 }
 
