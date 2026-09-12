@@ -61,23 +61,28 @@ function MG_applyRuntimeConfiguration180()
     $_MG_CONF['path_admin'] = $_CONF['path_html'] . 'admin/plugins/mediagallery/';
     $_MG_CONF['template_path'] = $_CONF['path'] . 'plugins/mediagallery/templates';
 
+    /*
+     * Public media storage and private working storage are independent.
+     * path_images/images_url decide where published media lives.
+     * path_data always owns temporary and import working files when available.
+     */
     $hasSiteImageStorage = !empty($_CONF['path_images']) && !empty($_CONF['images_url']);
 
     if ($hasSiteImageStorage) {
         $_MG_CONF['path_mediaobjects'] = rtrim($_CONF['path_images'], '/\\') . '/mediagallery/';
         $_MG_CONF['mediaobjects_url'] = rtrim($_CONF['images_url'], '/') . '/mediagallery';
-
-        if (!empty($_CONF['path_data'])) {
-            $workRoot = rtrim($_CONF['path_data'], '/\\') . '/mediagallery/';
-            $_MG_CONF['tmp_path'] = $workRoot . 'tmp/';
-            $_MG_CONF['ftp_path'] = $workRoot . 'uploads/';
-
-            MG_prepareWorkDirectory180($_MG_CONF['tmp_path']);
-            MG_prepareWorkDirectory180($_MG_CONF['ftp_path']);
-        }
     } else {
         $_MG_CONF['path_mediaobjects'] = $_CONF['path_html'] . 'mediagallery/mediaobjects/';
         $_MG_CONF['mediaobjects_url'] = $_CONF['site_url'] . '/mediagallery/mediaobjects';
+    }
+
+    if (!empty($_CONF['path_data'])) {
+        $workRoot = rtrim($_CONF['path_data'], '/\\') . '/mediagallery/';
+        $_MG_CONF['tmp_path'] = $workRoot . 'tmp/';
+        $_MG_CONF['ftp_path'] = $workRoot . 'uploads/';
+
+        MG_prepareWorkDirectory180($_MG_CONF['tmp_path']);
+        MG_prepareWorkDirectory180($_MG_CONF['ftp_path']);
     }
 }
 
