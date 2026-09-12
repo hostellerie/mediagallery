@@ -18,22 +18,23 @@ jobs:
           fetch-depth: 0
       - name: Apply HTML escaping hardening
         run: python tools/attribute_escape_180.py
-      - name: Validate changed PHP
+      - name: Validate changed PHP and templates
         shell: bash
         run: |
           set -euo pipefail
           php -l include/common.php
-          php -l include/classMedia.php
-          php -l include/mediamanage.php
-          php -l public_html/search.php
-          grep -n "function MG_escapeHTML" include/common.php
-          grep -n "MG_escapeHTML(strip_tags(\$this->title))" include/classMedia.php
-          grep -n "MG_escapeHTML(\$row\['media_title'\])" include/mediamanage.php
-          grep -n "MG_escapeHTML(\$S\['keywords'\])" public_html/search.php
+          php -l public_html/album.php
+          grep -n "slideshow_onclick" include/common.php
+          grep -n "MG_escapeHTML(.*mode=edit" public_html/album.php
+          grep -R -n 'href="{url_slideshow}"{slideshow_onclick}' templates/album_page.thtml templates/themes/*/album_page.thtml
+          if grep -R -n "#\\\" onclick=\\\"return openGallery1" include/common.php; then
+            echo 'Legacy slideshow href injection remains' >&2
+            exit 1
+          fi
       - name: Commit HTML escaping hardening
         run: |
           git config user.name 'hostellerie'
           git config user.email 'hostellerie.org@gmail.com'
-          git add include/common.php include/classMedia.php include/mediamanage.php public_html/search.php ROADMAP.md
-          git commit -m 'Harden MediaGallery HTML attribute escaping'
+          git add include/common.php public_html/album.php templates/album_page.thtml templates/themes ROADMAP.md
+          git commit -m 'Harden MediaGallery album action attributes'
           git push origin HEAD:modernize-1.8.0
