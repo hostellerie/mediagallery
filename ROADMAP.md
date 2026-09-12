@@ -74,6 +74,8 @@ Geeklog's plugin uploader replaces the old public plugin directory before loadin
 - [x] Revalidation of hidden FTP paths and recursive batch sources.
 - [x] Batch continuation/cancellation ownership validation.
 - [x] CLI import filename protection.
+- [x] Harden ZIP extraction against path traversal, unsafe temporary paths, symlinks, excessive entry counts and declared uncompressed payloads above 1 GiB before extraction.
+- [x] Harden recursive CLI imports by refusing symbolic links and preserving the intended subdirectory-to-subalbum mapping.
 - [x] Remote Media restricted to public HTTP(S), with private/reserved/localhost rejection, redirect blocking and bounded downloads.
 - [x] Root Album (`album_id=0`) upload prevention.
 - [x] Prefer content-derived MIME (`getID3`, then `fileinfo`) and validate MIME/extension coherence for explicitly handled formats while leaving unknown extensions generic.
@@ -180,7 +182,7 @@ PLG_invokeService(
 - [ ] Complete live PHP 8.2/8.3 warning/deprecation validation on Geeklog 2.1.1 and 2.2.2.
 - [ ] Fold `functions_legacy.inc` back into a clean final bootstrap if practical before RC.
 - [ ] Remove confirmed dead compatibility branches once final supported versions are fixed.
-- [ ] Review ZIP extraction security and any remaining legacy archive/import code.
+- [x] Review and harden ZIP extraction plus remaining recursive CLI import paths.
 
 ## 11. Distribution
 
@@ -227,6 +229,8 @@ PLG_invokeService(
 - [ ] Executable/double-extension/unknown-MIME rejection.
 - [ ] Remote Media public/private/redirect/oversize cases.
 - [ ] FTP valid source, forged outside path, unsafe extension and escaping symlink.
+- [ ] ZIP import: normal archive, `../` traversal member, symbolic-link member, excessive entry count and >1 GiB declared uncompressed payload.
+- [ ] CLI recursive import: normal nested directories, symlink source rejection and correct subdirectory-to-subalbum placement.
 - [ ] Batch continuation/cancellation as owner, another user and administrator.
 - [ ] Moderated upload/edit/approve/reject with forged album/media binding attempts.
 - [ ] Stale-temp cleanup keeps recent/active entries and removes only fully stale trees.
