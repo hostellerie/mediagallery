@@ -39,6 +39,7 @@ jobs:
 
           rsync -a ./ package/mediagallery/ \
             --exclude='.git/' \
+            --exclude='.gitignore' \
             --exclude='.github/' \
             --exclude='dist/' \
             --exclude='package/' \
@@ -68,6 +69,7 @@ jobs:
           unzip -Z1 "dist/${ARCHIVE}" | grep -qx 'mediagallery/public_html/mediaobjects/missing.png'
           ! unzip -Z1 "dist/${ARCHIVE}" | grep -q '^mediagallery/.github/'
           ! unzip -Z1 "dist/${ARCHIVE}" | grep -q '^mediagallery/dist/'
+          ! unzip -Z1 "dist/${ARCHIVE}" | grep -q '^mediagallery/.gitignore$'
 
           # Geeklog 2.2.2 validates every archive basename with
           # Geeklog\FileSystem::isValidFileName(): only A-Z, a-z, 0-9,
