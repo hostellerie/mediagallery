@@ -6,6 +6,7 @@
 <div class="mg_submit">
 <input type="hidden" name="aid" value="{aid}"{xhtml}>
 <input type="hidden" name="action" value="{action}"{xhtml}>
+<input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}>
 <input type="submit" name="mode" value="{lang_next}"{xhtml}>
 <input type="submit" name="mode" value="{lang_cancel}"{xhtml}>
 </div>

@@ -3,6 +3,7 @@
 <div>
 <input type="hidden" name="album_id" value="{album_id}">
 <input type="hidden" name="action" value="confalbum">
+<input type="hidden" name="{gltoken_name}" value="{gltoken}">
 <table cellpadding="3" cellspacing="1" border="0">
   <tr>
     <td style="width:15%;text-align:right;">

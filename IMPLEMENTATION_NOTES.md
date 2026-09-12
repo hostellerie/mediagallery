@@ -76,7 +76,9 @@ Still review before RC:
 - still define a stale-temp policy for genuinely interrupted/killed PHP requests;
 - global album permission/attribute changes and watermark manage/upload/delete actions now use Geeklog CSRF tokens in addition to their existing access rules;
 - album sort and static media sort now use Geeklog CSRF tokens; static sort also revalidates album write access in the save handler;
-- continue permission/CSRF audit for resize/rebuild/batch/rotate mutation paths;
+- resize/rebuild, media-manager save/delete/move/batch, direct rotation, media-edit save and rating/view resets now use Geeklog CSRF validation;
+- direct rotation now uses POST and verifies both album write access and the requested album/media association before touching files;
+- continue audit of remaining caption/moderation/delete-session mutations before RC;
 - the orphaned legacy asynchronous `public_html/upload.php` endpoint and its dedicated `MG_saveUpload()` handler have been removed; the maintained browser upload path is `admin.php` / `MG_saveUserUpload()`.
 
 ## Email modernization

@@ -149,6 +149,8 @@ function MG_imageAdmin($album_id, $page, $actionURL = '')
         'lang_batch'              => $LANG_MG01['batch_process'],
         'batchoptionselect'       => $batchOptionSelect,
         'val_reset_cover'         => (($album_cover == '-1') ? ' checked="checked"' : ''),
+        'gltoken_name'           => CSRF_TOKEN,
+        'gltoken'                => SEC_createToken(),
     ));
 
     $tn_size = 1; // include:150x150
@@ -308,6 +310,10 @@ function MG_saveMedia($album_id, $actionURL = '')
     if ($access != 3 && !SEC_hasRights('mediagallery.admin')) {
         COM_errorLog("Someone has tried to illegally manage (save) Media Gallery. "
                    . "User id: {$_USER['uid']}, Username: {$_USER['username']}, IP: $REMOTE_ADDR",1);
+        return COM_showMessageText($LANG_MG00['access_denied_msg']);
+    }
+    if (!SEC_checkToken()) {
+        COM_errorLog('MediaGallery: media manager save rejected because of an invalid CSRF token.', 1);
         return COM_showMessageText($LANG_MG00['access_denied_msg']);
     }
 
@@ -559,16 +565,23 @@ function MG_mediaEdit($album_id, $media_id, $actionURL='', $mqueue=0, $view=0, $
     $rotate_right = '';
     $rotate_left  = '';
     if ($row['media_type'] == 0 && ($_CONF['image_lib'] != 'gdlib' || function_exists("imagerotate"))) {
-        $rotate_right = '<a href="' . $_MG_CONF['site_url']
-                      . '/admin.php?mode=rotate&amp;action=right&amp;media_id='
-                      . $row['media_id'] . '&amp;album_id=' . $album_id . '">'
+        $rotation_token = SEC_createToken();
+        $rotation_common = '<input type="hidden" name="mode" value="rotate"' . XHTML . '>'
+                         . '<input type="hidden" name="media_id" value="' . intval($row['media_id']) . '"' . XHTML . '>'
+                         . '<input type="hidden" name="album_id" value="' . intval($album_id) . '"' . XHTML . '>'
+                         . '<input type="hidden" name="' . CSRF_TOKEN . '" value="' . $rotation_token . '"' . XHTML . '>';
+        $rotate_right = '<form method="post" action="' . $_MG_CONF['site_url'] . '/admin.php" style="display:inline">'
+                      . $rotation_common
+                      . '<input type="hidden" name="action" value="right"' . XHTML . '>'
+                      . '<button type="submit" style="border:0;background:transparent;padding:0;cursor:pointer">'
                       . '<img src="' . $_MG_CONF['site_url'] . '/images/rotate_right_icon.gif" alt="'
-                      . $LANG_MG01['rotate_left']  . '" style="border:none;"' . XHTML . '></a>';
-        $rotate_left  = '<a href="' . $_MG_CONF['site_url']
-                      . '/admin.php?mode=rotate&amp;action=left&amp;media_id='
-                      . $row['media_id'] . '&amp;album_id=' . $album_id . '">'
+                      . $LANG_MG01['rotate_right'] . '" style="border:none;"' . XHTML . '></button></form>';
+        $rotate_left  = '<form method="post" action="' . $_MG_CONF['site_url'] . '/admin.php" style="display:inline">'
+                      . $rotation_common
+                      . '<input type="hidden" name="action" value="left"' . XHTML . '>'
+                      . '<button type="submit" style="border:0;background:transparent;padding:0;cursor:pointer">'
                       . '<img src="' . $_MG_CONF['site_url'] . '/images/rotate_left_icon.gif" alt="'
-                      . $LANG_MG01['rotate_right'] . '" style="border:none;"' . XHTML . '></a>';
+                      . $LANG_MG01['rotate_left'] . '" style="border:none;"' . XHTML . '></button></form>';
     }
 
     $resolution = '';
@@ -889,6 +902,8 @@ function MG_mediaEdit($album_id, $media_id, $actionURL='', $mqueue=0, $view=0, $
         'artist'             => $row['artist'],
         'musicalbum'         => $row['album'],
         'genre'              => $row['genre'],
+        'gltoken_name'       => CSRF_TOKEN,
+        'gltoken'            => SEC_createToken(),
     ));
 
     // language items
@@ -980,7 +995,18 @@ function MG_mediaEdit($album_id, $media_id, $actionURL='', $mqueue=0, $view=0, $
 
 function MG_mediaResetRating($album_id, $media_id, $mqueue)
 {
-    global $_MG_CONF, $_TABLES;
+    global $_USER, $_MG_CONF, $_TABLES, $LANG_MG00;
+
+    $album = new mgAlbum($album_id);
+    $table = $mqueue ? $_TABLES['mg_mediaqueue'] : $_TABLES['mg_media'];
+    $owner_id = DB_getItem($table, 'media_user_id', "media_id='" . DB_escapeString($media_id) . "'");
+    if ($album->access != 3 && !SEC_inGroup($album->mod_group_id) && intval($owner_id) != intval($_USER['uid'])) {
+        return COM_showMessageText($LANG_MG00['access_denied_msg']);
+    }
+    if (!SEC_checkToken()) {
+        COM_errorLog('MediaGallery: rating reset rejected because of an invalid CSRF token.', 1);
+        return COM_showMessageText($LANG_MG00['access_denied_msg']);
+    }
 
     DB_change($_TABLES['mg_media'], 'media_rating', 0, 'media_id', DB_escapeString($media_id));
     DB_change($_TABLES['mg_media'], 'media_votes', 0, 'media_id', DB_escapeString($media_id));
@@ -993,7 +1019,18 @@ function MG_mediaResetRating($album_id, $media_id, $mqueue)
 
 function MG_mediaResetViews($album_id, $media_id, $mqueue)
 {
-    global $_MG_CONF, $_TABLES;
+    global $_USER, $_MG_CONF, $_TABLES, $LANG_MG00;
+
+    $album = new mgAlbum($album_id);
+    $table = $mqueue ? $_TABLES['mg_mediaqueue'] : $_TABLES['mg_media'];
+    $owner_id = DB_getItem($table, 'media_user_id', "media_id='" . DB_escapeString($media_id) . "'");
+    if ($album->access != 3 && !SEC_inGroup($album->mod_group_id) && intval($owner_id) != intval($_USER['uid'])) {
+        return COM_showMessageText($LANG_MG00['access_denied_msg']);
+    }
+    if (!SEC_checkToken()) {
+        COM_errorLog('MediaGallery: view reset rejected because of an invalid CSRF token.', 1);
+        return COM_showMessageText($LANG_MG00['access_denied_msg']);
+    }
 
     DB_change($_TABLES['mg_media'], 'media_views', 0, 'media_id', DB_escapeString($media_id));
     $retval = MG_mediaEdit($album_id, $media_id,
@@ -1020,12 +1057,23 @@ function MG_saveMediaEdit($album_id, $media_id, $actionURL)
 {
     global $_USER, $_CONF, $_TABLES, $_MG_CONF, $LANG_MG00, $LANG_MG01, $LANG_MG03;
 
+    $queue = isset($_POST['queue']) ? COM_applyFilter($_POST['queue'], true) : 0;
+    $table = $queue ? $_TABLES['mg_mediaqueue'] : $_TABLES['mg_media'];
+    $album = new mgAlbum($album_id);
+    $owner_id = DB_getItem($table, 'media_user_id', "media_id='" . DB_escapeString($media_id) . "'");
+    if ($album->access != 3 && !SEC_inGroup($album->mod_group_id) && intval($owner_id) != intval($_USER['uid'])) {
+        COM_errorLog('MediaGallery: media edit save rejected because of insufficient access.', 1);
+        return COM_showMessageText($LANG_MG00['access_denied_msg']);
+    }
+    if (!SEC_checkToken()) {
+        COM_errorLog('MediaGallery: media edit save rejected because of an invalid CSRF token.', 1);
+        return COM_showMessageText($LANG_MG00['access_denied_msg']);
+    }
+
     $back = COM_applyFilter($_POST['rpath']);
     if ($back != '') {
         $actionURL = $back;
     }
-
-    $queue = COM_applyFilter($_POST['queue'], true);
 
     $replacefile = 0;
     if (isset($_POST['replacefile'])) {

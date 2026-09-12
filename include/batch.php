@@ -42,11 +42,19 @@ require_once $_CONF['path'] . 'plugins/mediagallery/include/sort.php';
 
 function MG_batchProcess($album_id, $media_id_array, $action, $actionURL = '')
 {
-    global $_CONF, $_TABLES, $_MG_CONF, $LANG_MG01;
+    global $_USER, $_CONF, $_TABLES, $_MG_CONF, $LANG_MG00, $LANG_MG01;
+
+    $album_data = MG_getAlbumData($album_id, array('album_title', 'wm_id'), true);
+    if (!isset($album_data['access']) || ($album_data['access'] != 3 && !SEC_hasRights('mediagallery.admin'))) {
+        COM_errorLog('MediaGallery: batch mutation rejected because the user has no write access to album ' . intval($album_id), 1);
+        return COM_showMessageText($LANG_MG00['access_denied_msg']);
+    }
+    if (!SEC_checkToken()) {
+        COM_errorLog('MediaGallery: batch mutation rejected because of an invalid CSRF token.', 1);
+        return COM_showMessageText($LANG_MG00['access_denied_msg']);
+    }
 
     $numItems = count($media_id_array);
-
-    $album_data = MG_getAlbumData($album_id, array('album_title', 'wm_id'), false);
 
     switch ($action) {
         case 'rrt' :
@@ -121,6 +129,8 @@ function MG_albumResizeConfirm($aid, $actionURL)
         'lang_next'     => $LANG_MG01['next'],
         'action'        => 'doresize',
         's_form_action' => $actionURL,
+        'gltoken_name'  => CSRF_TOKEN,
+        'gltoken'       => SEC_createToken(),
     ));
 
     $retval .= $T->finish($T->parse('output', 'admin'));
@@ -134,6 +144,10 @@ function MG_albumResizeDisplay($aid, $actionURL)
     $album_data = MG_getAlbumData($aid, array('album_title'), true);
 
     if ($album_data['access'] != 3) {
+        COM_redirect($actionURL);
+    }
+    if (!SEC_checkToken()) {
+        COM_errorLog('MediaGallery: album resize rejected because of an invalid CSRF token.', 1);
         COM_redirect($actionURL);
     }
 
@@ -213,6 +227,8 @@ function MG_albumRebuildConfirm($aid, $actionURL)
         'lang_next'     => $LANG_MG01['next'],
         'action'        => 'dorebuild',
         's_form_action' => $actionURL,
+        'gltoken_name'  => CSRF_TOKEN,
+        'gltoken'       => SEC_createToken(),
     ));
 
     $retval .= $T->finish($T->parse('output', 'admin'));
@@ -227,6 +243,10 @@ function MG_albumRebuildThumbs($aid, $actionURL)
     $album_data = MG_getAlbumData($aid, array('album_title'), true);
 
     if ($album_data['access'] != 3) {
+        COM_redirect($actionURL);
+    }
+    if (!SEC_checkToken()) {
+        COM_errorLog('MediaGallery: thumbnail rebuild rejected because of an invalid CSRF token.', 1);
         COM_redirect($actionURL);
     }
 
@@ -309,6 +329,10 @@ function MG_batchDeleteMedia($album_id, $media_id_array, $actionURL = '')
                    . "User id: {$_USER['uid']}, Username: {$_USER['username']}, IP: $REMOTE_ADDR",1);
         return COM_showMessageText($LANG_MG00['access_denied_msg']);
     }
+    if (!SEC_checkToken()) {
+        COM_errorLog('MediaGallery: media deletion rejected because of an invalid CSRF token.', 1);
+        return COM_showMessageText($LANG_MG00['access_denied_msg']);
+    }
     $mediaCount = $A['media_count'];
 
     $numItems = count($media_id_array);
@@ -351,6 +375,10 @@ function MG_batchMoveMedia($album_id, $destination, $media_id_array, $actionURL 
     if ($access != 3 && !SEC_hasRights('mediagallery.admin')) {
         COM_errorLog("Someone has tried to illegally delete items from album in Media Gallery. "
                    . "User id: {$_USER['uid']}, Username: {$_USER['username']}, IP: $REMOTE_ADDR",1);
+        return COM_showMessageText($LANG_MG00['access_denied_msg']);
+    }
+    if (!SEC_checkToken()) {
+        COM_errorLog('MediaGallery: media move rejected because of an invalid CSRF token.', 1);
         return COM_showMessageText($LANG_MG00['access_denied_msg']);
     }
 
@@ -478,7 +506,9 @@ function MG_deleteAlbumConfirm($album_id, $actionURL = '')
         'lang_title'             => $LANG_MG01['title'],
         'lang_description'       => $LANG_MG01['description'],
         'lang_move_all_media'    => $LANG_MG01['move_all_media'],
-        'lang_album_delete_help' => $LANG_MG01['album_delete_help']
+        'lang_album_delete_help' => $LANG_MG01['album_delete_help'],
+        'gltoken_name'          => CSRF_TOKEN,
+        'gltoken'               => SEC_createToken()
     ));
 
     $retval .= $T->finish($T->parse('output', 'admin'));
@@ -509,6 +539,10 @@ function MG_deleteAlbum($album_id, $target_id, $actionURL='')
     if ($album->access != 3) {
         COM_errorLog("MediaGallery: Someone has tried to illegally delete an album in Media Gallery. "
                    . "User id: {$_USER['uid']}, Username: {$_USER['username']}, IP: $REMOTE_ADDR",1);
+        return COM_showMessageText($LANG_MG00['access_denied_msg']);
+    }
+    if (!SEC_checkToken()) {
+        COM_errorLog('MediaGallery: album deletion rejected because of an invalid CSRF token.', 1);
         return COM_showMessageText($LANG_MG00['access_denied_msg']);
     }
 

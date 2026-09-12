@@ -1057,10 +1057,36 @@ function MG_rotateMedia($album_id, $media_id, $direction, $actionURL = '')
 
     $album_id = (int) $album_id;
     $media_id = (int) $media_id;
-    $sql = "SELECT media_filename, media_mime_ext FROM {$_TABLES['mg_media']} "
+
+    $album = new mgAlbum($album_id);
+    if (!isset($album->id) || !$album->valid || ($album->access != 3 && !SEC_hasRights('mediagallery.admin'))) {
+        COM_errorLog('MediaGallery: rotate rejected because the user has no write access to album ' . $album_id, 1);
+        if ($actionURL == -1 || $actionURL == '') {
+            return false;
+        }
+        COM_redirect($_MG_CONF['site_url'] . '/index.php');
+    }
+
+    $linkCount = DB_count($_TABLES['mg_media_albums'], array('album_id', 'media_id'), array($album_id, $media_id));
+    if ($linkCount < 1) {
+        COM_errorLog('MediaGallery: rotate rejected because media ' . $media_id . ' is not in album ' . $album_id, 1);
+        if ($actionURL == -1 || $actionURL == '') {
+            return false;
+        }
+        COM_redirect($_MG_CONF['site_url'] . '/album.php?aid=' . $album_id);
+    }
+
+    $sql = "SELECT media_filename, media_mime_ext, media_type FROM {$_TABLES['mg_media']} "
          . "WHERE media_id = " . $media_id;
     $result = DB_query($sql);
-    list($filename, $mime_ext) = DB_fetchArray($result);
+    list($filename, $mime_ext, $media_type) = DB_fetchArray($result);
+    if ((int) $media_type !== 0) {
+        COM_errorLog('MediaGallery: rotate rejected for non-image media ' . $media_id, 1);
+        if ($actionURL == -1 || $actionURL == '') {
+            return false;
+        }
+        COM_redirect($_MG_CONF['site_url'] . '/album.php?aid=' . $album_id);
+    }
     if (DB_error()) {
         COM_errorLog("MG_rotateMedia: Unable to retrieve media object data");
         if ($actionURL == '') {
