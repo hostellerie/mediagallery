@@ -69,6 +69,40 @@ jobs:
           ! unzip -Z1 "dist/${ARCHIVE}" | grep -q '^mediagallery/.github/'
           ! unzip -Z1 "dist/${ARCHIVE}" | grep -q '^mediagallery/dist/'
 
+          # Geeklog 2.2.2 validates every archive basename with
+          # Geeklog\FileSystem::isValidFileName(): only A-Z, a-z, 0-9,
+          # underscore, dot and hyphen are allowed; the name may not start or
+          # end with a dot and may not contain two consecutive dots.
+          python3 - <<'PY'
+          import os
+          import re
+          import sys
+          import zipfile
+
+          archive = os.path.join('dist', os.environ['ARCHIVE'])
+          invalid = []
+
+          with zipfile.ZipFile(archive) as zf:
+              for path in zf.namelist():
+                  name = path.rstrip('/').rsplit('/', 1)[-1]
+                  if not name:
+                      continue
+                  valid = (
+                      not name.startswith('.')
+                      and not name.endswith('.')
+                      and '..' not in name
+                      and re.fullmatch(r'[0-9A-Za-z_.-]+', name) is not None
+                  )
+                  if not valid:
+                      invalid.append(path)
+
+          if invalid:
+              print('Unsafe archive filenames for Geeklog 2.2.2:')
+              for path in invalid:
+                  print(' - ' + path)
+              sys.exit(1)
+          PY
+
       - name: Commit archive to modernize-1.8.0
         shell: bash
         run: |
