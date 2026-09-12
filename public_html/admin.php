@@ -230,7 +230,14 @@ if ($mode === 'edit') {
 
         case 'upload' :
             require_once $include . 'newmedia.php';
-            $display .= MG_saveUserUpload($album_id);
+            $uploadResult = MG_saveUserUpload($album_id);
+            if (!empty($_CONF['debug_image_upload'])) {
+                COM_errorLog(
+                    'MG DEBUG admin after MG_saveUserUpload: type=' . gettype($uploadResult)
+                    . ' length=' . strlen((string) $uploadResult)
+                );
+            }
+            $display .= $uploadResult;
             break;
 
         case 'ftp' :
@@ -299,7 +306,17 @@ if ($mode === 'edit') {
             break;
     }
 
+    if (isset($action) && $action === 'upload' && !empty($_CONF['debug_image_upload'])) {
+        COM_errorLog('MG DEBUG admin before MG_createHTMLDocument: length=' . strlen((string) $display));
+    }
     $display = MG_createHTMLDocument($display);
+    if (isset($action) && $action === 'upload' && !empty($_CONF['debug_image_upload'])) {
+        COM_errorLog(
+            'MG DEBUG admin after MG_createHTMLDocument: type=' . gettype($display)
+            . ' length=' . strlen((string) $display)
+        );
+        COM_errorLog('MG DEBUG admin before COM_output');
+    }
     COM_output($display);
 } elseif ($mode == $LANG_MG01['delete'] && !empty($LANG_MG01['delete'])) {
     $action   = Input::fPost('action');
