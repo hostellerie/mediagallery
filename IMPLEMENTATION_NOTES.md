@@ -71,7 +71,8 @@ Implemented:
 Still review before RC:
 
 - MIME/extension consistency for ambiguous generic files;
-- temporary-file naming and cleanup on interrupted processing;
+- deterministic upload failure paths now remove the main `tmpPath`, and special-image thumbnail conversion removes its `wip*.jpg` file on success/failure;
+- still define a stale-temp policy for genuinely interrupted/killed PHP requests;
 - permissions around less common album mutation/admin paths;
 - whether the legacy async endpoint can be removed completely after live compatibility testing.
 

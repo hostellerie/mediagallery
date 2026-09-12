@@ -76,7 +76,8 @@ Geeklog's plugin uploader replaces the old public plugin directory before loadin
 - [x] Remote Media restricted to public HTTP(S), with private/reserved/localhost rejection, redirect blocking and bounded downloads.
 - [x] Root Album (`album_id=0`) upload prevention.
 - [ ] Review MIME/extension consistency for ambiguous generic files.
-- [ ] Review temporary-file cleanup after interrupted processing.
+- [x] Clean deterministic upload-failure and special-image `wip` temporary files.
+- [ ] Define safe stale-temp cleanup for genuinely interrupted/killed requests.
 - [ ] Review less common album mutation/admin permission paths.
 - [ ] Decide whether the legacy async upload endpoint can now be removed.
 

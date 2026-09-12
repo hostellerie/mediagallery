@@ -162,8 +162,15 @@ function MG_createThumbnail($srcImage, $imageThumb, $mimeType, $aid)
         if ($rc == false) {
             COM_errorLog("MG_createThumbnail: Error resizing uploaded image to thumbnail size.");
             @unlink($srcImage);
+            if ($tmpImage != '') {
+                @unlink($tmpImage);
+            }
             return array(false, $msg);
         }
+    }
+
+    if ($tmpImage != '') {
+        @unlink($tmpImage);
     }
 
     return array(true, '');
@@ -771,6 +778,7 @@ function MG_getFile($filename, $file, $album_id, $opt = array())
     }
 
     if (!($album->valid_formats & $format_type)) {
+        @unlink($tmpPath);
         return array(false, $LANG_MG02['format_not_allowed']);
     }
 
