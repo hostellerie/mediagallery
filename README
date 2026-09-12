@@ -18,14 +18,26 @@ MediaGallery 1.8.0 modernizes the plugin while preserving upgrade safety for exi
 
 Main goals:
 
-* keep compatibility with existing 1.7.x installations;
-* support standard single-site Geeklog installations without configuration changes;
-* support multisite deployments with per-site media storage;
-* migrate remaining administrator preferences away from hard-coded values and into the Geeklog Configuration API;
+* keep upgrade compatibility with existing 1.7.x installations;
+* require Geeklog 2.1.1 or newer;
+* support standard single-site and shared-code multisite deployments with persistent per-site media storage;
+* keep administrator preferences in the Geeklog Configuration API where appropriate;
 * modernize templates, JavaScript dependencies, accessibility and SEO where needed;
 * retain current bug fixes and improve PHP 8.x compatibility;
 * improve interoperability with other Geeklog plugins through public plugin services;
-* modernize MediaGallery email notifications using Geeklog-supported templates.
+* use Geeklog-native mail transport for MediaGallery notifications.
+
+Image-processing requirement
+----------------------------
+Image uploads require a working image-processing backend because MediaGallery generates thumbnails and display images. PDF and ZIP uploads do not require image conversion and may still work when the image backend is unavailable.
+
+MediaGallery uses Geeklog's configured `$_CONF['image_lib']` backend:
+
+* `gdlib`: the PHP GD extension must be installed and enabled;
+* `imagemagick`: the ImageMagick `identify` and `convert` commands must be executable;
+* `netpbm`: the configured NetPBM tools must be executable.
+
+MediaGallery 1.8.0 checks the configured backend before resize, conversion, rotation and watermark operations. If the backend is unavailable, MediaGallery returns a clear error instead of reaching an undefined image-processing function.
 
 Persistent media storage
 ------------------------
@@ -51,8 +63,8 @@ which produces:
 
 The historical `public_html/mediagallery/mediaobjects/` directory remains a migration source only. It is no longer the 1.8 runtime storage location. This is necessary because Geeklog's native plugin ZIP uploader replaces the complete `public_html/mediagallery/` directory during an update.
 
-### Mandatory preflight when upgrading 1.7.x with Geeklog's ZIP uploader
-
+Mandatory preflight when upgrading 1.7.x with Geeklog's ZIP uploader
+--------------------------------------------------------------------
 Geeklog removes the old plugin public directory before it loads the new plugin upgrade code. Therefore a 1.7.x site that still stores media below `public_html/mediagallery/mediaobjects/` must migrate those files before uploading the 1.8.0 ZIP.
 
 Extract the 1.8.0 archive on the server and run:
@@ -65,13 +77,11 @@ Fresh 1.8.0 installations seed the same persistent storage automatically. Once a
 
 Configuration
 -------------
-Recent MediaGallery versions no longer use the historical manually edited plugin config.php file.
+Recent MediaGallery versions no longer use the historical manually edited plugin `config.php` file.
 
-MediaGallery 1.8.0 continues this direction. Administrator preferences that remain hard-coded in functions.inc will be reviewed and moved to the Geeklog Configuration API when still relevant.
+MediaGallery 1.8.0 continues this direction. Runtime-derived values such as plugin URLs, template paths and media-storage paths stay outside administrator-editable Configuration API settings.
 
-Derived values such as plugin URLs, template paths and media storage paths should remain runtime values and should not become arbitrary administrator-editable settings.
-
-Obsolete settings related only to legacy technologies such as Flash, QuickTime, Windows Media Player, MooTools or SimpleViewer will be removed where the current code no longer requires them.
+Obsolete fresh-install settings related only to legacy technologies such as Flash/FlowPlayer have been removed. Old upgraded installations may temporarily retain harmless obsolete rows until their deletion path has been validated on all supported Geeklog versions.
 
 Upgrade policy
 --------------
@@ -80,55 +90,57 @@ Before upgrading:
 * back up the Geeklog database;
 * back up MediaGallery media files;
 * record any local modifications;
-* test the upgrade on a staging or local installation first.
+* test the upgrade on a staging or local installation first;
+* for a 1.7.x site using the historical media directory, run the pre-migration tool before using Geeklog's ZIP plugin uploader.
 
 The 1.8.0 upgrade preserves existing configuration values, adds only missing Configuration API settings, and migrates legacy media by copy-and-verify semantics without deleting the source.
 
-Existing media directories
---------------------------
-Traditional installations use these directories:
+Media directories
+-----------------
+Historical 1.7.x installations may contain:
 
     public_html/mediagallery/mediaobjects/covers
     public_html/mediagallery/mediaobjects/disp
     public_html/mediagallery/mediaobjects/orig
     public_html/mediagallery/mediaobjects/tn
 
-Multisite installations may instead use the same internal MediaGallery layout beneath the site-specific image path, for example:
+MediaGallery 1.8.0 uses the same internal layout below Geeklog's persistent image path, for example:
 
-    public_html/images/site-a/mediagallery/covers
-    public_html/images/site-a/mediagallery/disp
-    public_html/images/site-a/mediagallery/orig
-    public_html/images/site-a/mediagallery/tn
+    public_html/images/mediagallery/covers
+    public_html/images/mediagallery/disp
+    public_html/images/mediagallery/orig
+    public_html/images/mediagallery/tn
+
+A multisite deployment can use a site-specific image root such as:
+
+    public_html/images/site-a/mediagallery/
 
 Templates, accessibility and SEO
 --------------------------------
-The 1.8.0 work includes an audit of the MediaGallery .thtml templates and associated JavaScript, with current HTML5 markup, responsive output, accessibility, meaningful image alt text, clear heading structure, canonical/stable URLs where needed, continued XML Sitemap compatibility and removal of obsolete dependencies where safe.
+The 1.8.0 work includes modernization of MediaGallery `.thtml` templates and associated JavaScript, with HTML5 output, responsive behavior, accessibility improvements, semantic headings, canonical URLs and removal of obsolete playback dependencies where safe.
 
 Interoperability
 ----------------
-MediaGallery 1.8.0 plans to expose supported album information through the Geeklog Plugin API instead of requiring other plugins to query mg_* tables directly.
+MediaGallery 1.8.0 exposes album discovery through Geeklog's native plugin-service convention so other plugins can consume permitted album trees without directly querying `mg_*` tables.
 
 Email notifications
 -------------------
-MediaGallery notification emails will be reviewed for migration to Geeklog-supported email templates, including plaintext and HTML variants where supported by the target Geeklog version.
+Moderator notifications use Geeklog `COM_mail()` transport with HTML and plaintext templates instead of the historical bundled PHPMailer path.
 
-Installable test archives
--------------------------
-A manual GitHub Actions workflow named **Build MediaGallery installable archive** is available on this branch.
+Installable test archive
+------------------------
+A GitHub Actions workflow named **Build MediaGallery installable archive** builds and validates the current development package when an online test archive is needed.
 
-Run it from the GitHub Actions interface when an online installation package is needed. An optional version label can be supplied; the default is `1.8.0-dev`.
+The branch keeps one fixed test archive:
 
-The workflow builds:
+    dist/mediagallery_1.8.0_2.1.1.zip
 
-    dist/mediagallery-VERSION.zip
-    dist/mediagallery-VERSION.zip.sha256
+The ZIP contains one top-level `mediagallery/` directory and excludes `.github/`, `dist/`, `.gitignore`, repository metadata and build-only directories. The workflow validates archive integrity, required 1.8 migration/storage helpers and Geeklog 2.2.2 filename rules. No separate checksum file is retained in `dist/`.
 
-The ZIP contains a single top-level `mediagallery/` directory and excludes repository metadata, GitHub workflow files, generated distribution files, IDE data, local media objects and temporary files.
-
-The generated ZIP and SHA-256 file are published as a GitHub Actions artifact for 14 days. Generated binary archives are not committed to the repository.
+The archive is intentionally rebuilt only at meaningful test points, not after every source commit.
 
 Compatibility target
 --------------------
-The intended compatibility range is Geeklog 2.1.1 through 2.2.2 where practical. PHP 5.6 is included in syntax linting to protect legacy Geeklog 2.1.1 deployments, while PHP 7.4, 8.1 and 8.3 are also checked during development.
+MediaGallery 1.8.0 requires Geeklog 2.1.1 or newer. Development protects PHP 5.6 compatibility for legacy Geeklog 2.1.1 deployments and also checks PHP 7.4, 8.1 and 8.3 syntax/runtime compatibility as the release is finalized.
 
-For the detailed implementation plan, see ROADMAP.md.
+For the detailed implementation and release-candidate checklist, see ROADMAP.md and IMPLEMENTATION_NOTES.md.
