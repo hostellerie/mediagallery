@@ -19,6 +19,9 @@ jobs:
           ref: modernize-1.8.0
           fetch-depth: 0
 
+      - name: Prepare patch
+        run: python3 .github/mutation-security-fix.py
+
       - name: Apply patch
         run: python3 .github/mutation-security-patch.py
 
