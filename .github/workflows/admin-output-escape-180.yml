@@ -16,20 +16,24 @@ jobs:
         with:
           ref: modernize-1.8.0
           fetch-depth: 0
-      - name: Apply admin output escaping
+      - name: Apply media view output cleanup
         run: python tools/admin_output_escape_180.py
-      - name: Validate changed PHP
+      - name: Validate changed PHP and templates
         shell: bash
         run: |
           set -euo pipefail
-          php -l include/albumedit.php
-          php -l admin/category.php
-          grep -n "MG_escapeHTML(\$album->title)" include/albumedit.php
-          grep -n "MG_escapeHTML(\$A\['cat_name'\])" admin/category.php
-      - name: Commit admin output escaping
+          php -l include/lib-media.php
+          grep -n "MG_escapeHTML(\$property)" include/lib-media.php
+          grep -R -n 'href="{property}" onclick="return popitup(this.href)"' templates/view_image.thtml templates/view_audio.thtml templates/view_video.thtml
+          grep -R -n 'href="{url_slideshow}"{slideshow_onclick}' templates/view_image.thtml templates/view_audio.thtml templates/view_video.thtml
+          if grep -R -n "popitup('{property}')" templates/view_image.thtml templates/view_audio.thtml templates/view_video.thtml; then
+            echo 'Dynamic property URL remains in inline JavaScript' >&2
+            exit 1
+          fi
+      - name: Commit media view output cleanup
         run: |
           git config user.name 'hostellerie'
           git config user.email 'hostellerie.org@gmail.com'
-          git add include/albumedit.php admin/category.php ROADMAP.md
-          git commit -m 'Harden MediaGallery admin form output escaping'
+          git add include/lib-media.php templates/view_image.thtml templates/view_audio.thtml templates/view_video.thtml ROADMAP.md
+          git commit -m 'Harden MediaGallery media view attributes'
           git push origin HEAD:modernize-1.8.0
