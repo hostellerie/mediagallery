@@ -56,6 +56,31 @@ With `discard_original = 1`, repeat one PNG/JPEG upload and confirm no orphan or
 - FTP import accepts a file inside configured `ftp_path` and rejects a forged outside path or escaping symlink.
 - Remote Media accepts a normal public HTTP(S) thumbnail and rejects localhost/private/reserved targets.
 
+## Batch-session security
+
+- Start a resize/rebuild or media batch action and confirm automatic continuation still advances the session.
+- Confirm continuation is submitted through POST and rejects a direct GET request.
+- Confirm missing or invalid CSRF tokens are rejected.
+- Confirm the session owner can continue and cancel the session.
+- Confirm another normal user cannot continue or cancel the session.
+- Confirm a MediaGallery administrator can recover/terminate an eligible session.
+
+## Moderation
+
+Run these checks with an album that has moderation enabled.
+
+- Upload a media item as a normal member and confirm the row is stored in `mg_mediaqueue` with its relation in `mg_media_album_queue`, not in the active media tables.
+- Confirm the MediaGallery submission appears in Geeklog's native moderation screen.
+- Confirm a user with `mediagallery.admin` can open **Edit** even when that user does not have `mediagallery.config`.
+- Confirm the same user cannot access the normal MediaGallery configuration pages without `mediagallery.config`.
+- Edit a queued item's title/description and confirm the queued media remains bound to its original album.
+- Forge a different `album_id` while saving a queued item and confirm the save is rejected.
+- Approve a submission and confirm its full media row moves from `mg_mediaqueue` to `mg_media`, its album relation moves to `mg_media_albums`, the queue rows disappear and the album counter is correct.
+- Confirm the approved media renders normally and the approval notification is sent when mail is configured.
+- Reject a submission and confirm both queue rows disappear.
+- Confirm rejection removes the original, display image and all generated thumbnail sizes without affecting unrelated media.
+- Confirm moderation mutations are rejected for a user without `mediagallery.admin`.
+
 ## Persistent media storage
 
 On a standard single-site installation:
