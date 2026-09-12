@@ -73,6 +73,8 @@ jobs:
           unzip -Z1 "dist/${ARCHIVE}" | grep -qx 'mediagallery/functions.inc'
           unzip -Z1 "dist/${ARCHIVE}" | grep -qx 'mediagallery/autoinstall.php'
           unzip -Z1 "dist/${ARCHIVE}" | grep -qx 'mediagallery/BUILD_INFO.txt'
+          unzip -Z1 "dist/${ARCHIVE}" | grep -qx 'mediagallery/include/storage_180.php'
+          unzip -Z1 "dist/${ARCHIVE}" | grep -qx 'mediagallery/tools/migrate-media-storage.php'
           unzip -Z1 "dist/${ARCHIVE}" | grep -qx 'mediagallery/public_html/mediaobjects/generic.png'
           unzip -Z1 "dist/${ARCHIVE}" | grep -qx 'mediagallery/public_html/mediaobjects/missing.png'
           ! unzip -Z1 "dist/${ARCHIVE}" | grep -q '^mediagallery/.github/'
