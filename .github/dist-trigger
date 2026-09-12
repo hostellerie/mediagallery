@@ -2,4 +2,4 @@ Build requested for MediaGallery installable archive.
 Source target: modernize-1.8.0
 Archive: mediagallery_1.8.0_2.1.1.zip
 Requested: 2026-09-12
-Reason: rebuild after final Geeklog 2.1.1 minimum-version metadata and Root Album UI changes
+Reason: rebuild after persistent media storage migration, upgrade hardening and view.php fix
