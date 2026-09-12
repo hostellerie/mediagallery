@@ -1,0 +1,29 @@
+name: Add MediaGallery ZIP bomb guard
+
+on:
+  push:
+    paths:
+      - '.github/zip-bomb-trigger'
+
+permissions:
+  contents: write
+
+jobs:
+  guard:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: modernize-1.8.0
+          fetch-depth: 0
+      - name: Apply ZIP size guard
+        run: python tools/add_zip_bomb_guard.py
+      - name: Validate PHP
+        run: php -l include/lib-upload.php
+      - name: Commit ZIP size guard
+        run: |
+          git config user.name 'hostellerie'
+          git config user.email 'hostellerie.org@gmail.com'
+          git add include/lib-upload.php
+          git commit -m 'Bound MediaGallery ZIP extraction size'
+          git push origin HEAD:modernize-1.8.0
