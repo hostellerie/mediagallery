@@ -31,7 +31,6 @@ jobs:
           git diff --check
 
           rm -f .github/scripts/finalize-gl211-root.py
-          rm -f .github/workflows/finalize-gl211-root.yml
           rm -f .github/gl211-root-trigger
 
           git config user.name 'github-actions[bot]'
