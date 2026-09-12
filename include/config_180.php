@@ -191,7 +191,7 @@ function MG_ensureConfig180()
 
 function MG_addConfigLanguage180()
 {
-    global $LANG_configsections, $LANG_confignames;
+    global $LANG_configsections, $LANG_confignames, $LANG_fs;
 
     if (!isset($LANG_configsections['mediagallery'])) {
         $LANG_configsections['mediagallery'] = array();
@@ -199,9 +199,14 @@ function MG_addConfigLanguage180()
     if (!isset($LANG_confignames['mediagallery'])) {
         $LANG_confignames['mediagallery'] = array();
     }
+    if (!isset($LANG_fs['mediagallery'])) {
+        $LANG_fs['mediagallery'] = array();
+    }
 
-    if (!isset($LANG_configsections['mediagallery']['fs_runtime180'])) {
-        $LANG_configsections['mediagallery']['fs_runtime180'] = 'Runtime and advanced behavior';
+    // Geeklog's Configuration UI resolves fieldset legends from $LANG_fs,
+    // not from $LANG_configsections.
+    if (!isset($LANG_fs['mediagallery']['fs_runtime180'])) {
+        $LANG_fs['mediagallery']['fs_runtime180'] = 'Runtime and advanced behavior';
     }
 
     $labels = array(
