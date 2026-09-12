@@ -1,0 +1,39 @@
+name: MediaGallery HTML attribute escaping
+
+on:
+  push:
+    paths:
+      - '.github/attribute-escape-trigger'
+
+permissions:
+  contents: write
+
+jobs:
+  harden:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: modernize-1.8.0
+          fetch-depth: 0
+      - name: Apply HTML escaping hardening
+        run: python tools/attribute_escape_180.py
+      - name: Validate changed PHP
+        shell: bash
+        run: |
+          set -euo pipefail
+          php -l include/common.php
+          php -l include/classMedia.php
+          php -l include/mediamanage.php
+          php -l public_html/search.php
+          grep -n "function MG_escapeHTML" include/common.php
+          grep -n "MG_escapeHTML(strip_tags(\$this->title))" include/classMedia.php
+          grep -n "MG_escapeHTML(\$row\['media_title'\])" include/mediamanage.php
+          grep -n "MG_escapeHTML(\$S\['keywords'\])" public_html/search.php
+      - name: Commit HTML escaping hardening
+        run: |
+          git config user.name 'hostellerie'
+          git config user.email 'hostellerie.org@gmail.com'
+          git add include/common.php include/classMedia.php include/mediamanage.php public_html/search.php ROADMAP.md
+          git commit -m 'Harden MediaGallery HTML attribute escaping'
+          git push origin HEAD:modernize-1.8.0
