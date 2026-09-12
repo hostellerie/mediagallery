@@ -46,6 +46,13 @@ jobs:
             --exclude='.idea/' \
             --exclude='tmp/'
 
+          cat > package/mediagallery/BUILD_INFO.txt <<EOF
+          MediaGallery 1.8.0 test archive
+          Geeklog target: 2.0.0+
+          Source branch: modernize-1.8.0
+          Source commit: ${SOURCE_SHA}
+          EOF
+
           (
             cd package
             zip -qr "../dist/${ARCHIVE}" mediagallery
@@ -65,11 +72,16 @@ jobs:
           unzip -t "dist/${ARCHIVE}" >/dev/null
           unzip -Z1 "dist/${ARCHIVE}" | grep -qx 'mediagallery/functions.inc'
           unzip -Z1 "dist/${ARCHIVE}" | grep -qx 'mediagallery/autoinstall.php'
+          unzip -Z1 "dist/${ARCHIVE}" | grep -qx 'mediagallery/BUILD_INFO.txt'
           unzip -Z1 "dist/${ARCHIVE}" | grep -qx 'mediagallery/public_html/mediaobjects/generic.png'
           unzip -Z1 "dist/${ARCHIVE}" | grep -qx 'mediagallery/public_html/mediaobjects/missing.png'
           ! unzip -Z1 "dist/${ARCHIVE}" | grep -q '^mediagallery/.github/'
           ! unzip -Z1 "dist/${ARCHIVE}" | grep -q '^mediagallery/dist/'
           ! unzip -Z1 "dist/${ARCHIVE}" | grep -q '^mediagallery/.gitignore$'
+
+          # Verify that the package contains the fresh-install/enable-state guard.
+          unzip -p "dist/${ARCHIVE}" mediagallery/include/config_180.php \
+            | grep -q "isset(\$_MG_CONF\['installed_version'\])"
 
           # Geeklog 2.2.2 validates every archive basename with
           # Geeklog\FileSystem::isValidFileName(): only A-Z, a-z, 0-9,
