@@ -10,7 +10,7 @@ if (strpos(strtolower($_SERVER['PHP_SELF']), strtolower(basename(__FILE__))) !==
     die('This file can not be used on its own!');
 }
 
-function MG_prepareWorkDirectory180($path)
+function MG_prepareDirectory180($path)
 {
     if (is_dir($path)) {
         return is_writable($path);
@@ -20,8 +20,48 @@ function MG_prepareWorkDirectory180($path)
         return true;
     }
 
-    COM_errorLog('Media Gallery 1.8.0: unable to create working directory ' . $path);
+    COM_errorLog('Media Gallery 1.8.0: unable to create directory ' . $path);
     return false;
+}
+
+/**
+ * Resolve the public URL that corresponds to Geeklog's path_images.
+ *
+ * images_url is supported when a site explicitly defines it. Otherwise the
+ * URL is derived from path_images when that directory is inside path_html.
+ * No host-name or site-id heuristics are used.
+ *
+ * @return string Empty string when no safe public URL can be derived.
+ */
+function MG_getImagesUrl180()
+{
+    global $_CONF;
+
+    if (!empty($_CONF['images_url'])) {
+        return rtrim($_CONF['images_url'], '/');
+    }
+
+    if (empty($_CONF['path_images']) || empty($_CONF['path_html']) || empty($_CONF['site_url'])) {
+        return '';
+    }
+
+    $imagesPath = rtrim(str_replace('\\', '/', $_CONF['path_images']), '/');
+    $htmlPath = rtrim(str_replace('\\', '/', $_CONF['path_html']), '/');
+
+    if ($imagesPath === $htmlPath) {
+        return rtrim($_CONF['site_url'], '/');
+    }
+
+    if (strpos($imagesPath . '/', $htmlPath . '/') !== 0) {
+        return '';
+    }
+
+    $relativePath = ltrim(substr($imagesPath, strlen($htmlPath)), '/');
+    if ($relativePath === '') {
+        return rtrim($_CONF['site_url'], '/');
+    }
+
+    return rtrim($_CONF['site_url'], '/') . '/' . $relativePath;
 }
 
 function MG_applyRuntimeConfiguration180()
@@ -62,16 +102,19 @@ function MG_applyRuntimeConfiguration180()
     $_MG_CONF['template_path'] = $_CONF['path'] . 'plugins/mediagallery/templates';
 
     /*
-     * Public media storage and private working storage are independent.
-     * path_images/images_url decide where published media lives.
-     * path_data always owns temporary and import working files when available.
+     * Paths that identify a site are runtime values, never shared plugin
+     * configuration. Public media follows path_images. Private working files
+     * follow path_data. This keeps shared-code multisite installations isolated
+     * without introducing a MediaGallery-specific site identifier.
      */
-    $hasSiteImageStorage = !empty($_CONF['path_images']) && !empty($_CONF['images_url']);
+    $imagesUrl = MG_getImagesUrl180();
 
-    if ($hasSiteImageStorage) {
+    if (!empty($_CONF['path_images']) && $imagesUrl !== '') {
         $_MG_CONF['path_mediaobjects'] = rtrim($_CONF['path_images'], '/\\') . '/mediagallery/';
-        $_MG_CONF['mediaobjects_url'] = rtrim($_CONF['images_url'], '/') . '/mediagallery';
+        $_MG_CONF['mediaobjects_url'] = $imagesUrl . '/mediagallery';
+        MG_prepareDirectory180($_MG_CONF['path_mediaobjects']);
     } else {
+        // Standard / legacy MediaGallery location.
         $_MG_CONF['path_mediaobjects'] = $_CONF['path_html'] . 'mediagallery/mediaobjects/';
         $_MG_CONF['mediaobjects_url'] = $_CONF['site_url'] . '/mediagallery/mediaobjects';
     }
@@ -81,8 +124,8 @@ function MG_applyRuntimeConfiguration180()
         $_MG_CONF['tmp_path'] = $workRoot . 'tmp/';
         $_MG_CONF['ftp_path'] = $workRoot . 'uploads/';
 
-        MG_prepareWorkDirectory180($_MG_CONF['tmp_path']);
-        MG_prepareWorkDirectory180($_MG_CONF['ftp_path']);
+        MG_prepareDirectory180($_MG_CONF['tmp_path']);
+        MG_prepareDirectory180($_MG_CONF['ftp_path']);
     }
 }
 
@@ -126,6 +169,15 @@ function MG_updateConfig180()
     $existing = $c->get_config($group);
     if (!is_array($existing)) {
         $existing = array();
+    }
+
+    // These values are site-specific runtime paths. They must not live in the
+    // shared Configuration API on either Geeklog 2.1.1 or 2.2.2.
+    foreach (array('tmp_path', 'ftp_path') as $runtimePath) {
+        if (array_key_exists($runtimePath, $existing)) {
+            $c->del($runtimePath, $group);
+            unset($existing[$runtimePath]);
+        }
     }
 
     if (!array_key_exists('rating_speedlimit', $existing)) {
@@ -176,8 +228,12 @@ function MG_ensureConfig180()
     }
 
     $existing = $c->get_config('mediagallery');
+    $needsUpdate = !is_array($existing)
+        || !array_key_exists('rating_speedlimit', $existing)
+        || array_key_exists('tmp_path', $existing)
+        || array_key_exists('ftp_path', $existing);
 
-    if (!is_array($existing) || !array_key_exists('rating_speedlimit', $existing)) {
+    if ($needsUpdate) {
         if (!MG_updateConfig180()) {
             return;
         }
@@ -243,8 +299,10 @@ function MG_getStorageInfo180()
 {
     global $_CONF, $_MG_CONF;
 
+    $imagesUrl = MG_getImagesUrl180();
+
     return array(
-        'mode' => (!empty($_CONF['path_images']) && !empty($_CONF['images_url']))
+        'mode' => (!empty($_CONF['path_images']) && $imagesUrl !== '')
             ? 'site-images'
             : 'legacy',
         'media_path' => isset($_MG_CONF['path_mediaobjects']) ? $_MG_CONF['path_mediaobjects'] : '',
