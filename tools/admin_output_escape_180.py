@@ -6,55 +6,40 @@ def replace_once(text, old, new, label):
         raise SystemExit('Expected one marker for %s, found %d' % (label, text.count(old)))
     return text.replace(old, new, 1)
 
-# Album editor: values rendered into input/textarea contexts must be escaped at
-# output time. Also harden locally generated option labels/attribute values.
-p = Path('include/albumedit.php')
+# Media property URLs are internal, but they belong to href attributes. Escape
+# them once in the producer and keep them out of JavaScript string literals.
+p = Path('include/lib-media.php')
 text = p.read_text(encoding='utf-8')
 text = replace_once(text,
-    "            . '>' . $themes[$i] . '</option>';",
-    "            . '>' . MG_escapeHTML($themes[$i]) . '</option>';",
-    'album theme label')
-text = replace_once(text,
-    "            . '>' . COM_getDisplayName($row['uid']) . '</option>';",
-    "            . '>' . MG_escapeHTML(COM_getDisplayName($row['uid'])) . '</option>';",
-    'album owner display name')
-text = replace_once(text,
-    "        $wm_select .= '<option value=\"' . $row['filename'] . '\"'",
-    "        $wm_select .= '<option value=\"' . MG_escapeHTML($row['filename']) . '\"'",
-    'watermark option value')
-text = replace_once(text,
-    "                    . '>' . $row['filename'] . '</option>';",
-    "                    . '>' . MG_escapeHTML($row['filename']) . '</option>';",
-    'watermark option label')
-text = replace_once(text,
-    "            $wm_current = '<img src=\"' . $_MG_CONF['site_url'] . '/watermarks/' . $row['filename'] . '\" name=\"myImage\" alt=\"\"' . XHTML . '>';",
-    "            $wm_current = '<img src=\"' . MG_escapeHTML($_MG_CONF['site_url'] . '/watermarks/' . $row['filename']) . '\" name=\"myImage\" alt=\"\"' . XHTML . '>';",
-    'watermark current URL')
-text = replace_once(text,
-    "            $groupdd .= '>' . key($usergroups) . '</option>';\n            $moddd   .= '>' . key($usergroups) . '</option>';",
-    "            $groupdd .= '>' . MG_escapeHTML(key($usergroups)) . '</option>';\n            $moddd   .= '>' . MG_escapeHTML(key($usergroups)) . '</option>';",
-    'group option labels')
-text = replace_once(text,
-    "        'album_title'             => $album->title,\n        'album_desc'              => $album->description,",
-    "        'album_title'             => MG_escapeHTML($album->title),\n        'album_desc'              => MG_escapeHTML($album->description),",
-    'album editable text')
+    "        'property'            => $property,",
+    "        'property'            => MG_escapeHTML($property),",
+    'media property URL')
 p.write_text(text, encoding='utf-8')
 
-# Category editor: preserve allowed HTML in storage, but escape it for safe
-# round-tripping through input/textarea controls.
-p = Path('admin/category.php')
-text = p.read_text(encoding='utf-8')
-text = replace_once(text,
-    "        'cat_name'            => $A['cat_name'],\n        'cat_description'     => $A['cat_description'],",
-    "        'cat_name'            => MG_escapeHTML($A['cat_name']),\n        'cat_description'     => MG_escapeHTML($A['cat_description']),",
-    'category editable text')
-p.write_text(text, encoding='utf-8')
+# The three maintained media detail templates share the same navigation. Use a
+# real property href and let popitup() consume this.href. Also propagate the
+# dedicated slideshow onclick attribute introduced for lightbox mode.
+for name in ('view_image.thtml', 'view_audio.thtml', 'view_video.thtml'):
+    p = Path('templates') / name
+    text = p.read_text(encoding='utf-8')
+    text = replace_once(text,
+        '<a class="button" href="{url_slideshow}">{lang_slideshow}</a>',
+        '<a class="button" href="{url_slideshow}"{slideshow_onclick}>{lang_slideshow}</a>',
+        name + ' slideshow action')
+    text = replace_once(text,
+        '<a class="button" href="#" onclick="return popitup(\'{property}\')">{lang_property}</a>',
+        '<a class="button" href="{property}" onclick="return popitup(this.href)">{lang_property}</a>',
+        name + ' property action')
+    text = replace_once(text,
+        "    newwindow=window.open(url,'name','height=600,width=450,resizable=yes,toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes');",
+        "    var newwindow = window.open(url,'name','height=600,width=450,resizable=yes,toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes');",
+        name + ' popup variable')
+    p.write_text(text, encoding='utf-8')
 
-# Record the completed admin-form output hardening while keeping the broader
-# all-template audit open.
+# Record the completed removal of dynamic values from inline property JavaScript.
 p = Path('ROADMAP.md')
 text = p.read_text(encoding='utf-8')
-marker = '- [x] Replace the lightbox slideshow href-injection workaround with valid escaped album-action attributes across maintained album themes.\n'
-addition = marker + '- [x] Escape editable album/category values and generated admin option labels when rendering form controls.\n'
-text = replace_once(text, marker, addition, 'roadmap admin escaping')
+marker = '- [x] Escape editable album/category values and generated admin option labels when rendering form controls.\n'
+addition = marker + '- [x] Remove dynamic property URLs from inline JavaScript and preserve lightbox slideshow actions on media detail views.\n'
+text = replace_once(text, marker, addition, 'roadmap media view cleanup')
 p.write_text(text, encoding='utf-8')
