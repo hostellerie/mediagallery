@@ -24,6 +24,33 @@ function MG_prepareDirectory180($path)
     return false;
 }
 
+function MG_prepareMediaStorage180($root)
+{
+    if (!MG_prepareDirectory180($root)) {
+        return false;
+    }
+
+    if (!MG_prepareDirectory180($root . 'covers/')) {
+        return false;
+    }
+
+    $buckets = str_split('0123456789abcdef');
+    foreach (array('orig', 'disp', 'tn') as $type) {
+        $typePath = $root . $type . '/';
+        if (!MG_prepareDirectory180($typePath)) {
+            return false;
+        }
+
+        foreach ($buckets as $bucket) {
+            if (!MG_prepareDirectory180($typePath . $bucket . '/')) {
+                return false;
+            }
+        }
+    }
+
+    return true;
+}
+
 function MG_applyRuntimeConfiguration180()
 {
     global $_CONF, $_MG_CONF, $_TABLES;
@@ -73,7 +100,7 @@ function MG_applyRuntimeConfiguration180()
     if (!empty($_CONF['path_images']) && !empty($_CONF['images_url'])) {
         $_MG_CONF['path_mediaobjects'] = rtrim($_CONF['path_images'], '/\\') . '/mediagallery/';
         $_MG_CONF['mediaobjects_url'] = rtrim($_CONF['images_url'], '/') . '/mediagallery';
-        MG_prepareDirectory180($_MG_CONF['path_mediaobjects']);
+        MG_prepareMediaStorage180($_MG_CONF['path_mediaobjects']);
     } else {
         $_MG_CONF['path_mediaobjects'] = $_CONF['path_html'] . 'mediagallery/mediaobjects/';
         $_MG_CONF['mediaobjects_url'] = $_CONF['site_url'] . '/mediagallery/mediaobjects';
