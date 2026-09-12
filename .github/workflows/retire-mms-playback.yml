@@ -3,7 +3,7 @@ name: Retire MediaGallery MMS playback
 on:
   push:
     paths:
-      - '.github/mms-retirement-trigger'
+      - '.github/playback-cleanup-trigger'
 
 permissions:
   contents: write
