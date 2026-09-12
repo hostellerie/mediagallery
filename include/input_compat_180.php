@@ -15,7 +15,7 @@ namespace Geeklog;
  * Define only the missing 2.2-style facade and delegate every operation to
  * Geeklog 2.1.1's native input objects.  No filtering logic is duplicated.
  */
-if (!class_exists(__NAMESPACE__ . '\\Input', false)) {
+if (!class_exists(__NAMESPACE__ . '\\Input', true)) {
     class Input
     {
         private static function rawInput()

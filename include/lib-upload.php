@@ -491,6 +491,13 @@ function MG_getFile($filename, $file, $album_id, $opt = array())
     $album = new mgAlbum($album_id);
     $root_album = new mgAlbum(0);
 
+    // Album 0 is MediaGallery's virtual root container. It can contain albums,
+    // but it is not a persistent mg_albums row and must never receive media.
+    if ((int) $album_id <= 0 || !isset($album->id) || !$album->valid) {
+        COM_errorLog('MediaGallery: refused media upload to invalid/root album id ' . intval($album_id), 1);
+        return array(false, $LANG_MG02['album_nonexist']);
+    }
+
     if ($_MG_CONF['verbose']) {
         COM_errorLog("MG Upload: *********** Beginning media upload process...");
         COM_errorLog("Filename to process: " . $filename);
