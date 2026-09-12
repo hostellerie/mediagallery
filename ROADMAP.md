@@ -119,9 +119,9 @@ The Geeklog 2.1.1 / PHP 5.6 validation confirmed that image uploads succeed once
 - [x] Remove unused SWF binaries, SWFObject helper code and duplicate obsolete JavaScript assets.
 - [x] Remove fresh-install SWF configuration dependencies.
 - [x] Fix undefined `$media_size_disp` use in legacy popup/download rendering.
-- [ ] Decide which remaining ASF/MOV/MP3 playback controls are still meaningful.
-- [ ] Decide whether legacy per-media playback options should be normalized or ignored.
-- [ ] Decide whether the old `mms` mode should be retired.
+- [x] Keep only playback dimensions/mode behavior that still affects HTML5 rendering; legacy ActiveX/QuickTime-specific flags remain compatibility data and are ignored by maintained templates.
+- [x] Preserve legacy per-media playback rows for upgrade/custom-skin compatibility, but do not reintroduce obsolete player behavior in maintained HTML5 templates.
+- [x] Retire generated `mms:` playback links; legacy playback mode 3 now falls back to the normal MediaGallery download path.
 
 ## 7. Email modernization
 

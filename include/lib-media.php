@@ -124,6 +124,7 @@ function MG_displayASF($I, $opt=array())
             list($u_image, $p_image, $media_size_orig) = Media::getThumbInfo($I);
             break;
         case 1: // download
+        case 3: // legacy MMS mode now falls back to a normal download
             $u_pic = $_MG_CONF['site_url'] . '/download.php?mid=' . $I['media_id'];
             $raw_link_url = $u_pic;
             list($u_image, $p_image, $media_size_orig) = Media::getThumbInfo($I);
@@ -164,12 +165,6 @@ function MG_displayASF($I, $opt=array())
             }
             $u_image = $V->finish($V->parse('output','video'));
             return array($u_image, '', $resolution_x, $resolution_y, '');
-            break;
-        case 3: // use mms links
-            $mms_path = preg_replace("/http/i", 'mms', $_MG_CONF['mediaobjects_url']);
-            $u_pic = $mms_path . '/orig/'.  $I['media_filename'][0] . '/' . $I['media_filename'] . '.' . $I['media_mime_ext'];
-            $raw_link_url = $u_pic;
-            list($u_image, $p_image, $media_size_orig) = Media::getThumbInfo($I);
             break;
     }
 
@@ -308,6 +303,7 @@ function MG_displayMP3($I, $opt=array())
             list($u_image, $p_image, $media_size_orig) = Media::getThumbInfo($I);
             break;
         case 1: // download
+        case 3: // legacy MMS mode now falls back to a normal download
             $u_pic = $_MG_CONF['site_url'] . '/download.php?mid=' . $I['media_id'];
             list($u_image, $p_image, $media_size_orig) = Media::getThumbInfo($I);
             break;
@@ -378,11 +374,6 @@ function MG_displayMP3($I, $opt=array())
             ));
             $u_image = $V->finish($V->parse('output', 'video'));
             return array($u_image, '', $win_width, $win_height, '');
-            break;
-        case 3: // use mms links
-            $mms_path = preg_replace("/http/i", 'mms', $_MG_CONF['mediaobjects_url']);
-            $u_pic = $mms_path . '/orig/'.  $I['media_filename'][0] . '/' . $I['media_filename'] . '.' . $I['media_mime_ext'];
-            list($u_image, $p_image, $media_size_orig) = Media::getThumbInfo($I);
             break;
     }
 
