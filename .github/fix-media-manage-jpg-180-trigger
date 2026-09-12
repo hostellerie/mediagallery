@@ -1,2 +1,0 @@
-Fix MediaGallery manage-media JPEG fallback on PHP 8.
-Retry with legacy file encoding preserved.

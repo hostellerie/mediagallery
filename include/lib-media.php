@@ -518,10 +518,11 @@ function MG_displayJPG($I, $opt=array())
                 $u_image = Media::getFileUrl('disp', $I['media_filename'], 'jpg');
                 $media_size_disp = @getimagesize(Media::getFilePath('disp', $I['media_filename'], 'jpg'));
                 if ($media_size_disp == false) {
+                    /* Built-in fallback image is a plugin asset, not site media. */
                     $fname = 'missing.png';
-                    $u_image = $_MG_CONF['mediaobjects_url'] . '/' . $fname;
-                    $p_image = $_MG_CONF['path_mediaobjects']      . $fname;
-                    $media_size_disp = @getimagesize($pimage);
+                    $u_image = $_MG_CONF['site_url'] . '/mediaobjects/' . $fname;
+                    $p_image = $_MG_CONF['path_html'] . 'mediaobjects/' . $fname;
+                    $media_size_disp = @getimagesize($p_image);
                 }
             }
         }
