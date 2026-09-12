@@ -38,11 +38,11 @@ jobs:
           ! grep -q 'MG DEBUG admin' public_html/admin.php
           ! grep -q 'MG DEBUG saveUserUpload' include/newmedia.php
 
-      - name: Commit
+      - name: Commit source and documentation
         run: |
           set -e
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add autoinstall.php public_html/admin.php include/newmedia.php README IMPLEMENTATION_NOTES.md TESTING-1.8.md .github/workflows/build-dist.yml
+          git add autoinstall.php public_html/admin.php include/newmedia.php README IMPLEMENTATION_NOTES.md TESTING-1.8.md
           git commit -m 'Finalize persistent media storage migration for 1.8.0'
           git push origin HEAD:modernize-1.8.0
