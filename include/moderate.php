@@ -24,7 +24,7 @@ if (strpos(strtolower($_SERVER['PHP_SELF']), strtolower(basename(__FILE__))) !==
  * Resolve and validate one queued MediaGallery submission.
  *
  * Geeklog's moderation controller already protects its POST mutations with a
- * CSRF token.  These callbacks still revalidate authorization and object
+ * CSRF token. These callbacks still revalidate authorization and object
  * membership so they remain safe if called from another plugin path later.
  *
  * @param  string $media_id
@@ -82,7 +82,7 @@ function MG_approveSubmission($media_id)
         return false;
     }
 
-    // mg_media and mg_mediaqueue intentionally share the same schema.  Copy
+    // mg_media and mg_mediaqueue intentionally share the same schema. Copy
     // the queued record first, then bind it to the validated queued album.
     DB_query(
         "INSERT INTO {$_TABLES['mg_media']} "
@@ -187,16 +187,22 @@ function MG_deleteSubmission($media_id)
     DB_delete($_TABLES['mg_mediaqueue'], 'media_id', $mid);
     DB_delete($_TABLES['mg_playback_options'], 'media_id', $mid);
 
-    // Remove generated media files.  Uploaded moderated files already live in
-    // the normal persistent media tree; rejecting them must remove that data.
+    // Remove generated media files. Moderated uploads already live in the
+    // persistent media tree, so rejection must also clean every generated
+    // thumbnail size used by MG_createThumbnail().
     $bucket = $filename[0];
+    $thumbSuffixes = array('', '_100', '_150', '_200', '_100x100', '_150x150', '_200x200');
     foreach ($_MG_CONF['validExtensions'] as $ext) {
-        $thumb = $_MG_CONF['path_mediaobjects'] . 'tn/' . $bucket . '/' . $filename . $ext;
-        if (file_exists($thumb)) {
-            @unlink($thumb);
-            @unlink($_MG_CONF['path_mediaobjects'] . 'tn/' . $bucket . '/' . $filename . '_150x150' . $ext);
-            @unlink($_MG_CONF['path_mediaobjects'] . 'disp/' . $bucket . '/' . $filename . $ext);
+        foreach ($thumbSuffixes as $suffix) {
+            @unlink(
+                $_MG_CONF['path_mediaobjects'] . 'tn/' . $bucket . '/'
+                . $filename . $suffix . $ext
+            );
         }
+        @unlink(
+            $_MG_CONF['path_mediaobjects'] . 'disp/' . $bucket . '/'
+            . $filename . $ext
+        );
     }
 
     if ($mime_ext !== '') {
