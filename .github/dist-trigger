@@ -1,6 +1,5 @@
 Build requested for MediaGallery installable archive.
 Source target: modernize-1.8.0
 Archive: mediagallery_1.8.0_2.0.0.zip
-Requested: 2026-09-10
-Reason: DNC restoration, playback config cleanup, ASF/MOV/MP3 size fixes, generic SWF/FLV fallback
-Source HEAD before build: 39f7bf3710aa47976b507eee4f305ac9cc0f8b91
+Requested: 2026-09-12
+Reason: audit archive basenames against Geeklog 2.2.2 FileSystem::isValidFileName()
