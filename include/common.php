@@ -1431,7 +1431,9 @@ function MG_options($info)
 function MG_optionlist($info)
 {
     $disabled = isset($info['disabled']) ? $info['disabled'] : '';
+    $id = isset($info['id']) ? trim($info['id']) : '';
     $retval = '<select name="' . $info['name'] . '"'
+            . ($id !== '' ? ' id="' . htmlspecialchars($id, ENT_QUOTES, COM_getCharset()) . '"' : '')
             . ($disabled ? ' disabled="disabled"' : '') . '>' . LB;
     foreach ($info['values'] as $key => $val) {
         $retval .= '<option value="' . $key . '"'

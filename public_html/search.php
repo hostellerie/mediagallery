@@ -53,7 +53,7 @@ function MG_buildSearchBox(&$T, $searchinfo=array())
 {
     global $_CONF, $_MG_CONF, $_TABLES, $LANG_MG01, $LANG_MG03;
 
-    $cat_select = '<select name="cat_id">';
+    $cat_select = '<select id="mg-search-category" name="cat_id">';
     $select_cat_id = ($searchinfo['cat_id'] == '') ? UC_SELECTED : '';
     $cat_select .= '<option value="" ' . $select_cat_id . '>'
                  . $LANG_MG03['all_categories'] . '</option>';
@@ -67,6 +67,7 @@ function MG_buildSearchBox(&$T, $searchinfo=array())
 
     $keytype = MG_optionlist(array(
         'name'    => 'keyType',
+        'id'      => 'mg-search-keytype',
         'current' => $searchinfo['keytype'],
         'values'  => array(
             'phrase' => $LANG_MG03['exact_phrase'],
@@ -77,6 +78,7 @@ function MG_buildSearchBox(&$T, $searchinfo=array())
 
     $swhere = MG_optionlist(array(
         'name'    => 'swhere',
+        'id'      => 'mg-search-swhere',
         'current' => $searchinfo['swhere'],
         'values'  => array(
             '0' => $LANG_MG03['title_desc_keywords'],
@@ -90,6 +92,7 @@ function MG_buildSearchBox(&$T, $searchinfo=array())
 
     $nresults = MG_optionlist(array(
         'name'    => 'numresults',
+        'id'      => 'mg-search-numresults',
         'current' => $searchinfo['numresults'],
         'values'  => array(
             '10' => '10',
@@ -100,7 +103,7 @@ function MG_buildSearchBox(&$T, $searchinfo=array())
         ),
     ));
 
-    $userselect = '<select name="uid">';
+    $userselect = '<select id="mg-search-user" name="uid">';
     $select_uid = ($searchinfo['uid'] == '0') ? UC_SELECTED : '';
     $userselect .= '<option value="0" ' . $select_uid . '>'
                  . $LANG_MG01['all_users'] . '</option>';

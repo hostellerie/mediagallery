@@ -20,17 +20,17 @@
 <table style="border:none;">
 <tr>
   <td style="text-align:right;">
-    {lang_search_for}:
+    <label for="mg-search-keywords">{lang_search_for}:</label>
   </td>
   <td style="text-align:left;">
-    <input type="text" name="keywords" size="40" value="{search_keywords}"{xhtml}>&nbsp;
-    {keytype_select}
+    <input type="text" id="mg-search-keywords" name="keywords" size="40" value="{search_keywords}"{xhtml}>&nbsp;
+    <label for="mg-search-keytype">{lang_options}:</label> {keytype_select}
   </td>
 </tr>
 
 <tr>
   <td style="text-align:right;">
-    {lang_search_in}:
+    <label for="mg-search-swhere">{lang_search_in}:</label>
   </td>
   <td style="text-align:left;">
     {swhere_select}
@@ -39,7 +39,7 @@
 
 <tr>
   <td style="text-align:right;">
-    {lang_category}:
+    <label for="mg-search-category">{lang_category}:</label>
   </td>
   <td style="text-align:left;">
     {cat_select}
@@ -48,7 +48,7 @@
 
 <tr>
   <td style="text-align:right;">
-    {lang_user}:
+    <label for="mg-search-user">{lang_user}:</label>
   </td>
   <td style="text-align:left;">
     {user_select}
@@ -58,7 +58,7 @@
 
 <tr>
   <td style="text-align:right;">
-    {lang_results}:
+    <label for="mg-search-numresults">{lang_results}:</label>
   </td>
   <td style="text-align:left;">
     {nresults_select}&nbsp;{lang_per_page}
