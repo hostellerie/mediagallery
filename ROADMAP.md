@@ -15,7 +15,8 @@ This roadmap reflects the current implementation state. Completed items are chec
 - [x] Avoid Geeklog core modifications.
 - [x] Do not reintroduce the historical MediaGallery `config.php`.
 - [x] Preserve existing database content and administrator configuration during upgrade.
-- [ ] Complete the PHP 8.2/8.3 runtime warning/deprecation audit before RC.
+- [x] Complete the static PHP 8.2/8.3 audit of MediaGallery-owned hot paths, including removed APIs, legacy globals, undefined variables and dynamic-property candidates.
+- [ ] Complete the live PHP 8.2/8.3 runtime warning/deprecation audit before RC.
 - [ ] Run the final regression matrix on Geeklog 2.1.1 and 2.2.2.
 
 ## 2. Persistent media storage and multisite
@@ -175,9 +176,10 @@ PLG_invokeService(
 - [x] Validate request/array values in several historically unsafe paths.
 - [x] Centralize 1.8 storage/runtime compatibility helpers.
 - [x] Remove dead Flash/ActiveX playback assets and code paths already replaced.
+- [x] Complete static PHP 8.x warning/deprecation cleanup in MediaGallery-owned hot paths, including RSS/feed generation, JPEG/EXIF metadata paths and register_globals-era logging.
+- [ ] Complete live PHP 8.2/8.3 warning/deprecation validation on Geeklog 2.1.1 and 2.2.2.
 - [ ] Fold `functions_legacy.inc` back into a clean final bootstrap if practical before RC.
 - [ ] Remove confirmed dead compatibility branches once final supported versions are fixed.
-- [ ] Complete PHP 8.x warning/deprecation cleanup.
 - [ ] Review ZIP extraction security and any remaining legacy archive/import code.
 
 ## 11. Distribution
@@ -234,6 +236,7 @@ PLG_invokeService(
 - [ ] Moderator email HTML/plaintext through Geeklog mail backend.
 - [ ] `album_list` service permissions matrix.
 - [ ] Media/album canonical output with multiple skins and paginated sort variants.
+- [ ] Standard RSS and podcast feed generation under PHP 8.3 without warnings/deprecations.
 - [ ] MP3/WMA/MOV/ASF/SWF/FLV legacy-media rendering.
 - [ ] ASF/MOV popup/download paths without undefined-variable warnings.
 - [ ] Existing `fslideshow.php` URLs and `fslideshow` autotags.
@@ -243,7 +246,7 @@ PLG_invokeService(
 Before producing the 1.8.0 release candidate:
 
 - [x] Add explicit image-backend capability detection and clear error reporting.
-- [ ] Finish PHP 8.2/8.3 runtime audit.
+- [ ] Finish live PHP 8.2/8.3 runtime audit.
 - [ ] Resolve remaining dead playback/configuration controls.
 - [ ] Decide fate of `functions_legacy.inc`; the legacy async upload endpoint has been removed.
 - [ ] Complete remaining template/accessibility cleanup without breaking custom skins.
