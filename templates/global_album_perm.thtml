@@ -3,6 +3,7 @@
 <input type="hidden" name="action" value="{action}"{xhtml}>
 <input type="hidden" name="album_id" value="0"{xhtml}>
 <input type="hidden" name="admin_menu" value="{admin_menu}"{xhtml}>
+<input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}>
 {lang_global_perm_help}
 <br{xhtml}><br{xhtml}>
 </div>

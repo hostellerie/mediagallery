@@ -118,7 +118,9 @@ function MG_globalAlbumPermEditor($adminMenu=0)
         'lang_member_upload'    => $LANG_MG01['member_upload'],
         'lang_moderate_album'   => $LANG_MG01['mod_album'],
         'lang_mod_group'        => $LANG_MG01['moderation_group'],
-        'lang_email_mods_on_submission' => $LANG_MG01['email_mods_on_submission']
+        'lang_email_mods_on_submission' => $LANG_MG01['email_mods_on_submission'],
+        'gltoken_name'          => CSRF_TOKEN,
+        'gltoken'               => SEC_createToken()
     ));
 
     $retval .= COM_startBlock($LANG_MG01['global_perm_editor'], '',
@@ -140,6 +142,10 @@ function MG_saveGlobalAlbumPerm()
 
     if (!SEC_hasRights('mediagallery.admin')) {
         COM_errorLog("Media Gallery user attempted to edit global album attributes without proper access.");
+        return COM_showMessageText($LANG_MG00['access_denied_msg']);
+    }
+    if (!SEC_checkToken()) {
+        COM_errorLog('MediaGallery: global album permission update rejected because of an invalid CSRF token.', 1);
         return COM_showMessageText($LANG_MG00['access_denied_msg']);
     }
 
@@ -454,6 +460,8 @@ function MG_globalAlbumAttributeEditor($adminMenu=0)
         'lang_rsschildren'      => $LANG_MG01['rsschildren'],
         'lang_tnheight'         => $LANG_MG01['tn_height'],
         'lang_tnwidth'          => $LANG_MG01['tn_width'],
+        'gltoken_name'         => CSRF_TOKEN,
+        'gltoken'              => SEC_createToken(),
     ));
     $retval .= $T->finish($T->parse('output', 'admin'));
     $retval .= COM_endBlock(COM_getBlockTemplate('_admin_block', 'footer'));
@@ -488,6 +496,10 @@ function MG_saveGlobalAlbumAttr()
 
     if (!SEC_hasRights('mediagallery.admin')) {
         COM_errorLog("Media Gallery user attempted to edit global album attributes without proper access.");
+        return COM_showMessageText($LANG_MG00['access_denied_msg']);
+    }
+    if (!SEC_checkToken()) {
+        COM_errorLog('MediaGallery: global album attribute update rejected because of an invalid CSRF token.', 1);
         return COM_showMessageText($LANG_MG00['access_denied_msg']);
     }
 

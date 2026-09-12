@@ -74,7 +74,8 @@ Still review before RC:
 - live regression tests remain for mismatch rejection and generic-file compatibility;
 - deterministic upload failure paths now remove the main `tmpPath`, and special-image thumbnail conversion removes its `wip*.jpg` file on success/failure;
 - still define a stale-temp policy for genuinely interrupted/killed PHP requests;
-- permissions around less common album mutation/admin paths;
+- global album permission/attribute changes and watermark manage/upload/delete actions now use Geeklog CSRF tokens in addition to their existing access rules;
+- continue permission/CSRF audit for resize/rebuild/sort/batch mutation paths;
 - the orphaned legacy asynchronous `public_html/upload.php` endpoint and its dedicated `MG_saveUpload()` handler have been removed; the maintained browser upload path is `admin.php` / `MG_saveUserUpload()`.
 
 ## Email modernization

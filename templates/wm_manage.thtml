@@ -61,6 +61,7 @@ jkpopwin.focus()
 <form name="watermark" method="post" action="{s_form_action}" class="uk-form">
   <div>
     <input type="hidden" name="album_id" value="0"{xhtml}>
+    <input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}>
     {!if lang_no_image}<div class="noitems">{lang_no_image}</div>{!endif}
     {mediaitems}
   </div>

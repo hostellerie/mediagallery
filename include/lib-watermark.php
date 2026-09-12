@@ -163,6 +163,8 @@ function MG_watermarkManage($actionURL = '')
         'lang_description' => $LANG_MG01['description'],
         'lang_owner'    => $LANG_MG01['owner'],
         'lang_watermark_manage_help' => $LANG_MG01['watermark_manage_help'],
+        'gltoken_name' => CSRF_TOKEN,
+        'gltoken'      => SEC_createToken(),
     ));
 
     $retval .= $T->finish($T->parse('output','admin'));
@@ -179,6 +181,10 @@ function MG_watermarkSave($actionURL = '')
     if ($root_album->access != 3 && !SEC_hasRights('mediagallery.admin')) {
         COM_errorLog("Someone has tried to illegally save a watermark image in Media Gallery. "
                    . "User id: {$_USER['uid']}, Username: {$_USER['username']}, IP: $REMOTE_ADDR",1);
+        return COM_showMessageText($LANG_MG00['access_denied_msg']);
+    }
+    if (!SEC_checkToken()) {
+        COM_errorLog('MediaGallery: watermark update rejected because of an invalid CSRF token.', 1);
         return COM_showMessageText($LANG_MG00['access_denied_msg']);
     }
 
@@ -213,6 +219,10 @@ function MG_watermarkDelete($actionURL = '')
     if ($root_album->access != 3 && !$root_album->owner_id/*SEC_hasRights('mediagallery.admin')*/) {
         COM_errorLog("Someone has tried to illegally save a watermark image in Media Gallery. "
                    . "User id: {$_USER['uid']}, Username: {$_USER['username']}, IP: $REMOTE_ADDR",1);
+        return COM_showMessageText($LANG_MG00['access_denied_msg']);
+    }
+    if (!SEC_checkToken()) {
+        COM_errorLog('MediaGallery: watermark deletion rejected because of an invalid CSRF token.', 1);
         return COM_showMessageText($LANG_MG00['access_denied_msg']);
     }
 
@@ -284,6 +294,8 @@ function MG_watermarkUpload($actionURL = '')
         'lang_reset'            => $LANG_MG01['reset'],
         'max_file_size'         => '<input type="hidden" name="MAX_FILE_SIZE" value="' . $html_max_filesize .'"' . XHTML . '>',
         'lang_warning'          => $warning,
+        'gltoken_name'          => CSRF_TOKEN,
+        'gltoken'               => SEC_createToken(),
     ));
 
     $T->set_block('upload', 'public-access');
@@ -302,6 +314,16 @@ function MG_watermarkUpload($actionURL = '')
 function MG_watermarkUploadSave()
 {
     global $_USER, $_CONF, $_TABLES, $_MG_CONF, $LANG_MG00, $LANG_MG01, $LANG_MG02, $LANG_MG03;
+
+    $root_album = new mgAlbum(0);
+    if ($root_album->access != 3 && !$root_album->owner_id) {
+        COM_errorLog('MediaGallery: watermark upload rejected because of insufficient access.', 1);
+        return COM_showMessageText($LANG_MG00['access_denied_msg']);
+    }
+    if (!SEC_checkToken()) {
+        COM_errorLog('MediaGallery: watermark upload rejected because of an invalid CSRF token.', 1);
+        return COM_showMessageText($LANG_MG00['access_denied_msg']);
+    }
 
     // ok, we just check the type, we will accept png,jpg for now...
 
