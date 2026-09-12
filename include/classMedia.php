@@ -172,14 +172,26 @@ class Media {
             $image  = self::getFileUrl ('tn', $info['media_filename'], 'jpg', 1);
         } else {
             $fname = self::getDefaultThumbnail($info, $tn_size);
-            $pimage = $_MG_CONF['path_mediaobjects']      . $fname;
-            $image  = $_MG_CONF['mediaobjects_url'] . '/' . $fname;
+
+            /*
+             * Generated thumbnails belong to the site's media storage.
+             * Built-in placeholder/type icons belong to the plugin itself and
+             * must stay available independently of multisite media storage.
+             */
+            if (strpos($fname, '/') === false) {
+                $pimage = $_MG_CONF['path_html'] . 'mediaobjects/' . $fname;
+                $image  = $_MG_CONF['site_url'] . '/mediaobjects/' . $fname;
+            } else {
+                $pimage = $_MG_CONF['path_mediaobjects'] . $fname;
+                $image  = $_MG_CONF['mediaobjects_url'] . '/' . $fname;
+            }
         }
+
         $size = @getimagesize($pimage);
-        if ($size == false) {
+        if ($size === false) {
             $fname = 'missing.png';
-            $pimage = $_MG_CONF['path_mediaobjects']      . $fname;
-            $image  = $_MG_CONF['mediaobjects_url'] . '/' . $fname;
+            $pimage = $_MG_CONF['path_html'] . 'mediaobjects/' . $fname;
+            $image  = $_MG_CONF['site_url'] . '/mediaobjects/' . $fname;
             $size = @getimagesize($pimage);
         }
 
