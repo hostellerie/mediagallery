@@ -77,7 +77,8 @@ Geeklog's plugin uploader replaces the old public plugin directory before loadin
 - [x] Root Album (`album_id=0`) upload prevention.
 - [ ] Review MIME/extension consistency for ambiguous generic files.
 - [x] Clean deterministic upload-failure and special-image `wip` temporary files.
-- [ ] Define safe stale-temp cleanup for genuinely interrupted/killed requests.
+- [x] Add conservative stale-temp cleanup for genuinely interrupted/killed requests: private MediaGallery tmp only, 48-hour age threshold, no symlink traversal, and at most one scan per hour.
+- [ ] Live-test stale-temp cleanup with old and recent files/directories on Geeklog 2.1.1 and 2.2.2.
 - [ ] Review less common album mutation/admin permission paths.
 - [ ] Decide whether the legacy async upload endpoint can now be removed.
 
@@ -217,6 +218,7 @@ PLG_invokeService(
 - [ ] Remote Media public/private/redirect/oversize cases.
 - [ ] FTP valid source, forged outside path, unsafe extension and escaping symlink.
 - [ ] Batch continuation/cancellation as owner, another user and administrator.
+- [ ] Stale-temp cleanup keeps recent/active entries and removes only fully stale trees.
 
 ### Functional regression
 
