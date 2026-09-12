@@ -19,8 +19,10 @@ require_once __DIR__ . '/functions_legacy.inc';
 require_once __DIR__ . '/include/config_180.php';
 require_once __DIR__ . '/include/email_180.php';
 require_once __DIR__ . '/include/upload_security_180.php';
+require_once __DIR__ . '/include/tmp_cleanup_180.php';
 require_once __DIR__ . '/services.inc.php';
 
 MG_addConfigLanguage180();
 MG_ensureConfig180();
 MG_applyRuntimeConfiguration180();
+MG_cleanupStaleTemp180();
