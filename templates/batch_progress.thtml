@@ -12,6 +12,7 @@ function updateButton() {
         if (ticker == 0) {
             document.form_batch_progress.submit_button.value = label;
             document.form_batch_progress.submit_button.disabled = true;
+            document.form_batch_progress.submit();
         } else {
             document.form_batch_progress.submit_button.value = label_next + " (" + ticker + ")";
             ticker--;
@@ -25,6 +26,9 @@ function updateButton() {
 <h2>{L_BATCH_PROCESS}</h2>
 <div class="pluginRow1" style="padding:10px;">
 <form name="form_batch_progress" method="post" action="{S_BATCH_ACTION}" class="uk-form">
+<input type="hidden" name="mode" value="{BATCH_MODE}"{xhtml}>
+<input type="hidden" name="sid" value="{SESSION_ID}"{xhtml}>
+<input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}>
 <div style="margin-left:20px">
 <p>{PROCESSING_MESSAGES}</p>
 

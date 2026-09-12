@@ -206,11 +206,11 @@ function MG_continueSession($session_id, $item_limit, $refresh_rate)
         } else {
             $processing_messages .= '<p>' . sprintf($LANG_MG01['processing_next_items'], $item_limit) . '</p>';
         }
-        $form_action = $_MG_CONF['site_url'] . '/batch.php?mode=continue&amp;sid=' . $session_id
-                     . '&amp;refresh=' . $refresh_rate . '&amp;limit=' . $item_limit;
+        $form_action = $_MG_CONF['site_url'] . '/batch.php';
         $next_button = $LANG_MG01['next'];
-        // create the meta tag for refresh
-        $T->set_var("META", '<meta http-equiv="refresh" content="' . $refresh_rate . ';url=' . $form_action . '"' . XHTML . '>');
+        // Continuation is a state-changing operation. Keep auto-progress, but submit
+        // the protected POST form instead of mutating state through a GET refresh.
+        $T->set_var("META", '');
     } else {
         if ($item_limit == 0) {
             COM_redirect($session['session_origin']);
@@ -258,7 +258,11 @@ function MG_continueSession($session_id, $item_limit, $refresh_rate)
         'ITEM_LIMIT'           => $item_limit,
         'TIME_LIMIT'           => $time_limit,
         'REFRESH_RATE'         => $refresh_rate,
-        'S_BATCH_ACTION'       => $form_action
+        'S_BATCH_ACTION'       => $form_action,
+        'BATCH_MODE'           => 'continue',
+        'SESSION_ID'           => $session_id,
+        'gltoken_name'         => CSRF_TOKEN,
+        'gltoken'              => SEC_createToken()
     ));
     $retval .= $T->finish($T->parse('output', 'batch'));
     return $retval;
@@ -284,12 +288,27 @@ function MG_registerSession($info=array())
 
 function MG_endSession($session_id)
 {
-    global $_TABLES;
+    global $_TABLES, $_USER;
 
-    $session_id = DB_escapeString($session_id);
-    DB_delete($_TABLES['mg_sessions'],      'session_id', $session_id);
-    DB_delete($_TABLES['mg_session_items'], 'session_id', $session_id);
-    DB_delete($_TABLES['mg_session_log'],   'session_id', $session_id);
+    $session_id = COM_applyFilter($session_id);
+    if ($session_id === '') {
+        return false;
+    }
+
+    $escapedSessionId = DB_escapeString($session_id);
+    $owner = DB_getItem($_TABLES['mg_sessions'], 'session_uid',
+                        "session_id='" . $escapedSessionId . "'");
+    if ($owner === '' || $owner === null) {
+        return false;
+    }
+    if ((int) $owner !== (int) $_USER['uid'] && !SEC_hasRights('mediagallery.admin')) {
+        COM_errorLog('MediaGallery: refused deletion of a batch session owned by another user.', 1);
+        return false;
+    }
+
+    DB_delete($_TABLES['mg_sessions'],      'session_id', $escapedSessionId);
+    DB_delete($_TABLES['mg_session_items'], 'session_id', $escapedSessionId);
+    DB_delete($_TABLES['mg_session_log'],   'session_id', $escapedSessionId);
 
     return true;
 }

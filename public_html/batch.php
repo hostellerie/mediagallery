@@ -53,11 +53,15 @@ if (COM_isAnonUser() && $_MG_CONF['loginrequired'] == 1) {
 * Main
 */
 
-$mode       = isset($_REQUEST['mode']) ? COM_applyFilter($_REQUEST['mode']) : '';
-$session_id = isset($_GET['sid'])      ? COM_applyFilter($_GET['sid'])      : '';
+$mode       = isset($_POST['mode']) ? COM_applyFilter($_POST['mode']) : '';
+$session_id = isset($_POST['sid'])  ? COM_applyFilter($_POST['sid'])  : '';
 
-if (empty($session_id)) {
-    COM_redirect($_MG_CONF['site_url'] . '/index.php');
+if ($_SERVER['REQUEST_METHOD'] !== 'POST' || empty($session_id) || !SEC_checkToken()) {
+    COM_errorLog('MediaGallery: rejected batch mutation because POST/CSRF validation failed.', 1);
+    $display = COM_showMessageText($LANG_MG00['access_denied_msg']);
+    $display = MG_createHTMLDocument($display);
+    COM_output($display);
+    exit;
 }
 
 $escapedSessionId = DB_escapeString($session_id);
@@ -96,15 +100,11 @@ if ($mode != 'continue') {
 $refresh_rate = $_MG_CONF['def_refresh_rate'];
 if (isset($_POST['refresh_rate'])) {
     $refresh_rate = COM_applyFilter($_POST['refresh_rate'], true);
-} else if (isset($_GET['refresh'])) {
-    $refresh_rate = COM_applyFilter($_GET['refresh'], true);
 }
 
 $item_limit = $_MG_CONF['def_item_limit'];
 if (isset($_POST['item_limit'])) {
     $item_limit = COM_applyFilter($_POST['item_limit'], true);
-} else if (isset($_GET['limit'])) {
-    $item_limit = COM_applyFilter($_GET['limit'], true);
 }
 
 // MediaGallery 1.8 validates every pending FTP source before a batch cycle.

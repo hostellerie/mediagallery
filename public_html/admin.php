@@ -153,21 +153,6 @@ if ($mode === 'edit') {
     $display = MG_watermarkManage();
     $display = MG_createHTMLDocument($display);
     COM_output($display);
-} elseif ($mode == $LANG_MG01['save_exit']) {
-    $album_id = (int) Input::fGet('album_id', -1);
-    if ($album_id < 0) {
-        MG_invalidRequest();
-    }
-
-    require_once $include . 'batch.php';
-    if ($album_id == 0) {
-        $actionURL = $_MG_CONF['site_url'] . '/index.php';
-    } else {
-        $actionURL = $_MG_CONF['site_url'] . '/album.php?aid=' . $album_id;
-    }
-    $display = MG_batchCaptionSave($album_id, $actionURL);
-    $display = MG_createHTMLDocument($display);
-    COM_output($display);
 } elseif ($mode === 'create') {
     $album_id = (int) Input::fGet('album_id', -1);
     if ($album_id < 0) {
