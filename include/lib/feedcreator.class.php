@@ -189,7 +189,7 @@ class FeedItem extends HtmlDescribable {
 	/**
 	 * Optional attributes of an item.
 	 */
-	var $author, $authorEmail, $image, $category, $comments, $guid, $source, $creator;
+	var $author, $authorEmail, $image, $category, $comments, $guid, $source, $creator, $podcast;
 
 	/**
 	 * Publishing date of an item. May be in one of the following formats:
@@ -542,6 +542,9 @@ class FeedCreator extends HtmlDescribable {
 	 * @since 1.7.3
 	 **/
 	var $verbose = true;
+
+	/** Cache timeout in seconds. */
+	var $_timeout = 3600;
 
 
 	/**
@@ -936,6 +939,7 @@ class RSSCreator091 extends FeedCreator {
 	 * @access private
 	 */
 	var $RSSVersion;
+	var $namespaces = array();
 
 	public function __construct() {
 		$this->_setRSSVersion("0.91");
@@ -1112,7 +1116,7 @@ class PIECreator01 extends FeedCreator {
 		$feed.= $this->_createStylesheetReferences();
 		$feed.= "<feed version=\"0.1\" xmlns=\"http://example.com/newformat#\">\n";
 		$feed.= "    <title>".FeedCreator::iTrunc(MG_escape($this->title),100)."</title>\n";
-		$this->truncSize = 500;
+		$this->descriptionTruncSize = 500;
 		$feed.= "    <subtitle>".$this->getDescription()."</subtitle>\n";
 		$feed.= "    <link>".$this->link."</link>\n";
 		for ($i=0;$i<count($this->items);$i++) {
@@ -1242,7 +1246,7 @@ class MBOXCreator extends FeedCreator {
 		$eol = "\r\n";
 		$escape = "=";
 		$output = "";
-		while( list(, $line) = each($lines) ) {
+		foreach ($lines as $line) {
 			//$line = rtrim($line); // remove trailing white space -> no =20\r\n necessary
 			$linlen = strlen($line);
 			$newline = "";
@@ -1272,6 +1276,7 @@ class MBOXCreator extends FeedCreator {
 	 * @return    string    the feed's complete text
 	 */
 	function createFeed() {
+		$feed = "";
 		for ($i=0;$i<count($this->items);$i++) {
 			if ($this->items[$i]->author!="") {
 				$from = $this->items[$i]->author;

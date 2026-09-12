@@ -195,9 +195,11 @@ function MG_processAlbumFeedItems(&$rss, $aid, &$album_data)
         $item->source = $_CONF['site_url'];
         if ($row['artist'] != '') {
             $item->author = $row['artist'];
-            $item->podcast->author = $row['artist'];
+            if ($album_data['podcast']) {
+                $item->podcast->author = $row['artist'];
+            }
         }
-        if ($row['media_keywords'] != '') {
+        if ($album_data['podcast'] && $row['media_keywords'] != '') {
             $item->podcast->keywords = $row['media_keywords'];
         }
 /* ---
