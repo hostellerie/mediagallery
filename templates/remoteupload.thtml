@@ -27,8 +27,8 @@ function formControl(){
     <fieldset>
       <legend>{lang_file_number}1</legend>
       <dl class="form_block">
-        <dt><label>{lang_remote_media_type}</label></dt>
-        <dd><select name="type[]" onchange="formControl()">
+        <dt><label for="mg-remote-type-1">{lang_remote_media_type}</label></dt>
+        <dd><select id="mg-remote-type-1" name="type[]" onchange="formControl()">
               <option value="-1">------</option>
               <option value="0">{lang_flv_stream}</option>
               {!if enable_remote_images}
@@ -41,26 +41,26 @@ function formControl(){
             </select>
         </dd>
 
-        <dt><label>{lang_thumbnail}</label></dt>
-        <dd><input type="file" name="thumbnail[]"{xhtml}></dd>
+        <dt><label for="mg-remote-thumbnail-1">{lang_thumbnail}</label></dt>
+        <dd><input type="file" id="mg-remote-thumbnail-1" name="thumbnail[]"{xhtml}></dd>
 
-        <dt><label>{lang_remote_url}</label></dt>
-        <dd><textarea name="remoteurl[]" cols="60" rows="2" class="size6"></textarea></dd>
+        <dt><label for="mg-remote-url-1">{lang_remote_url}</label></dt>
+        <dd><textarea id="mg-remote-url-1" name="remoteurl[]" cols="60" rows="2" class="size6"></textarea></dd>
 
-        <dt><label>{lang_width}</label></dt>
-        <dd><input type="text" name="width[]" size="3"{xhtml}></dd>
+        <dt><label for="mg-remote-width-1">{lang_width}</label></dt>
+        <dd><input type="text" id="mg-remote-width-1" name="width[]" size="3"{xhtml}></dd>
 
-        <dt><label>{lang_height}</label></dt>
-        <dd><input type="text" name="height[]" size="3"{xhtml}></dd>
+        <dt><label for="mg-remote-height-1">{lang_height}</label></dt>
+        <dd><input type="text" id="mg-remote-height-1" name="height[]" size="3"{xhtml}></dd>
 
-        <dt><label>{lang_caption}</label></dt>
-        <dd><input type="text" name="caption[]" class="size6" value=""{xhtml}></dd>
+        <dt><label for="mg-remote-caption-1">{lang_caption}</label></dt>
+        <dd><input type="text" id="mg-remote-caption-1" name="caption[]" class="size6" value=""{xhtml}></dd>
 
-        <dt><label>{lang_description}</label></dt>
-        <dd><textarea name="description[]" cols="60" rows="2" class="size6"></textarea></dd>
+        <dt><label for="mg-remote-description-1">{lang_description}</label></dt>
+        <dd><textarea id="mg-remote-description-1" name="description[]" cols="60" rows="2" class="size6"></textarea></dd>
 
-        <dt><label>{lang_keywords}</label></dt>
-        <dd><input type="text" name="keywords[]" class="size6" value=""{xhtml}></dd>
+        <dt><label for="mg-remote-keywords-1">{lang_keywords}</label></dt>
+        <dd><input type="text" id="mg-remote-keywords-1" name="keywords[]" class="size6" value=""{xhtml}></dd>
 
         <dt><label>{lang_category}</label></dt>
         <dd>{cat_select}</dd>
@@ -70,8 +70,8 @@ function formControl(){
     <fieldset>
       <legend>{lang_file_number}2</legend>
       <dl class="form_block">
-        <dt><label>{lang_remote_media_type}</label></dt>
-        <dd><select name="type[]" onchange="formControl()">
+        <dt><label for="mg-remote-type-2">{lang_remote_media_type}</label></dt>
+        <dd><select id="mg-remote-type-2" name="type[]" onchange="formControl()">
               <option value="-1">------</option>
               <option value="0">{lang_flv_stream}</option>
               {!if enable_remote_images}
@@ -84,26 +84,26 @@ function formControl(){
             </select>
         </dd>
 
-        <dt><label>{lang_thumbnail}</label></dt>
-        <dd><input type="file" name="thumbnail[]"{xhtml}></dd>
+        <dt><label for="mg-remote-thumbnail-2">{lang_thumbnail}</label></dt>
+        <dd><input type="file" id="mg-remote-thumbnail-2" name="thumbnail[]"{xhtml}></dd>
 
-        <dt><label>{lang_remote_url}</label></dt>
-        <dd><textarea name="remoteurl[]" cols="60" rows="2" class="size6"></textarea></dd>
+        <dt><label for="mg-remote-url-2">{lang_remote_url}</label></dt>
+        <dd><textarea id="mg-remote-url-2" name="remoteurl[]" cols="60" rows="2" class="size6"></textarea></dd>
 
-        <dt><label>{lang_width}</label></dt>
-        <dd><input type="text" name="width[]" size="3"{xhtml}></dd>
+        <dt><label for="mg-remote-width-2">{lang_width}</label></dt>
+        <dd><input type="text" id="mg-remote-width-2" name="width[]" size="3"{xhtml}></dd>
 
-        <dt><label>{lang_height}</label></dt>
-        <dd><input type="text" name="height[]" size="3"{xhtml}></dd>
+        <dt><label for="mg-remote-height-2">{lang_height}</label></dt>
+        <dd><input type="text" id="mg-remote-height-2" name="height[]" size="3"{xhtml}></dd>
 
-        <dt><label>{lang_caption}</label></dt>
-        <dd><input type="text" name="caption[]" class="size6" value=""{xhtml}></dd>
+        <dt><label for="mg-remote-caption-2">{lang_caption}</label></dt>
+        <dd><input type="text" id="mg-remote-caption-2" name="caption[]" class="size6" value=""{xhtml}></dd>
 
-        <dt><label>{lang_description}</label></dt>
-        <dd><textarea name="description[]" cols="60" rows="2" class="size6"></textarea></dd>
+        <dt><label for="mg-remote-description-2">{lang_description}</label></dt>
+        <dd><textarea id="mg-remote-description-2" name="description[]" cols="60" rows="2" class="size6"></textarea></dd>
 
-        <dt><label>{lang_keywords}</label></dt>
-        <dd><input type="text" name="keywords[]" class="size6" value=""{xhtml}></dd>
+        <dt><label for="mg-remote-keywords-2">{lang_keywords}</label></dt>
+        <dd><input type="text" id="mg-remote-keywords-2" name="keywords[]" class="size6" value=""{xhtml}></dd>
 
         <dt><label>{lang_category}</label></dt>
         <dd>{cat_select}</dd>
@@ -113,8 +113,8 @@ function formControl(){
     <fieldset>
       <legend>{lang_file_number}3</legend>
       <dl class="form_block">
-        <dt><label>{lang_remote_media_type}</label></dt>
-        <dd><select name="type[]" onchange="formControl()">
+        <dt><label for="mg-remote-type-3">{lang_remote_media_type}</label></dt>
+        <dd><select id="mg-remote-type-3" name="type[]" onchange="formControl()">
               <option value="-1">------</option>
               <option value="0">{lang_flv_stream}</option>
               {!if enable_remote_images}
@@ -127,26 +127,26 @@ function formControl(){
             </select>
         </dd>
 
-        <dt><label>{lang_thumbnail}</label></dt>
-        <dd><input type="file" name="thumbnail[]"{xhtml}></dd>
+        <dt><label for="mg-remote-thumbnail-3">{lang_thumbnail}</label></dt>
+        <dd><input type="file" id="mg-remote-thumbnail-3" name="thumbnail[]"{xhtml}></dd>
 
-        <dt><label>{lang_remote_url}</label></dt>
-        <dd><textarea name="remoteurl[]" cols="60" rows="2" class="size6"></textarea></dd>
+        <dt><label for="mg-remote-url-3">{lang_remote_url}</label></dt>
+        <dd><textarea id="mg-remote-url-3" name="remoteurl[]" cols="60" rows="2" class="size6"></textarea></dd>
 
-        <dt><label>{lang_width}</label></dt>
-        <dd><input type="text" name="width[]" size="3"{xhtml}></dd>
+        <dt><label for="mg-remote-width-3">{lang_width}</label></dt>
+        <dd><input type="text" id="mg-remote-width-3" name="width[]" size="3"{xhtml}></dd>
 
-        <dt><label>{lang_height}</label></dt>
-        <dd><input type="text" name="height[]" size="3"{xhtml}></dd>
+        <dt><label for="mg-remote-height-3">{lang_height}</label></dt>
+        <dd><input type="text" id="mg-remote-height-3" name="height[]" size="3"{xhtml}></dd>
 
-        <dt><label>{lang_caption}</label></dt>
-        <dd><input type="text" name="caption[]" class="size6" value=""{xhtml}></dd>
+        <dt><label for="mg-remote-caption-3">{lang_caption}</label></dt>
+        <dd><input type="text" id="mg-remote-caption-3" name="caption[]" class="size6" value=""{xhtml}></dd>
 
-        <dt><label>{lang_description}</label></dt>
-        <dd><textarea name="description[]" cols="60" rows="2" class="size6"></textarea></dd>
+        <dt><label for="mg-remote-description-3">{lang_description}</label></dt>
+        <dd><textarea id="mg-remote-description-3" name="description[]" cols="60" rows="2" class="size6"></textarea></dd>
 
-        <dt><label>{lang_keywords}</label></dt>
-        <dd><input type="text" name="keywords[]" class="size6" value=""{xhtml}></dd>
+        <dt><label for="mg-remote-keywords-3">{lang_keywords}</label></dt>
+        <dd><input type="text" id="mg-remote-keywords-3" name="keywords[]" class="size6" value=""{xhtml}></dd>
 
         <dt><label>{lang_category}</label></dt>
         <dd>{cat_select}</dd>
@@ -156,8 +156,8 @@ function formControl(){
     <fieldset>
       <legend>{lang_file_number}4</legend>
       <dl class="form_block">
-        <dt><label>{lang_remote_media_type}</label></dt>
-        <dd><select name="type[]" onchange="formControl()">
+        <dt><label for="mg-remote-type-4">{lang_remote_media_type}</label></dt>
+        <dd><select id="mg-remote-type-4" name="type[]" onchange="formControl()">
               <option value="-1">------</option>
               <option value="0">{lang_flv_stream}</option>
               {!if enable_remote_images}
@@ -170,26 +170,26 @@ function formControl(){
             </select>
         </dd>
 
-        <dt><label>{lang_thumbnail}</label></dt>
-        <dd><input type="file" name="thumbnail[]"{xhtml}></dd>
+        <dt><label for="mg-remote-thumbnail-4">{lang_thumbnail}</label></dt>
+        <dd><input type="file" id="mg-remote-thumbnail-4" name="thumbnail[]"{xhtml}></dd>
 
-        <dt><label>{lang_remote_url}</label></dt>
-        <dd><textarea name="remoteurl[]" cols="60" rows="2" class="size6"></textarea></dd>
+        <dt><label for="mg-remote-url-4">{lang_remote_url}</label></dt>
+        <dd><textarea id="mg-remote-url-4" name="remoteurl[]" cols="60" rows="2" class="size6"></textarea></dd>
 
-        <dt><label>{lang_width}</label></dt>
-        <dd><input type="text" name="width[]" size="3"{xhtml}></dd>
+        <dt><label for="mg-remote-width-4">{lang_width}</label></dt>
+        <dd><input type="text" id="mg-remote-width-4" name="width[]" size="3"{xhtml}></dd>
 
-        <dt><label>{lang_height}</label></dt>
-        <dd><input type="text" name="height[]" size="3"{xhtml}></dd>
+        <dt><label for="mg-remote-height-4">{lang_height}</label></dt>
+        <dd><input type="text" id="mg-remote-height-4" name="height[]" size="3"{xhtml}></dd>
 
-        <dt><label>{lang_caption}</label></dt>
-        <dd><input type="text" name="caption[]" class="size6" value=""{xhtml}></dd>
+        <dt><label for="mg-remote-caption-4">{lang_caption}</label></dt>
+        <dd><input type="text" id="mg-remote-caption-4" name="caption[]" class="size6" value=""{xhtml}></dd>
 
-        <dt><label>{lang_description}</label></dt>
-        <dd><textarea name="description[]" cols="60" rows="2" class="size6"></textarea></dd>
+        <dt><label for="mg-remote-description-4">{lang_description}</label></dt>
+        <dd><textarea id="mg-remote-description-4" name="description[]" cols="60" rows="2" class="size6"></textarea></dd>
 
-        <dt><label>{lang_keywords}</label></dt>
-        <dd><input type="text" name="keywords[]" class="size6" value=""{xhtml}></dd>
+        <dt><label for="mg-remote-keywords-4">{lang_keywords}</label></dt>
+        <dd><input type="text" id="mg-remote-keywords-4" name="keywords[]" class="size6" value=""{xhtml}></dd>
 
         <dt><label>{lang_category}</label></dt>
         <dd>{cat_select}</dd>

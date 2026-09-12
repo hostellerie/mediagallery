@@ -14,23 +14,23 @@
   <fieldset>
     <legend>{lang_file_number}1</legend>
     <dl class="form_block">
-      <dt><label>{lang_file}</label></dt>
-      <dd><input type="file" name="newmedia[0]"{xhtml}></dd>
+      <dt><label for="mg-upload-file-1">{lang_file}</label></dt>
+      <dd><input type="file" id="mg-upload-file-1" name="newmedia[0]"{xhtml}></dd>
 
-      <dt><label>{lang_do_not_convert_orig}</label></dt>
-      <dd><input type="checkbox" name="dnc[0]" value="1"{xhtml}></dd>
+      <dt><label for="mg-upload-dnc-1">{lang_do_not_convert_orig}</label></dt>
+      <dd><input type="checkbox" id="mg-upload-dnc-1" name="dnc[0]" value="1"{xhtml}></dd>
 
-      <dt><label>{lang_attached_tn}</label></dt>
-      <dd><input type="checkbox" name="attachtn[0]" value="1"{xhtml}> <input type="file" name="thumbnail[0]"{xhtml}></dd>
+      <dt><label for="mg-upload-attachtn-1">{lang_attached_tn}</label></dt>
+      <dd><input type="checkbox" id="mg-upload-attachtn-1" name="attachtn[0]" value="1"{xhtml}> <input type="file" id="mg-upload-thumbnail-1" name="thumbnail[0]" aria-label="{lang_attached_tn}"{xhtml}></dd>
 
-      <dt><label>{lang_caption}</label></dt>
-      <dd><input type="text" name="caption[0]" class="size6" value=""{xhtml}></dd>
+      <dt><label for="mg-upload-caption-1">{lang_caption}</label></dt>
+      <dd><input type="text" id="mg-upload-caption-1" name="caption[0]" class="size6" value=""{xhtml}></dd>
 
-      <dt><label>{lang_description}</label></dt>
-      <dd><textarea name="description[0]" cols="60" rows="2" class="size6"></textarea></dd>
+      <dt><label for="mg-upload-description-1">{lang_description}</label></dt>
+      <dd><textarea id="mg-upload-description-1" name="description[0]" cols="60" rows="2" class="size6"></textarea></dd>
 
-      <dt><label>{lang_keywords}</label></dt>
-      <dd><input type="text" name="keywords[0]" class="size6" value=""{xhtml}></dd>
+      <dt><label for="mg-upload-keywords-1">{lang_keywords}</label></dt>
+      <dd><input type="text" id="mg-upload-keywords-1" name="keywords[0]" class="size6" value=""{xhtml}></dd>
 
       <dt><label>{lang_category}</label></dt>
       <dd>{cat_select_0}</dd>
@@ -40,23 +40,23 @@
   <fieldset>
     <legend>{lang_file_number}2</legend>
     <dl class="form_block">
-      <dt><label>{lang_file}</label></dt>
-      <dd><input type="file" name="newmedia[1]"{xhtml}></dd>
+      <dt><label for="mg-upload-file-2">{lang_file}</label></dt>
+      <dd><input type="file" id="mg-upload-file-2" name="newmedia[1]"{xhtml}></dd>
 
-      <dt><label>{lang_do_not_convert_orig}</label></dt>
-      <dd><input type="checkbox" name="dnc[1]" value="1"{xhtml}></dd>
+      <dt><label for="mg-upload-dnc-2">{lang_do_not_convert_orig}</label></dt>
+      <dd><input type="checkbox" id="mg-upload-dnc-2" name="dnc[1]" value="1"{xhtml}></dd>
 
-      <dt><label>{lang_attached_tn}</label></dt>
-      <dd><input type="checkbox" name="attachtn[1]" value="1"{xhtml}> <input type="file" name="thumbnail[1]"{xhtml}></dd>
+      <dt><label for="mg-upload-attachtn-2">{lang_attached_tn}</label></dt>
+      <dd><input type="checkbox" id="mg-upload-attachtn-2" name="attachtn[1]" value="1"{xhtml}> <input type="file" id="mg-upload-thumbnail-2" name="thumbnail[1]" aria-label="{lang_attached_tn}"{xhtml}></dd>
 
-      <dt><label>{lang_caption}</label></dt>
-      <dd><input type="text" name="caption[1]" class="size6" value=""{xhtml}></dd>
+      <dt><label for="mg-upload-caption-2">{lang_caption}</label></dt>
+      <dd><input type="text" id="mg-upload-caption-2" name="caption[1]" class="size6" value=""{xhtml}></dd>
 
-      <dt><label>{lang_description}</label></dt>
-      <dd><textarea name="description[1]" cols="60" rows="2" class="size6"></textarea></dd>
+      <dt><label for="mg-upload-description-2">{lang_description}</label></dt>
+      <dd><textarea id="mg-upload-description-2" name="description[1]" cols="60" rows="2" class="size6"></textarea></dd>
 
-      <dt><label>{lang_keywords}</label></dt>
-      <dd><input type="text" name="keywords[1]" class="size6" value=""{xhtml}></dd>
+      <dt><label for="mg-upload-keywords-2">{lang_keywords}</label></dt>
+      <dd><input type="text" id="mg-upload-keywords-2" name="keywords[1]" class="size6" value=""{xhtml}></dd>
 
       <dt><label>{lang_category}</label></dt>
       <dd>{cat_select_1}</dd>
@@ -66,23 +66,23 @@
   <fieldset>
     <legend>{lang_file_number}3</legend>
     <dl class="form_block">
-      <dt><label>{lang_file}</label></dt>
-      <dd><input type="file" name="newmedia[2]"{xhtml}></dd>
+      <dt><label for="mg-upload-file-3">{lang_file}</label></dt>
+      <dd><input type="file" id="mg-upload-file-3" name="newmedia[2]"{xhtml}></dd>
 
-      <dt><label>{lang_do_not_convert_orig}</label></dt>
-      <dd><input type="checkbox" name="dnc[2]" value="1"{xhtml}></dd>
+      <dt><label for="mg-upload-dnc-3">{lang_do_not_convert_orig}</label></dt>
+      <dd><input type="checkbox" id="mg-upload-dnc-3" name="dnc[2]" value="1"{xhtml}></dd>
 
-      <dt><label>{lang_attached_tn}</label></dt>
-      <dd><input type="checkbox" name="attachtn[2]" value="1"{xhtml}> <input type="file" name="thumbnail[2]"{xhtml}></dd>
+      <dt><label for="mg-upload-attachtn-3">{lang_attached_tn}</label></dt>
+      <dd><input type="checkbox" id="mg-upload-attachtn-3" name="attachtn[2]" value="1"{xhtml}> <input type="file" id="mg-upload-thumbnail-3" name="thumbnail[2]" aria-label="{lang_attached_tn}"{xhtml}></dd>
 
-      <dt><label>{lang_caption}</label></dt>
-      <dd><input type="text" name="caption[2]" class="size6" value=""{xhtml}></dd>
+      <dt><label for="mg-upload-caption-3">{lang_caption}</label></dt>
+      <dd><input type="text" id="mg-upload-caption-3" name="caption[2]" class="size6" value=""{xhtml}></dd>
 
-      <dt><label>{lang_description}</label></dt>
-      <dd><textarea name="description[2]" cols="60" rows="2" class="size6"></textarea></dd>
+      <dt><label for="mg-upload-description-3">{lang_description}</label></dt>
+      <dd><textarea id="mg-upload-description-3" name="description[2]" cols="60" rows="2" class="size6"></textarea></dd>
 
-      <dt><label>{lang_keywords}</label></dt>
-      <dd><input type="text" name="keywords[2]" class="size6" value=""{xhtml}></dd>
+      <dt><label for="mg-upload-keywords-3">{lang_keywords}</label></dt>
+      <dd><input type="text" id="mg-upload-keywords-3" name="keywords[2]" class="size6" value=""{xhtml}></dd>
 
       <dt><label>{lang_category}</label></dt>
       <dd>{cat_select_2}</dd>
@@ -92,23 +92,23 @@
   <fieldset>
     <legend>{lang_file_number}4</legend>
     <dl class="form_block">
-      <dt><label>{lang_file}</label></dt>
-      <dd><input type="file" name="newmedia[3]"{xhtml}></dd>
+      <dt><label for="mg-upload-file-4">{lang_file}</label></dt>
+      <dd><input type="file" id="mg-upload-file-4" name="newmedia[3]"{xhtml}></dd>
 
-      <dt><label>{lang_do_not_convert_orig}</label></dt>
-      <dd><input type="checkbox" name="dnc[3]" value="1"{xhtml}></dd>
+      <dt><label for="mg-upload-dnc-4">{lang_do_not_convert_orig}</label></dt>
+      <dd><input type="checkbox" id="mg-upload-dnc-4" name="dnc[3]" value="1"{xhtml}></dd>
 
-      <dt><label>{lang_attached_tn}</label></dt>
-      <dd><input type="checkbox" name="attachtn[3]" value="1"{xhtml}> <input type="file" name="thumbnail[3]"{xhtml}></dd>
+      <dt><label for="mg-upload-attachtn-4">{lang_attached_tn}</label></dt>
+      <dd><input type="checkbox" id="mg-upload-attachtn-4" name="attachtn[3]" value="1"{xhtml}> <input type="file" id="mg-upload-thumbnail-4" name="thumbnail[3]" aria-label="{lang_attached_tn}"{xhtml}></dd>
 
-      <dt><label>{lang_caption}</label></dt>
-      <dd><input type="text" name="caption[3]" class="size6" value=""{xhtml}></dd>
+      <dt><label for="mg-upload-caption-4">{lang_caption}</label></dt>
+      <dd><input type="text" id="mg-upload-caption-4" name="caption[3]" class="size6" value=""{xhtml}></dd>
 
-      <dt><label>{lang_description}</label></dt>
-      <dd><textarea name="description[3]" cols="60" rows="2" class="size6"></textarea></dd>
+      <dt><label for="mg-upload-description-4">{lang_description}</label></dt>
+      <dd><textarea id="mg-upload-description-4" name="description[3]" cols="60" rows="2" class="size6"></textarea></dd>
 
-      <dt><label>{lang_keywords}</label></dt>
-      <dd><input type="text" name="keywords[3]" class="size6" value=""{xhtml}></dd>
+      <dt><label for="mg-upload-keywords-4">{lang_keywords}</label></dt>
+      <dd><input type="text" id="mg-upload-keywords-4" name="keywords[3]" class="size6" value=""{xhtml}></dd>
 
       <dt><label>{lang_category}</label></dt>
       <dd>{cat_select_3}</dd>
