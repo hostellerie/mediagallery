@@ -1,0 +1,44 @@
+name: Apply MediaGallery sort security hardening
+
+on:
+  push:
+    branches:
+      - modernize-1.8.0
+    paths:
+      - '.github/sort-security-trigger'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: modernize-1.8.0
+          fetch-depth: 0
+
+      - name: Apply patch
+        run: python3 .github/sort-security-patch.py
+
+      - name: Validate
+        shell: bash
+        run: |
+          set -euo pipefail
+          php -l include/sort.php
+          grep -q 'album sort rejected because of an invalid CSRF token' include/sort.php
+          grep -q 'static media sort rejected because the user has no write access' include/sort.php
+          grep -q 'static media sort rejected because of an invalid CSRF token' include/sort.php
+          grep -q 'name="{gltoken_name}" value="{gltoken}"' templates/sortalbum.thtml
+          grep -q 'name="{gltoken_name}" value="{gltoken}"' templates/staticsort.thtml
+
+      - name: Commit
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add include/sort.php templates/sortalbum.thtml templates/staticsort.thtml ROADMAP.md IMPLEMENTATION_NOTES.md
+          git commit -m 'Harden MediaGallery sort mutations'
+          git push origin HEAD:modernize-1.8.0
