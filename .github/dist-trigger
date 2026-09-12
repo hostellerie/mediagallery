@@ -2,4 +2,4 @@ Build requested for MediaGallery installable archive.
 Source target: modernize-1.8.0
 Archive: mediagallery_1.8.0_2.0.0.zip
 Requested: 2026-09-12
-Reason: register fs_runtime180 in LANG_fs for Geeklog 2.2.2 Configuration UI
+Reason: derive tmp/uploads working directories from path_data independently of media storage
