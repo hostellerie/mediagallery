@@ -1,0 +1,48 @@
+name: Run MediaGallery storage finalization
+
+on:
+  push:
+    branches:
+      - modernize-1.8.0
+    paths:
+      - '.github/run-storage-finalize-trigger'
+
+permissions:
+  contents: write
+
+jobs:
+  finalize:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: modernize-1.8.0
+          fetch-depth: 0
+
+      - name: Apply finalization patch
+        run: python3 .github/storage-finalize.py
+
+      - name: Validate PHP
+        run: |
+          set -e
+          php -l autoinstall.php
+          php -l include/storage_180.php
+          php -l include/config_180.php
+          php -l include/newmedia.php
+          php -l public_html/admin.php
+          php -l public_html/view.php
+          php -l tools/migrate-media-storage.php
+          grep -q 'return true;' autoinstall.php
+          grep -q 'remote_media = 0' autoinstall.php
+          ! grep -q 'MG DEBUG admin' public_html/admin.php
+          ! grep -q 'MG DEBUG saveUserUpload' include/newmedia.php
+
+      - name: Commit
+        run: |
+          set -e
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add autoinstall.php public_html/admin.php include/newmedia.php README IMPLEMENTATION_NOTES.md TESTING-1.8.md .github/workflows/build-dist.yml
+          git commit -m 'Finalize persistent media storage migration for 1.8.0'
+          git push origin HEAD:modernize-1.8.0
