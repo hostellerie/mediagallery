@@ -1,0 +1,81 @@
+name: Add temporary MediaGallery upload trace
+
+on:
+  push:
+    branches:
+      - modernize-1.8.0
+    paths:
+      - '.github/debug-upload-trigger'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: modernize-1.8.0
+          fetch-depth: 0
+
+      - name: Add gated upload trace
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          admin = Path('public_html/admin.php')
+          text = admin.read_text(encoding='utf-8')
+
+          old = """        case 'upload' :\n            require_once $include . 'newmedia.php';\n            $display .= MG_saveUserUpload($album_id);\n            break;\n"""
+          new = """        case 'upload' :\n            require_once $include . 'newmedia.php';\n            $uploadResult = MG_saveUserUpload($album_id);\n            if (!empty($_CONF['debug_image_upload'])) {\n                COM_errorLog(\n                    'MG DEBUG admin after MG_saveUserUpload: type=' . gettype($uploadResult)\n                    . ' length=' . strlen((string) $uploadResult)\n                );\n            }\n            $display .= $uploadResult;\n            break;\n"""
+          if old not in text:
+              raise SystemExit('admin upload block not found')
+          text = text.replace(old, new, 1)
+
+          old = """    $display = MG_createHTMLDocument($display);\n    COM_output($display);\n} elseif ($mode == $LANG_MG01['delete']"""
+          new = """    if (isset($action) && $action === 'upload' && !empty($_CONF['debug_image_upload'])) {\n        COM_errorLog('MG DEBUG admin before MG_createHTMLDocument: length=' . strlen((string) $display));\n    }\n    $display = MG_createHTMLDocument($display);\n    if (isset($action) && $action === 'upload' && !empty($_CONF['debug_image_upload'])) {\n        COM_errorLog(\n            'MG DEBUG admin after MG_createHTMLDocument: type=' . gettype($display)\n            . ' length=' . strlen((string) $display)\n        );\n        COM_errorLog('MG DEBUG admin before COM_output');\n    }\n    COM_output($display);\n} elseif ($mode == $LANG_MG01['delete']"""
+          if old not in text:
+              raise SystemExit('admin HTML output block not found')
+          text = text.replace(old, new, 1)
+          admin.write_text(text, encoding='utf-8')
+
+          newmedia = Path('include/newmedia.php')
+          text = newmedia.read_text(encoding='utf-8')
+
+          old = """    if (!SEC_checkToken()) {\n        COM_errorLog('MediaGallery: browser upload rejected because of an invalid CSRF token.', 1);\n        return COM_showMessageText($LANG_MG02['generic_error']);\n    }\n\n    $retval = COM_startBlock"""
+          new = """    if (!SEC_checkToken()) {\n        COM_errorLog('MediaGallery: browser upload rejected because of an invalid CSRF token.', 1);\n        return COM_showMessageText($LANG_MG02['generic_error']);\n    }\n\n    if (!empty($_CONF['debug_image_upload'])) {\n        COM_errorLog('MG DEBUG saveUserUpload: CSRF accepted album_id=' . intval($album_id));\n    }\n\n    $retval = COM_startBlock"""
+          if old not in text:
+              raise SystemExit('newmedia CSRF block not found')
+          text = text.replace(old, new, 1)
+
+          old = """    if ($successfull_upload) {\n        MG_notifyModerators180($album_id);\n    }\n\n    $dbCount = DB_count"""
+          new = """    if (!empty($_CONF['debug_image_upload'])) {\n        COM_errorLog(\n            'MG DEBUG saveUserUpload after files: success=' . intval($successfull_upload)\n            . ' status_length=' . strlen((string) $statusMsg)\n        );\n    }\n\n    if ($successfull_upload) {\n        if (!empty($_CONF['debug_image_upload'])) {\n            COM_errorLog('MG DEBUG saveUserUpload before moderator notification');\n        }\n        MG_notifyModerators180($album_id);\n        if (!empty($_CONF['debug_image_upload'])) {\n            COM_errorLog('MG DEBUG saveUserUpload after moderator notification');\n        }\n    }\n\n    $dbCount = DB_count"""
+          if old not in text:
+              raise SystemExit('newmedia notify block not found')
+          text = text.replace(old, new, 1)
+
+          old = """    MG_SortMedia($album_id);\n\n    $T->set_var('status_message', $statusMsg);\n"""
+          new = """    if (!empty($_CONF['debug_image_upload'])) {\n        COM_errorLog('MG DEBUG saveUserUpload before MG_SortMedia');\n    }\n    MG_SortMedia($album_id);\n    if (!empty($_CONF['debug_image_upload'])) {\n        COM_errorLog('MG DEBUG saveUserUpload after MG_SortMedia');\n    }\n\n    $T->set_var('status_message', $statusMsg);\n"""
+          if old not in text:
+              raise SystemExit('newmedia sort block not found')
+          text = text.replace(old, new, 1)
+
+          old = """    $T->parse('output', 'mupload');\n    $retval .= $T->finish($T->get_var('output'));\n    $retval .= COM_endBlock(COM_getBlockTemplate('_admin_block', 'footer'));\n\n    return $retval;\n"""
+          new = """    $T->parse('output', 'mupload');\n    if (!empty($_CONF['debug_image_upload'])) {\n        COM_errorLog('MG DEBUG saveUserUpload parsed template length=' . strlen((string) $T->get_var('output')));\n    }\n    $retval .= $T->finish($T->get_var('output'));\n    $retval .= COM_endBlock(COM_getBlockTemplate('_admin_block', 'footer'));\n\n    if (!empty($_CONF['debug_image_upload'])) {\n        COM_errorLog('MG DEBUG saveUserUpload return length=' . strlen((string) $retval));\n    }\n\n    return $retval;\n"""
+          if old not in text:
+              raise SystemExit('newmedia return block not found')
+          text = text.replace(old, new, 1)
+          newmedia.write_text(text, encoding='utf-8')
+          PY
+
+      - name: Commit trace changes
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add public_html/admin.php include/newmedia.php
+          git commit -m 'Add gated upload debug trace'
+          git push origin HEAD:modernize-1.8.0
