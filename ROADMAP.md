@@ -2,9 +2,9 @@
 
 MediaGallery 1.8.0 is a modernization and hardening release focused on safe upgrades, persistent media storage, Geeklog 2.1.1+ compatibility, multisite isolation, upload security, removal of obsolete playback technologies, template/SEO/accessibility improvements, and interoperability with other Geeklog plugins.
 
-The working branch is `modernize-1.8.0`. The supported Geeklog baseline is now 2.1.1; Geeklog 2.0.x is not a target for 1.8.0.
+The working branch is `modernize-1.8.0`. The supported Geeklog baseline is 2.1.1; Geeklog 2.0.x is not a target for 1.8.0.
 
-This roadmap reflects the current implementation state. Completed items are checked; remaining items are concentrated around release-candidate validation and final cleanup.
+This roadmap reflects the current implementation state. Completed items are checked; remaining work is concentrated around release-candidate validation and final cleanup.
 
 ## 1. Compatibility and release baseline
 
@@ -20,30 +20,15 @@ This roadmap reflects the current implementation state. Completed items are chec
 
 ## 2. Persistent media storage and multisite
 
-### Final 1.8 architecture
+Media files are persistent user data and no longer live inside the replaceable plugin public directory.
 
-Media files are persistent user data and must not live inside the replaceable plugin public directory.
-
-MediaGallery 1.8.0 therefore uses:
+MediaGallery 1.8.0 uses:
 
 ```php
 $_MG_CONF['path_mediaobjects'] = rtrim($_CONF['path_images'], '/\\') . '/mediagallery/';
 ```
 
-For the public URL:
-
-- a site-specific `$_CONF['images_url']` is used when explicitly supplied;
-- the standard single-site Geeklog image URL is used when `path_images` is the normal public `images/` directory.
-
-The historical location:
-
-```text
-public_html/mediagallery/mediaobjects/
-```
-
-is now a legacy migration source only, not the 1.8 runtime storage location.
-
-### Status
+The historical `public_html/mediagallery/mediaobjects/` location is a legacy migration source only.
 
 - [x] Centralize storage path/URL resolution.
 - [x] Store all 1.8 public media under `path_images/mediagallery/`.
@@ -55,14 +40,14 @@ is now a legacy migration source only, not the 1.8 runtime storage location.
 - [x] Never delete the legacy source automatically during migration.
 - [x] Refuse conflicting destination files instead of silently overwriting them.
 - [x] Provide `tools/migrate-media-storage.php` for safe 1.7.x pre-migration.
-- [x] Protect future ZIP upgrades because persistent media now live outside `public_html/mediagallery/`.
-- [x] Propagate migration failures so a failed upgrade cannot be marked as successfully installed.
-- [x] Confirm that adding media and then re-uploading the plugin ZIP preserves existing media on the tested 2.1.1/2.2.2 installations.
-- [ ] Validate the pre-migration path on real disposable 1.7.0 and 1.7.3 copies.
+- [x] Protect subsequent ZIP upgrades because persistent media now live outside `public_html/mediagallery/`.
+- [x] Propagate migration failures so a failed upgrade cannot be marked as installed successfully.
+- [x] Confirm that adding media and then re-uploading the plugin ZIP preserves existing media on tested 2.1.1/2.2.2 installations.
+- [ ] Validate the pre-migration path on disposable 1.7.0 and 1.7.3 copies.
 
 ### Legacy ZIP upgrade rule
 
-Geeklog's plugin uploader replaces the old public plugin directory before loading the new plugin's upgrade code. A 1.7.x installation that still stores real media in `public_html/mediagallery/mediaobjects/` must therefore run the provided pre-migration tool before uploading the 1.8 ZIP.
+Geeklog's plugin uploader replaces the old public plugin directory before loading the new plugin's upgrade code. A 1.7.x installation still storing media in `public_html/mediagallery/mediaobjects/` must therefore run the provided pre-migration tool before uploading the 1.8 ZIP.
 
 ## 3. Configuration API cleanup
 
@@ -76,28 +61,12 @@ Geeklog's plugin uploader replaces the old public plugin directory before loadin
 - [ ] Verify whether obsolete 1.7.x Flash/FlowPlayer `conf_values` rows can be safely removed on both Geeklog 2.1.1 and 2.2.2.
 - [ ] Review remaining legacy playback-related controls and remove settings with no useful HTML5 equivalent.
 
-Derived/internal values that remain runtime-only include:
-
-- `path_html`
-- `site_url`
-- `admin_url`
-- `path_admin`
-- `path_mediaobjects`
-- `mediaobjects_url`
-- `template_path`
-- plugin version metadata
-- table mappings
-- media format constants
-- internal MIME/type maps
-
 ## 4. Upload, import and remote-media security
-
-Implemented:
 
 - [x] Geeklog CSRF protection on browser upload, Remote Media and FTP import forms.
 - [x] Correct browser slot association for captions, descriptions, keywords, category, attached thumbnail and DNC.
 - [x] Correct DNC handling and preservation of originals when requested.
-- [x] Real format conversion when DNC is disabled instead of only changing stored MIME/extension metadata.
+- [x] Real format conversion when DNC is disabled instead of only changing MIME/extension metadata.
 - [x] Unsafe executable/server-side filename rejection.
 - [x] Defense-in-depth filename validation inside `MG_getFile()`.
 - [x] FTP source confinement with `realpath()`.
@@ -106,9 +75,6 @@ Implemented:
 - [x] CLI import filename protection.
 - [x] Remote Media restricted to public HTTP(S), with private/reserved/localhost rejection, redirect blocking and bounded downloads.
 - [x] Root Album (`album_id=0`) upload prevention.
-
-Still before RC:
-
 - [ ] Review MIME/extension consistency for ambiguous generic files.
 - [ ] Review temporary-file cleanup after interrupted processing.
 - [ ] Review less common album mutation/admin permission paths.
@@ -116,15 +82,17 @@ Still before RC:
 
 ## 5. Image-processing backend requirements
 
-Image upload requires a working image-processing backend for thumbnail/display generation. PDF/ZIP uploads can work even when no image backend is available, which can otherwise make a broken environment look like a MediaGallery upload bug.
+Image upload requires a working image-processing backend for thumbnail/display generation. PDF/ZIP uploads can work even when no image backend is available.
 
 The Geeklog 2.1.1 / PHP 5.6 validation confirmed that image uploads succeed once GD is installed.
 
 - [x] Confirm image upload on Geeklog 2.1.1 / PHP 5.6 with GD available.
 - [x] Confirm persistent image output under `images/mediagallery/`.
-- [ ] Add an explicit runtime/backend capability check for GD, ImageMagick or NetPBM before image processing.
-- [ ] Return a clear administrator/user-facing error when no supported image backend is available instead of failing deep inside conversion.
-- [ ] Document image-backend requirements in final install/upgrade documentation.
+- [x] Add centralized runtime capability detection for GD, ImageMagick and NetPBM.
+- [x] Guard resize, conversion, rotation and watermark operations before backend-specific calls.
+- [x] Return a clear MediaGallery error when the configured backend is unavailable instead of reaching undefined image functions.
+- [x] Document image-backend requirements in the development README.
+- [ ] Validate the new missing-backend error live once with GD intentionally disabled on the Geeklog 2.1.1/PHP 5.6 test instance.
 
 ## 6. Playback modernization
 
@@ -152,8 +120,6 @@ The Geeklog 2.1.1 / PHP 5.6 validation confirmed that image uploads succeed once
 
 ## 8. Templates, accessibility and SEO
 
-Implemented:
-
 - [x] Semantic `<h1>` album titles.
 - [x] Navigation landmarks and accessible album search control.
 - [x] Semantic thumbnail wrappers.
@@ -162,19 +128,15 @@ Implemented:
 - [x] Page-number suffix in album titles on page 2+.
 - [x] Correct sort-form page indexing.
 - [x] Improve HTML attribute escaping in media popup output.
-
-Remaining:
-
 - [ ] Review remaining inline presentation styles.
 - [ ] Remove or replace remaining legacy IE-only slideshow transition code.
 - [ ] Audit attribute escaping across all frame/theme variants.
 - [ ] Review keyboard accessibility and form labeling across remaining admin/public templates.
 - [ ] Add structured data only where MediaGallery has reliable source data and does not conflict with Geeklog core/theme output.
-- [ ] Do not invent meta descriptions or metadata absent from the media record.
 
 ## 9. Interoperability and public API
 
-MediaGallery 1.8.0 now exposes album discovery through Geeklog's native service convention:
+MediaGallery 1.8.0 exposes album discovery through Geeklog's native service convention:
 
 ```php
 PLG_invokeService(
@@ -196,8 +158,6 @@ PLG_invokeService(
 - [x] Preserve valid `member_album_root = 0` semantics.
 - [ ] Complete live tests as owner, non-owner, anonymous user and administrator.
 
-Potential consumers include Documents and future connector/plugin integrations.
-
 ## 10. Code modernization and cleanup
 
 - [x] Prefer Geeklog APIs where practical instead of duplicating core behavior.
@@ -218,7 +178,7 @@ Potential consumers include Documents and future connector/plugin integrations.
 - [x] Validate archive filenames against Geeklog 2.2.2 filename rules.
 - [x] Validate presence of the 1.8 storage and migration helpers in the archive.
 - [x] Keep archive generation intentional rather than rebuilding after every source commit.
-- [ ] Rebuild the final RC archive only after the remaining source/documentation changes are complete.
+- [ ] Rebuild the final RC archive only after remaining source/documentation changes are complete.
 
 ## 12. Release-candidate validation matrix
 
@@ -270,7 +230,7 @@ Potential consumers include Documents and future connector/plugin integrations.
 
 Before producing the 1.8.0 release candidate:
 
-- [ ] Add explicit image-backend capability detection and clear error reporting.
+- [x] Add explicit image-backend capability detection and clear error reporting.
 - [ ] Finish PHP 8.2/8.3 runtime audit.
 - [ ] Resolve remaining dead playback/configuration controls.
 - [ ] Decide fate of `functions_legacy.inc` and the legacy async endpoint.
@@ -282,11 +242,3 @@ Before producing the 1.8.0 release candidate:
 ## Release principle
 
 MediaGallery 1.8.0 should be safer to upgrade than 1.7.x, keep persistent user media outside replaceable plugin code, work naturally in single-site and shared-code multisite installations, use Geeklog-native services and mail where available, and fail explicitly when required runtime capabilities such as image processing are missing.
-
-### Image backend validation
-
-- [x] Central backend guard covers resize, convert, rotate and watermark operations.
-- [x] GD selection now checks required PHP GD functions before image processing.
-- [x] ImageMagick and NetPBM selections validate configured binaries or commands available on PATH.
-- [x] Missing backend returns a clear MediaGallery error instead of an undefined-function fatal.
-- [ ] Validate the error message live once with GD intentionally disabled on the Geeklog 2.1.1/PHP 5.6 test instance.
