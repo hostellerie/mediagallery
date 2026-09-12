@@ -1,0 +1,33 @@
+name: MediaGallery form accessibility cleanup
+
+on:
+  push:
+    paths:
+      - '.github/a11y-forms-trigger'
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: modernize-1.8.0
+          fetch-depth: 0
+      - name: Apply form accessibility cleanup
+        run: python tools/a11y_forms_180.py
+      - name: Validate labels and controls
+        shell: bash
+        run: |
+          grep -n 'for="mg-upload-' templates/userupload.thtml
+          grep -n 'for="mg-remote-' templates/remoteupload.thtml
+          grep -n 'for="media_title"\|for="media_desc"\|for="original_filename"' templates/mediaedit.thtml
+      - name: Commit form accessibility cleanup
+        run: |
+          git config user.name 'hostellerie'
+          git config user.email 'hostellerie.org@gmail.com'
+          git add templates/userupload.thtml templates/remoteupload.thtml templates/mediaedit.thtml
+          git commit -m 'Improve MediaGallery form label associations'
+          git push origin HEAD:modernize-1.8.0
