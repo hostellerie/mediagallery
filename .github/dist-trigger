@@ -2,4 +2,4 @@ Build requested for MediaGallery installable archive.
 Source target: modernize-1.8.0
 Archive: mediagallery_1.8.0_2.0.0.zip
 Requested: 2026-09-12
-Reason: derive public media from path_images and private runtime paths from path_data; remove tmp_path/ftp_path from Configuration API
+Reason: keep legacy media storage unless path_images and images_url explicitly enable site-specific storage
