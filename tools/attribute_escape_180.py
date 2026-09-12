@@ -1,4 +1,5 @@
 from pathlib import Path
+import re
 
 
 def replace_once(text, old, new, label):
@@ -16,16 +17,15 @@ text = replace_once(
     "    $url_slideshow = '';\n    $slideshow_onclick = '';\n    $lang_slideshow = '';\n",
     'slideshow onclick initialization'
 )
-text = replace_once(
-    text,
-    "                $url_slideshow  = '#\\\" onclick=\\\"return openGallery1()';\n                $lang_slideshow = $LANG_MG03['slide_show'];\n",
-    "                $url_slideshow = '#';\n                $slideshow_onclick = ' onclick=\"return openGallery1()\"';\n                $lang_slideshow = $LANG_MG03['slide_show'];\n",
-    'lightbox slideshow URL hack'
-)
+pattern = r"(?m)^\s*\$url_slideshow\s*=\s*'[^']*openGallery1\(\)[^']*';\s*$"
+replacement = "                $url_slideshow = '#';\n                $slideshow_onclick = ' onclick=\"return openGallery1()\"';"
+text, count = re.subn(pattern, replacement, text, count=1)
+if count != 1:
+    raise SystemExit('Expected one lightbox slideshow URL hack, found %d' % count)
 text = replace_once(
     text,
     "        'lang_slideshow' => $lang_slideshow,\n        'url_slideshow'  => $url_slideshow,\n",
-    "        'lang_slideshow'     => $lang_slideshow,\n        'url_slideshow'      => MG_escapeHTML($url_slideshow),\n        'slideshow_onclick'  => $slideshow_onclick,\n",
+    "        'lang_slideshow'    => $lang_slideshow,\n        'url_slideshow'     => MG_escapeHTML($url_slideshow),\n        'slideshow_onclick' => $slideshow_onclick,\n",
     'slideshow template variables'
 )
 p.write_text(text, encoding='utf-8')
