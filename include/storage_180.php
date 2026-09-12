@@ -105,7 +105,8 @@ function MG_inventoryMediaStorage180($root)
 
             $pathname = $file->getPathname();
             $relative = substr($pathname, strlen($root));
-            if ($relative === false || $relative === '' || strpos($relative, '..') !== false) {
+            $segments = preg_split('~[\\\\/]~', $relative);
+            if ($relative === false || $relative === '' || in_array('..', $segments, true)) {
                 COM_errorLog('Media Gallery 1.8.0: invalid media-storage path ' . $pathname, 1);
                 return false;
             }
@@ -123,6 +124,31 @@ function MG_inventoryMediaStorage180($root)
     ksort($inventory);
 
     return array('files' => $inventory, 'count' => $count, 'bytes' => $bytes);
+}
+
+/**
+ * Check whether a storage root contains user-generated media rather than only
+ * the packaged MediaGallery placeholder/type icons at the root.
+ */
+function MG_mediaStorageHasUserContent180($root)
+{
+    $inventory = MG_inventoryMediaStorage180($root);
+    if ($inventory === false) {
+        return false;
+    }
+
+    foreach ($inventory['files'] as $relative => $size) {
+        $relative = str_replace('\\', '/', $relative);
+        if (strpos($relative, 'orig/') === 0
+            || strpos($relative, 'disp/') === 0
+            || strpos($relative, 'tn/') === 0
+            || strpos($relative, 'covers/') === 0
+        ) {
+            return true;
+        }
+    }
+
+    return false;
 }
 
 /**
