@@ -75,7 +75,7 @@ Still review before RC:
 - deterministic upload failure paths now remove the main `tmpPath`, and special-image thumbnail conversion removes its `wip*.jpg` file on success/failure;
 - still define a stale-temp policy for genuinely interrupted/killed PHP requests;
 - permissions around less common album mutation/admin paths;
-- whether the legacy async endpoint can be removed completely after live compatibility testing.
+- the orphaned legacy asynchronous `public_html/upload.php` endpoint and its dedicated `MG_saveUpload()` handler have been removed; the maintained browser upload path is `admin.php` / `MG_saveUserUpload()`.
 
 ## Email modernization
 

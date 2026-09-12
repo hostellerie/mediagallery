@@ -81,7 +81,7 @@ Geeklog's plugin uploader replaces the old public plugin directory before loadin
 - [x] Add conservative stale-temp cleanup for genuinely interrupted/killed requests: private MediaGallery tmp only, 48-hour age threshold, no symlink traversal, and at most one scan per hour.
 - [ ] Live-test stale-temp cleanup with old and recent files/directories on Geeklog 2.1.1 and 2.2.2.
 - [ ] Review less common album mutation/admin permission paths.
-- [ ] Decide whether the legacy async upload endpoint can now be removed.
+- [x] Remove the orphaned legacy asynchronous upload endpoint and its dedicated `MG_saveUpload()` handler after confirming the active browser upload uses `admin.php` / `MG_saveUserUpload()`.
 
 ## 5. Image-processing backend requirements
 
@@ -237,7 +237,7 @@ Before producing the 1.8.0 release candidate:
 - [x] Add explicit image-backend capability detection and clear error reporting.
 - [ ] Finish PHP 8.2/8.3 runtime audit.
 - [ ] Resolve remaining dead playback/configuration controls.
-- [ ] Decide fate of `functions_legacy.inc` and the legacy async endpoint.
+- [ ] Decide fate of `functions_legacy.inc`; the legacy async upload endpoint has been removed.
 - [ ] Complete remaining template/accessibility cleanup without breaking custom skins.
 - [ ] Update final `CHANGELOG`, `README` and upgrade documentation.
 - [ ] Run the full live-test matrix above.
