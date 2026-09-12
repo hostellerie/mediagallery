@@ -22,13 +22,13 @@ jobs:
         run: |
           from pathlib import Path
 
-          def replace(path, old, new, count=1):
+          def replace(path, old, new, count=1, encoding='utf-8'):
               p = Path(path)
-              text = p.read_text()
+              text = p.read_text(encoding=encoding)
               actual = text.count(old)
               if actual != count:
                   raise SystemExit(f'{path}: expected {count} occurrence(s), found {actual}: {old[:80]!r}')
-              p.write_text(text.replace(old, new))
+              p.write_text(text.replace(old, new), encoding=encoding)
 
           # classAlbum: remove an obsolete extra argument from the internal call contract.
           replace(
@@ -102,12 +102,13 @@ jobs:
               "    $user_ip     = DB_escapeString(isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '');"
           )
 
-          # FeedCreator: cssStyleSheet is referenced and can be assigned externally;
-          # declare it so PHP 8.2 does not create a dynamic property.
+          # FeedCreator is a legacy ISO-8859-1 source file. Preserve its bytes while
+          # declaring a property that otherwise becomes dynamic under PHP 8.2.
           replace(
               'include/lib/feedcreator.class.php',
               '\tvar $xslStyleSheet = "";',
-              '\tvar $xslStyleSheet = "";\n\tvar $cssStyleSheet = "";'
+              '\tvar $xslStyleSheet = "";\n\tvar $cssStyleSheet = "";',
+              encoding='latin-1'
           )
 
       - name: PHP syntax check
