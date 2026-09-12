@@ -64,6 +64,10 @@ function MG_batchProcess($album_id, $media_id_array, $action, $actionURL = '')
             $session_id = MG_beginSession('rotate', $actionURL, $session_description);
             for ($i=0; $i < $numItems; $i++) {
                 $media_id = COM_applyFilter($media_id_array[$i]);
+                if (DB_count($_TABLES['mg_media_albums'], array('album_id', 'media_id'), array(intval($album_id), $media_id)) < 1) {
+                    COM_errorLog('MediaGallery: ignored batch rotate media ' . $media_id . ' because it is not in album ' . intval($album_id), 1);
+                    continue;
+                }
                 MG_registerSession(array(
                     'session_id' => $session_id,
                     'mid'        => $media_id,
@@ -82,6 +86,10 @@ function MG_batchProcess($album_id, $media_id_array, $action, $actionURL = '')
             $session_id = MG_beginSession('watermark', $actionURL, $session_description);
             for ($i=0; $i < $numItems; $i++) {
                 $media_id = COM_applyFilter($media_id_array[$i]);
+                if (DB_count($_TABLES['mg_media_albums'], array('album_id', 'media_id'), array(intval($album_id), $media_id)) < 1) {
+                    COM_errorLog('MediaGallery: ignored batch watermark media ' . $media_id . ' because it is not in album ' . intval($album_id), 1);
+                    continue;
+                }
                 MG_registerSession(array(
                     'session_id' => $session_id,
                     'mid'        => $media_id,
@@ -337,7 +345,12 @@ function MG_batchDeleteMedia($album_id, $media_id_array, $actionURL = '')
 
     $numItems = count($media_id_array);
     for ($i=0; $i < $numItems; $i++) {
-        MG_deleteMedia($media_id_array[$i]);
+        $media_id = COM_applyFilter($media_id_array[$i]);
+        if (DB_count($_TABLES['mg_media_albums'], array('album_id', 'media_id'), array(intval($album_id), $media_id)) < 1) {
+            COM_errorLog('MediaGallery: refused deletion of media ' . $media_id . ' because it is not in album ' . intval($album_id), 1);
+            continue;
+        }
+        MG_deleteMedia($media_id);
         $mediaCount--;
     }
 
@@ -423,7 +436,11 @@ function MG_batchMoveMedia($album_id, $destination, $media_id_array, $actionURL 
     $numItems = count($media_id_array);
 
     for ($i=0; $i < $numItems; $i++) {
-        $media_id = $media_id_array[$i];
+        $media_id = COM_applyFilter($media_id_array[$i]);
+        if (DB_count($_TABLES['mg_media_albums'], array('album_id', 'media_id'), array(intval($album_id), $media_id)) < 1) {
+            COM_errorLog('MediaGallery: refused move of media ' . $media_id . ' because it is not in source album ' . intval($album_id), 1);
+            continue;
+        }
         $sql = "UPDATE {$_TABLES['mg_media_albums']} "
              . "SET album_id=" . intval($destination) . ", media_order=" . intval($media_seq)
              . " WHERE album_id=" . intval($album_id) . " AND media_id='" . DB_escapeString($media_id) . "'";

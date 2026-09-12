@@ -84,6 +84,7 @@ Geeklog's plugin uploader replaces the old public plugin directory before loadin
 - [x] Harden album/static sort mutations with Geeklog CSRF tokens and revalidate static-sort album write access server-side.
 - [x] Harden resize/rebuild confirmations, media manager save/delete/move/batch actions and direct rotation with Geeklog CSRF tokens; direct rotation now uses POST and revalidates album write access plus album/media membership.
 - [x] Revalidate media edit/reset mutations server-side and correct reset handlers to read their posted album id.
+- [x] Bind posted media IDs to the authorized album before manager edits, batch delete/move/rotate/watermark, cover selection and normal media editing.
 - [ ] Continue audit of remaining caption/moderation/delete-session mutations before RC.
 - [x] Remove the orphaned legacy asynchronous upload endpoint and its dedicated `MG_saveUpload()` handler after confirming the active browser upload uses `admin.php` / `MG_saveUserUpload()`.
 

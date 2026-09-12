@@ -78,6 +78,7 @@ Still review before RC:
 - album sort and static media sort now use Geeklog CSRF tokens; static sort also revalidates album write access in the save handler;
 - resize/rebuild, media-manager save/delete/move/batch, direct rotation, media-edit save and rating/view resets now use Geeklog CSRF validation;
 - direct rotation now uses POST and verifies both album write access and the requested album/media association before touching files;
+- posted media IDs are now checked against `mg_media_albums` before manager edits, batch delete/move/rotate/watermark, cover selection and normal media editing;
 - continue audit of remaining caption/moderation/delete-session mutations before RC;
 - the orphaned legacy asynchronous `public_html/upload.php` endpoint and its dedicated `MG_saveUpload()` handler have been removed; the maintained browser upload path is `admin.php` / `MG_saveUserUpload()`.
 

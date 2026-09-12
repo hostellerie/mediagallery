@@ -331,6 +331,12 @@ function MG_saveMedia($album_id, $actionURL = '')
     }
 
     for ($i=0; $i < $numItems; $i++) {
+        $media_id = COM_applyFilter($media[$i]['mid']);
+        if (DB_count($_TABLES['mg_media_albums'], array('album_id', 'media_id'), array(intval($album_id), $media_id)) < 1) {
+            COM_errorLog('MediaGallery: ignored media-manager update for media ' . $media_id . ' because it is not in album ' . intval($album_id), 1);
+            continue;
+        }
+        $media[$i]['mid'] = $media_id;
         $media_title_safe = substr($media[$i]['title'], 0, 254);
 
         if ($_MG_CONF['htmlallowed'] != 1) {
@@ -379,6 +385,11 @@ function MG_saveMedia($album_id, $actionURL = '')
     // we need to see if a thumbnail is attached and then act properly.
 
     if ($cover != -1) {
+
+        if ($cover > 0 && DB_count($_TABLES['mg_media_albums'], array('album_id', 'media_id'), array(intval($album_id), $cover)) < 1) {
+            COM_errorLog('MediaGallery: ignored album cover media ' . intval($cover) . ' because it is not in album ' . intval($album_id), 1);
+            $cover = -1;
+        }
 
         $sql = "SELECT media_type,media_tn_attached,media_filename "
              . "FROM {$_TABLES['mg_media']} WHERE media_id='" . DB_escapeString($cover) . "'";
@@ -451,6 +462,11 @@ function MG_mediaEdit($album_id, $media_id, $actionURL='', $mqueue=0, $view=0, $
             " WHERE media_id='" . DB_escapeString($media_id) . "'";
     $result = DB_query($sql);
     $row = DB_fetchArray($result);
+
+    if (!$mqueue && DB_count($_TABLES['mg_media_albums'], array('album_id', 'media_id'), array(intval($album_id), $media_id)) < 1) {
+        COM_errorLog('MediaGallery: media edit rejected because media ' . DB_escapeString($media_id) . ' is not in album ' . intval($album_id), 1);
+        return COM_showMessageText($LANG_MG00['access_denied_msg']);
+    }
 
     if ($album->access != 3 && !SEC_inGroup($album->mod_group_id) && $row['media_user_id'] != $_USER['uid']) {
         COM_errorLog("Someone has tried to illegally sort albums in Media Gallery. "
@@ -1000,6 +1016,9 @@ function MG_mediaResetRating($album_id, $media_id, $mqueue)
     $album = new mgAlbum($album_id);
     $table = $mqueue ? $_TABLES['mg_mediaqueue'] : $_TABLES['mg_media'];
     $owner_id = DB_getItem($table, 'media_user_id', "media_id='" . DB_escapeString($media_id) . "'");
+    if (!$mqueue && DB_count($_TABLES['mg_media_albums'], array('album_id', 'media_id'), array(intval($album_id), $media_id)) < 1) {
+        return COM_showMessageText($LANG_MG00['access_denied_msg']);
+    }
     if ($album->access != 3 && !SEC_inGroup($album->mod_group_id) && intval($owner_id) != intval($_USER['uid'])) {
         return COM_showMessageText($LANG_MG00['access_denied_msg']);
     }
@@ -1024,6 +1043,9 @@ function MG_mediaResetViews($album_id, $media_id, $mqueue)
     $album = new mgAlbum($album_id);
     $table = $mqueue ? $_TABLES['mg_mediaqueue'] : $_TABLES['mg_media'];
     $owner_id = DB_getItem($table, 'media_user_id', "media_id='" . DB_escapeString($media_id) . "'");
+    if (!$mqueue && DB_count($_TABLES['mg_media_albums'], array('album_id', 'media_id'), array(intval($album_id), $media_id)) < 1) {
+        return COM_showMessageText($LANG_MG00['access_denied_msg']);
+    }
     if ($album->access != 3 && !SEC_inGroup($album->mod_group_id) && intval($owner_id) != intval($_USER['uid'])) {
         return COM_showMessageText($LANG_MG00['access_denied_msg']);
     }
@@ -1061,6 +1083,10 @@ function MG_saveMediaEdit($album_id, $media_id, $actionURL)
     $table = $queue ? $_TABLES['mg_mediaqueue'] : $_TABLES['mg_media'];
     $album = new mgAlbum($album_id);
     $owner_id = DB_getItem($table, 'media_user_id', "media_id='" . DB_escapeString($media_id) . "'");
+    if (!$queue && DB_count($_TABLES['mg_media_albums'], array('album_id', 'media_id'), array(intval($album_id), $media_id)) < 1) {
+        COM_errorLog('MediaGallery: media edit save rejected because media ' . DB_escapeString($media_id) . ' is not in album ' . intval($album_id), 1);
+        return COM_showMessageText($LANG_MG00['access_denied_msg']);
+    }
     if ($album->access != 3 && !SEC_inGroup($album->mod_group_id) && intval($owner_id) != intval($_USER['uid'])) {
         COM_errorLog('MediaGallery: media edit save rejected because of insufficient access.', 1);
         return COM_showMessageText($LANG_MG00['access_denied_msg']);
