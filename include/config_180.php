@@ -26,14 +26,34 @@ function MG_prepareWorkDirectory180($path)
 
 function MG_applyRuntimeConfiguration180()
 {
-    global $_CONF, $_MG_CONF;
+    global $_CONF, $_MG_CONF, $_TABLES;
 
     $_MG_CONF['pi_version'] = '1.8.0';
-    $_MG_CONF['var_current_code'] = version_compare(
-        $_MG_CONF['installed_version'],
-        $_MG_CONF['pi_version'],
-        '>='
-    );
+
+    /*
+     * functions.inc is loaded by Geeklog while a plugin archive is being
+     * inspected, before a fresh install has inserted the plugin row. In that
+     * phase installed_version may legitimately be absent. Never assume it is
+     * available merely because the runtime bootstrap has been loaded.
+     */
+    $installedVersion = '';
+    if (isset($_MG_CONF['installed_version']) && $_MG_CONF['installed_version'] !== '') {
+        $installedVersion = (string) $_MG_CONF['installed_version'];
+    } elseif (isset($_TABLES['plugins'])) {
+        $dbVersion = DB_getItem(
+            $_TABLES['plugins'],
+            'pi_version',
+            "pi_name = 'mediagallery'"
+        );
+        if ($dbVersion !== false && $dbVersion !== null && $dbVersion !== '') {
+            $installedVersion = (string) $dbVersion;
+        }
+    }
+
+    $_MG_CONF['installed_version'] = $installedVersion;
+    $_MG_CONF['var_current_code'] = ($installedVersion !== '')
+        ? version_compare($installedVersion, $_MG_CONF['pi_version'], '>=')
+        : false;
 
     $_MG_CONF['path_html'] = $_CONF['path_html'] . 'mediagallery/';
     $_MG_CONF['site_url'] = $_CONF['site_url'] . '/mediagallery';
