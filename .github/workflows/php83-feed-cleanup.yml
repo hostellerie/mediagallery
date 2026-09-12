@@ -1,0 +1,110 @@
+name: Apply MediaGallery PHP 8 feed cleanup
+
+on:
+  push:
+    paths:
+      - '.github/php83-feed-trigger'
+
+permissions:
+  contents: write
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: modernize-1.8.0
+          fetch-depth: 0
+
+      - name: Apply feed compatibility cleanup
+        shell: python
+        run: |
+          from pathlib import Path
+
+          def replace(path, old, new, count=1, encoding='utf-8'):
+              p = Path(path)
+              text = p.read_text(encoding=encoding)
+              actual = text.count(old)
+              if actual != count:
+                  raise SystemExit(f'{path}: expected {count}, found {actual}: {old[:100]!r}')
+              p.write_text(text.replace(old, new), encoding=encoding)
+
+          f = 'include/lib/feedcreator.class.php'
+          enc = 'latin-1'
+
+          # FeedItem podcast data is assigned by MediaGallery for podcast feeds.
+          replace(
+              f,
+              '\tvar $author, $authorEmail, $image, $category, $comments, $guid, $source, $creator;',
+              '\tvar $author, $authorEmail, $image, $category, $comments, $guid, $source, $creator, $podcast;',
+              encoding=enc
+          )
+
+          # FeedCreator cache timeout was historically created dynamically.
+          replace(
+              f,
+              '\tvar $verbose = true;',
+              '\tvar $verbose = true;\n\n\t/** Cache timeout in seconds. */\n\tvar $_timeout = 3600;',
+              encoding=enc
+          )
+
+          # RSS 0.91/2.0 namespace collection was historically dynamic.
+          replace(
+              f,
+              '\tvar $RSSVersion;\n\n\tpublic function __construct() {',
+              '\tvar $RSSVersion;\n\tvar $namespaces = array();\n\n\tpublic function __construct() {',
+              encoding=enc
+          )
+
+          # PIE used a misspelled dynamic property instead of HtmlDescribable's declared field.
+          replace(
+              f,
+              '\t\t$this->truncSize = 500;',
+              '\t\t$this->descriptionTruncSize = 500;',
+              encoding=enc
+          )
+
+          # each() was removed in PHP 8.0.
+          replace(
+              f,
+              '\t\twhile( list(, $line) = each($lines) ) {',
+              '\t\tforeach ($lines as $line) {',
+              encoding=enc
+          )
+
+          # MBOX appends to $feed; initialize it explicitly.
+          replace(
+              f,
+              '\tfunction createFeed() {\n\t\tfor ($i=0;$i<count($this->items);$i++) {\n\t\t\tif ($this->items[$i]->author!="") {',
+              '\tfunction createFeed() {\n\t\t$feed = "";\n\t\tfor ($i=0;$i<count($this->items);$i++) {\n\t\t\tif ($this->items[$i]->author!="") {',
+              encoding=enc
+          )
+
+          # Only touch PodcastItem when the album is actually a podcast.
+          replace(
+              'include/rssfeed.php',
+              "        if ($row['artist'] != '') {\n            $item->author = $row['artist'];\n            $item->podcast->author = $row['artist'];\n        }\n        if ($row['media_keywords'] != '') {\n            $item->podcast->keywords = $row['media_keywords'];\n        }",
+              "        if ($row['artist'] != '') {\n            $item->author = $row['artist'];\n            if ($album_data['podcast']) {\n                $item->podcast->author = $row['artist'];\n            }\n        }\n        if ($album_data['podcast'] && $row['media_keywords'] != '') {\n            $item->podcast->keywords = $row['media_keywords'];\n        }"
+          )
+
+      - name: Check removed PHP APIs and syntax
+        run: |
+          if grep -n 'each(' include/lib/feedcreator.class.php; then
+            echo 'Legacy each() call remains' >&2
+            exit 1
+          fi
+          php -l include/lib/feedcreator.class.php
+          php -l include/rssfeed.php
+
+      - name: Commit cleanup
+        run: |
+          if git diff --quiet; then
+            echo 'No changes to commit.'
+            exit 0
+          fi
+          git config user.name 'hostellerie'
+          git config user.email 'hostellerie.org@gmail.com'
+          git add include/lib/feedcreator.class.php include/rssfeed.php
+          git commit -m 'Fix PHP 8 compatibility in MediaGallery RSS feeds'
+          git push origin HEAD:modernize-1.8.0
