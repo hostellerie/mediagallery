@@ -86,7 +86,8 @@ Geeklog's plugin uploader replaces the old public plugin directory before loadin
 - [x] Revalidate media edit/reset mutations server-side and correct reset handlers to read their posted album id.
 - [x] Bind posted media IDs to the authorized album before manager edits, batch delete/move/rotate/watermark, cover selection and normal media editing.
 - [x] Remove the orphaned legacy batch-caption mutation; make batch continuation/cancellation POST+CSRF only and bind session deletion to the owning user (administrator override).
-- [ ] Complete the moderation-path audit before RC; the legacy approval/rejection helpers currently have no active controller route and need functional/security review together.
+- [x] Audit and repair Geeklog-native moderation: preserve core POST/CSRF handling, revalidate `mediagallery.admin` and queued album/media membership, correctly promote queue rows into active media tables on approval, fully remove rejected queue rows/files, and allow moderation edit/save without granting configuration access.
+- [ ] Live-test the full moderation queue/edit/approve/reject flow on Geeklog 2.1.1 and 2.2.2.
 - [x] Remove the orphaned legacy asynchronous upload endpoint and its dedicated `MG_saveUpload()` handler after confirming the active browser upload uses `admin.php` / `MG_saveUserUpload()`.
 
 ## 5. Image-processing backend requirements
@@ -225,6 +226,7 @@ PLG_invokeService(
 - [ ] Remote Media public/private/redirect/oversize cases.
 - [ ] FTP valid source, forged outside path, unsafe extension and escaping symlink.
 - [ ] Batch continuation/cancellation as owner, another user and administrator.
+- [ ] Moderated upload/edit/approve/reject with forged album/media binding attempts.
 - [ ] Stale-temp cleanup keeps recent/active entries and removes only fully stale trees.
 
 ### Functional regression
