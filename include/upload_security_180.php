@@ -79,6 +79,100 @@ function MG_validateUploadFilename180($filename)
 }
 
 /**
+ * Detect MIME locally with PHP fileinfo when available.
+ *
+ * Never uses browser-supplied Content-Type. An empty string means that a
+ * trustworthy local MIME could not be determined and callers may keep their
+ * existing fallback behavior.
+ *
+ * @param string $path
+ * @return string
+ */
+function MG_detectLocalMime180($path)
+{
+    if (!is_file($path) || !is_readable($path) || !function_exists('finfo_open')) {
+        return '';
+    }
+
+    $finfo = @finfo_open(FILEINFO_MIME_TYPE);
+    if ($finfo === false) {
+        return '';
+    }
+
+    $mime = @finfo_file($finfo, $path);
+    @finfo_close($finfo);
+
+    if (!is_string($mime)) {
+        return '';
+    }
+
+    return strtolower(trim($mime));
+}
+
+/**
+ * Return accepted MIME values for extensions MediaGallery handles explicitly.
+ * Unknown extensions intentionally return an empty array and remain generic.
+ *
+ * @param string $extension
+ * @return array
+ */
+function MG_expectedMimesForExtension180($extension)
+{
+    $extension = strtolower((string) $extension);
+    $map = array(
+        'jpg'  => array('image/jpeg', 'image/jpg'),
+        'jpeg' => array('image/jpeg', 'image/jpg'),
+        'png'  => array('image/png'),
+        'gif'  => array('image/gif'),
+        'bmp'  => array('image/bmp', 'image/x-ms-bmp'),
+        'tif'  => array('image/tiff'),
+        'tiff' => array('image/tiff'),
+        'tga'  => array('image/tga', 'image/x-targa'),
+        'psd'  => array('image/psd', 'image/photoshop', 'image/x-photoshop', 'application/photoshop', 'application/psd'),
+        'pdf'  => array('application/pdf'),
+        'zip'  => array('application/zip', 'application/x-zip', 'application/x-zip-compressed'),
+        'mp3'  => array('audio/mpeg', 'audio/mp3'),
+        'ogg'  => array('application/ogg', 'audio/ogg', 'video/ogg'),
+        'mp4'  => array('video/mp4'),
+        'm4v'  => array('video/x-m4v', 'video/mp4'),
+        'mov'  => array('video/quicktime'),
+        'avi'  => array('video/avi', 'video/msvideo', 'video/x-msvideo', 'application/x-troff-msvideo'),
+        'flv'  => array('video/x-flv'),
+        'wma'  => array('audio/x-ms-wma', 'audio/x-ms-wax'),
+        'wmv'  => array('video/x-ms-wmv', 'audio/x-ms-wmv'),
+    );
+
+    return isset($map[$extension]) ? $map[$extension] : array();
+}
+
+/**
+ * Check extension/MIME coherence for formats MediaGallery explicitly handles.
+ *
+ * application/octet-stream and empty MIME are treated as unknown rather than a
+ * mismatch; callers can then use local fileinfo or existing format fallbacks.
+ * Generic extensions are deliberately not restricted here.
+ *
+ * @param string $filename
+ * @param string $mimeType
+ * @return bool
+ */
+function MG_validateMimeExtension180($filename, $mimeType)
+{
+    $extension = MG_uploadExtension180($filename);
+    $expected = MG_expectedMimesForExtension180($extension);
+    if (empty($expected)) {
+        return true;
+    }
+
+    $mimeType = strtolower(trim((string) $mimeType));
+    if ($mimeType === '' || $mimeType === 'application/octet-stream') {
+        return true;
+    }
+
+    return in_array($mimeType, $expected, true);
+}
+
+/**
  * Validate a local import source against an allowed root directory.
  *
  * Both paths are resolved with realpath(). The source must exist and resolve
