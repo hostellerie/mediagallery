@@ -51,6 +51,7 @@ require_once $_CONF['path'] . 'plugins/mediagallery/include/lib-media.php';
 
 $media_id = isset($_GET['n']) ? COM_applyFilter($_GET['n']) : '';
 $source   = isset($_GET['s']) ? COM_applyFilter($_GET['s']) : '';
+$mediaQueue = ($source === 'q') ? 'q' : '';
 
 if ($media_id == '') {
     COM_errorLog("MediaGallery: No media id passed to view.php");
