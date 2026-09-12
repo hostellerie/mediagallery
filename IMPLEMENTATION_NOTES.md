@@ -18,11 +18,14 @@ Implemented:
 - 1.7.3 implementation retained temporarily in `functions_legacy.inc`;
 - `include/config_180.php` for runtime configuration and idempotent Configuration API migration;
 - explicit upgrade support from known 1.7.x versions;
-- site-specific media storage when both `$_CONF['path_images']` and `$_CONF['images_url']` are defined;
-- historical `public_html/mediagallery/mediaobjects/` storage preserved when `images_url` is absent;
-- site-specific `tmp` and FTP/upload staging under `$_CONF['path_data']/mediagallery/` when multisite storage is active;
-- controlled creation of private work directories with error logging;
-- no automatic relocation of existing media during upgrade;
+- persistent public media storage under `$_CONF['path_images']/mediagallery/` for all 1.8.0 installations;
+- `$_CONF['images_url']` respected when explicitly supplied, with `{site_url}/images` used only for the standard single-site image path;
+- shared-code multisite isolation through each site's own `path_images` / `images_url` pair;
+- `include/storage_180.php` copy-and-verify migration with no source deletion and conflict refusal;
+- CLI preflight tool `tools/migrate-media-storage.php` for 1.7.x sites before Geeklog's public-plugin-directory replacement;
+- site-specific `tmp` and FTP/upload staging under `$_CONF['path_data']/mediagallery/`;
+- controlled creation of public/private work directories with error logging;
+- upgrade failures propagate as Geeklog errors instead of marking 1.8.0 installed after a failed migration;
 - fresh 1.8.0 installations no longer create the obsolete FlowPlayer option or the Flash Media configuration tab/`swf_*` controls.
 
 The configuration migration adds missing administrator-facing settings without overwriting existing values, including valid `0`/`false` values. Runtime/calculated paths remain outside the Configuration API.
@@ -159,7 +162,9 @@ Do not regenerate the archive after every source commit. Regenerate it when an o
 - Geeklog 2.1.1 and 2.2.2 Configuration API behavior;
 - fresh Configuration UI has no FlowPlayer or Flash Media controls and no undefined-key warnings;
 - upgraded 1.7.x Configuration UI remains usable even if obsolete Flash rows still exist in `conf_values`;
-- standard single-site install with legacy media paths;
+- standard single-site install with persistent `images/mediagallery/` storage;
+- 1.7.3 preflight migration to `images/mediagallery/`, then ZIP upgrade, with source and destination verification;
+- verify a legacy ZIP upgrade without preflight is refused when local media rows exist but no user-media files are available;
 - multisite with separate database/table prefix, `path_images`, `images_url` and `path_data`;
 - `tmp`/uploads directory creation and permissions;
 - all new Configuration API controls save/reload correctly;

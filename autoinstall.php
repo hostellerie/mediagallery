@@ -208,7 +208,8 @@ function MG_upgrade()
         case '1.6.11':
             $result = MG_upgrade_1612();
             if ($result != 0) {
-                return $result;
+                COM_errorLog('Media Gallery upgrade failed while migrating to 1.6.12.', 1);
+                return 72;
             }
             $current_version = '1.6.12';
             break;
@@ -221,7 +222,8 @@ function MG_upgrade()
         case '1.6.17':
             $result = MG_upgrade_170();
             if ($result != 0) {
-                return $result;
+                COM_errorLog('Media Gallery upgrade failed while migrating to 1.7.0.', 1);
+                return 72;
             }
             $current_version = '1.7.0';
             break;
@@ -237,7 +239,8 @@ function MG_upgrade()
         case '1.7.3':
             $result = MG_upgrade_180();
             if ($result != 0) {
-                return $result;
+                COM_errorLog('Media Gallery upgrade failed while migrating to 1.8.0.', 1);
+                return 72;
             }
             $current_version = '1.8.0';
             break;
@@ -255,7 +258,7 @@ function MG_upgrade()
             . ' (current migration state: ' . $current_version . ').',
             1
         );
-        return 0;
+        return 72;
     }
 
     DB_query("UPDATE {$_TABLES['plugins']} "
@@ -266,10 +269,10 @@ function MG_upgrade()
 
     if (DB_error()) {
         COM_errorLog('Media Gallery upgrade: unable to update plugin version metadata.', 1);
-        return 0;
+        return 72;
     }
 
-    return 1;
+    return true;
 }
 
 function MG_upgrade_180()
@@ -287,7 +290,14 @@ function MG_upgrade_180()
     $legacy = MG_getLegacyMediaStorage180();
     $legacyHasUserMedia = MG_mediaStorageHasUserContent180($legacy);
     $targetHasUserMedia = MG_mediaStorageHasUserContent180($target['path']);
-    $mediaRows = isset($_TABLES['mg_media']) ? DB_count($_TABLES['mg_media']) : 0;
+    $localMediaRows = 0;
+    if (isset($_TABLES['mg_media'])) {
+        $result = DB_query("SELECT COUNT(*) AS local_count FROM {$_TABLES['mg_media']} WHERE remote_media = 0");
+        if ($result !== false) {
+            $row = DB_fetchArray($result);
+            $localMediaRows = isset($row['local_count']) ? (int) $row['local_count'] : 0;
+        }
+    }
 
     /*
      * Geeklog's native plugin uploader removes <plugin>.previous before it
@@ -297,7 +307,7 @@ function MG_upgrade_180()
      * contains user media. This cannot recover files already removed by Core,
      * but it prevents a silent successful upgrade over missing media.
      */
-    if ($mediaRows > 0 && !$legacyHasUserMedia && !$targetHasUserMedia) {
+    if ($localMediaRows > 0 && !$legacyHasUserMedia && !$targetHasUserMedia) {
         COM_errorLog(
             'Media Gallery 1.8.0: media database rows exist but no user media files are available. '
             . 'Run the 1.8 pre-upgrade media migration before using Geeklog\'s plugin ZIP uploader.',

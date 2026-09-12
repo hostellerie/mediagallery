@@ -56,23 +56,36 @@ With `discard_original = 1`, repeat one PNG/JPEG upload and confirm no orphan or
 - FTP import accepts a file inside configured `ftp_path` and rejects a forged outside path or escaping symlink.
 - Remote Media accepts a normal public HTTP(S) thumbnail and rejects localhost/private/reserved targets.
 
-## Multisite
+## Persistent media storage
+
+On a standard single-site installation:
+
+- confirm `path_mediaobjects` resolves below `public_html/images/mediagallery/`;
+- upload an image and confirm `orig`, `disp` and `tn` files are created there;
+- re-upload the same MediaGallery 1.8.0 plugin ZIP and confirm the existing image remains intact;
+- confirm placeholder/type assets such as `missing.png` and `generic.png` are present in persistent storage.
 
 On a shared-code installation with site-specific `path_images`, `images_url` and `path_data`:
 
-- confirm each site resolves its own `mediaobjects` path and URL;
+- confirm each site resolves its own `mediagallery` media path and URL;
 - confirm `tmp` and FTP/upload staging directories are site-specific;
-- confirm uploads on one site do not appear in another site's storage;
-- confirm no existing media is automatically moved during upgrade.
+- confirm uploads on one site do not appear in another site's storage.
 
-## Upgrade
+## Upgrade from 1.7.x
 
 On disposable copies only:
 
-- upgrade MediaGallery 1.7.0 to 1.8.0;
-- upgrade MediaGallery 1.7.3 to 1.8.0;
-- confirm existing albums/media remain accessible;
+- back up the database and `public_html/mediagallery/mediaobjects/`;
+- extract the 1.8.0 package without installing it;
+- run `php tools/migrate-media-storage.php /path/to/geeklog`;
+- confirm the tool reports all source files verified in the persistent destination and leaves the source untouched;
+- only then upload the 1.8.0 ZIP through Geeklog;
+- test both MediaGallery 1.7.0 and 1.7.3 sources;
+- confirm existing albums/media remain accessible from the new images storage;
 - confirm existing administrator settings are preserved;
+- confirm re-running the migration is idempotent;
+- create a conflicting destination file with a different size and confirm migration fails without overwriting it;
+- confirm a site containing only remote-media records does not falsely require local media files;
 - confirm obsolete Flash/FlowPlayer configuration rows, if still present in the database, do not affect the 1.8 runtime.
 
 Record PHP warnings/notices together with the Geeklog version, PHP version, action performed and relevant MediaGallery settings.
