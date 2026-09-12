@@ -131,8 +131,6 @@ $_MG_DEFAULT = array(
     'ffmpeg_path'                => '',  // added
     'zip_enabled'                => '0', // added
     'zip_path'                   => '',  // added
-    'tmp_path'                   => $_CONF['path'] . 'plugins/mediagallery/tmp/',
-    'ftp_path'                   => $_CONF['path'] . 'plugins/mediagallery/uploads/',
 
     // Root Album
     'root_album_name'            => 'Root Album', // added
@@ -411,8 +409,6 @@ function plugin_initconfig_mediagallery()
         $c->add('ffmpeg_path',           $_MG_DEFAULT['ffmpeg_path'],              'text',     0,  0, 0,    $o++, true, $n, 4);
         $c->add('zip_enabled',           $_MG_DEFAULT['zip_enabled'],              'select',   0,  0, 0,    $o++, true, $n, 4);
         $c->add('zip_path',              $_MG_DEFAULT['zip_path'],                 'text',     0,  0, 0,    $o++, true, $n, 4);
-        $c->add('tmp_path',              $_MG_DEFAULT['tmp_path'],                 'text',     0,  0, 0,    $o++, true, $n, 4);
-        $c->add('ftp_path',              $_MG_DEFAULT['ftp_path'],                 'text',     0,  0, 0,    $o++, true, $n, 4);
 
         // ----------------------------------
         $c->add('sg_album',              NULL,                                     'subgroup', 1,  0, NULL, 0,    true, $n, 0);
@@ -751,8 +747,6 @@ function mediagallery_update_ConfValues_1_7_0()
         $c->add('ffmpeg_path',           $_MG_DEFAULT['ffmpeg_path'],              'text',     0,  0, 0,    $o++, true, $n, 4);
         $c->add('zip_enabled',           $_MG_DEFAULT['zip_enabled'],              'select',   0,  0, 0,    $o++, true, $n, 4);
         $c->add('zip_path',              $_MG_DEFAULT['zip_path'],                 'text',     0,  0, 0,    $o++, true, $n, 4);
-        $c->add('tmp_path',              $_MG_DEFAULT['tmp_path'],                 'text',     0,  0, 0,    $o++, true, $n, 4);
-        $c->add('ftp_path',              $_MG_DEFAULT['ftp_path'],                 'text',     0,  0, 0,    $o++, true, $n, 4);
 
         // ----------------------------------
         $c->add('sg_album',              NULL,                                     'subgroup', 1,  0, NULL, 0,    true, $n, 0);
