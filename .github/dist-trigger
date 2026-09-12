@@ -2,4 +2,4 @@ Build requested for MediaGallery installable archive.
 Source target: modernize-1.8.0
 Archive: mediagallery_1.8.0_2.0.0.zip
 Requested: 2026-09-12
-Reason: rebuild without .gitignore and verify Geeklog 2.2.2-safe basenames
+Reason: fix fresh Geeklog 2.2.2 install before installed_version exists
