@@ -68,11 +68,23 @@ function _processDirectory($album_id, $directory, $parse_sub, $delete, $userid)
         $srcFile = $directory . $file;
         $baseSrcFile = basename($file);
 
+        // Do not follow symbolic links during recursive CLI imports. Import
+        // sources are administrator-provided, but following a link could make
+        // a recursive scan escape the intended source tree.
+        if (is_link($srcFile)) {
+            $retmsg .= $baseSrcFile . ' - Symbolic links are not imported' . LB;
+            continue;
+        }
+
         if (is_dir($srcFile)) {
             if ($parse_sub) {
                 require_once $_CONF['path'] . 'plugins/mediagallery/include/albumedit.php';
                 $new_aid = MG_quickCreate($album_id, $baseSrcFile);
-                $retmsg .= _processDirectory($album_id, $srcFile, $parse_sub, $delete, $userid) . LB;
+                if ($new_aid > 0) {
+                    $retmsg .= _processDirectory($new_aid, $srcFile, $parse_sub, $delete, $userid) . LB;
+                } else {
+                    $retmsg .= $baseSrcFile . ' - Unable to create destination album' . LB;
+                }
             }
         } else {
             if (!MG_validateUploadFilename180($baseSrcFile)) {
