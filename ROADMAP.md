@@ -81,7 +81,8 @@ Geeklog's plugin uploader replaces the old public plugin directory before loadin
 - [x] Add conservative stale-temp cleanup for genuinely interrupted/killed requests: private MediaGallery tmp only, 48-hour age threshold, no symlink traversal, and at most one scan per hour.
 - [ ] Live-test stale-temp cleanup with old and recent files/directories on Geeklog 2.1.1 and 2.2.2.
 - [x] Add CSRF protection to global album permission/attribute mutations and watermark manage/upload/delete mutations while preserving their existing access rules.
-- [ ] Continue mutation audit for resize/rebuild/sort/batch paths and confirm owner/admin permission boundaries.
+- [x] Harden album/static sort mutations with Geeklog CSRF tokens and revalidate static-sort album write access server-side.
+- [ ] Continue mutation audit for resize/rebuild/batch/rotate paths and confirm owner/admin permission boundaries.
 - [x] Remove the orphaned legacy asynchronous upload endpoint and its dedicated `MG_saveUpload()` handler after confirming the active browser upload uses `admin.php` / `MG_saveUserUpload()`.
 
 ## 5. Image-processing backend requirements
