@@ -14,6 +14,7 @@ if (strpos(strtolower($_SERVER['PHP_SELF']), strtolower(basename(__FILE__))) !==
  * is introduced in controlled layers. This transitional include can be folded
  * back into functions.inc once the configuration/template refactor is stable.
  */
+require_once __DIR__ . '/include/input_compat_180.php';
 require_once __DIR__ . '/functions_legacy.inc';
 require_once __DIR__ . '/include/config_180.php';
 require_once __DIR__ . '/include/email_180.php';
