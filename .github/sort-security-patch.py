@@ -18,8 +18,8 @@ if old not in text:
 text = text.replace(old, new, 1)
 
 # Static sort form token variables.
-old = """        'lang_order_options'       => $LANG_MG01['order_options'],\n    ));"""
-new = """        'lang_order_options'       => $LANG_MG01['order_options'],\n        'gltoken_name'             => CSRF_TOKEN,\n        'gltoken'                  => SEC_createToken(),\n    ));"""
+old = """        'lang_order_options'      => $LANG_MG01['order_options'],\n    ));"""
+new = """        'lang_order_options'      => $LANG_MG01['order_options'],\n        'gltoken_name'            => CSRF_TOKEN,\n        'gltoken'                 => SEC_createToken(),\n    ));"""
 if old not in text:
     raise SystemExit('static sort form variable anchor not found')
 text = text.replace(old, new, 1)
@@ -42,7 +42,8 @@ for filename, anchor in (
     t = p.read_text(encoding='utf-8')
     if anchor not in t:
         raise SystemExit(filename + ': token anchor not found')
-    t = t.replace(anchor, anchor + ('    ' if 'sortalbum' in filename else '  ') + '<input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}>\n', 1)
+    indent = '    ' if 'sortalbum' in filename else '  '
+    t = t.replace(anchor, anchor + indent + '<input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}>\n', 1)
     p.write_text(t, encoding='utf-8')
 
 p = Path('ROADMAP.md')
