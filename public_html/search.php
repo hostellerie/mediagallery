@@ -61,7 +61,7 @@ function MG_buildSearchBox(&$T, $searchinfo=array())
     while ($row = DB_fetchArray($result)) {
         $select_cat_id = ($searchinfo['cat_id'] == $row['cat_id']) ? UC_SELECTED : '';
         $cat_select .= '<option value="' . $row['cat_id'] . '" ' . $select_cat_id . '>'
-                     . $row['cat_name'] . '</option>';
+                     . MG_escapeHTML($row['cat_name']) . '</option>';
     }
     $cat_select .= '</select>';
 
@@ -111,7 +111,7 @@ function MG_buildSearchBox(&$T, $searchinfo=array())
     while ($U = DB_fetchArray($result)) {
         $select_uid = ($searchinfo['uid'] == $U['uid']) ? UC_SELECTED : '';
         $userselect .= '<option value="' . $U['uid'] . '" ' . $select_uid . '>'
-                     . COM_getDisplayName($U['uid']) . '</option>';
+                     . MG_escapeHTML(COM_getDisplayName($U['uid'])) . '</option>';
     }
     $userselect .= '</select>';
 
@@ -249,7 +249,7 @@ function MG_search($id, $page, $searchinfo='')
         'lang_search_results'  => $LANG_MG03['search_results'],
         'lang_return_to_index' => $LANG_MG03['return_to_index'],
         'return_url'           => $return_url,
-        'search_keywords'      => ($searchinfo['keywords'] == '*') ? '*' : $S['keywords'],
+        'search_keywords'      => ($searchinfo['keywords'] == '*') ? '*' : MG_escapeHTML($S['keywords']),
         'lang_search'          => $LANG_MG01['search'],
     ));
 

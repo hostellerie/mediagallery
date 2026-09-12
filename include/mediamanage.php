@@ -219,7 +219,7 @@ function MG_imageAdmin($album_id, $page, $actionURL = '')
                 for ($i = 0; $i < $cRows; $i++) {
                     $cat_select .= '<option value="' . $catRow[$i]['cat_id'] . '" '
                                  . ($catRow[$i]['cat_id'] == $row['media_category'] ? ' selected="selected"' : '') . '>'
-                                 . $catRow[$i]['cat_name'] . '</option>';
+                                 . MG_escapeHTML($catRow[$i]['cat_name']) . '</option>';
                 }
                 $cat_select .= '</select>';
 
@@ -234,7 +234,7 @@ function MG_imageAdmin($album_id, $page, $actionURL = '')
                     'full_display'   => 0,
                 );
                 $object = MG_buildContent($row, $opt);
-                $media_zoom = '<a href="' . $object[4] . '">';
+                $media_zoom = '<a href="' . MG_escapeHTML($object[4]) . '">';
 
                 $T->set_var(array(
                     'lang_category'     => $LANG_MG01['category'],
@@ -243,10 +243,10 @@ function MG_imageAdmin($album_id, $page, $actionURL = '')
                     'media_id'          => $row['media_id'],
                     'mid'               => $row['media_id'],
                     'order'             => $row['media_order'],
-                    'u_thumbnail'       => $thumbnail,
-                    'media_title'       => $row['media_title'],
-                    'media_desc'        => $row['media_desc'],
-                    'media_keywords'    => $row['media_keywords'],
+                    'u_thumbnail'       => MG_escapeHTML($thumbnail),
+                    'media_title'       => MG_escapeHTML($row['media_title']),
+                    'media_desc'        => MG_escapeHTML($row['media_desc']),
+                    'media_keywords'    => MG_escapeHTML($row['media_keywords']),
                     'media_time'        => $media_time[0],
                     'media_views'       => $row['media_views'],
                     'radio_box'         => $radio_box,
@@ -256,7 +256,7 @@ function MG_imageAdmin($album_id, $page, $actionURL = '')
                     'height'            => $height,
                     'width'             => $width,
                     'counter'           => $counter,
-                    'media_edit'        => $media_edit,
+                    'media_edit'        => MG_escapeHTML($media_edit),
                     'media_zoom'        => $media_zoom,
                     'lang_edit'         => $LANG_MG01['edit'],
                 ));

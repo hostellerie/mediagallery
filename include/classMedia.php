@@ -605,7 +605,7 @@ class Media {
                 $hrefdirect = $direct_url;
             }
         }
-        $caption = PLG_replaceTags(str_replace('$', '&#36;', $this->title));
+        $caption = MG_escapeHTML(strip_tags(PLG_replaceTags(str_replace('$', '&#36;', $this->title))));
 
         if ($searchmode == 1) {
             $templatePath = MG_getTemplatePath_byName($_MG_CONF['search_album_skin']);
@@ -615,8 +615,8 @@ class Media {
         $L = COM_newTemplate($templatePath);
         $L->set_file('media_link','medialink.thtml');
         $L->set_var(array(
-            'hrefdirect' => $hrefdirect,
-            'href'       => $url_media_item,
+            'hrefdirect' => MG_escapeHTML($hrefdirect),
+            'href'       => MG_escapeHTML($url_media_item),
             'caption'    => $caption,
             'id'         => 'id' . rand(),
         ));
@@ -691,7 +691,7 @@ class Media {
             'row_height'        => $tn_height,
             'media_title'       => $media_title,
             'media_description' => PLG_replaceTags(nl2br($this->description)),
-            'media_tag'         => strip_tags($this->title),
+            'media_tag'         => MG_escapeHTML(strip_tags($this->title)),
             'media_time'        => $media_time[0],
             'media_owner'       => $username,
             'media_item_thumbnail' => $media_item_thumbnail,

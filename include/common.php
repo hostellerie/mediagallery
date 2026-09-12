@@ -48,6 +48,11 @@ function px($var)
     exit;
 }
 
+function MG_escapeHTML($value)
+{
+    return htmlspecialchars((string) $value, ENT_QUOTES, COM_getCharset(), false);
+}
+
 function MG_getRemoteAddress()
 {
     return isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '';
@@ -759,7 +764,11 @@ function MG_getFramedImage($skin, $title, $u_pic, $u_image, $imageWidth, $imageH
 {
     global $_MG_CONF;
 
-    if ($media_link_start === null) $media_link_start = '<a href="' . $u_pic . '">';
+    $u_pic_attr = MG_escapeHTML($u_pic);
+    $u_image_attr = MG_escapeHTML($u_image);
+    $media_tag = (isset($title) && $title != ' ') ? MG_escapeHTML(strip_tags($title)) : '';
+
+    if ($media_link_start === null) $media_link_start = '<a href="' . $u_pic_attr . '">';
     if ($media_link_end   === null) $media_link_end   = '</a>';
 
     $F = COM_newTemplate($_MG_CONF['path_html'] . 'frames/' . $skin . '/');
@@ -767,14 +776,14 @@ function MG_getFramedImage($skin, $title, $u_pic, $u_image, $imageWidth, $imageH
     $F->set_var(array(
         'media_link_start' => $media_link_start,
         'media_link_end'   => $media_link_end,
-        'url_media_item'   => $u_pic,
-        'url_display_item' => $u_pic,
-        'media_thumbnail'  => $u_image,
+        'url_media_item'   => $u_pic_attr,
+        'url_display_item' => $u_pic_attr,
+        'media_thumbnail'  => $u_image_attr,
         'media_size'       => 'width="' . '100%' . '" height="' . '100%' . '"',
         'media_height'     => $imageHeight,
         'media_width'      => $imageWidth,
         'media_title'      => (isset($title) && $title != ' ') ? PLG_replaceTags($title) : '',
-        'media_tag'        => (isset($title) && $title != ' ') ? strip_tags($title) : '',
+        'media_tag'        => $media_tag,
         'xhtml'            => XHTML,
     ));
     return $F->finish($F->parse('media', 'media_frame'));

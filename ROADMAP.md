@@ -144,6 +144,7 @@ The Geeklog 2.1.1 / PHP 5.6 validation confirmed that image uploads succeed once
 - [ ] Review remaining inline presentation styles.
 - [x] Remove the legacy IE-only slideshow transition code and keep browser-neutral slideshow controls.
 - [ ] Audit attribute escaping across all frame/theme variants.
+- [x] Centralize HTML escaping for framed-image attributes, media edit/manage values, lightbox links and advanced-search values.
 - [ ] Review keyboard accessibility and form labeling across remaining admin/public templates.
 - [ ] Add structured data only where MediaGallery has reliable source data and does not conflict with Geeklog core/theme output.
 
