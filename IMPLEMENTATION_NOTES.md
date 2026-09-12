@@ -32,6 +32,19 @@ The configuration migration adds missing administrator-facing settings without o
 
 Upgraded 1.7.x sites may temporarily retain obsolete Flash/FlowPlayer rows in `conf_values`. They are ignored by the 1.8 runtime. Do not delete those rows during upgrade until the deletion path has been verified on both Geeklog 2.1.1 and 2.2.2.
 
+## Image backend validation
+
+Implemented:
+
+- centralized backend availability check in `include/lib/imglib/lib-image.php`;
+- GD requires the actual PHP GD functions before any resize/convert/rotate/watermark operation;
+- ImageMagick validates `identify` and `convert`;
+- NetPBM validates a scaler plus core JPEG conversion commands;
+- explicit-path configurations are checked directly while empty paths may resolve commands through `PATH`;
+- missing/unusable backends now return a readable MediaGallery error and log it once per request instead of reaching undefined image functions.
+
+The Geeklog 2.1.1 / PHP 5.6 live test confirmed that image upload succeeds after enabling GD, while PDF/ZIP uploads did not require the image backend.
+
 ## Upload and import security
 
 Implemented:

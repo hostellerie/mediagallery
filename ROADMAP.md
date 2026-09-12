@@ -282,3 +282,11 @@ Before producing the 1.8.0 release candidate:
 ## Release principle
 
 MediaGallery 1.8.0 should be safer to upgrade than 1.7.x, keep persistent user media outside replaceable plugin code, work naturally in single-site and shared-code multisite installations, use Geeklog-native services and mail where available, and fail explicitly when required runtime capabilities such as image processing are missing.
+
+### Image backend validation
+
+- [x] Central backend guard covers resize, convert, rotate and watermark operations.
+- [x] GD selection now checks required PHP GD functions before image processing.
+- [x] ImageMagick and NetPBM selections validate configured binaries or commands available on PATH.
+- [x] Missing backend returns a clear MediaGallery error instead of an undefined-function fatal.
+- [ ] Validate the error message live once with GD intentionally disabled on the Geeklog 2.1.1/PHP 5.6 test instance.
