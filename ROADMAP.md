@@ -146,6 +146,7 @@ The Geeklog 2.1.1 / PHP 5.6 validation confirmed that image uploads succeed once
 - [ ] Audit attribute escaping across all frame/theme variants.
 - [x] Centralize HTML escaping for framed-image attributes, media edit/manage values, lightbox links and advanced-search values.
 - [x] Replace the lightbox slideshow href-injection workaround with valid escaped album-action attributes across maintained album themes.
+- [x] Escape editable album/category values and generated admin option labels when rendering form controls.
 - [ ] Review keyboard accessibility and form labeling across remaining admin/public templates.
 - [ ] Add structured data only where MediaGallery has reliable source data and does not conflict with Geeklog core/theme output.
 

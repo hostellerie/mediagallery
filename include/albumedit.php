@@ -365,7 +365,7 @@ function MG_editAlbum($mode ='', $actionURL='', $oldaid = 0)
     for ($i = 0; $i < count($themes); $i++) {
         $album_theme_select .= '<option value="' . $themes[$i] . '"'
             . ($album->skin == $themes[$i] ? ' selected="selected"' : '')
-            . '>' . $themes[$i] . '</option>';
+            . '>' . MG_escapeHTML($themes[$i]) . '</option>';
     }
     $album_theme_select .= '</select>';
 
@@ -383,7 +383,7 @@ function MG_editAlbum($mode ='', $actionURL='', $oldaid = 0)
         if ($row['uid'] == 1) continue;
         $owner_select .= '<option value="' . $row['uid'] . '"'
             . ($album->owner_id == $row['uid'] ? ' selected="selected"' : '')
-            . '>' . COM_getDisplayName($row['uid']) . '</option>';
+            . '>' . MG_escapeHTML(COM_getDisplayName($row['uid'])) . '</option>';
     }
     $owner_select .= '</select>';
 
@@ -573,11 +573,11 @@ function MG_editAlbum($mode ='', $actionURL='', $oldaid = 0)
     $wm_current = '<img src="' . $_MG_CONF['site_url'] . '/watermarks/blank.png" name="myImage" alt=""' . XHTML . '>';
     for ($i=0; $i<$nRows; $i++) {
         $row = DB_fetchArray($result);
-        $wm_select .= '<option value="' . $row['filename'] . '"'
+        $wm_select .= '<option value="' . MG_escapeHTML($row['filename']) . '"'
                     . ($album->wm_id==$row['wm_id'] ? ' selected="selected"' : '')
-                    . '>' . $row['filename'] . '</option>';
+                    . '>' . MG_escapeHTML($row['filename']) . '</option>';
         if ($album->wm_id == $row['wm_id']) {
-            $wm_current = '<img src="' . $_MG_CONF['site_url'] . '/watermarks/' . $row['filename'] . '" name="myImage" alt=""' . XHTML . '>';
+            $wm_current = '<img src="' . MG_escapeHTML($_MG_CONF['site_url'] . '/watermarks/' . $row['filename']) . '" name="myImage" alt=""' . XHTML . '>';
         }
     }
     $wm_select .= '</select>';
@@ -618,8 +618,8 @@ function MG_editAlbum($mode ='', $actionURL='', $oldaid = 0)
             if ($album->mod_group_id == $usergroups[key($usergroups)]) {
                 $moddd   .= ' selected="selected"';
             }
-            $groupdd .= '>' . key($usergroups) . '</option>';
-            $moddd   .= '>' . key($usergroups) . '</option>';
+            $groupdd .= '>' . MG_escapeHTML(key($usergroups)) . '</option>';
+            $moddd   .= '>' . MG_escapeHTML(key($usergroups)) . '</option>';
         }
         next($usergroups);
     }
@@ -705,8 +705,8 @@ function MG_editAlbum($mode ='', $actionURL='', $oldaid = 0)
         'rows_input'              => $rows_input,
         'columns_input'           => $columns_input,
         'playback_type'           => $playback_type,
-        'album_title'             => $album->title,
-        'album_desc'              => $album->description,
+        'album_title'             => MG_escapeHTML($album->title),
+        'album_desc'              => MG_escapeHTML($album->description),
         'album_id'                => $album_id,
         'parent_select'           => $album_selectbox,
         'album_cover'             => $album->cover,
