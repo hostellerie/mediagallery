@@ -2,4 +2,4 @@ Build requested for MediaGallery installable archive.
 Source target: modernize-1.8.0
 Archive: mediagallery_1.8.0_2.0.0.zip
 Requested: 2026-09-12
-Reason: resolve album empty/missing placeholders from plugin assets while site media use multisite storage
+Reason: initialize orig disp tn and cover directories for site-specific media storage
