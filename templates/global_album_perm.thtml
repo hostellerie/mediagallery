@@ -9,14 +9,14 @@
 </div>
 <table class="mg_admin_table">
   <tr>
-    <th>{lang_attribute}</th>
-    <th align="left">{lang_value}</th>
-    <th>{lang_update}</th>
+    <th scope="col">{lang_attribute}</th>
+    <th scope="col" align="left">{lang_value}</th>
+    <th scope="col">{lang_update}</th>
   </tr>
   <tr>
     <td class="mg_alignright">{lang_group}</td>
-    <td>{group_select}</td>
-    <td><input type="checkbox" name="group_active" value="1"{xhtml}></td>
+    <td><label>{lang_group} {group_select}</label></td>
+    <td><input type="checkbox" name="group_active" value="1" aria-label="{lang_update}: {lang_group}"{xhtml}></td>
   </tr>
   <tr>
     <td class="mg_alignright">{lang_permissions}</td>
@@ -25,27 +25,27 @@
       <br{xhtml}>
       <div style="clear:both;">{permissions_editor}</div>
     </td>
-    <td><input type="checkbox" name="perm_active" value="1"{xhtml}></td>
+    <td><input type="checkbox" name="perm_active" value="1" aria-label="{lang_update}: {lang_permissions}"{xhtml}></td>
   </tr>
   <tr>
    <td class="mg_alignright">{lang_member_upload}</td>
-   <td><input type="checkbox" name="member_upload" value="1"{xhtml}></td>
-   <td><input type="checkbox" name="upload_active" value="1"{xhtml}></td>
+    <td><label>{lang_member_upload} <input type="checkbox" name="member_upload" value="1"{xhtml}></label></td>
+    <td><input type="checkbox" name="upload_active" value="1" aria-label="{lang_update}: {lang_member_upload}"{xhtml}></td>
   </tr>
   <tr>
     <td class="mg_alignright">{lang_moderate_album}</td>
-    <td><input type="checkbox" name="moderation" value="1"{xhtml}></td>
-    <td><input type="checkbox" name="moderate_active" value="1"{xhtml}></td>
+    <td><label>{lang_moderate_album} <input type="checkbox" name="moderation" value="1"{xhtml}></label></td>
+    <td><input type="checkbox" name="moderate_active" value="1" aria-label="{lang_update}: {lang_moderate_album}"{xhtml}></td>
   </tr>
   <tr>
     <td class="mg_alignright">{lang_mod_group}</td>
-    <td>{mod_group_select}</td>
-    <td><input type="checkbox" name="mod_group_active" value="1"{xhtml}></td>
+    <td><label>{lang_mod_group} {mod_group_select}</label></td>
+    <td><input type="checkbox" name="mod_group_active" value="1" aria-label="{lang_update}: {lang_mod_group}"{xhtml}></td>
   </tr>
   <tr>
     <td class="mg_alignright">{lang_email_mods_on_submission}</td>
-    <td><input type="checkbox" name="email_mod" value="1"{xhtml}></td>
-    <td><input type="checkbox" name="email_mod_active" value="1"{xhtml}></td>
+    <td><label>{lang_email_mods_on_submission} <input type="checkbox" name="email_mod" value="1"{xhtml}></label></td>
+    <td><input type="checkbox" name="email_mod_active" value="1" aria-label="{lang_update}: {lang_email_mods_on_submission}"{xhtml}></td>
   </tr>
 </table>
 <div style="text-align:center;margin-top:10px">

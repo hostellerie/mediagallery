@@ -23,14 +23,14 @@ function doUnCheckAll_purgealbums()
 <form name="purgealbums" method="post" action="{s_form_action}" class="uk-form">
   <table class="mg_admin_table">
     <tr>
-      <th style="width:50px;">{lang_select}</th>
-      <th>{lang_album_title}</th>
-      <th>{lang_username}</th>
-      <th>{lang_last_login}</th>
+      <th scope="col" style="width:50px;">{lang_select}</th>
+      <th scope="col">{lang_album_title}</th>
+      <th scope="col">{lang_username}</th>
+      <th scope="col">{lang_last_login}</th>
     </tr>
     <!-- BEGIN UserRow -->
     <tr>
-      <td>{select}</td>
+      <td><label>{select} <span>{lang_select}</span></label></td>
       <td>{title}</td>
       <td>{owner}</td>
       <td>{lastlogin}</td>
@@ -38,8 +38,8 @@ function doUnCheckAll_purgealbums()
     <!-- END UserRow -->
   </table>
   <div>
-    <input onclick="javascript:doCheckAll_purgealbums()" type="button" value="{lang_checkall}"{xhtml}>
-    <input onclick="javascript:doUnCheckAll_purgealbums()" type="button" value="{lang_uncheckall}"{xhtml}>
+    <input onclick="doCheckAll_purgealbums()" type="button" value="{lang_checkall}"{xhtml}>
+    <input onclick="doUnCheckAll_purgealbums()" type="button" value="{lang_uncheckall}"{xhtml}>
   </div>
   <div class="mg_submit_center">
     <input type="submit" value="{lang_delete}" name="mode"{xhtml}>

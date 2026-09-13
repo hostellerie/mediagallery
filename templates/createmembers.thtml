@@ -23,19 +23,19 @@ function doUnCheckAll_members()
 <form name="members" method="post" action="{s_form_action}" class="uk-form">
   <table class="mg_admin_table">
     <tr>
-      <th style="width:50px;">{lang_select}</th>
-      <th>{lang_username}</th>
+      <th scope="col" style="width:50px;">{lang_select}</th>
+      <th scope="col">{lang_username}</th>
     </tr>
     <!-- BEGIN UserRow -->
     <tr class="{rowclass}">
-      <td>{select}</td>
+      <td><label>{select} <span>{lang_select}</span></label></td>
       <td>{username}</td>
     </tr>
     <!-- END UserRow -->
   </table>
   <div style="margin-top:5px;">
-    <input onclick="javascript:doCheckAll_members()" type="button" value="{lang_checkall}"{xhtml}>
-    <input onclick="javascript:doUnCheckAll_members()" type="button" value="{lang_uncheckall}"{xhtml}>
+    <input onclick="doCheckAll_members()" type="button" value="{lang_checkall}"{xhtml}>
+    <input onclick="doUnCheckAll_members()" type="button" value="{lang_uncheckall}"{xhtml}>
   </div>
   <div style="text-align:center;">
     {pagenav}

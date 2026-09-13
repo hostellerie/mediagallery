@@ -13,176 +13,176 @@
 
 <table class="mg_admin_table">
   <tr>
-    <th>{lang_attribute}</th>
-    <th align="left">{lang_value}</th>
-    <th>{lang_update}</th>
+    <th scope="col">{lang_attribute}</th>
+    <th scope="col" align="left">{lang_value}</th>
+    <th scope="col">{lang_update}</th>
   </tr>
   <tr>
     <td class="mg_alignright">{lang_theme_select}</td>
-    <td>{album_theme_select}</td>
-    <td><input type="checkbox" name="album_theme_active" value="1"{xhtml}></td>
+    <td><label>{lang_theme_select} {album_theme_select}</label></td>
+    <td><input type="checkbox" name="album_theme_active" value="1" aria-label="{lang_update}: {lang_theme_select}"{xhtml}></td>
   </tr>
   <tr>
     <td class="mg_alignright">{lang_comments}</td>
-    <td>{comment_select}</td>
-    <td><input type="checkbox" name="comment_active" value="1"{xhtml}></td>
+    <td><label>{lang_comments} {comment_select}</label></td>
+    <td><input type="checkbox" name="comment_active" value="1" aria-label="{lang_update}: {lang_comments}"{xhtml}></td>
   </tr>
   <tr>
     <td class="mg_alignright">{lang_enable_exif}</td>
-    <td>{exif_select}</td>
-    <td><input type="checkbox" name="exif_active" value="1"{xhtml}></td>
+    <td><label>{lang_enable_exif} {exif_select}</label></td>
+    <td><input type="checkbox" name="exif_active" value="1" aria-label="{lang_update}: {lang_enable_exif}"{xhtml}></td>
   </tr>
   <tr>
     <td class="mg_alignright">{lang_enable_ratings}</td>
-    <td>{ranking_select}</td>
-    <td><input type="checkbox" name="rating_active" value="1"{xhtml}></td>
+    <td><label>{lang_enable_ratings} {ranking_select}</label></td>
+    <td><input type="checkbox" name="rating_active" value="1" aria-label="{lang_update}: {lang_enable_ratings}"{xhtml}></td>
   </tr>
   <tr>
     <td class="mg_alignright">{lang_enable_rss}</td>
-    <td>{rss_select}</td>
-    <td><input type="checkbox" name="enable_rss_active" value="1"{xhtml}></td>
+    <td><label>{lang_enable_rss} {rss_select}</label></td>
+    <td><input type="checkbox" name="enable_rss_active" value="1" aria-label="{lang_update}: {lang_enable_rss}"{xhtml}></td>
   </tr>
   <tr>
     <td class="mg_alignright">{lang_rsschildren}</td>
-    <td>{rsschildren_select}</td>
-    <td><input type="checkbox" name="rsschildren_active" value="1"{xhtml}></td>
+    <td><label>{lang_rsschildren} {rsschildren_select}</label></td>
+    <td><input type="checkbox" name="rsschildren_active" value="1" aria-label="{lang_update}: {lang_rsschildren}"{xhtml}></td>
   </tr>
   <tr>
     <td class="mg_alignright">{lang_podcast}</td>
-    <td>{podcast_select}</td>
-    <td><input type="checkbox" name="podcast_active" value="1"{xhtml}></td>
+    <td><label>{lang_podcast} {podcast_select}</label></td>
+    <td><input type="checkbox" name="podcast_active" value="1" aria-label="{lang_update}: {lang_podcast}"{xhtml}></td>
   </tr>
   <tr>
     <td class="mg_alignright">{lang_mp3ribbon}</td>
-    <td>{mp3ribbon_select}</td>
-    <td><input type="checkbox" name="mp3ribbon_active" value="1"{xhtml}></td>
+    <td><label>{lang_mp3ribbon} {mp3ribbon_select}</label></td>
+    <td><input type="checkbox" name="mp3ribbon_active" value="1" aria-label="{lang_update}: {lang_mp3ribbon}"{xhtml}></td>
   </tr>
   <tr>
     <td class="mg_alignright">{lang_enable_sort}</td>
-    <td>{sort_select}</td>
-    <td><input type="checkbox" name="sort_active" value="1"{xhtml}></td>
+    <td><label>{lang_enable_sort} {sort_select}</label></td>
+    <td><input type="checkbox" name="sort_active" value="1" aria-label="{lang_update}: {lang_enable_sort}"{xhtml}></td>
   </tr>
 <!--
   <tr>
     <td class="mg_alignright">{lang_enable_postcard}</td>
-    <td>{postcard_select}</td>
-    <td><input type="checkbox" name="enable_postcard_active" value="1"{xhtml}></td>
+    <td><label>{lang_enable_postcard} {postcard_select}</label></td>
+    <td><input type="checkbox" name="enable_postcard_active" value="1" aria-label="{lang_update}: {lang_enable_postcard}"{xhtml}></td>
   </tr>
 -->
   <tr>
     <td class="mg_alignright">{lang_display_album_desc}</td>
-    <td>{display_album_desc_select}</td>
-    <td><input type="checkbox" name="display_album_desc_active" value="1"{xhtml}></td>
+    <td><label>{lang_display_album_desc} {display_album_desc_select}</label></td>
+    <td><input type="checkbox" name="display_album_desc_active" value="1" aria-label="{lang_update}: {lang_display_album_desc}"{xhtml}></td>
   </tr>
   <tr>
     <td class="mg_alignright">{lang_enable_album_views}</td>
-    <td>{album_views_select}</td>
-    <td><input type="checkbox" name="album_views_active" value="1"{xhtml}></td>
+    <td><label>{lang_enable_album_views} {album_views_select}</label></td>
+    <td><input type="checkbox" name="album_views_active" value="1" aria-label="{lang_update}: {lang_enable_album_views}"{xhtml}></td>
   </tr>
   <tr>
     <td class="mg_alignright">{lang_enable_views}</td>
-    <td>{views_select}</td>
-    <td><input type="checkbox" name="views_active" value="1"{xhtml}></td>
+    <td><label>{lang_enable_views} {views_select}</label></td>
+    <td><input type="checkbox" name="views_active" value="1" aria-label="{lang_update}: {lang_enable_views}"{xhtml}></td>
   </tr>
   <tr>
     <td class="mg_alignright">{lang_enable_keywords}</td>
-    <td>{keywords_select}</td>
-    <td><input type="checkbox" name="keywords_active" value="1"{xhtml}></td>
+    <td><label>{lang_enable_keywords} {keywords_select}</label></td>
+    <td><input type="checkbox" name="keywords_active" value="1" aria-label="{lang_update}: {lang_enable_keywords}"{xhtml}></td>
   </tr>
   <tr>
     <td class="mg_alignright">{lang_image_skin}</td>
-    <td>{skin_select}</td>
-    <td><input type="checkbox" name="image_skin_active" value="1"{xhtml}></td>
+    <td><label>{lang_image_skin} {skin_select}</label></td>
+    <td><input type="checkbox" name="image_skin_active" value="1" aria-label="{lang_update}: {lang_image_skin}"{xhtml}></td>
   </tr>
   <tr>
     <td class="mg_alignright">{lang_display_skin}</td>
-    <td>{dskin_select}</td>
-    <td><input type="checkbox" name="display_skin_active" value="1"{xhtml}></td>
+    <td><label>{lang_display_skin} {dskin_select}</label></td>
+    <td><input type="checkbox" name="display_skin_active" value="1" aria-label="{lang_update}: {lang_display_skin}"{xhtml}></td>
   </tr>
   <tr>
     <td class="mg_alignright">{lang_album_skin}</td>
-    <td>{askin_select}</td>
-    <td><input type="checkbox" name="album_skin_active" value="1"{xhtml}></td>
+    <td><label>{lang_album_skin} {askin_select}</label></td>
+    <td><input type="checkbox" name="album_skin_active" value="1" aria-label="{lang_update}: {lang_album_skin}"{xhtml}></td>
   </tr>
   <tr>
     <td class="mg_alignright">{lang_albums_first}</td>
-    <td>{afirst_select}</td>
-    <td><input type="checkbox" name="afirst_active" value="1"{xhtml}></td>
+    <td><label>{lang_albums_first} {afirst_select}</label></td>
+    <td><input type="checkbox" name="afirst_active" value="1" aria-label="{lang_update}: {lang_albums_first}"{xhtml}></td>
   </tr>
   <tr>
     <td class="mg_alignright">{lang_tn_size}</td>
-    <td>{tn_size_select}</td>
-    <td><input type="checkbox" name="thumbnail_active" value="1"{xhtml}></td>
+    <td><label>{lang_tn_size} {tn_size_select}</label></td>
+    <td><input type="checkbox" name="thumbnail_active" value="1" aria-label="{lang_update}: {lang_tn_size}"{xhtml}></td>
   </tr>
   <tr>
     <td class="mg_alignright">{lang_tnwidth}</td>
-    <td class="mg_AdminAlignLeft">{tnwidth_input}</td>
-    <td><input type="checkbox" name="tnwidth_active" value="1"{xhtml}></td>
+    <td class="mg_AdminAlignLeft"><label>{lang_tnwidth} {tnwidth_input}</label></td>
+    <td><input type="checkbox" name="tnwidth_active" value="1" aria-label="{lang_update}: {lang_tnwidth}"{xhtml}></td>
   </tr>
   <tr>
     <td class="mg_alignright">{lang_tnheight}</td>
-    <td class="mg_AdminAlignLeft">{tnheight_input}</td>
-    <td><input type="checkbox" name="tnheight_active" value="1"{xhtml}></td>
+    <td class="mg_AdminAlignLeft"><label>{lang_tnheight} {tnheight_input}</label></td>
+    <td><input type="checkbox" name="tnheight_active" value="1" aria-label="{lang_update}: {lang_tnheight}"{xhtml}></td>
   </tr>
   <tr>
     <td class="mg_alignright">{lang_av_play_options}</td>
-    <td>{playback_type}</td>
-    <td><input type="checkbox" name="playback_active" value="1"{xhtml}></td>
+    <td><label>{lang_av_play_options} {playback_type}</label></td>
+    <td><input type="checkbox" name="playback_active" value="1" aria-label="{lang_update}: {lang_av_play_options}"{xhtml}></td>
   </tr>
   <tr>
     <td class="mg_alignright">{lang_ss_enable}</td>
-    <td>{ss_select}</td>
-    <td><input type="checkbox" name="slideshow_active" value="1"{xhtml}></td>
+    <td><label>{lang_ss_enable} {ss_select}</label></td>
+    <td><input type="checkbox" name="slideshow_active" value="1" aria-label="{lang_update}: {lang_ss_enable}"{xhtml}></td>
   </tr>
   <tr>
     <td class="mg_alignright">{lang_rows}</td>
-    <td>{rows_input}</td>
-    <td><input type="checkbox" name="rows_active" value="1"{xhtml}></td>
+    <td><label>{lang_rows} {rows_input}</label></td>
+    <td><input type="checkbox" name="rows_active" value="1" aria-label="{lang_update}: {lang_rows}"{xhtml}></td>
   </tr>
   <tr>
     <td class="mg_alignright">{lang_columns}</td>
-    <td>{columns_input}</td>
-    <td><input type="checkbox" name="columns_active" value="1"{xhtml}></td>
+    <td><label>{lang_columns} {columns_input}</label></td>
+    <td><input type="checkbox" name="columns_active" value="1" aria-label="{lang_update}: {lang_columns}"{xhtml}></td>
   </tr>
   <tr>
     <td class="mg_alignright">{lang_filename_title}</td>
-    <td>{filename_title_select}</td>
-    <td><input type="checkbox" name="filename_title_active" value="1"{xhtml}></td>
+    <td><label>{lang_filename_title} {filename_title_select}</label></td>
+    <td><input type="checkbox" name="filename_title_active" value="1" aria-label="{lang_update}: {lang_filename_title}"{xhtml}></td>
   </tr>
   <tr>
     <td class="mg_alignright">{lang_allow_download}</td>
-    <td>{allow_download_select}</td>
-    <td><input type="checkbox" name="allow_download_active" value="1"{xhtml}></td>
+    <td><label>{lang_allow_download} {allow_download_select}</label></td>
+    <td><input type="checkbox" name="allow_download_active" value="1" aria-label="{lang_update}: {lang_allow_download}"{xhtml}></td>
   </tr>
   <tr>
     <td class="mg_alignright">{lang_full_display}</td>
-    <td>{full_select}</td>
-    <td><input type="checkbox" name="full_display_active" value="1"{xhtml}></td>
+    <td><label>{lang_full_display} {full_select}</label></td>
+    <td><input type="checkbox" name="full_display_active" value="1" aria-label="{lang_update}: {lang_full_display}"{xhtml}></td>
   </tr>
   <tr>
     <td class="mg_alignright">{lang_ri_enable}</td>
-    <td>{ri_select}</td>
-    <td><input type="checkbox" name="random_active" value="1"{xhtml}></td>
+    <td><label>{lang_ri_enable} {ri_select}</label></td>
+    <td><input type="checkbox" name="random_active" value="1" aria-label="{lang_update}: {lang_ri_enable}"{xhtml}></td>
   </tr>
   <tr>
     <td class="mg_alignright">{lang_max_image_width}</td>
-    <td>{max_image_width_input}</td>
-    <td><input type="checkbox" name="max_image_width_active" value="1"{xhtml}></td>
+    <td><label>{lang_max_image_width} {max_image_width_input}</label></td>
+    <td><input type="checkbox" name="max_image_width_active" value="1" aria-label="{lang_update}: {lang_max_image_width}"{xhtml}></td>
   </tr>
   <tr>
     <td class="mg_alignright">{lang_max_image_height}</td>
-    <td>{max_image_height_input}</td>
-    <td><input type="checkbox" name="max_image_height_active" value="1"{xhtml}></td>
+    <td><label>{lang_max_image_height} {max_image_height_input}</label></td>
+    <td><input type="checkbox" name="max_image_height_active" value="1" aria-label="{lang_update}: {lang_max_image_height}"{xhtml}></td>
   </tr>
   <tr>
     <td class="mg_alignright">{lang_max_filesize}</td>
-    <td>{max_filesize_input}</td>
-    <td><input type="checkbox" name="max_filesize_active" value="1"{xhtml}></td>
+    <td><label>{lang_max_filesize} {max_filesize_input}</label></td>
+    <td><input type="checkbox" name="max_filesize_active" value="1" aria-label="{lang_update}: {lang_max_filesize}"{xhtml}></td>
   </tr>
   <tr>
     <td class="mg_alignright">{lang_display_image_size}</td>
-    <td>{display_image_size_select}</td>
-    <td><input type="checkbox" name="display_image_size_active" value="1"{xhtml}></td>
+    <td><label>{lang_display_image_size} {display_image_size_select}</label></td>
+    <td><input type="checkbox" name="display_image_size_active" value="1" aria-label="{lang_update}: {lang_display_image_size}"{xhtml}></td>
   </tr>
   <tr>
     <th colspan="3">{lang_allowed_formats}</th>
@@ -199,76 +199,57 @@
         <tr>
           <td valign="top" align="center">
             <table class="mg_frame_table" style="width:auto"><tr><td align="left">
-              <input type="checkbox" name="format_jpg" value="1"{xhtml}>&nbsp;&nbsp;
-              <span>{lang_jpg}</span>
+              <input type="checkbox" id="mg-global-format-jpg" name="format_jpg" value="1"{xhtml}> <label for="mg-global-format-jpg">{lang_jpg}</label>
               <br{xhtml}>
-              <input type="checkbox" name="format_png" value="2"{xhtml}>&nbsp;&nbsp;
-              <span>{lang_png}</span>
+              <input type="checkbox" id="mg-global-format-png" name="format_png" value="2"{xhtml}> <label for="mg-global-format-png">{lang_png}</label>
               <br{xhtml}>
-              <input type="checkbox" name="format_tif" value="4"{xhtml}>
-              &nbsp;&nbsp;<span>{lang_tif}</span>
+              <input type="checkbox" id="mg-global-format-tif" name="format_tif" value="4"{xhtml}> <label for="mg-global-format-tif">{lang_tif}</label>
               <br{xhtml}>
-              <input type="checkbox" name="format_gif" value="8"{xhtml}>
-              &nbsp;&nbsp;<span>{lang_gif}</span>
+              <input type="checkbox" id="mg-global-format-gif" name="format_gif" value="8"{xhtml}> <label for="mg-global-format-gif">{lang_gif}</label>
               <br{xhtml}>
-              <input type="checkbox" name="format_bmp" value="16"{xhtml}>
-              &nbsp;&nbsp;<span>{lang_bmp}</span>
+              <input type="checkbox" id="mg-global-format-bmp" name="format_bmp" value="16"{xhtml}> <label for="mg-global-format-bmp">{lang_bmp}</label>
               <br{xhtml}>
-              <input type="checkbox" name="format_tga" value="32"{xhtml}>
-              &nbsp;&nbsp;<span>{lang_tga}</span>
+              <input type="checkbox" id="mg-global-format-tga" name="format_tga" value="32"{xhtml}> <label for="mg-global-format-tga">{lang_tga}</label>
               <br{xhtml}>
-              <input type="checkbox" name="format_psd" value="64"{xhtml}>
-              &nbsp;&nbsp;<span>{lang_psd}</span>
+              <input type="checkbox" id="mg-global-format-psd" name="format_psd" value="64"{xhtml}> <label for="mg-global-format-psd">{lang_psd}</label>
               <br{xhtml}>
             </td></tr></table>
           </td>
           <td valign="top" align="center">
             <table class="mg_frame_table" style="width:auto"><tr><td align="left">
-              <input type="checkbox" name="format_mp3" value="128"{xhtml}>
-              &nbsp;&nbsp;<span>{lang_mp3}</span>
+              <input type="checkbox" id="mg-global-format-mp3" name="format_mp3" value="128"{xhtml}> <label for="mg-global-format-mp3">{lang_mp3}</label>
               <br{xhtml}>
-              <input type="checkbox" name="format_ogg" value="256"{xhtml}>
-              &nbsp;&nbsp;<span>{lang_ogg}</span>
+              <input type="checkbox" id="mg-global-format-ogg" name="format_ogg" value="256"{xhtml}> <label for="mg-global-format-ogg">{lang_ogg}</label>
               <br{xhtml}>
-              <input type="checkbox" name="format_asf" value="512"{xhtml}>
-              &nbsp;&nbsp;<span>{lang_asf}</span>
+              <input type="checkbox" id="mg-global-format-asf" name="format_asf" value="512"{xhtml}> <label for="mg-global-format-asf">{lang_asf}</label>
               <br{xhtml}>
-              <input type="checkbox" name="format_swf" value="1024"{xhtml}>
-              &nbsp;&nbsp;<span>{lang_swf}</span>
+              <input type="checkbox" id="mg-global-format-swf" name="format_swf" value="1024"{xhtml}> <label for="mg-global-format-swf">{lang_swf}</label>
               <br{xhtml}>
-              <input type="checkbox" name="format_mov" value="2048"{xhtml}>
-              &nbsp;&nbsp;<span>{lang_mov}</span>
+              <input type="checkbox" id="mg-global-format-mov" name="format_mov" value="2048"{xhtml}> <label for="mg-global-format-mov">{lang_mov}</label>
               <br{xhtml}>
-              <input type="checkbox" name="format_mp4" value="4096"{xhtml}>
-              &nbsp;&nbsp;<span>{lang_mp4}</span>
+              <input type="checkbox" id="mg-global-format-mp4" name="format_mp4" value="4096"{xhtml}> <label for="mg-global-format-mp4">{lang_mp4}</label>
               <br{xhtml}>
-              <input type="checkbox" name="format_mpg" value="8192"{xhtml}>
-              &nbsp;&nbsp;<span>{lang_mpg}</span>
+              <input type="checkbox" id="mg-global-format-mpg" name="format_mpg" value="8192"{xhtml}> <label for="mg-global-format-mpg">{lang_mpg}</label>
               <br{xhtml}>
-              <input type="checkbox" name="format_flv" value="131072"{xhtml}>
-              &nbsp;&nbsp;<span>{lang_flv}</span>
+              <input type="checkbox" id="mg-global-format-flv" name="format_flv" value="131072"{xhtml}> <label for="mg-global-format-flv">{lang_flv}</label>
               <br{xhtml}>
-              <input type="checkbox" name="format_rflv" value="262144"{xhtml}>
-              &nbsp;&nbsp;<span>{lang_rflv}</span>
+              <input type="checkbox" id="mg-global-format-rflv" name="format_rflv" value="262144"{xhtml}> <label for="mg-global-format-rflv">{lang_rflv}</label>
               <br{xhtml}>
-              <input type="checkbox" name="format_emb" value="524288"{xhtml}>
-              &nbsp;&nbsp;<span>{lang_emb}</span><br{xhtml}>
+              <input type="checkbox" id="mg-global-format-emb" name="format_emb" value="524288"{xhtml}> <label for="mg-global-format-emb">{lang_emb}</label><br{xhtml}>
             </td></tr></table>
           </td>
           <td valign="top" align="center">
             <table class="mg_frame_table" style="width:auto"><tr><td align="left">
-              <input type="checkbox" name="format_zip" value="16384"{xhtml}>
-              &nbsp;&nbsp;<span>{lang_zip}</span>
+              <input type="checkbox" id="mg-global-format-zip" name="format_zip" value="16384"{xhtml}> <label for="mg-global-format-zip">{lang_zip}</label>
               <br{xhtml}>
-              <input type="checkbox" name="format_other" value="32768"{xhtml}>
-              &nbsp;&nbsp;<span>{lang_other}</span>
+              <input type="checkbox" id="mg-global-format-other" name="format_other" value="32768"{xhtml}> <label for="mg-global-format-other">{lang_other}</label>
               <br{xhtml}>
             </td></tr></table>
           </td>
         </tr>
       </table>
     </td>
-    <td><input type="checkbox" name="formats_active" value="1"{xhtml}></td>
+    <td><input type="checkbox" name="formats_active" value="1" aria-label="{lang_update}: {lang_allowed_formats}"{xhtml}></td>
   </tr>
 </table>
 <div class="mg_submit_center">

@@ -2,11 +2,11 @@
 <form action="{s_form_action}" method="post" enctype="multipart/form-data" id="watermarkupload" class="compact uk-form">
   <div class="admin_basic">
     <dl class="form_block">
-      <dt>{lang_file}</dt>
-      <dd><input type="file" dir="ltr" name="newmedia[]"{xhtml}></dd>
+      <dt><label for="mg-watermark-file">{lang_file}</label></dt>
+      <dd><input type="file" id="mg-watermark-file" dir="ltr" name="newmedia[]"{xhtml}></dd>
       <dd class="description">{lang_wmupload_help}</dd>
-      <dt>{lang_description}</dt>
-      <dd><textarea name="description[]" cols="45" rows="2" class="size6"></textarea></dd>
+      <dt><label for="mg-watermark-description">{lang_description}</label></dt>
+      <dd><textarea id="mg-watermark-description" name="description[]" cols="45" rows="2" class="size6"></textarea></dd>
 <!-- BEGIN public-access -->
       <dt><label for="wm_public">{lang_public_access}</label></dt>
       <dd>{public_access}</dd>

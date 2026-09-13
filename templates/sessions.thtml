@@ -28,11 +28,11 @@ function doUnCheckAll_sessions()
 {!if noitems}
 <table class="mg_admin_table">
   <tr>
-    <th style="width:50px">{lang_select}</th>
-    <th>{lang_session_description}</th>
-    <th>{lang_session_owner}</th>
-    <th>{lang_session_count}</th>
-    <th>{lang_action}</th>
+    <th scope="col" style="width:50px">{lang_select}</th>
+    <th scope="col">{lang_session_description}</th>
+    <th scope="col">{lang_session_owner}</th>
+    <th scope="col">{lang_session_count}</th>
+    <th scope="col">{lang_action}</th>
   </tr>
   <tr>
     <td align="center" colspan="5">
@@ -44,16 +44,16 @@ function doUnCheckAll_sessions()
 <!-- BEGIN sessItems -->
 <table class="mg_admin_table">
   <tr>
-    <th style="width:50px">{lang_select}</th>
-    <th>{lang_session_description}</th>
-    <th>{lang_session_owner}</th>
-    <th>{lang_session_count}</th>
-    <th>{lang_action}</th>
+    <th scope="col" style="width:50px">{lang_select}</th>
+    <th scope="col">{lang_session_description}</th>
+    <th scope="col">{lang_session_owner}</th>
+    <th scope="col">{lang_session_count}</th>
+    <th scope="col">{lang_action}</th>
   </tr>
 <!-- BEGIN sessRow -->
   <tr>
     <td>
-      <input type="checkbox" name="sel[]" value="{session_id}"{xhtml}>
+      <input type="checkbox" name="sel[]" value="{session_id}" aria-label="{lang_select}: {session_description}"{xhtml}>
       <input type="hidden" name="session_id[]" value="{session_id}"{xhtml}>
     </td>
     <td>{session_description}</td>
@@ -64,8 +64,8 @@ function doUnCheckAll_sessions()
 <!-- END sessRow -->
 </table>
 <div>
-  <input onclick="javascript:doCheckAll_sessions()" type="button" value="{lang_checkall}"{xhtml}>
-  <input onclick="javascript:doUnCheckAll_sessions()" type="button" value="{lang_uncheckall}"{xhtml}>
+  <input onclick="doCheckAll_sessions()" type="button" value="{lang_checkall}"{xhtml}>
+  <input onclick="doUnCheckAll_sessions()" type="button" value="{lang_uncheckall}"{xhtml}>
 </div>
 <!-- END sessItems -->
 <div class="mg_submit_center">
