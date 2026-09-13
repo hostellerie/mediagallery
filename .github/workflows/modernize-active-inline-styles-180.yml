@@ -1,0 +1,45 @@
+name: MediaGallery active inline style modernization
+
+on:
+  push:
+    paths:
+      - '.github/modernize-active-inline-styles-trigger'
+
+permissions:
+  contents: write
+
+jobs:
+  modernize:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: modernize-1.8.0
+          fetch-depth: 0
+      - name: Modernize active inline styles
+        run: python tools/modernize_active_inline_styles_180.py
+      - name: Validate active inline style modernization
+        shell: bash
+        run: |
+          set -euo pipefail
+          test ! -e templates/edit_mp3_options.thtml
+          test ! -e templates/edit_flv_options.thtml
+          test ! -e templates/edit_swf_options.thtml
+          grep -n 'mg-featured-album-grid' templates/cb_featured_album.thtml public_html/style.css
+          grep -n 'mg-podcast-media-layout' templates/themes/podcast/album_page_media_cell.thtml public_html/style.css
+          grep -n 'mg-media-manager-field' templates/mediaitems.thtml public_html/style.css
+          grep -n 'mg-batch-label' templates/batch_progress.thtml public_html/style.css
+          grep -n 'inline-presentation cleanup' public_html/style.css
+          python tools/audit_inline_styles_180.py | tee /tmp/inline-after.txt
+          total=$(grep '^INLINE_STYLE_COUNT=' /tmp/inline-after.txt | cut -d= -f2)
+          static=$(grep '^STATIC=' /tmp/inline-after.txt | cut -d= -f2)
+          test "$total" -lt 150
+          test "$static" -lt 140
+          grep -n 'largest active public/admin static style clusters' ROADMAP.md
+      - name: Commit active inline style modernization
+        run: |
+          git config user.name 'hostellerie'
+          git config user.email 'hostellerie.org@gmail.com'
+          git add -A templates public_html/style.css ROADMAP.md
+          git commit -m 'Modernize MediaGallery active inline presentation styles'
+          git push origin HEAD:modernize-1.8.0
