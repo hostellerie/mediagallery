@@ -1,5 +1,5 @@
 {# begin {templatelocation} #}
-<h1>{lang_album} {album_title}</h1>
+<h2 class="mg-podcast-card-title">{lang_album} {album_title}</h2>
 <div class="mgPluginMeta">
 {updated} {album_last_update}
 </div>

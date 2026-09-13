@@ -1,23 +1,19 @@
-<div class="plugin">
-<table width="100%" border="0" align="left">
-  <tr class="pluginCellTitle">
-    <td><span class="mg-fw-bold">{lang_title}</span></td>
-  </tr>
-</table>
-<br{xhtml}>
-<form name="enroll" method="post" action="{s_form_action}" class="uk-form">
-<br{xhtml}>
-<span class="mg-fw-bold">{lang_overview}</span><br{xhtml}>
-{lang_member_album_overview}
-<br{xhtml}>
-<br{xhtml}>
-<span class="mg-fw-bold">{lang_terms}</span><br{xhtml}>
-{lang_member_album_terms}
-<br{xhtml}><br{xhtml}>
-<div class="mg_submit_center">
-  <input type="submit" value="{lang_agree}"  name="mode"{xhtml}>
-  <input type="submit" value="{lang_cancel}" name="mode"{xhtml}>
-</div>
-</form>
-<br{xhtml}><br{xhtml}>
-</div>
+<section class="plugin mg-enroll">
+  <header class="mg-enroll-header">
+    <h1 class="mg-enroll-title">{lang_title}</h1>
+  </header>
+  <form name="enroll" method="post" action="{s_form_action}" class="uk-form">
+    <section class="mg-enroll-section">
+      <h2>{lang_overview}</h2>
+      <div>{lang_member_album_overview}</div>
+    </section>
+    <section class="mg-enroll-section">
+      <h2>{lang_terms}</h2>
+      <div>{lang_member_album_terms}</div>
+    </section>
+    <div class="mg_submit_center">
+      <input type="submit" value="{lang_agree}" name="mode"{xhtml}>
+      <input type="submit" value="{lang_cancel}" name="mode"{xhtml}>
+    </div>
+  </form>
+</section>
