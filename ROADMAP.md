@@ -143,7 +143,7 @@ The Geeklog 2.1.1 / PHP 5.6 validation confirmed that image uploads succeed once
 - [x] Improve HTML attribute escaping in media popup output.
 - [ ] Review remaining inline presentation styles.
 - [x] Remove the legacy IE-only slideshow transition code and keep browser-neutral slideshow controls.
-- [ ] Audit attribute escaping across all frame/theme variants.
+- [x] Audit attribute escaping across all frame/theme variants.
 - [x] Centralize HTML escaping for framed-image attributes, media edit/manage values, lightbox links and advanced-search values.
 - [x] Replace the lightbox slideshow href-injection workaround with valid escaped album-action attributes across maintained album themes.
 - [x] Escape editable album/category values and generated admin option labels when rendering form controls.
