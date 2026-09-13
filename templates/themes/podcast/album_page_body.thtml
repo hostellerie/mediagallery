@@ -1,11 +1,9 @@
-<table style="width:100%;border:none;margin:0px auto;">
+<div class="mg_podcast_list" role="list">
 <!-- BEGIN ImageRow -->
 <!-- BEGIN ImageColumn -->
-<tr>
-<td style="width:{table_column_width};vertical-align:top;">
+<div class="mg_podcast_item" role="listitem">
 {CELL_DISPLAY_IMAGE}
-</td>
-</tr>
+</div>
 <!-- END ImageColumn -->
 <!-- END ImageRow -->
-</table>
+</div>

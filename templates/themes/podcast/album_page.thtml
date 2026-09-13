@@ -1,16 +1,17 @@
 {lbslideshow}
 <script type="text/javascript" src="{site_url}/players/audio-player.js"></script>
 
-<div class="bc_navigation">
+<nav class="bc_navigation" aria-label="Breadcrumb">
 {birdseed}
-</div>
+</nav>
 
-<div class="mg_album_header">
-<div class="mg_album_title"><strong>{album_title}</strong>{!if rsslink}&nbsp;&nbsp;{rsslink}{!endif}</div>
+<header class="mg_album_header">
+<h1 class="mg_album_title">{album_title}{!if rsslink}&nbsp;&nbsp;{rsslink}{!endif}</h1>
 <div class="mg_search">
-<form name="mgsearch" method="post" action="{site_url}/search.php" class="uk-form">
+<form name="mgsearch" method="post" action="{site_url}/search.php" class="uk-form" role="search">
 <div>
-  <input type="text" name="keywords" value="{keywords}"{xhtml}>
+  <label for="mg-skin-search-keywords" class="mg-visually-hidden">{lang_search}</label>
+  <input id="mg-skin-search-keywords" type="search" name="keywords" value="{keywords}" aria-label="{lang_search}"{xhtml}>
   <input type="hidden" name="mode" value="search"{xhtml}>
   <input type="hidden" name="swhere" value="0"{xhtml}>
   <input type="submit" value="{lang_search}"{xhtml}>
@@ -22,20 +23,18 @@
 {select_adminbox}
 </div>
 {!endif}
-</div>
+</header>
 
 
-<table style="width:100%;border:none;margin:0px auto;">
+<div class="mg_podcast_list" role="list">
 <!-- BEGIN ImageRow -->
 <!-- BEGIN ImageColumn -->
-<tr>
-<td style="width:{table_column_width};vertical-align:top;">
+<div class="mg_podcast_item" role="listitem">
 {CELL_DISPLAY_IMAGE}
-</td>
-</tr>
+</div>
 <!-- END ImageColumn -->
 <!-- END ImageRow -->
-</table>
+</div>
 
 <div class="mg_navbar">
   <span>{album_id_display}</span><span class="mg_separator" style="">|</span><span>{page_number}</span>

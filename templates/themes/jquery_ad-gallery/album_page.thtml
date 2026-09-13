@@ -1,22 +1,21 @@
 {lbslideshow}
 <script type="text/javascript" src="{site_url}/players/audio-player.js"></script>
 
-<div class="bc_navigation">
+<nav class="bc_navigation" aria-label="Breadcrumb">
 {birdseed}
-</div>
+</nav>
 
 
-<h2 style="float:left;font-weight:bold;font-size:2em;line-height:2em;padding-left:5px;">{album_title}</h2>
-<div class="" style="float:right;text-align:right;vertical-align:middle;white-space:nowrap;padding-right:5px;line-height:2em;">
-  {!if rsslink}
-    &nbsp;{rsslink}
-  {!endif}
-  {select_adminbox}
-</div>
-<div style="clear:both;"></div>
+<header class="mg_album_header mg_theme_gallery_header">
+  <h1 class="mg_album_title">{album_title}</h1>
+  <div class="mg_theme_gallery_actions">
+    {!if rsslink}{rsslink}{!endif}
+    {select_adminbox}
+  </div>
+</header>
 
 {!if album_description}
-<div style="text-align:left;line-height:1.5em;font-size:1.2em;text-indent:0;padding:1em 50px;">
+<div class="mg_album_description mg_theme_gallery_description">
    {album_description}
 </div>
 {!endif}
