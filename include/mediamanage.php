@@ -663,7 +663,7 @@ function MG_mediaEdit($album_id, $media_id, $actionURL='', $mqueue=0, $view=0, $
             'playcount'                  => $playback_options['playcount'],
             'height'                     => $playback_options['height'],
             'width'                      => $playback_options['width'],
-            'bgcolor'                    => $playback_options['bgcolor'],
+            'bgcolor'                    => MG_escapeHTML($playback_options['bgcolor']),
             'lang_resolution'            => $lang_resolution,
             'resolution'                 => $resolution,
         ));
@@ -778,10 +778,10 @@ function MG_mediaEdit($album_id, $media_id, $actionURL='', $mqueue=0, $view=0, $
             'scale_select'   => $scale_select,
             'wmode_select'   => $wmode_select,
             'asa_select'     => $asa_select,
-            'flashvars'      => isset($playback_options['flashvars']) ? $playback_options['flashvars'] : '',
+            'flashvars'      => isset($playback_options['flashvars']) ? MG_escapeHTML($playback_options['flashvars']) : '',
             'height'         => $playback_options['height'],
             'width'          => $playback_options['width'],
-            'bgcolor'        => $playback_options['bgcolor'],
+            'bgcolor'        => MG_escapeHTML($playback_options['bgcolor']),
             'swf_version'    => $playback_options['swf_version'],
         ));
         if ($row['mime_type'] == 'application/x-shockwave-flash') {
@@ -834,7 +834,7 @@ function MG_mediaEdit($album_id, $media_id, $actionURL='', $mqueue=0, $view=0, $
             'loop_disabled'       => $playback_options['loop'] ? '' : ' checked="checked"',
             'height'              => $playback_options['height'],
             'width'               => $playback_options['width'],
-            'bgcolor'             => $playback_options['bgcolor'],
+            'bgcolor'             => MG_escapeHTML($playback_options['bgcolor']),
         ));
         $T->parse('playback_options', 'mov_options');
     }
