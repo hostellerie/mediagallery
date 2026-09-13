@@ -16,18 +16,22 @@ jobs:
         with:
           ref: modernize-1.8.0
           fetch-depth: 0
-      - name: Fix helper marker
+      - name: Fix helper markers
         shell: bash
         run: |
           python - <<'PY'
           from pathlib import Path
           p = Path('tools/modernize_public_rendering_180.py')
           text = p.read_text(encoding='utf-8')
-          old = "'</div>\\n{!if artist}'"
-          new = "'</div>\\n\\n{!if artist}'"
-          if text.count(old) != 1:
-              raise SystemExit('Media card close helper marker mismatch')
-          p.write_text(text.replace(old, new, 1), encoding='utf-8')
+          replacements = {
+              "'</div>\\n{!if artist}'": "'</div>\\n\\n{!if artist}'",
+              "'<div class=\"mg_album_grid\" style=\"width:100%;margin:10px 0;clear:both\">'": "'<div style=\"width:100%;margin:10px 0;clear:both\">'",
+          }
+          for old, new in replacements.items():
+              if text.count(old) != 1:
+                  raise SystemExit('Helper marker mismatch: %s' % old)
+              text = text.replace(old, new, 1)
+          p.write_text(text, encoding='utf-8')
           PY
       - name: Apply responsive rendering modernization
         run: python tools/modernize_public_rendering_180.py
