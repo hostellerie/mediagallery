@@ -21,7 +21,7 @@ def escape_confirm_producers(path, expected):
     p.write_text(text, encoding='utf-8')
 
 # Escape confirmation messages for their HTML attribute context.
-escape_confirm_producers('admin/category.php', 1)
+escape_confirm_producers('admin/category.php', 2)
 escape_confirm_producers('admin/massdelete.php', 1)
 escape_confirm_producers('include/mediamanage.php', 3)
 
