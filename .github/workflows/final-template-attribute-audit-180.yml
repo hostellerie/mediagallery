@@ -1,0 +1,19 @@
+name: MediaGallery final template attribute audit
+
+on:
+  push:
+    paths:
+      - '.github/final-template-attribute-audit-trigger'
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: modernize-1.8.0
+      - name: Audit dynamic template attributes
+        run: python tools/final_template_attribute_audit_180.py
