@@ -995,7 +995,7 @@ function MG_displayMedia($id, $full=0, $sortOrder=0, $comments=0, $spage=0)
         'media_keywords'      => $kwText,
         'lang_keywords'       => $lang_keywords,
         'owner_username'      => $owner_link,
-        'property'            => $property,
+        'property'            => MG_escapeHTML($property),
         'lang_property'       => $LANG_MG04['exif_header'],
         'media_id'            => $media_id,
         'exif_info'           => $exif_info,
