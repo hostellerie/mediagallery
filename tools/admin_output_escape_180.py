@@ -8,13 +8,15 @@ def replace_once(text, old, new, label):
 
 # Media property URLs are internal, but they belong to href attributes. Escape
 # them once in the producer and keep them out of JavaScript string literals.
+# lib-media.php contains historical non-UTF-8 bytes, so latin-1 is used here
+# deliberately as a byte-preserving one-to-one text mapping.
 p = Path('include/lib-media.php')
-text = p.read_text(encoding='utf-8')
+text = p.read_text(encoding='latin-1')
 text = replace_once(text,
     "        'property'            => $property,",
     "        'property'            => MG_escapeHTML($property),",
     'media property URL')
-p.write_text(text, encoding='utf-8')
+p.write_text(text, encoding='latin-1')
 
 # The three maintained media detail templates share the same navigation. Use a
 # real property href and let popitup() consume this.href. Also propagate the
