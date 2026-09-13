@@ -446,10 +446,7 @@ function MG_mediaEdit($album_id, $media_id, $actionURL='', $mqueue=0, $view=0, $
     $T->set_file(array(
         'admin'       => 'mediaedit.thtml',
         'asf_options' => 'edit_asf_options.thtml',
-        'mp3_options' => 'edit_mp3_options.thtml',
-        'swf_options' => 'edit_swf_options.thtml',
         'mov_options' => 'edit_mov_options.thtml',
-        'flv_options' => 'edit_flv_options.thtml',
     ));
 
     // pull the media information from the database...
@@ -623,218 +620,36 @@ function MG_mediaEdit($album_id, $media_id, $actionURL='', $mqueue=0, $view=0, $
          $row['mime_type'] == 'video/x-ms-wmv' ||
          $row['mime_type'] == 'audio/x-ms-wma' ||
          $row['mime_type'] == 'video/x-msvideo' ) {
-        // pull defaults, then override...
-        $playback_options['autostart']         = $_MG_CONF['asf_autostart'];
-        $playback_options['enablecontextmenu'] = $_MG_CONF['asf_enablecontextmenu'];
-        $playback_options['stretchtofit']      = $_MG_CONF['asf_stretchtofit'];
-        $playback_options['uimode']            = $_MG_CONF['asf_uimode'];
-        $playback_options['showstatusbar']     = $_MG_CONF['asf_showstatusbar'];
-        $playback_options['playcount']         = $_MG_CONF['asf_playcount'];
-        $playback_options['height']            = $_MG_CONF['asf_height'];
-        $playback_options['width']             = $_MG_CONF['asf_width'];
-        $playback_options['bgcolor']           = $_MG_CONF['asf_bgcolor'];
+        $playback_options['height'] = $_MG_CONF['asf_height'];
+        $playback_options['width']  = $_MG_CONF['asf_width'];
 
         for ($i=0; $i < $poNumRows; $i++) {
             $poRow = DB_fetchArray($poResult);
             $playback_options[$poRow['option_name']] = $poRow['option_value'];
         }
 
-        $uimode_select = MG_optionlist(array(
-            'name'    => 'uimode',
-            'current' => $playback_options['uimode'],
-            'values'  => array(
-                'none' => $LANG_MG07['none'],
-                'mini' => $LANG_MG07['mini'],
-                'full' => $LANG_MG07['full'],
-            ),
-        ));
-
         $T->set_var(array(
-            'autostart_enabled'          => $playback_options['autostart'] ? ' checked="checked"' : '',
-            'autostart_disabled'         => $playback_options['autostart'] ? '' : ' checked="checked"',
-            'enablecontextmenu_enabled'  => $playback_options['enablecontextmenu'] ? ' checked="checked"' : '',
-            'enablecontextmenu_disabled' => $playback_options['enablecontextmenu'] ? '' : ' checked="checked"',
-            'stretchtofit_enabled'       => $playback_options['stretchtofit'] ? ' checked="checked"' : '',
-            'stretchtofit_disabled'      => $playback_options['stretchtofit'] ? '' : ' checked="checked"',
-            'showstatusbar_enabled'      => $playback_options['showstatusbar'] ? ' checked="checked"' : '',
-            'showstatusbar_disabled'     => $playback_options['showstatusbar'] ? '' : ' checked="checked"',
-            'uimode_select'              => $uimode_select,
-            'uimode'                     => $playback_options['uimode'],
-            'playcount'                  => $playback_options['playcount'],
-            'height'                     => $playback_options['height'],
-            'width'                      => $playback_options['width'],
-            'bgcolor'                    => MG_escapeHTML($playback_options['bgcolor']),
-            'lang_resolution'            => $lang_resolution,
-            'resolution'                 => $resolution,
+            'height' => $playback_options['height'],
+            'width'  => $playback_options['width'],
         ));
         $T->parse('playback_options', 'asf_options');
-    }
-
-    if ($row['mime_type'] == 'audio/mpeg') {
-        // pull defaults, then override...
-        $playback_options['autostart']         = $_MG_CONF['mp3_autostart'];
-        $playback_options['enablecontextmenu'] = $_MG_CONF['mp3_enablecontextmenu'];
-        $playback_options['uimode']            = $_MG_CONF['mp3_uimode'];
-        $playback_options['showstatusbar']     = $_MG_CONF['mp3_showstatusbar'];
-        $playback_options['loop']              = $_MG_CONF['mp3_loop'];
-
-        for ($i=0; $i < $poNumRows; $i++) {
-            $poRow = DB_fetchArray($poResult);
-            $playback_options[$poRow['option_name']] = $poRow['option_value'];
-        }
-
-        $uimode_select = MG_optionlist(array(
-            'name'    => 'uimode',
-            'current' => $playback_options['uimode'],
-            'values'  => array(
-                'none' => $LANG_MG07['none'],
-                'mini' => $LANG_MG07['mini'],
-                'full' => $LANG_MG07['full'],
-            ),
-        ));
-
-        $T->set_var(array(
-            'autostart_enabled'          => $playback_options['autostart'] ? ' checked="checked"' : '',
-            'autostart_disabled'         => $playback_options['autostart'] ? '' : ' checked="checked"',
-            'enablecontextmenu_enabled'  => $playback_options['enablecontextmenu'] ? ' checked="checked"' : '',
-            'enablecontextmenu_disabled' => $playback_options['enablecontextmenu'] ? '' : ' checked="checked"',
-            'showstatusbar_enabled'      => $playback_options['showstatusbar'] ? ' checked="checked"' : '',
-            'showstatusbar_disabled'     => $playback_options['showstatusbar'] ? '' : ' checked="checked"',
-            'loop_enabled'               => $playback_options['loop'] ? ' checked="checked"' : '',
-            'loop_disabled'              => $playback_options['loop'] ? '' : ' checked="checked"',
-            'uimode_select'              => $uimode_select,
-            'uimode'                     => $playback_options['uimode'],
-        ));
-        $T->parse('playback_options', 'mp3_options');
-    }
-
-    if ($row['mime_type'] == 'application/x-shockwave-flash' ||
-        $row['mime_type'] == 'video/x-flv') {
-        // pull defaults, then override...
-        $playback_options['play']              = $_MG_CONF['swf_play'];
-        $playback_options['menu']              = $_MG_CONF['swf_menu'];
-        $playback_options['quality']           = $_MG_CONF['swf_quality'];
-        $playback_options['height']            = $_MG_CONF['swf_height'];
-        $playback_options['width']             = $_MG_CONF['swf_width'];
-        $playback_options['loop']              = $_MG_CONF['swf_loop'];
-        $playback_options['scale']             = $_MG_CONF['swf_scale'];
-        $playback_options['wmode']             = $_MG_CONF['swf_wmode'];
-        $playback_options['allowscriptaccess'] = $_MG_CONF['swf_allowscriptaccess'];
-        $playback_options['bgcolor']           = $_MG_CONF['swf_bgcolor'];
-        $playback_options['swf_version']       = $_MG_CONF['swf_version'];
-
-        for ($i=0; $i < $poNumRows; $i++) {
-            $poRow = DB_fetchArray($poResult);
-            $playback_options[$poRow['option_name']] = $poRow['option_value'];
-        }
-
-        $quality_select = MG_optionlist(array(
-            'name'    => 'quality',
-            'current' => $playback_options['quality'],
-            'values'  => array(
-                'low'  => $LANG_MG07['low'],
-                'high' => $LANG_MG07['high'],
-            ),
-        ));
-
-        $scale_select = MG_optionlist(array(
-            'name'    => 'scale',
-            'current' => $playback_options['scale'],
-            'values'  => array(
-                'showall'  => $LANG_MG07['showall'],
-                'noborder' => $LANG_MG07['noborder'],
-                'exactfit' => $LANG_MG07['exactfit'],
-            ),
-        ));
-
-        $wmode_select = MG_optionlist(array(
-            'name'    => 'wmode',
-            'current' => $playback_options['wmode'],
-            'values'  => array(
-                'window'      => $LANG_MG07['window'],
-                'opaque'      => $LANG_MG07['opaque'],
-                'transparent' => $LANG_MG07['transparent'],
-            ),
-        ));
-
-        $asa_select = MG_optionlist(array(
-            'name'    => 'allowscriptaccess',
-            'current' => $playback_options['allowscriptaccess'],
-            'values'  => array(
-                'always'     => $LANG_MG07['always'],
-                'sameDomain' => $LANG_MG07['sameDomain'],
-                'never'      => $LANG_MG07['never'],
-            ),
-        ));
-
-        $T->set_var(array(
-            'play_enabled'   => $playback_options['play'] ? ' checked="checked"' : '',
-            'play_disabled'  => $playback_options['play'] ? '' : ' checked="checked"',
-            'menu_enabled'   => $playback_options['menu'] ? ' checked="checked"' : '',
-            'menu_disabled'  => $playback_options['menu'] ? '' : ' checked="checked"',
-            'loop_enabled'   => $playback_options['loop'] ? ' checked="checked"' : '',
-            'loop_disabled'  => $playback_options['loop'] ? '' : ' checked="checked"',
-            'quality_select' => $quality_select,
-            'scale_select'   => $scale_select,
-            'wmode_select'   => $wmode_select,
-            'asa_select'     => $asa_select,
-            'flashvars'      => isset($playback_options['flashvars']) ? MG_escapeHTML($playback_options['flashvars']) : '',
-            'height'         => $playback_options['height'],
-            'width'          => $playback_options['width'],
-            'bgcolor'        => MG_escapeHTML($playback_options['bgcolor']),
-            'swf_version'    => $playback_options['swf_version'],
-        ));
-        if ($row['mime_type'] == 'application/x-shockwave-flash') {
-            $T->parse('playback_options', 'swf_options');
-        } else {
-            $T->parse('playback_options', 'flv_options');
-        }
     }
 
     if ($row['media_mime_ext'] == 'mov' ||
         $row['media_mime_ext'] == 'mp4' ||
         $row['mime_type'] == 'video/quicktime' ||
         $row['mime_type'] == 'video/mpeg') {
-        // pull defaults, then override...
-        $playback_options['autoref']    = $_MG_CONF['mov_autoref'];
-        $playback_options['autoplay']   = $_MG_CONF['mov_autoplay'];
-        $playback_options['controller'] = $_MG_CONF['mov_controller'];
-        $playback_options['kioskmode']  = isset($_MG_CONF['mov_kioskmod']) ? $_MG_CONF['mov_kiokmode'] : '';
-        $playback_options['scale']      = $_MG_CONF['mov_scale'];
-        $playback_options['loop']       = $_MG_CONF['mov_loop'];
-        $playback_options['height']     = $_MG_CONF['mov_height'];
-        $playback_options['width']      = $_MG_CONF['mov_width'];
-        $playback_options['bgcolor']    = $_MG_CONF['mov_bgcolor'];
+        $playback_options['height'] = $_MG_CONF['mov_height'];
+        $playback_options['width']  = $_MG_CONF['mov_width'];
 
         for ($i=0; $i < $poNumRows; $i++) {
             $poRow = DB_fetchArray($poResult);
             $playback_options[$poRow['option_name']] = $poRow['option_value'];
         }
 
-        $scale_select = MG_optionlist(array(
-            'name'    => 'scale',
-            'current' => $playback_options['scale'],
-            'values'  => array(
-                'tofit'  => $LANG_MG07['to_fit'],
-                'aspect' => $LANG_MG07['aspect'],
-                '1'      => $LANG_MG07['normal_size'],
-            ),
-        ));
-
         $T->set_var(array(
-            'autoref_enabled'     => $playback_options['autoref'] ? ' checked="checked"' : '',
-            'autoref_disabled'    => $playback_options['autoref'] ? '' : ' checked="checked"',
-            'autoplay_enabled'    => $playback_options['autoplay'] ? ' checked="checked"' : '',
-            'autoplay_disabled'   => $playback_options['autoplay'] ? '' : ' checked="checked"',
-            'controller_enabled'  => $playback_options['controller'] ? ' checked="checked"' : '',
-            'controller_disabled' => $playback_options['controller'] ? '' : ' checked="checked"',
-            'kioskmode_enabled'   => $playback_options['kioskmode'] ? ' checked="checked"' : '',
-            'kioskmode_disabled'  => $playback_options['kioskmode'] ? '' : ' checked="checked"',
-            'loop_enabled'        => $playback_options['loop'] ? ' checked="checked"' : '',
-            'loop_disabled'       => $playback_options['loop'] ? '' : ' checked="checked"',
-            'height'              => $playback_options['height'],
-            'width'               => $playback_options['width'],
-            'bgcolor'             => MG_escapeHTML($playback_options['bgcolor']),
+            'height' => $playback_options['height'],
+            'width'  => $playback_options['width'],
         ));
         $T->parse('playback_options', 'mov_options');
     }
@@ -1199,85 +1014,17 @@ function MG_saveMediaEdit($album_id, $media_id, $actionURL)
     }
     PLG_itemSaved($media_id, 'mediagallery');
 
-    // process playback options if any...
-    if (isset($_POST['autostart'])) {   // asf
-        $opt['autostart']         = COM_applyFilter($_POST['autostart'], true);
-        $opt['enablecontextmenu'] = COM_applyFilter($_POST['enablecontextmenu'], true);
-        $opt['stretchtofit']      = isset($_POST['stretchtofit']) ? COM_applyFilter($_POST['stretchtofit'],true) : 0;
-        $opt['showstatusbar']     = COM_applyFilter($_POST['showstatusbar'], true);
-        $opt['uimode']            = COM_applyFilter($_POST['uimode']);
-        $opt['height']            = isset($_POST['height'])    ? COM_applyFilter($_POST['height'],   true) : 0;
-        $opt['width']             = isset($_POST['width'])     ? COM_applyFilter($_POST['width'],    true) : 0;
-        $opt['bgcolor']           = isset($_POST['bgcolor'])   ? COM_applyFilter($_POST['bgcolor']) : 0;
-        $opt['playcount']         = isset($_POST['playcount']) ? COM_applyFilter($_POST['playcount'],true) : 0;
-        $opt['loop']              = isset($_POST['loop'])      ? COM_applyFilter($_POST['loop'],     true) : 0;
-
-        if ($opt['playcount'] < 1) {
-            $opt['playcount'] = 1;
+    // HTML5 playback no longer uses the old ActiveX/Flash/QuickTime option set.
+    // Preserve only per-media video dimensions; historical rows stay untouched for upgrades.
+    if (isset($_POST['playback_geometry'])) {
+        $width  = isset($_POST['width'])  ? COM_applyFilter($_POST['width'], true)  : 0;
+        $height = isset($_POST['height']) ? COM_applyFilter($_POST['height'], true) : 0;
+        if ($width > 0) {
+            MG_savePBOption($media_id, 'width', $width, true);
         }
-
-        MG_savePBOption($media_id, 'autostart',         $opt['autostart'], true);
-        MG_savePBOption($media_id, 'enablecontextmenu', $opt['enablecontextmenu'], true);
-        if ($opt['stretchtofit'] != '') {
-            MG_savePBOption($media_id, 'stretchtofit', $opt['stretchtofit'], true);
+        if ($height > 0) {
+            MG_savePBOption($media_id, 'height', $height, true);
         }
-        MG_savePBOption($media_id, 'showstatusbar', $opt['showstatusbar'], true);
-        MG_savePBOption($media_id, 'uimode',        $opt['uimode']);
-        MG_savePBOption($media_id, 'height',        $opt['height'], true);
-        MG_savePBOption($media_id, 'width',         $opt['width'], true);
-        MG_savePBOption($media_id, 'bgcolor',       $opt['bgcolor']);
-        MG_savePBOption($media_id, 'playcount',     $opt['playcount'], true);
-        MG_savePBOption($media_id, 'loop',          $opt['loop'], true);
-    }
-    if (isset($_POST['play'])) {    // swf
-        $opt['play']              = COM_applyFilter($_POST['play'],   true);
-        $opt['menu']              = isset($_POST['menu'])              ? COM_applyFilter($_POST['menu'], true) : 0;
-        $opt['quality']           = isset($_POST['quality'])           ? COM_applyFilter($_POST['quality'])    : '';
-        $opt['flashvars']         = isset($_POST['flashvars'])         ? COM_applyFilter($_POST['flashvars'])  : '';
-        $opt['height']            = COM_applyFilter($_POST['height'], true);
-        $opt['width']             = COM_applyFilter($_POST['width'],  true);
-        $opt['loop']              = isset($_POST['loop'])              ? COM_applyFilter($_POST['loop'], true) : 0;
-        $opt['scale']             = isset($_POST['scale'])             ? COM_applyFilter($_POST['scale'])      : '';
-        $opt['wmode']             = isset($_POST['wmode'])             ? COM_applyFilter($_POST['wmode'])      : '';
-        $opt['allowscriptaccess'] = isset($_POST['allowscriptaccess']) ? COM_applyFilter($_POST['allowscriptaccess']) : '';
-        $opt['bgcolor']           = isset($_POST['bgcolor'])           ? COM_applyFilter($_POST['bgcolor'])    : '';
-        $opt['swf_version']       = isset($_POST['swf_version'])       ? COM_applyFilter($_POST['swf_version'], true) : 9;
-
-        MG_savePBOption($media_id, 'play', $opt['play'], true);
-        if ($opt['menu'] != '') {
-            MG_savePBOption($media_id, 'menu', $opt['menu'], true);
-        }
-        MG_savePBOption($media_id, 'quality',           $opt['quality']);
-        MG_savePBOption($media_id, 'flashvars',         $opt['flashvars']);
-        MG_savePBOption($media_id, 'height',            $opt['height'], true);
-        MG_savePBOption($media_id, 'width',             $opt['width'], true);
-        MG_savePBOption($media_id, 'loop',              $opt['loop'], true);
-        MG_savePBOption($media_id, 'scale',             $opt['scale']);
-        MG_savePBOption($media_id, 'wmode',             $opt['wmode']);
-        MG_savePBOption($media_id, 'allowscriptaccess', $opt['allowscriptaccess']);
-        MG_savePBOption($media_id, 'bgcolor',           $opt['bgcolor']);
-        MG_savePBOption($media_id, 'swf_version',       $opt['swf_version'], true);
-    }
-    if (isset($_POST['autoplay'])) {    // quicktime
-        $opt['autoplay']    = COM_applyFilter($_POST['autoplay'], true);
-        $opt['autoref']     = COM_applyFilter($_POST['autoref'], true);
-        $opt['controller']  = COM_applyFilter($_POST['controller'], true);
-        $opt['kioskmode']   = COM_applyFilter($_POST['kioskmode'], true);
-        $opt['scale']       = COM_applyFilter($_POST['scale']);
-        $opt['height']      = COM_applyFilter($_POST['height'], true);
-        $opt['width']       = COM_applyFilter($_POST['width'], true);
-        $opt['bgcolor']     = COM_applyFilter($_POST['bgcolor']);
-        $opt['loop']        = COM_applyFilter($_POST['loop'], true);
-
-        MG_savePBOption($media_id, 'autoref',    $opt['autoref'], true);
-        MG_savePBOption($media_id, 'autoplay',   $opt['autoplay'], true);
-        MG_savePBOption($media_id, 'controller', $opt['controller'], true);
-        MG_savePBOption($media_id, 'kioskmode',  $opt['kioskmode'], true);
-        MG_savePBOption($media_id, 'scale',      $opt['scale']);
-        MG_savePBOption($media_id, 'height',     $opt['height'], true);
-        MG_savePBOption($media_id, 'width',      $opt['width'], true);
-        MG_savePBOption($media_id, 'bgcolor',    $opt['bgcolor'], true);
-        MG_savePBOption($media_id, 'loop',       $opt['loop'], true);
     }
 
     if ($attachtn == 1 && $thumbnail != '') {

@@ -133,36 +133,10 @@ function MG_displayASF($I, $opt=array())
             $V = COM_newTemplate(MG_getTemplatePath_byName($opt['skin']));
             $V->set_file('video', 'view_asf.thtml');
             $V->set_var(array(
-                'autostart'          => ($playback_options['autostart'] ? 'true' : 'false'),
-                'enablecontextmenu'  => ($playback_options['enablecontextmenu'] ? 'true' : 'false'),
-                'stretchtofit'       => ($playback_options['stretchtofit'] ? 'true' : 'false'),
-                'showstatusbar'      => ($playback_options['showstatusbar'] ? 'true' : 'false'),
-                'uimode'             => $playback_options['uimode'],
-                'playcount'          => $playback_options['playcount'],
                 'height'             => $playback_options['height'],
                 'width'              => $playback_options['width'],
-                'bgcolor'            => $playback_options['bgcolor'],
                 'movie'              => Media::getFileUrl('orig', $I['media_filename'], $I['media_mime_ext']),
-                'autostart0'         => ($playback_options['autostart'] ? '1' : '0'),
-                'enablecontextmenu0' => ($playback_options['enablecontextmenu'] ? '1' : '0'),
-                'stretchtofit0'      => ($playback_options['stretchtofit'] ? '1' : '0'),
-                'showstatusbar0'     => ($playback_options['showstatusbar'] ? '1' : '0'),
             ));
-            switch ($playback_options['uimode']) {
-                case 'mini' :
-                case 'full' :
-                    $V->set_var(array(
-                        'showcontrols'  => 'true',
-                        'showcontrols0' => '1',
-                    ));
-                    break;
-                case 'none' :
-                    $V->set_var(array(
-                        'showcontrols'  => 'false',
-                        'showcontrols0' => '0',
-                    ));
-                    break;
-            }
             $u_image = $V->finish($V->parse('output','video'));
             return array($u_image, '', $resolution_x, $resolution_y, '');
             break;
@@ -231,15 +205,8 @@ function MG_displayMOV($I, $opt=array())
             $V->set_file('video', 'view_quicktime.thtml');
             $V->set_var(array(
                 'site_url'         => $_MG_CONF['site_url'],
-                'autoref'          => ($playback_options['autoref'] ? 'true' : 'false'),
-                'autoplay'         => ($playback_options['autoplay'] ? 'true' : 'false'),
-                'controller'       => ($playback_options['controller'] ? 'true' : 'false'),
-                'kioskmode'        => ($playback_options['kioskmode'] ? 'true' : 'false'),
-                'loop'             => ($playback_options['loop'] ? 'true' : 'false'),
-                'scale'            => $playback_options['scale'],
-                'height'           => $playback_options['height'] + ($playback_options['controller'] ? 20 : 0),
+                'height'           => $playback_options['height'],
                 'width'            => $playback_options['width'],
-                'bgcolor'          => $playback_options['bgcolor'],
                 'movie'            => Media::getFileUrl('orig', $I['media_filename'], $I['media_mime_ext']),
                 'filename'         => $I['media_original_filename'],
                 'lang_noquicktime' => $LANG_MG03['no_quicktime'],
@@ -269,19 +236,6 @@ function MG_displayFLV($I, $opt=array())
 function MG_displayMP3($I, $opt=array())
 {
     global $_TABLES, $_CONF, $_MG_CONF, $LANG_MG03;
-
-    // set the default playback options...
-    $playback_options['autostart']         = $_MG_CONF['mp3_autostart'];
-    $playback_options['enablecontextmenu'] = $_MG_CONF['mp3_enablecontextmenu'];
-    $playback_options['showstatusbar']     = $_MG_CONF['mp3_showstatusbar'];
-    $playback_options['uimode']            = $_MG_CONF['mp3_uimode'];
-    $playback_options['loop']              = $_MG_CONF['mp3_loop'];
-
-    $poResult = DB_query("SELECT * FROM {$_TABLES['mg_playback_options']} WHERE media_id='" . DB_escapeString($I['media_id']) . "'");
-    while ($poRow = DB_fetchArray($poResult)) {
-        $playback_options[$poRow['option_name']] = $poRow['option_value'];
-        $playback_options[$poRow['option_name']. '_tf'] = ($poRow['option_value'] ? 'true' : 'false');
-    }
 
     $_MG_USERPREFS = MG_getUserPrefs();
     if (isset($_MG_USERPREFS['playback_mode']) && $_MG_USERPREFS['playback_mode'] != -1) {
@@ -347,13 +301,6 @@ function MG_displayMP3($I, $opt=array())
             $V->set_var(array(
                 'u_pic'             => $u_pic,
                 'u_tn'              => $u_tn,
-                'autostart'         => ($playback_options['autostart'] ? 'true' : 'false'),
-                'enablecontextmenu' => ($playback_options['enablecontextmenu'] ? 'true' : 'false'),
-                'stretchtofit'      => isset($playback_options['stretchtofit']) ? ($playback_options['stretchtofit'] ? 'true' : 'false') : 'false',
-                'showstatusbar'     => ($playback_options['showstatusbar'] ? 'true' : 'false'),
-                'loop'              => ($playback_options['loop'] ? 'true' : 'false'),
-                'playcount'         => ($playback_options['loop'] ? '9999' : '1'),
-                'uimode'            => $playback_options['uimode'],
                 'height'            => $playback_options['height'],
                 'width'             => $playback_options['width'],
                 'movie'             => Media::getFileUrl('orig', $I['media_filename'], $I['media_mime_ext']),

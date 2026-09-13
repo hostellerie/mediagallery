@@ -60,7 +60,7 @@ Geeklog's plugin uploader replaces the old public plugin directory before loadin
 - [x] Remove fresh-install Flash Media configuration controls.
 - [x] Keep obsolete legacy rows harmless on upgraded sites where deletion has not yet been proven safe.
 - [ ] Verify whether obsolete 1.7.x Flash/FlowPlayer `conf_values` rows can be safely removed on both Geeklog 2.1.1 and 2.2.2.
-- [ ] Review remaining legacy playback-related controls and remove settings with no useful HTML5 equivalent.
+- [x] Review remaining legacy playback-related controls and remove settings with no useful HTML5 equivalent.
 
 ## 4. Upload, import and remote-media security
 
@@ -158,7 +158,8 @@ The Geeklog 2.1.1 / PHP 5.6 validation confirmed that image uploads succeed once
 - [x] Escape persisted legacy playback text/color values when rendering maintained edit-form attributes.
 - [ ] Review keyboard accessibility and form labeling across remaining admin/public templates.
   - [x] Connect primary album/category, batch, export and user-quota controls to explicit labels; retain already-valid implicit FTP radio labels.
-  - [ ] Resolve remaining generated-control/global-management labeling together with obsolete playback-control cleanup.
+  - [x] Remove obsolete per-media playback controls instead of labeling settings that no longer affect HTML5 rendering; retain only video width/height controls.
+  - [ ] Resolve remaining generated-control/global-management labeling.
 - [x] Add structured data only where MediaGallery has reliable source data and does not conflict with Geeklog core/theme output.
   - [x] Emit conservative JSON-LD for local `ImageObject` / `AudioObject`, and `VideoObject` only when a real attached thumbnail and upload date are available.
   - [x] Skip remote/embedded media whose content, thumbnail or publication metadata MediaGallery does not own.
