@@ -1,0 +1,38 @@
+name: MediaGallery search template modernization
+
+on:
+  push:
+    paths:
+      - '.github/modernize-search-template-trigger'
+
+permissions:
+  contents: write
+
+jobs:
+  modernize:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: modernize-1.8.0
+          fetch-depth: 0
+      - name: Apply search template modernization
+        run: python tools/modernize_search_template_180.py
+      - name: Validate search markup
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -n '<h1 class="mg_search_page_title">' templates/search_page.thtml
+          grep -n 'class="uk-form mg_search_form" role="search"' templates/search_page.thtml
+          grep -n 'mg_search_form_grid' templates/search_page.thtml public_html/style.css
+          if grep -n '<table' templates/search_page.thtml; then
+            echo 'Presentation table remains in public search template' >&2
+            exit 1
+          fi
+      - name: Commit search template modernization
+        run: |
+          git config user.name 'hostellerie'
+          git config user.email 'hostellerie.org@gmail.com'
+          git add templates/search_page.thtml public_html/style.css ROADMAP.md
+          git commit -m 'Modernize MediaGallery responsive search template'
+          git push origin HEAD:modernize-1.8.0
