@@ -1,0 +1,43 @@
+name: MediaGallery bundled skin modernization
+
+on:
+  push:
+    paths:
+      - '.github/modernize-bundled-skins-trigger'
+
+permissions:
+  contents: write
+
+jobs:
+  modernize:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: modernize-1.8.0
+          fetch-depth: 0
+      - name: Apply bundled skin modernization
+        run: python tools/modernize_bundled_skins_180.py
+      - name: Validate bundled skin markup
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -n '<h1 class="mg_album_title">' templates/themes/filelist/album_page.thtml templates/themes/podcast/album_page.thtml templates/themes/simpleviewer/album_page.thtml templates/themes/jquery_colorbox/album_page.thtml templates/themes/jquery_ad-gallery/album_page.thtml
+          grep -n 'mg_table_scroll' templates/themes/filelist/album_page.thtml
+          grep -n 'mg_podcast_list' templates/themes/podcast/album_page.thtml templates/themes/podcast/album_page_body.thtml
+          grep -n 'class="sv-container-wrapper"' templates/themes/simpleviewer/album_page.thtml
+          if grep -n 'style="height:800px"' templates/themes/simpleviewer/album_page.thtml; then
+            echo 'SimpleViewer fixed 800px height remains' >&2
+            exit 1
+          fi
+          if grep -n '<h2 style="float:left' templates/themes/jquery_colorbox/album_page.thtml templates/themes/jquery_ad-gallery/album_page.thtml; then
+            echo 'Legacy floated gallery heading remains' >&2
+            exit 1
+          fi
+      - name: Commit bundled skin modernization
+        run: |
+          git config user.name 'hostellerie'
+          git config user.email 'hostellerie.org@gmail.com'
+          git add templates/themes public_html/style.css ROADMAP.md
+          git commit -m 'Modernize MediaGallery bundled responsive skins'
+          git push origin HEAD:modernize-1.8.0
