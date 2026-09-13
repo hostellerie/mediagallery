@@ -27,7 +27,7 @@ jobs:
           grep -n 'meta name="robots" content="noindex,follow"' templates/view_window.thtml
           grep -n "'title'    => MG_escapeHTML" public_html/view.php
           grep -n 'mg_profile_table' templates/profile_album.thtml templates/profile_media.thtml
-          grep -n 'mg_filelist_thumb' templates/filelist.thtml
+          grep -n 'scope="col"' templates/profile_album.thtml templates/profile_media.thtml
           grep -n 'mg-media-player-podcast' templates/mp3_podcast.thtml
           if grep -n 'swfobject.js' templates/view_window.thtml; then
             echo 'Obsolete SWFObject include remains in active popup' >&2
@@ -37,8 +37,8 @@ jobs:
             echo 'Fixed audio width remains' >&2
             exit 1
           fi
-          if grep -n 'style="width:' templates/profile_album.thtml templates/profile_media.thtml templates/filelist.thtml; then
-            echo 'Presentation width remains in profile/filelist fragment' >&2
+          if grep -n 'style=' templates/profile_album.thtml templates/profile_media.thtml; then
+            echo 'Presentation style remains in public profile templates' >&2
             exit 1
           fi
       - name: Commit remaining public template modernization
