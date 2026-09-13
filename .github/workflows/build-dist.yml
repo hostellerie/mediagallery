@@ -1,12 +1,8 @@
 name: Build MediaGallery installable archive
 
 on:
+  workflow_call:
   workflow_dispatch:
-  workflow_run:
-    workflows:
-      - MediaGallery PHP lint
-    types:
-      - completed
 
 permissions:
   contents: write
@@ -18,17 +14,13 @@ concurrency:
 jobs:
   build-dist:
     name: Build and commit installable ZIP
-    if: >-
-      github.event_name == 'workflow_dispatch' ||
-      (github.event.workflow_run.conclusion == 'success' &&
-       github.event.workflow_run.head_branch == 'modernize-1.8.0')
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout validated source
         uses: actions/checkout@v5
         with:
-          ref: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.head_sha || 'modernize-1.8.0' }}
+          ref: ${{ github.sha }}
           fetch-depth: 0
 
       - name: Build dist archive
@@ -42,7 +34,6 @@ jobs:
           rm -rf package
           mkdir -p package/mediagallery dist
 
-          # Keep only the single current installable archive in dist/.
           find dist -maxdepth 1 -type f \( -name 'mediagallery-*.zip' -o -name 'mediagallery_*.zip' -o -name '*.zip.sha256' \) -delete
 
           rsync -a ./ package/mediagallery/ \
