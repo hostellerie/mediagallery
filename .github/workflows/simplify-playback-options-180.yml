@@ -35,7 +35,8 @@ jobs:
           if grep -n "isset(\$_POST\['autostart'\])" include/mediamanage.php; then exit 1; fi
           if grep -n "isset(\$_POST\['play'\])" include/mediamanage.php; then exit 1; fi
           if grep -n "isset(\$_POST\['autoplay'\])" include/mediamanage.php; then exit 1; fi
-          grep -n 'remove settings without a useful HTML5 equivalent' ROADMAP.md
+          grep -n 'Review remaining legacy playback-related controls and remove settings with no useful HTML5 equivalent' ROADMAP.md
+          grep -n 'retain only video width/height controls' ROADMAP.md
       - name: Commit playback simplification
         run: |
           git config user.name 'hostellerie'
