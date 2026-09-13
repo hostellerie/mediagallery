@@ -1,4 +1,5 @@
 from pathlib import Path
+import re
 
 
 def replace_all_exact(path, old, new, expected, label):
@@ -9,31 +10,20 @@ def replace_all_exact(path, old, new, expected, label):
         raise SystemExit('Expected %d markers for %s, found %d' % (expected, label, count))
     p.write_text(text.replace(old, new), encoding='utf-8')
 
+
+def escape_confirm_producers(path, expected):
+    p = Path(path)
+    text = p.read_text(encoding='utf-8')
+    pattern = re.compile(r"('lang_delete_confirm'\s*=>\s*)\$LANG_MG01\['delete_item_confirm'\]")
+    text, count = pattern.subn(r"\1MG_escapeHTML($LANG_MG01['delete_item_confirm'])", text)
+    if count != expected:
+        raise SystemExit('Expected %d confirmation producers in %s, found %d' % (expected, path, count))
+    p.write_text(text, encoding='utf-8')
+
 # Escape confirmation messages for their HTML attribute context.
-replace_all_exact(
-    'admin/category.php',
-    "'lang_delete_confirm' => $LANG_MG01['delete_item_confirm'],",
-    "'lang_delete_confirm' => MG_escapeHTML($LANG_MG01['delete_item_confirm']),",
-    1,
-    'category confirmation producer')
-replace_all_exact(
-    'admin/massdelete.php',
-    "'lang_delete_confirm' => $LANG_MG01['delete_item_confirm'],",
-    "'lang_delete_confirm' => MG_escapeHTML($LANG_MG01['delete_item_confirm']),",
-    1,
-    'massdelete confirmation producer')
-replace_all_exact(
-    'include/mediamanage.php',
-    "'lang_delete_confirm'     => $LANG_MG01['delete_item_confirm'],",
-    "'lang_delete_confirm'     => MG_escapeHTML($LANG_MG01['delete_item_confirm']),",
-    2,
-    'media manager confirmation producers')
-replace_all_exact(
-    'include/mediamanage.php',
-    "'lang_delete_confirm'           => $LANG_MG01['delete_item_confirm'],",
-    "'lang_delete_confirm'           => MG_escapeHTML($LANG_MG01['delete_item_confirm']),",
-    1,
-    'media editor confirmation producer')
+escape_confirm_producers('admin/category.php', 1)
+escape_confirm_producers('admin/massdelete.php', 1)
+escape_confirm_producers('include/mediamanage.php', 3)
 
 # Keep translated data in HTML, not inside JavaScript string literals.
 replacements = {
