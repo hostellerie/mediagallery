@@ -47,3 +47,11 @@ jobs:
           while IFS= read -r -d '' file; do
             php -l "$file"
           done < <(find . -type f \( -name '*.php' -o -name '*.inc' \) -print0)
+
+  build-archive:
+    name: Build validated test archive
+    needs: php-lint
+    if: github.event_name == 'push' && github.ref == 'refs/heads/modernize-1.8.0'
+    permissions:
+      contents: write
+    uses: ./.github/workflows/build-dist.yml
