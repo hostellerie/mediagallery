@@ -1,6 +1,6 @@
-<div class="mg-audio-player mg-audio-player-legacy">
+<div class="mg-media-player mg-media-player-audio mg-media-player-standard">
   {u_pic}
-  <audio controls preload="metadata" style="max-width:100%;width:300px;">
+  <audio controls preload="metadata">
     <source src="{movie}">
     <a href="{movie}">Download audio</a>
   </audio>

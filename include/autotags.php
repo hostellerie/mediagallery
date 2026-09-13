@@ -39,15 +39,13 @@ require_once $_CONF['path'] . 'plugins/mediagallery/include/common.php';
 
 function MG_helper_getContainer($media, $align, $container)
 {
-    $style = '';
-    if ($align == 'center') {
-        $style = 'text-align:center;';
-    } else if ($align != '') {
-        $style = 'float:' . $align . ';';
+    $allowedAlign = array('left', 'right', 'center');
+    $class = 'MG_autotag_media';
+    if (in_array($align, $allowedAlign)) {
+        $class .= ' MG_autotag_media_' . $align;
     }
-    $retval = '<' . $container . ' class="MG_autotag_media" style="' . $style . '">' . $media . '</' . $container . '>';
 
-    return $retval;
+    return '<' . $container . ' class="' . $class . '">' . $media . '</' . $container . '>';
 }
 
 

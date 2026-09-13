@@ -1,5 +1,5 @@
-<div class="mg-fslideshow-legacy" id="{id}" style="max-width:{width}px;min-height:2.5em;">
-  <a id="{id2}" href="{site_url}/index.php">Open slideshow</a>
+<div class="mg-fslideshow-legacy" id="{id}" style="max-width:{width}px;">
+  <a class="mg-fslideshow-link" id="{id2}" href="{site_url}/index.php">Open slideshow</a>
 </div>
 <script type="text/javascript">
 (function () {

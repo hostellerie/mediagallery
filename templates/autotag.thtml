@@ -1,4 +1,4 @@
-<div class="MG_autotag_{align}" style="width:{framewidth}px;">
-  {autotag}
-  <span class="MG_autotag_caption" style="width:{width}px;">{caption}</span>
-</div>
+<figure class="MG_autotag MG_autotag_{align}" style="max-width:{framewidth}px;">
+  <div class="MG_autotag_media">{autotag}</div>
+  {!if caption}<figcaption class="MG_autotag_caption">{caption}</figcaption>{!endif}
+</figure>

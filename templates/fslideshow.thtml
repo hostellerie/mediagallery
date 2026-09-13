@@ -1,7 +1,7 @@
-<div class="mg_album_header">
-  <div class="mg_album_title"><h1>{album_title}</h1></div>
-  <div class="mg_search">{pagination}</div>
-</div>
+<header class="mg_album_header mg-fslideshow-header">
+  <h1 class="mg_album_title">{album_title}</h1>
+  {!if pagination}<nav class="mg_pagination" aria-label="Slideshow pagination">{pagination}</nav>{!endif}
+</header>
 <!-- BEGIN noItems -->
 <div class="mg-empty-album">
   {no_images}
@@ -9,6 +9,6 @@
 <!-- END noItems -->
 <!-- BEGIN slideItems -->
 <div class="mg-legacy-slideshow">
-  <p><a href="{site_url}/slideshow.php?aid={aid}">Open slideshow</a></p>
+  <p><a class="mg-fslideshow-link" href="{site_url}/slideshow.php?aid={aid}">Open slideshow</a></p>
 </div>
 <!-- END slideItems -->

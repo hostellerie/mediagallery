@@ -2,13 +2,14 @@
 <html>
 <head>
 <meta charset="{charset}">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 {themeCSS}
 <title>{title}</title>
 </head>
-<body>
-<div class="mg-audio-player mg-audio-player-popup">
+<body class="mg-player-popup-body">
+<div class="mg-media-player mg-media-player-audio mg-media-player-popup" style="max-width:{width}px;">
   {u_pic}
-  <audio controls preload="metadata" style="max-width:100%;width:{width}px;">
+  <audio controls preload="metadata">
     <source src="{movie}">
     <a href="{movie}">{title}</a>
   </audio>

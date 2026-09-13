@@ -145,6 +145,7 @@ The Geeklog 2.1.1 / PHP 5.6 validation confirmed that image uploads succeed once
 - [x] Modernize default album/search/media rendering with responsive CSS Grid/Flexbox, semantic media/card headings and responsive thumbnail frames.
 - [x] Modernize bundled file-list, podcast, jQuery gallery and SimpleViewer skins for responsive layouts and semantic album headings.
 - [x] Replace the public advanced-search presentation tables with a semantic responsive search form.
+- [x] Modernize secondary public autotag, random-block, fullscreen-slideshow and maintained HTML5 audio rendering for responsive output.
 - [x] Remove the legacy IE-only slideshow transition code and keep browser-neutral slideshow controls.
 - [x] Audit attribute escaping across all frame/theme variants.
 - [x] Centralize HTML escaping for framed-image attributes, media edit/manage values, lightbox links and advanced-search values.
