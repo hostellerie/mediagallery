@@ -112,10 +112,13 @@ $object = MG_buildContent($row, $opt);
 
 $T = COM_newTemplate(MG_getTemplatePath($aid));
 $T->set_file('video', 'view_window.thtml');
+$popupTitle = !empty($row['media_title']) ? strip_tags($row['media_title']) : $row['media_original_filename'];
+
 $T->set_var(array(
     'site_url' => $_MG_CONF['site_url'],
     'themeCSS' => $themeCSS,
     'charset'  => COM_getCharset(),
+    'title'    => MG_escapeHTML($popupTitle),
     'object'   => $object[0],
 ));
 

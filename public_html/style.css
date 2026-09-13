@@ -1724,3 +1724,90 @@ a.SWFUProgressCancel:hover {
     max-height: 70vh;
   }
 }
+
+
+/* MediaGallery 1.8 remaining public template layer */
+.mg-media-popup-body {
+  margin: 0;
+  padding: 0;
+  background: #000;
+}
+
+.mg-media-popup {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: auto;
+}
+
+.mg-media-popup img,
+.mg-media-popup video,
+.mg-media-popup audio,
+.mg-media-popup iframe,
+.mg-media-popup object,
+.mg-media-popup embed {
+  max-width: 100%;
+}
+
+.mg-media-popup img,
+.mg-media-popup video {
+  height: auto;
+}
+
+.mg-media-player-podcast {
+  max-width: 18.125rem;
+}
+
+.mg_profile_table {
+  width: 100%;
+  min-width: 36rem;
+}
+
+.mg_profile_thumb_col {
+  width: 3.5rem;
+}
+
+.mg_profile_album_col,
+.mg_profile_media_title_col,
+.mg_profile_media_album_col {
+  width: 35%;
+}
+
+.mg_profile_desc_col {
+  width: 55%;
+}
+
+.mg_profile_date_col {
+  width: 20%;
+}
+
+.mg_profile_thumb {
+  vertical-align: middle;
+  text-align: center;
+}
+
+.mg_profile_title,
+.mg_profile_desc,
+.mg_profile_album {
+  vertical-align: middle;
+  text-align: left;
+}
+
+.mg_profile_date {
+  vertical-align: middle;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.mg_profile_thumb img {
+  max-width: 100%;
+  height: auto;
+}
+
+@media (max-width: 40rem) {
+  .mg-media-popup {
+    align-items: flex-start;
+  }
+}

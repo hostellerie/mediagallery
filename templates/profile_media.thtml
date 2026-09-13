@@ -1,18 +1,20 @@
 {start_block_last10mediaitems}
-  <table class="mg_mediaitems_table">
-    <tr>
-      <th style="width:55px;">{lang_thumbnail}</th>
-      <th style="width:35%;">{lang_title}</th>
-      <th style="width:35%;">{lang_album}</th>
-      <th style="width:20%;">{lang_upload_date}</th>
-    </tr>
-    <!-- BEGIN itemRow -->
-    <tr>
-      <td style="vertical-align:middle;text-align:center;">{mediaitem_begin_href}{mediaitem_image}{mediaitem_end_href}</td>
-      <td style="vertical-align:middle;text-align:left;">{mediaitem_title}</td>
-      <td style="vertical-align:middle;text-align:left;">{mediaitem_album_begin_href}<span style="font-weight:bold;">{mediaitem_album_title}</span>{mediaitem_end_href}</td>
-      <td style="vertical-align:middle;text-align:center;">{mediaitem_date}</td>
-    </tr>
-    <!-- END itemRow -->
-  </table>
+  <div class="mg_table_scroll mg_profile_table_scroll">
+    <table class="mg_mediaitems_table mg_profile_table mg_profile_media_table">
+      <tr>
+        <th scope="col" class="mg_profile_thumb_col">{lang_thumbnail}</th>
+        <th scope="col" class="mg_profile_media_title_col">{lang_title}</th>
+        <th scope="col" class="mg_profile_media_album_col">{lang_album}</th>
+        <th scope="col" class="mg_profile_date_col">{lang_upload_date}</th>
+      </tr>
+      <!-- BEGIN itemRow -->
+      <tr>
+        <td class="mg_profile_thumb">{mediaitem_begin_href}{mediaitem_image}{mediaitem_end_href}</td>
+        <td class="mg_profile_title">{mediaitem_title}</td>
+        <td class="mg_profile_album">{mediaitem_album_begin_href}<strong>{mediaitem_album_title}</strong>{mediaitem_end_href}</td>
+        <td class="mg_profile_date">{mediaitem_date}</td>
+      </tr>
+      <!-- END itemRow -->
+    </table>
+  </div>
 {end_block}

@@ -1,16 +1,18 @@
 {start_block_useralbums}
-  <table class="mg_mediaitems_table">
-    <tr>
-      <th style="width:55px;">{lang_thumbnail}</th>
-      <th style="width:35%;">{lang_album}</th>
-      <th style="width:55%;">{lang_album_description}</th>
-    </tr>
-    <!-- BEGIN itemRow -->
-    <tr>
-      <td style="vertical-align:middle;text-align:center;">{album_begin_href}{album_cover}{album_end_href}</td>
-      <td style="vertical-align:middle;text-align:left;">{album_title}</td>
-      <td style="vertical-align:middle;text-align:left;">{album_desc}</td>
-    </tr>
-    <!-- END itemRow -->
-  </table>
+  <div class="mg_table_scroll mg_profile_table_scroll">
+    <table class="mg_mediaitems_table mg_profile_table mg_profile_album_table">
+      <tr>
+        <th scope="col" class="mg_profile_thumb_col">{lang_thumbnail}</th>
+        <th scope="col" class="mg_profile_album_col">{lang_album}</th>
+        <th scope="col" class="mg_profile_desc_col">{lang_album_description}</th>
+      </tr>
+      <!-- BEGIN itemRow -->
+      <tr>
+        <td class="mg_profile_thumb">{album_begin_href}{album_cover}{album_end_href}</td>
+        <td class="mg_profile_title">{album_title}</td>
+        <td class="mg_profile_desc">{album_desc}</td>
+      </tr>
+      <!-- END itemRow -->
+    </table>
+  </div>
 {end_block}

@@ -1,5 +1,5 @@
-<div class="mg-audio-player mg-audio-player-podcast">
-  <audio controls preload="metadata" style="max-width:100%;width:290px;">
+<div class="mg-media-player mg-media-player-audio mg-media-player-podcast">
+  <audio controls preload="metadata">
     <source src="{mp3_file}" type="audio/mpeg">
     <a href="{mp3_file}">{title}</a>
   </audio>
