@@ -1,0 +1,39 @@
+name: MediaGallery confirm attribute hardening
+
+on:
+  push:
+    paths:
+      - '.github/harden-confirm-attributes-trigger'
+
+permissions:
+  contents: write
+
+jobs:
+  harden:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: modernize-1.8.0
+          fetch-depth: 0
+      - name: Apply confirmation attribute hardening
+        run: python tools/harden_confirm_attributes_180.py
+      - name: Validate PHP and templates
+        shell: bash
+        run: |
+          set -euo pipefail
+          php -l admin/category.php
+          php -l admin/massdelete.php
+          php -l include/mediamanage.php
+          grep -R -n "data-confirm=\"{lang_delete_confirm}\" onclick=\"return confirm(this.getAttribute('data-confirm'));\"" templates/category.thtml templates/massdelete.thtml templates/mediamanage.thtml templates/mediaedit.thtml
+          if grep -R -n "confirm('{lang_delete_confirm}')" templates/category.thtml templates/massdelete.thtml templates/mediamanage.thtml templates/mediaedit.thtml; then
+            echo 'Translated confirmation remains embedded in JavaScript' >&2
+            exit 1
+          fi
+      - name: Commit confirmation hardening
+        run: |
+          git config user.name 'hostellerie'
+          git config user.email 'hostellerie.org@gmail.com'
+          git add admin/category.php admin/massdelete.php include/mediamanage.php templates/category.thtml templates/massdelete.thtml templates/mediamanage.thtml templates/mediaedit.thtml ROADMAP.md
+          git commit -m 'Harden MediaGallery delete confirmations'
+          git push origin HEAD:modernize-1.8.0
