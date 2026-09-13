@@ -1,0 +1,16 @@
+name: MediaGallery public markup audit
+
+on:
+  push:
+    paths:
+      - '.github/audit-public-markup-trigger'
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: modernize-1.8.0
+      - name: Audit public markup
+        run: python tools/audit_public_markup_180.py
