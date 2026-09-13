@@ -71,14 +71,26 @@ $meta = '<link rel="canonical" href="'
       . htmlspecialchars($canonicalUrl, ENT_QUOTES, COM_getCharset())
       . '"' . XHTML . '>' . LB;
 
-$mediaDescription = DB_getItem(
-    $_TABLES['mg_media'],
-    'media_desc',
-    "media_id='" . DB_escapeString($mid) . "'"
+$mediaMeta = array();
+$metaResult = DB_query(
+    "SELECT media_id, media_filename, media_original_filename, media_mime_ext, mime_type, "
+  . "media_title, media_desc, media_type, media_upload_time, media_resolution_x, "
+  . "media_resolution_y, remote_media, remote_url, media_tn_attached "
+  . "FROM {$_TABLES['mg_media']} WHERE media_id='" . DB_escapeString($mid) . "'"
 );
+if ($metaResult !== false && DB_numRows($metaResult) === 1) {
+    $mediaMeta = DB_fetchArray($metaResult);
+}
+
+$mediaDescription = isset($mediaMeta['media_desc']) ? $mediaMeta['media_desc'] : '';
 $seoDescription = MG_prepareMetaDescription(PLG_replaceTags($mediaDescription), 160);
 if ($seoDescription !== '') {
     $meta .= '<meta name="description" content="' . MG_escapeHTML($seoDescription) . '"' . XHTML . '>' . LB;
+}
+
+$structuredData = MG_buildMediaStructuredData($mediaMeta, $canonicalUrl);
+if (!empty($structuredData)) {
+    $meta .= MG_renderJsonLd($structuredData);
 }
 
 $display = MG_createHTMLDocument($display, $ptitle, $meta);

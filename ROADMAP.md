@@ -157,7 +157,10 @@ The Geeklog 2.1.1 / PHP 5.6 validation confirmed that image uploads succeed once
 - [x] Remove translated delete-confirmation text from JavaScript string literals and escape it for HTML data attributes.
 - [x] Escape persisted legacy playback text/color values when rendering maintained edit-form attributes.
 - [ ] Review keyboard accessibility and form labeling across remaining admin/public templates.
-- [ ] Add structured data only where MediaGallery has reliable source data and does not conflict with Geeklog core/theme output.
+- [x] Add structured data only where MediaGallery has reliable source data and does not conflict with Geeklog core/theme output.
+  - [x] Emit conservative JSON-LD for local `ImageObject` / `AudioObject`, and `VideoObject` only when a real attached thumbnail and upload date are available.
+  - [x] Skip remote/embedded media whose content, thumbnail or publication metadata MediaGallery does not own.
+  - [x] Do not add album-level `CollectionPage` JSON-LD while generic page-schema ownership may belong to Geeklog core/themes.
 
 ## 9. Interoperability and public API
 

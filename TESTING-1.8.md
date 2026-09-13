@@ -114,3 +114,7 @@ On disposable copies only:
 - confirm obsolete Flash/FlowPlayer configuration rows, if still present in the database, do not affect the 1.8 runtime.
 
 Record PHP warnings/notices together with the Geeklog version, PHP version, action performed and relevant MediaGallery settings.
+
+## Structured data
+
+- Validate JSON-LD on a local image, local audio, video with attached thumbnail, video without attached thumbnail, and remote/embed media. Only the first three eligible cases should emit media structured data.

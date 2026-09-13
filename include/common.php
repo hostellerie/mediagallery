@@ -78,6 +78,112 @@ function MG_prepareMetaDescription($value, $maxLength = 160)
     return $value;
 }
 
+function MG_renderJsonLd($data)
+{
+    if (!is_array($data) || empty($data)) {
+        return '';
+    }
+
+    $json = json_encode(
+        $data,
+        JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_UNESCAPED_SLASHES
+    );
+    if ($json === false || $json === '') {
+        return '';
+    }
+
+    return '<script type="application/ld+json">' . $json . '</script>' . LB;
+}
+
+function MG_buildMediaStructuredData($media, $canonicalUrl)
+{
+    if (!is_array($media) || empty($canonicalUrl)) {
+        return array();
+    }
+
+    $type = isset($media['media_type']) ? (int) $media['media_type'] : -1;
+    $isRemote = !empty($media['remote_media']);
+
+    // Remote and embedded media can point at third-party resources whose
+    // content URL, thumbnail and publication metadata MediaGallery does not own.
+    if ($isRemote || $type === 5) {
+        return array();
+    }
+
+    $schemaType = '';
+    if ($type === 0) {
+        $schemaType = 'ImageObject';
+    } elseif ($type === 1) {
+        $schemaType = 'VideoObject';
+    } elseif ($type === 2) {
+        $schemaType = 'AudioObject';
+    } else {
+        return array();
+    }
+
+    $title = isset($media['media_title']) ? trim(strip_tags(PLG_replaceTags($media['media_title']))) : '';
+    if ($title === '' && isset($media['media_original_filename'])) {
+        $title = trim((string) $media['media_original_filename']);
+    }
+    if ($title === '') {
+        return array();
+    }
+
+    $filename = isset($media['media_filename']) ? trim((string) $media['media_filename']) : '';
+    $extension = isset($media['media_mime_ext']) ? trim((string) $media['media_mime_ext']) : '';
+    if ($filename === '' || $extension === '') {
+        return array();
+    }
+
+    $uploadTime = isset($media['media_upload_time']) ? (int) $media['media_upload_time'] : 0;
+
+    // Google requires a real thumbnail and upload date for VideoObject. MediaGallery's
+    // generated fallback for videos may only be a generic file-type icon, so only an
+    // explicitly attached thumbnail is reliable enough for video structured data.
+    if ($type === 1 && ($uploadTime <= 0 || empty($media['media_tn_attached']))) {
+        return array();
+    }
+
+    $data = array(
+        '@context' => 'https://schema.org',
+        '@type'    => $schemaType,
+        '@id'      => $canonicalUrl . '#media',
+        'url'      => $canonicalUrl,
+        'name'     => $title,
+        'contentUrl' => Media::getFileUrl('orig', $filename, $extension),
+    );
+
+    $description = isset($media['media_desc'])
+        ? MG_prepareMetaDescription(PLG_replaceTags($media['media_desc']), 500)
+        : '';
+    if ($description !== '') {
+        $data['description'] = $description;
+    }
+
+    if ($uploadTime > 0) {
+        $data['uploadDate'] = date('c', $uploadTime);
+    }
+
+    if (!empty($media['mime_type'])) {
+        $data['encodingFormat'] = (string) $media['mime_type'];
+    }
+
+    $width = isset($media['media_resolution_x']) ? (int) $media['media_resolution_x'] : 0;
+    $height = isset($media['media_resolution_y']) ? (int) $media['media_resolution_y'] : 0;
+    if ($width > 0) {
+        $data['width'] = $width;
+    }
+    if ($height > 0) {
+        $data['height'] = $height;
+    }
+
+    if ($type === 1) {
+        $data['thumbnailUrl'] = Media::getFileUrl('tn', $filename, 'jpg', 1);
+    }
+
+    return $data;
+}
+
 function MG_getRemoteAddress()
 {
     return isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '';
