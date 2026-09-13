@@ -1,0 +1,47 @@
+name: MediaGallery structured media data
+
+on:
+  push:
+    paths:
+      - '.github/add-structured-media-data-trigger'
+
+permissions:
+  contents: write
+
+jobs:
+  structured-data:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: modernize-1.8.0
+          fetch-depth: 0
+      - name: Apply structured media data update
+        run: python tools/add_structured_media_data_180.py
+      - name: Validate structured-data changes
+        shell: bash
+        run: |
+          set -euo pipefail
+          php -l include/common.php
+          php -l public_html/media.php
+          grep -n "function MG_buildMediaStructuredData" include/common.php
+          grep -n "'@type'    => \$schemaType" include/common.php
+          grep -n "media_tn_attached" include/common.php public_html/media.php
+          grep -n "MG_renderJsonLd" include/common.php public_html/media.php
+          grep -n "VideoObject" include/common.php ROADMAP.md
+          grep -n "ImageObject" ROADMAP.md
+          grep -n "AudioObject" ROADMAP.md
+          grep -n "remote/embedded media" ROADMAP.md
+          grep -n "CollectionPage" ROADMAP.md
+          grep -n "Validate JSON-LD" TESTING-1.8.md
+          if grep -n "'VideoObject'" public_html/media.php; then
+            echo 'VideoObject should be decided by the common helper, not hard-coded in media.php' >&2
+            exit 1
+          fi
+      - name: Commit structured media data
+        run: |
+          git config user.name 'hostellerie'
+          git config user.email 'hostellerie.org@gmail.com'
+          git add include/common.php public_html/media.php ROADMAP.md TESTING-1.8.md
+          git commit -m 'Add conservative MediaGallery structured data'
+          git push origin HEAD:modernize-1.8.0
