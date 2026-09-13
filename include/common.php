@@ -53,6 +53,31 @@ function MG_escapeHTML($value)
     return htmlspecialchars((string) $value, ENT_QUOTES, COM_getCharset(), false);
 }
 
+function MG_prepareMetaDescription($value, $maxLength = 160)
+{
+    $value = html_entity_decode(strip_tags((string) $value), ENT_QUOTES, COM_getCharset());
+    $normalized = preg_replace('/\s+/u', ' ', $value);
+    if ($normalized === null) {
+        $normalized = preg_replace('/\s+/', ' ', $value);
+    }
+    $value = trim($normalized);
+    $maxLength = (int) $maxLength;
+
+    if ($value === '' || $maxLength < 1) {
+        return '';
+    }
+
+    if (function_exists('mb_strlen') && function_exists('mb_substr')) {
+        if (mb_strlen($value, COM_getCharset()) > $maxLength) {
+            $value = rtrim(mb_substr($value, 0, max(1, $maxLength - 1), COM_getCharset()), " \t\n\r\0\x0B,.;:-") . '…';
+        }
+    } elseif (strlen($value) > $maxLength) {
+        $value = rtrim(substr($value, 0, max(1, $maxLength - 3)), " \t\n\r\0\x0B,.;:-") . '...';
+    }
+
+    return $value;
+}
+
 function MG_getRemoteAddress()
 {
     return isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '';

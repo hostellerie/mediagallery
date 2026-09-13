@@ -434,5 +434,14 @@ $meta = '<link rel="canonical" href="'
       . htmlspecialchars($canonicalUrl, ENT_QUOTES, COM_getCharset())
       . '"' . XHTML . '>' . LB;
 
+$descriptionLength = ($current_print_page > 1) ? 145 : 160;
+$seoDescription = MG_prepareMetaDescription(PLG_replaceTags($album->description), $descriptionLength);
+if ($seoDescription !== '') {
+    if ($current_print_page > 1) {
+        $seoDescription .= ' - ' . $LANG_MG03['page'] . ' ' . $current_print_page;
+    }
+    $meta .= '<meta name="description" content="' . MG_escapeHTML($seoDescription) . '"' . XHTML . '>' . LB;
+}
+
 $display = MG_createHTMLDocument($display, $pageTitle, $meta);
 COM_output($display);

@@ -71,6 +71,16 @@ $meta = '<link rel="canonical" href="'
       . htmlspecialchars($canonicalUrl, ENT_QUOTES, COM_getCharset())
       . '"' . XHTML . '>' . LB;
 
+$mediaDescription = DB_getItem(
+    $_TABLES['mg_media'],
+    'media_desc',
+    "media_id='" . DB_escapeString($mid) . "'"
+);
+$seoDescription = MG_prepareMetaDescription(PLG_replaceTags($mediaDescription), 160);
+if ($seoDescription !== '') {
+    $meta .= '<meta name="description" content="' . MG_escapeHTML($seoDescription) . '"' . XHTML . '>' . LB;
+}
+
 $display = MG_createHTMLDocument($display, $ptitle, $meta);
 
 COM_output($display);
