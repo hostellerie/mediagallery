@@ -26,8 +26,8 @@ for path in [
     p = Path(path)
     text = p.read_text(encoding='utf-8')
     text = text.replace('<a name="{media_id}"></a>\n', '<span id="{media_id}" class="mg-anchor-target" aria-hidden="true"></span>\n', 1)
-    text = text.replace('<h1>{media_title}</h1>', '<h2 class="mg-podcast-card-title">{media_title}</h2>', 1)
-    text = text.replace('<h2>{musicalbum} {lang_hyphen} {artist}</h2>', '<h3 class="mg-podcast-card-subtitle">{musicalbum} {lang_hyphen} {artist}</h3>', 1)
+    text = text.replace('<h1 class="mg-podcast-media-title">{media_title}</h1>', '<h2 class="mg-podcast-media-title mg-podcast-card-title">{media_title}</h2>', 1)
+    text = text.replace('<h2 class="mg-podcast-media-subtitle">{musicalbum} {lang_hyphen} {artist}</h2>', '<h3 class="mg-podcast-media-subtitle mg-podcast-card-subtitle">{musicalbum} {lang_hyphen} {artist}</h3>', 1)
     p.write_text(text, encoding='utf-8')
 
 # Public member-album enrollment: remove the layout table and BR-driven spacing.
