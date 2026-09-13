@@ -100,7 +100,7 @@ function MG_editCategory($cat_id, $mode)
         'lang_description'    => $LANG_MG01['description'],
         'lang_cancel'         => $LANG_MG01['cancel'],
         'lang_delete'         => $LANG_MG01['delete'],
-        'lang_delete_confirm' => $LANG_MG01['delete_item_confirm'],
+        'lang_delete_confirm' => MG_escapeHTML($LANG_MG01['delete_item_confirm']),
     ));
     if ($_MG_CONF['htmlallowed'] == 1) {
         $T->set_var('allowed_html', COM_allowedHTML());
@@ -231,7 +231,7 @@ function MG_displayCategories()
         'lang_checkall'             => $LANG_MG01['check_all'],
         'lang_uncheckall'           => $LANG_MG01['uncheck_all'],
         'lang_batch'                => $LANG_MG01['batch_process'],
-        'lang_delete_confirm'       => $LANG_MG01['delete_item_confirm'],
+        'lang_delete_confirm'       => MG_escapeHTML($LANG_MG01['delete_item_confirm']),
         'site_url'                  => $_CONF['site_url'],
         'site_admin_url'            => $_CONF['site_admin_url'],
         'xhtml'                     => XHTML,

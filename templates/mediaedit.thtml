@@ -97,7 +97,7 @@
     <div class="mg_submit">
       <input type="submit" name="mode" value="{lang_save}"{xhtml}>
       <input type="submit" name="mode" value="{lang_cancel}"{xhtml}>
-      <input type="submit" name="mode" value="{lang_delete}" onclick="return confirm('{lang_delete_confirm}');"{xhtml}>
+      <input type="submit" name="mode" value="{lang_delete}" data-confirm="{lang_delete_confirm}" onclick="return confirm(this.getAttribute('data-confirm'));"{xhtml}>
       <input type="reset"  value="{lang_reset}"{xhtml}>
       <input type="hidden" name="rpath" value="{rpath}"{xhtml}>
       <input type="hidden" value="{album_id}" name="album_id"{xhtml}>

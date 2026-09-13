@@ -114,7 +114,7 @@ function MG_massDelete()
         'lang_save'           => $LANG_MG01['save'],
         'lang_cancel'         => $LANG_MG01['cancel'],
         'lang_reset'          => $LANG_MG01['reset'],
-        'lang_delete_confirm' => $LANG_MG01['delete_item_confirm'],
+        'lang_delete_confirm' => MG_escapeHTML($LANG_MG01['delete_item_confirm']),
         'lang_delete'         => $LANG_MG01['delete'],
         'lang_batch_delete'   => $LANG_MG01['batch_delete_albums'],
     ));

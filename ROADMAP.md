@@ -148,6 +148,7 @@ The Geeklog 2.1.1 / PHP 5.6 validation confirmed that image uploads succeed once
 - [x] Replace the lightbox slideshow href-injection workaround with valid escaped album-action attributes across maintained album themes.
 - [x] Escape editable album/category values and generated admin option labels when rendering form controls.
 - [x] Remove dynamic property URLs from inline JavaScript and preserve lightbox slideshow actions on media detail views.
+- [x] Remove translated delete-confirmation text from JavaScript string literals and escape it for HTML data attributes.
 - [ ] Review keyboard accessibility and form labeling across remaining admin/public templates.
 - [ ] Add structured data only where MediaGallery has reliable source data and does not conflict with Geeklog core/theme output.
 

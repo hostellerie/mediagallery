@@ -54,7 +54,7 @@ function doUnCheckAll_cat()
   <div class="mg_submit_center">
     <input type="submit" name="mode"   value="{lang_create}"{xhtml}>
 {!if noitems}{!else}
-    <input type="submit" name="mode"   value="{lang_delete}" onclick="javascript:return confirm('{lang_delete_confirm}');"{xhtml}>
+    <input type="submit" name="mode"   value="{lang_delete}" data-confirm="{lang_delete_confirm}" onclick="return confirm(this.getAttribute('data-confirm'));"{xhtml}>
 {!endif}
     <input type="submit" name="mode"   value="{lang_cancel}"{xhtml}>
     <input type="hidden" name="action" value="category"{xhtml}>
