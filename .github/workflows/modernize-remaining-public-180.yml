@@ -27,8 +27,8 @@ jobs:
           grep -n 'meta name="robots" content="noindex,follow"' templates/view_window.thtml
           grep -n "'title'    => MG_escapeHTML" public_html/view.php
           grep -n 'mg_profile_table' templates/profile_album.thtml templates/profile_media.thtml
-          grep -n '<nav class="mgThumbRow"' templates/thumbs.thtml
           grep -n 'mg_filelist_thumb' templates/filelist.thtml
+          grep -n 'mg-media-player-podcast' templates/mp3_podcast.thtml
           if grep -n 'swfobject.js' templates/view_window.thtml; then
             echo 'Obsolete SWFObject include remains in active popup' >&2
             exit 1
