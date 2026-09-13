@@ -18,30 +18,11 @@ Path('templates/mp3_wmp.thtml').write_text('''<!doctype html>\n<html>\n<head>\n<
 
 Path('templates/mp3_podcast.thtml').write_text('''<div class="mg-media-player mg-media-player-audio mg-media-player-podcast">\n  <audio controls preload="metadata">\n    <source src="{mp3_file}" type="audio/mpeg">\n    <a href="{mp3_file}">{title}</a>\n  </audio>\n</div>\n''', encoding='utf-8')
 
-# File-list row: keep table semantics but move presentation widths/alignment to CSS.
-p = Path('templates/filelist.thtml')
-text = p.read_text(encoding='utf-8')
-replacements = {
-    '<td style="width:52px;text-align:center;vertical-align:top;">': '<td class="mg_filelist_thumb">',
-    '<td style="vertical-align:top;">': '<td class="mg_filelist_content">',
-    '<td style="width:90px;vertical-align:top;white-space:nowrap;">': '<td class="mg_filelist_size">',
-    '<td style="width:120px;vertical-align:top;white-space:nowrap;">': '<td class="mg_filelist_user">',
-    '<td style="width:160px;vertical-align:top;white-space:nowrap;">': '<td class="mg_filelist_updated">',
-}
-for old, new in replacements.items():
-    text = text.replace(old, new)
-p.write_text(text, encoding='utf-8')
+# Public profile sections: keep real table semantics, remove presentation-only inline styles,
+# add scoped headers and a narrow-screen overflow wrapper.
+Path('templates/profile_album.thtml').write_text('''{start_block_useralbums}\n  <div class="mg_table_scroll mg_profile_table_scroll">\n    <table class="mg_mediaitems_table mg_profile_table mg_profile_album_table">\n      <tr>\n        <th scope="col" class="mg_profile_thumb_col">{lang_thumbnail}</th>\n        <th scope="col" class="mg_profile_album_col">{lang_album}</th>\n        <th scope="col" class="mg_profile_desc_col">{lang_album_description}</th>\n      </tr>\n      <!-- BEGIN itemRow -->\n      <tr>\n        <td class="mg_profile_thumb">{album_begin_href}{album_cover}{album_end_href}</td>\n        <td class="mg_profile_title">{album_title}</td>\n        <td class="mg_profile_desc">{album_desc}</td>\n      </tr>\n      <!-- END itemRow -->\n    </table>\n  </div>\n{end_block}\n''', encoding='utf-8')
 
-# Profile tables: retain compatible/tabular markup, strip presentation-only inline styles.
-for path in ('templates/profile_album.thtml', 'templates/profile_media.thtml'):
-    p = Path(path)
-    text = p.read_text(encoding='utf-8')
-    text = text.replace('<table class="mg_mediaitems_table" style="width:100%;">', '<div class="mg_table_scroll mg_profile_table_scroll" role="region" tabindex="0">\n<table class="mg_mediaitems_table mg_profile_table">')
-    text = text.rstrip() + '\n</div>\n'
-    text = text.replace('<td style="width:20%;vertical-align:top;text-align:center;">', '<td class="mg_profile_thumb">')
-    text = text.replace('<td style="width:60%;vertical-align:top;">', '<td class="mg_profile_content">')
-    text = text.replace('<td style="width:20%;vertical-align:top;white-space:nowrap;">', '<td class="mg_profile_meta">')
-    p.write_text(text, encoding='utf-8')
+Path('templates/profile_media.thtml').write_text('''{start_block_last10mediaitems}\n  <div class="mg_table_scroll mg_profile_table_scroll">\n    <table class="mg_mediaitems_table mg_profile_table mg_profile_media_table">\n      <tr>\n        <th scope="col" class="mg_profile_thumb_col">{lang_thumbnail}</th>\n        <th scope="col" class="mg_profile_media_title_col">{lang_title}</th>\n        <th scope="col" class="mg_profile_media_album_col">{lang_album}</th>\n        <th scope="col" class="mg_profile_date_col">{lang_upload_date}</th>\n      </tr>\n      <!-- BEGIN itemRow -->\n      <tr>\n        <td class="mg_profile_thumb">{mediaitem_begin_href}{mediaitem_image}{mediaitem_end_href}</td>\n        <td class="mg_profile_title">{mediaitem_title}</td>\n        <td class="mg_profile_album">{mediaitem_album_begin_href}<strong>{mediaitem_album_title}</strong>{mediaitem_end_href}</td>\n        <td class="mg_profile_date">{mediaitem_date}</td>\n      </tr>\n      <!-- END itemRow -->\n    </table>\n  </div>\n{end_block}\n''', encoding='utf-8')
 
 # Final public-fragment responsive CSS.
 p = Path('public_html/style.css')
@@ -85,53 +66,44 @@ css = r'''
   max-width: 18.125rem;
 }
 
-.mg_filelist_thumb {
-  width: 3.25rem;
-  text-align: center;
-  vertical-align: top;
-}
-
-.mg_filelist_content {
-  vertical-align: top;
-}
-
-.mg_filelist_size {
-  width: 5.625rem;
-  vertical-align: top;
-  white-space: nowrap;
-}
-
-.mg_filelist_user {
-  width: 7.5rem;
-  vertical-align: top;
-  white-space: nowrap;
-}
-
-.mg_filelist_updated {
-  width: 10rem;
-  vertical-align: top;
-  white-space: nowrap;
-}
-
 .mg_profile_table {
   width: 100%;
   min-width: 36rem;
 }
 
-.mg_profile_thumb {
+.mg_profile_thumb_col {
+  width: 3.5rem;
+}
+
+.mg_profile_album_col,
+.mg_profile_media_title_col,
+.mg_profile_media_album_col {
+  width: 35%;
+}
+
+.mg_profile_desc_col {
+  width: 55%;
+}
+
+.mg_profile_date_col {
   width: 20%;
-  vertical-align: top;
+}
+
+.mg_profile_thumb {
+  vertical-align: middle;
   text-align: center;
 }
 
-.mg_profile_content {
-  width: 60%;
-  vertical-align: top;
+.mg_profile_title,
+.mg_profile_desc,
+.mg_profile_album {
+  vertical-align: middle;
+  text-align: left;
 }
 
-.mg_profile_meta {
-  width: 20%;
-  vertical-align: top;
+.mg_profile_date {
+  vertical-align: middle;
+  text-align: center;
   white-space: nowrap;
 }
 
@@ -152,7 +124,7 @@ p.write_text(text + css, encoding='utf-8')
 p = Path('ROADMAP.md')
 text = p.read_text(encoding='utf-8')
 needle = '- [x] Modernize secondary public autotag, random-block, fullscreen-slideshow and maintained HTML5 audio rendering for responsive output.\n'
-addition = needle + '- [x] Modernize active media popups plus profile, file-list and remaining audio fragments for responsive public rendering.\n'
+addition = needle + '- [x] Modernize active media popups, public profile tables and remaining audio fragments for responsive rendering.\n'
 if text.count(needle) != 1:
     raise SystemExit('ROADMAP remaining public template marker mismatch')
 p.write_text(text.replace(needle, addition, 1), encoding='utf-8')
