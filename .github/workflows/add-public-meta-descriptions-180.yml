@@ -1,0 +1,41 @@
+name: MediaGallery public meta descriptions
+
+on:
+  push:
+    paths:
+      - '.github/add-public-meta-descriptions-trigger'
+
+permissions:
+  contents: write
+
+jobs:
+  seo:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: modernize-1.8.0
+          fetch-depth: 0
+      - name: Add public meta descriptions
+        run: python tools/add_public_meta_descriptions_180.py
+      - name: Validate SEO metadata changes
+        shell: bash
+        run: |
+          set -euo pipefail
+          php -l include/common.php
+          php -l public_html/album.php
+          php -l public_html/media.php
+          grep -n 'function MG_prepareMetaDescription' include/common.php
+          grep -n '<meta name=\"description\"' public_html/album.php public_html/media.php
+          grep -n 'rel=\"canonical\"' public_html/album.php public_html/media.php
+          if grep -n 'meta name=\"keywords\"' public_html/album.php public_html/media.php; then
+            echo 'Obsolete keywords metadata must not be introduced' >&2
+            exit 1
+          fi
+      - name: Commit public meta descriptions
+        run: |
+          git config user.name 'hostellerie'
+          git config user.email 'hostellerie.org@gmail.com'
+          git add include/common.php public_html/album.php public_html/media.php ROADMAP.md
+          git commit -m 'Add MediaGallery public meta descriptions'
+          git push origin HEAD:modernize-1.8.0
