@@ -39,8 +39,6 @@ asf_end = text.find("    if ($row['media_mime_ext'] == 'mov' ||", asf_start)
 if asf_start < 0 or asf_end < 0:
     raise SystemExit('ASF/MOV markers not found')
 asf_block = text[asf_start:asf_end]
-old_asf = asf_block
-# Keep condition and DB override loop, discard legacy option/select setup.
 cond_end = asf_block.find("        // pull defaults, then override...")
 loop_start = asf_block.find("        for ($i=0; $i < $poNumRows; $i++) {")
 loop_end = asf_block.find("        }\n\n", loop_start) + len("        }\n\n")
@@ -53,7 +51,6 @@ text = text[:asf_start] + new_asf + text[asf_end:]
 
 # Reduce MOV setup to width/height only.
 mov_start = text.find("    if ($row['media_mime_ext'] == 'mov' ||")
-# The next stable marker is remoteurl assignment.
 mov_end = text.find("    $remoteurl = $row['remote_url'];", mov_start)
 if mov_start < 0 or mov_end < 0:
     raise SystemExit('MOV block markers not found')
@@ -80,37 +77,28 @@ p.write_text(text, encoding='utf-8')
 # Stop passing dead legacy values to maintained HTML5 templates.
 p = Path('include/lib-media.php')
 text = p.read_text(encoding='latin-1')
-# ASF: remove unused vars from template set_var, retain width/height/movie.
+import re
 for key in ['autostart', 'enablecontextmenu', 'stretchtofit', 'showstatusbar', 'uimode', 'playcount', 'bgcolor', 'autostart0', 'enablecontextmenu0', 'stretchtofit0', 'showstatusbar0']:
-    import re
     text = re.sub(r"\n\s*'" + re.escape(key) + r"'\s*=>[^\n]+,", '', text, count=1)
-# Remove the now-dead uimode switch block once.
 start = text.find("            switch ($playback_options['uimode']) {")
 if start >= 0:
     end = text.find("            $u_image = $V->finish", start)
     text = text[:start] + text[end:]
-# MOV: controller no longer adds fake plugin chrome height; old vars are not consumed by HTML5 template.
 text = text.replace("                'height'           => $playback_options['height'] + ($playback_options['controller'] ? 20 : 0),", "                'height'           => $playback_options['height'],", 1)
 for key in ['autoref', 'autoplay', 'controller', 'kioskmode', 'loop', 'scale', 'bgcolor']:
-    import re
     text = re.sub(r"\n\s*'" + re.escape(key) + r"'\s*=>[^\n]+,", '', text, count=1)
-# MP3: stop loading per-media playback rows that no longer affect <audio>; keep fixed responsive geometry.
 mp3_start = text.find('function MG_displayMP3')
 mp3_switch = text.find('    switch ($playback_type)', mp3_start)
 if mp3_start < 0 or mp3_switch < 0:
     raise SystemExit('MP3 display markers not found')
 prefix = text[mp3_start:mp3_switch]
-# Remove default playback-options block and DB override from MP3 only.
 def_start = prefix.find('    // set the default playback options...')
 prefs_start = prefix.find('    $_MG_USERPREFS = MG_getUserPrefs();')
 if def_start >= 0 and prefs_start > def_start:
     prefix = prefix[:def_start] + prefix[prefs_start:]
 text = text[:mp3_start] + prefix + text[mp3_switch:]
-# Remove dead MP3 vars from set_var.
 for key in ['autostart', 'enablecontextmenu', 'stretchtofit', 'showstatusbar', 'loop', 'playcount', 'uimode']:
-    import re
     pattern = r"\n\s*'" + re.escape(key) + r"'\s*=>[^\n]+,"
-    # Search only after MG_displayMP3 in resulting text.
     before = text[:mp3_start]
     after = text[mp3_start:]
     after = re.sub(pattern, '', after, count=1)
@@ -121,7 +109,8 @@ p.write_text(text, encoding='latin-1')
 p = Path('ROADMAP.md')
 text = p.read_text(encoding='utf-8')
 text = text.replace('  - [ ] Resolve remaining generated-control/global-management labeling together with obsolete playback-control cleanup.\n', '  - [x] Remove obsolete per-media playback controls instead of labeling settings that no longer affect HTML5 rendering; retain only video width/height controls.\n  - [ ] Resolve remaining generated-control/global-management labeling.\n', 1)
-needle = '- [ ] Review remaining legacy playback-related controls and remove settings without a useful HTML5 equivalent.\n'
-if needle in text:
-    text = text.replace(needle, '- [x] Review remaining legacy playback-related controls and remove settings without a useful HTML5 equivalent.\n', 1)
+needle = '- [ ] Review remaining legacy playback-related controls and remove settings with no useful HTML5 equivalent.\n'
+if text.count(needle) != 1:
+    raise SystemExit('ROADMAP legacy playback marker mismatch')
+text = text.replace(needle, '- [x] Review remaining legacy playback-related controls and remove settings with no useful HTML5 equivalent.\n', 1)
 p.write_text(text, encoding='utf-8')
