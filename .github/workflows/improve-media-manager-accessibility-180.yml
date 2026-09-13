@@ -1,0 +1,43 @@
+name: MediaGallery media manager accessibility
+
+on:
+  push:
+    paths:
+      - '.github/improve-media-manager-accessibility-trigger'
+
+permissions:
+  contents: write
+
+jobs:
+  accessibility:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: modernize-1.8.0
+          fetch-depth: 0
+      - name: Improve media manager accessibility
+        run: python tools/improve_media_manager_accessibility_180.py
+      - name: Validate media manager accessibility
+        shell: bash
+        run: |
+          set -euo pipefail
+          php -l include/mediamanage.php
+          grep -n 'id="mg-media-destination-album"' include/mediamanage.php
+          grep -n 'id="mg-media-batch-option"' include/mediamanage.php
+          grep -n 'aria-label' include/mediamanage.php
+          grep -n 'scope="col"' templates/mediaitems.thtml
+          grep -n 'id="mg-media-title-{counter}"' templates/mediaitems.thtml
+          grep -n 'id="mg-media-desc-{counter}"' templates/mediaitems.thtml
+          grep -n 'id="mg-media-keywords-{counter}"' templates/mediaitems.thtml
+          grep -n 'for="mg-media-destination-album"' templates/mediaitems.thtml
+          grep -n 'for="mg-media-batch-option"' templates/mediaitems.thtml
+          if grep -n 'onclick="javascript:' templates/mediaitems.thtml; then exit 1; fi
+          grep -n 'Label generated media-manager controls' ROADMAP.md
+      - name: Commit media manager accessibility
+        run: |
+          git config user.name 'hostellerie'
+          git config user.email 'hostellerie.org@gmail.com'
+          git add include/mediamanage.php templates/mediaitems.thtml ROADMAP.md
+          git commit -m 'Improve MediaGallery media manager accessibility'
+          git push origin HEAD:modernize-1.8.0
