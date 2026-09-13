@@ -10,7 +10,7 @@ def write(path, text):
 # a contextual accessible name. This avoids requiring producer-side ids.
 p = Path('templates/global_album_attr.thtml')
 text = p.read_text(encoding='utf-8')
-pat = re.compile(r'<td class="mg_alignright">(\{lang_[^}]+\})</td>\n    <td([^>]*)>(.*?)</td>\n    <td><input type="checkbox" name="([^"]+_active)" value="1"\{xhtml\}></td>', re.S)
+pat = re.compile(r'<td class="mg_alignright">(\{lang_[^}]+\})</td>\n\s*<td([^>]*)>(.*?)</td>\n\s*<td><input type="checkbox" name="([^"]+_active)" value="1"\{xhtml\}></td>', re.S)
 
 def repl(m):
     label, attrs, control, active = m.groups()
@@ -21,10 +21,8 @@ def repl(m):
 text, count = pat.subn(repl, text)
 if count < 20:
     raise SystemExit('global attr row association count too low: %d' % count)
-# Formats: explicit labels for all checkboxes.
 formats = [('jpg','1'),('png','2'),('tif','4'),('gif','8'),('bmp','16'),('tga','32'),('psd','64'),('mp3','128'),('ogg','256'),('asf','512'),('swf','1024'),('mov','2048'),('mp4','4096'),('mpg','8192'),('flv','131072'),('rflv','262144'),('emb','524288'),('zip','16384'),('other','32768')]
 for name, value in formats:
-    # tolerate whitespace / nbsp between control and old span
     pattern = re.compile(r'<input type="checkbox" name="format_%s" value="%s"\{xhtml\}>\s*(?:&nbsp;)*\s*<span>\{lang_%s\}</span>' % (name, value, name))
     replacement = '<input type="checkbox" id="mg-global-format-%s" name="format_%s" value="%s"{xhtml}> <label for="mg-global-format-%s">{lang_%s}</label>' % (name, name, value, name, name)
     text, n = pattern.subn(replacement, text, count=1)
@@ -36,23 +34,26 @@ text = text.replace('<th align="left">{lang_value}</th>', '<th scope="col" align
 text = text.replace('<th>{lang_update}</th>', '<th scope="col">{lang_update}</th>', 1)
 write(p, text)
 
-# Global permissions: implicit labels for simple generated/direct controls and
-# contextual names for update checkboxes. Keep Geeklog's permission editor intact.
+# Global permissions: simple value controls use implicit labels; the Geeklog core
+# permission editor keeps its own labelling. Matching is whitespace-tolerant.
 p = Path('templates/global_album_perm.thtml')
 text = p.read_text(encoding='utf-8')
 rows = [
-    ('{lang_group}', '{group_select}', 'group_active'),
-    ('{lang_member_upload}', '<input type="checkbox" name="member_upload" value="1"{xhtml}>', 'upload_active'),
-    ('{lang_moderate_album}', '<input type="checkbox" name="moderation" value="1"{xhtml}>', 'moderate_active'),
-    ('{lang_mod_group}', '{mod_group_select}', 'mod_group_active'),
-    ('{lang_email_mods_on_submission}', '<input type="checkbox" name="email_mod" value="1"{xhtml}>', 'email_mod_active'),
+    ('{lang_group}', r'\{group_select\}', 'group_active'),
+    ('{lang_member_upload}', r'<input type="checkbox" name="member_upload" value="1"\{xhtml\}>', 'upload_active'),
+    ('{lang_moderate_album}', r'<input type="checkbox" name="moderation" value="1"\{xhtml\}>', 'moderate_active'),
+    ('{lang_mod_group}', r'\{mod_group_select\}', 'mod_group_active'),
+    ('{lang_email_mods_on_submission}', r'<input type="checkbox" name="email_mod" value="1"\{xhtml\}>', 'email_mod_active'),
 ]
-for label, control, active in rows:
-    old = '    <td class="mg_alignright">%s</td>\n    <td>%s</td>\n    <td><input type="checkbox" name="%s" value="1"{xhtml}></td>' % (label, control, active)
-    new = '    <td class="mg_alignright">%s</td>\n    <td><label>%s %s</label></td>\n    <td><input type="checkbox" name="%s" value="1" aria-label="{lang_update}: %s"{xhtml}></td>' % (label, label, control, active, label)
-    if old not in text:
+for label, control_rx, active in rows:
+    pattern = re.compile(r'<td class="mg_alignright">' + re.escape(label) + r'</td>\s*<td>(' + control_rx + r')</td>\s*<td><input type="checkbox" name="' + re.escape(active) + r'" value="1"\{xhtml\}></td>')
+    def perm_repl(m, label=label, active=active):
+        return ('<td class="mg_alignright">%s</td>\n    <td><label>%s %s</label></td>\n'
+                '    <td><input type="checkbox" name="%s" value="1" aria-label="{lang_update}: %s"{xhtml}></td>'
+                % (label, label, m.group(1), active, label))
+    text, n = pattern.subn(perm_repl, text, count=1)
+    if n != 1:
         raise SystemExit('global perm marker missing: %s' % active)
-    text = text.replace(old, new, 1)
 text = text.replace('<td><input type="checkbox" name="perm_active" value="1"{xhtml}></td>', '<td><input type="checkbox" name="perm_active" value="1" aria-label="{lang_update}: {lang_permissions}"{xhtml}></td>', 1)
 text = text.replace('<th>{lang_attribute}</th>', '<th scope="col">{lang_attribute}</th>', 1)
 text = text.replace('<th align="left">{lang_value}</th>', '<th scope="col" align="left">{lang_value}</th>', 1)
@@ -60,7 +61,7 @@ text = text.replace('<th>{lang_update}</th>', '<th scope="col">{lang_update}</th
 write(p, text)
 
 # Member creation and purge lists: generated checkbox fragments become implicitly
-# labelled without changing their producer-side names/values.
+# labelled without changing producer-side names/values.
 for path in ['templates/createmembers.thtml', 'templates/purgealbums.thtml']:
     p = Path(path)
     text = p.read_text(encoding='utf-8')
@@ -86,8 +87,7 @@ text = text.replace('<dt>{lang_file}</dt>\n      <dd><input type="file" dir="ltr
 text = text.replace('<dt>{lang_description}</dt>\n      <dd><textarea name="description[]"', '<dt><label for="mg-watermark-description">{lang_description}</label></dt>\n      <dd><textarea id="mg-watermark-description" name="description[]"', 1)
 write(p, text)
 
-# Roadmap: close the broad keyboard/form-label audit after the remaining global
-# and maintenance controls are covered. Live browser/AT testing remains part of RC regression.
+# Roadmap closure. Live browser/assistive-technology checks remain part of RC regression.
 p = Path('ROADMAP.md')
 text = p.read_text(encoding='utf-8')
 text = text.replace('- [ ] Review keyboard accessibility and form labeling across remaining admin/public templates.\n', '- [x] Review keyboard accessibility and form labeling across remaining admin/public templates.\n', 1)
