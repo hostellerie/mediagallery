@@ -1,0 +1,44 @@
+name: MediaGallery responsive rendering modernization
+
+on:
+  push:
+    paths:
+      - '.github/modernize-public-rendering-trigger'
+
+permissions:
+  contents: write
+
+jobs:
+  modernize:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: modernize-1.8.0
+          fetch-depth: 0
+      - name: Apply responsive rendering modernization
+        run: python tools/modernize_public_rendering_180.py
+      - name: Validate PHP and templates
+        shell: bash
+        run: |
+          set -euo pipefail
+          php -l public_html/album.php
+          php -l public_html/search.php
+          grep -n 'mg_album_grid {grid_class}' templates/album_page.thtml templates/search_page.thtml
+          grep -n '<h1 class="mg_media_title">' templates/view_image.thtml templates/view_audio.thtml templates/view_video.thtml
+          grep -R -n 'loading="lazy" decoding="async"' public_html/frames/*/frame.thtml
+          if grep -R -n 'style="max-width: {media_width}px' public_html/frames/*/frame.thtml; then
+            echo 'Legacy frame image inline sizing remains' >&2
+            exit 1
+          fi
+          if grep -n 'style="height:{row_height}px"' templates/album_page_album_cell.thtml templates/album_page_media_cell.thtml; then
+            echo 'Legacy fixed thumbnail height remains' >&2
+            exit 1
+          fi
+      - name: Commit responsive rendering modernization
+        run: |
+          git config user.name 'hostellerie'
+          git config user.email 'hostellerie.org@gmail.com'
+          git add public_html/album.php public_html/search.php public_html/style.css public_html/frames templates ROADMAP.md
+          git commit -m 'Modernize MediaGallery responsive public rendering'
+          git push origin HEAD:modernize-1.8.0
