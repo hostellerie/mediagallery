@@ -23,7 +23,7 @@ function doUnCheckAll_members()
 <form name="members" method="post" action="{s_form_action}" class="uk-form">
   <table class="mg_admin_table">
     <tr>
-      <th scope="col" style="width:50px;">{lang_select}</th>
+      <th scope="col" class="mg-select-column">{lang_select}</th>
       <th scope="col">{lang_username}</th>
     </tr>
     <!-- BEGIN UserRow -->
@@ -33,11 +33,11 @@ function doUnCheckAll_members()
     </tr>
     <!-- END UserRow -->
   </table>
-  <div style="margin-top:5px;">
+  <div class="mg-admin-action-row">
     <input onclick="doCheckAll_members()" type="button" value="{lang_checkall}"{xhtml}>
     <input onclick="doUnCheckAll_members()" type="button" value="{lang_uncheckall}"{xhtml}>
   </div>
-  <div style="text-align:center;">
+  <div class="mg-text-center">
     {pagenav}
   </div>
   <div class="mg_submit_center">

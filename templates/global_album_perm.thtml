@@ -23,7 +23,7 @@
     <td>
       {lang_perm_key}
       <br{xhtml}>
-      <div style="clear:both;">{permissions_editor}</div>
+      <div class="mg-clear">{permissions_editor}</div>
     </td>
     <td><input type="checkbox" name="perm_active" value="1" aria-label="{lang_update}: {lang_permissions}"{xhtml}></td>
   </tr>
@@ -48,7 +48,7 @@
     <td><input type="checkbox" name="email_mod_active" value="1" aria-label="{lang_update}: {lang_email_mods_on_submission}"{xhtml}></td>
   </tr>
 </table>
-<div style="text-align:center;margin-top:10px">
+<div class="mg-admin-submit-row">
   <input type="submit" value="{lang_save}" name="mode"{xhtml}>
   <input type="submit" value="{lang_cancel}" name="mode"{xhtml}>
 </div>

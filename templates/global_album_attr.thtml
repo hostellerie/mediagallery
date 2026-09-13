@@ -7,7 +7,7 @@
 {lang_global_attr_help}
 <br{xhtml}><br{xhtml}>
 </div>
-<div class="mg_navbar" style="text-align:center;">
+<div class="mg_navbar mg-text-center">
   <span>{lang_starting_album} {album_list}</span>
 </div>
 
@@ -189,16 +189,16 @@
   </tr>
   <tr>
     <td colspan="2" align="center">
-      <!--<table border="0" cellpadding="5" cellspacing="5" style="margin:0px auto;">-->
+      <!--<table border="0" cellpadding="5" cellspacing="5" class="mg-table-centered">-->
       <table class="mg_mediatype_table">
         <tr>
-          <th style="text-align:center"><b>{lang_image}</b></th>
-          <th style="text-align:center"><b>{lang_audio} / {lang_video}</b></th>
-          <th style="text-align:center"><b>{lang_other}</b></th>
+          <th class="mg-text-center"><b>{lang_image}</b></th>
+          <th class="mg-text-center"><b>{lang_audio} / {lang_video}</b></th>
+          <th class="mg-text-center"><b>{lang_other}</b></th>
         </tr>
         <tr>
           <td valign="top" align="center">
-            <table class="mg_frame_table" style="width:auto"><tr><td align="left">
+            <table class="mg_frame_table" class="mg-table-auto"><tr><td align="left">
               <input type="checkbox" id="mg-global-format-jpg" name="format_jpg" value="1"{xhtml}> <label for="mg-global-format-jpg">{lang_jpg}</label>
               <br{xhtml}>
               <input type="checkbox" id="mg-global-format-png" name="format_png" value="2"{xhtml}> <label for="mg-global-format-png">{lang_png}</label>
@@ -216,7 +216,7 @@
             </td></tr></table>
           </td>
           <td valign="top" align="center">
-            <table class="mg_frame_table" style="width:auto"><tr><td align="left">
+            <table class="mg_frame_table" class="mg-table-auto"><tr><td align="left">
               <input type="checkbox" id="mg-global-format-mp3" name="format_mp3" value="128"{xhtml}> <label for="mg-global-format-mp3">{lang_mp3}</label>
               <br{xhtml}>
               <input type="checkbox" id="mg-global-format-ogg" name="format_ogg" value="256"{xhtml}> <label for="mg-global-format-ogg">{lang_ogg}</label>
@@ -239,7 +239,7 @@
             </td></tr></table>
           </td>
           <td valign="top" align="center">
-            <table class="mg_frame_table" style="width:auto"><tr><td align="left">
+            <table class="mg_frame_table" class="mg-table-auto"><tr><td align="left">
               <input type="checkbox" id="mg-global-format-zip" name="format_zip" value="16384"{xhtml}> <label for="mg-global-format-zip">{lang_zip}</label>
               <br{xhtml}>
               <input type="checkbox" id="mg-global-format-other" name="format_other" value="32768"{xhtml}> <label for="mg-global-format-other">{lang_other}</label>

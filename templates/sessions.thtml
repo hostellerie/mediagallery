@@ -28,7 +28,7 @@ function doUnCheckAll_sessions()
 {!if noitems}
 <table class="mg_admin_table">
   <tr>
-    <th scope="col" style="width:50px">{lang_select}</th>
+    <th scope="col" class="mg-select-column">{lang_select}</th>
     <th scope="col">{lang_session_description}</th>
     <th scope="col">{lang_session_owner}</th>
     <th scope="col">{lang_session_count}</th>
@@ -44,7 +44,7 @@ function doUnCheckAll_sessions()
 <!-- BEGIN sessItems -->
 <table class="mg_admin_table">
   <tr>
-    <th scope="col" style="width:50px">{lang_select}</th>
+    <th scope="col" class="mg-select-column">{lang_select}</th>
     <th scope="col">{lang_session_description}</th>
     <th scope="col">{lang_session_owner}</th>
     <th scope="col">{lang_session_count}</th>

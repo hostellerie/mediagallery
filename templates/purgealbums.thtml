@@ -23,7 +23,7 @@ function doUnCheckAll_purgealbums()
 <form name="purgealbums" method="post" action="{s_form_action}" class="uk-form">
   <table class="mg_admin_table">
     <tr>
-      <th scope="col" style="width:50px;">{lang_select}</th>
+      <th scope="col" class="mg-select-column">{lang_select}</th>
       <th scope="col">{lang_album_title}</th>
       <th scope="col">{lang_username}</th>
       <th scope="col">{lang_last_login}</th>

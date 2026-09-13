@@ -6,15 +6,15 @@
 
 <br{xhtml}>
 
-<div class="mgPluginMI" style="float:left;padding-right:3px;">{media_item_thumbnail}</div>
-{album_desc}
-<div style="clear:both;"></div>
+<div class="mg-podcast-album-summary">
+  <div class="mgPluginMI mg-podcast-album-thumb">{media_item_thumbnail}</div>
+  <div class="mg-podcast-album-description">{album_desc}</div>
+</div>
 
 <div class="pluginItemFooter">
-<span style="font-weight:bold;">{lang_subalbums}</span> {subalbumcount}
+<strong>{lang_subalbums}</strong> {subalbumcount}
 </div>
 
 <hr{xhtml}>
 
-<div style="clear:both;"></div>
 {# end {templatelocation} #}
