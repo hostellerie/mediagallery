@@ -1,15 +1,6 @@
 from pathlib import Path
 
 
-def replace_once(path, old, new, label):
-    p = Path(path)
-    text = p.read_text(encoding='utf-8')
-    count = text.count(old)
-    if count != 1:
-        raise SystemExit('Expected one %s marker in %s, found %d' % (label, path, count))
-    p.write_text(text.replace(old, new, 1), encoding='utf-8')
-
-
 # Active media popup: modern HTML5 shell, responsive viewport, and noindex to avoid duplicate indexing.
 Path('templates/view_window.thtml').write_text('''<!doctype html>\n<html>\n<head>\n<meta charset="{charset}">\n<meta name="viewport" content="width=device-width, initial-scale=1">\n<meta name="robots" content="noindex,follow">\n<title>{title}</title>\n{themeCSS}\n</head>\n<body class="mg-media-popup-body">\n<main class="mg-media-popup">\n{object}\n</main>\n</body>\n</html>\n''', encoding='utf-8')
 
@@ -38,12 +29,11 @@ replacements = {
     '<td style="width:160px;vertical-align:top;white-space:nowrap;">': '<td class="mg_filelist_updated">',
 }
 for old, new in replacements.items():
-    if old in text:
-        text = text.replace(old, new)
+    text = text.replace(old, new)
 p.write_text(text, encoding='utf-8')
 
 # Profile tables: retain compatible/tabular markup, strip presentation-only inline styles.
-for path, kind in (('templates/profile_album.thtml', 'album'), ('templates/profile_media.thtml', 'media')):
+for path in ('templates/profile_album.thtml', 'templates/profile_media.thtml'):
     p = Path(path)
     text = p.read_text(encoding='utf-8')
     text = text.replace('<table class="mg_mediaitems_table" style="width:100%;">', '<div class="mg_table_scroll mg_profile_table_scroll" role="region" tabindex="0">\n<table class="mg_mediaitems_table mg_profile_table">')
@@ -52,17 +42,6 @@ for path, kind in (('templates/profile_album.thtml', 'album'), ('templates/profi
     text = text.replace('<td style="width:60%;vertical-align:top;">', '<td class="mg_profile_content">')
     text = text.replace('<td style="width:20%;vertical-align:top;white-space:nowrap;">', '<td class="mg_profile_meta">')
     p.write_text(text, encoding='utf-8')
-
-# Thumbnail strip: identify it as navigation and remove non-semantic spacing entities around the generated thumbs.
-p = Path('templates/thumbs.thtml')
-text = p.read_text(encoding='utf-8')
-text = text.replace('<div class="mgThumbRow">', '<nav class="mgThumbRow" aria-label="Media thumbnails">', 1)
-text = text.replace('&nbsp;{thumbs}&nbsp;', '{thumbs}', 1)
-if text.rstrip().endswith('</div>'):
-    text = text.rstrip()[:-6] + '</nav>\n'
-else:
-    raise SystemExit('thumbs closing div marker mismatch')
-p.write_text(text, encoding='utf-8')
 
 # Final public-fragment responsive CSS.
 p = Path('public_html/style.css')
@@ -161,22 +140,6 @@ css = r'''
   height: auto;
 }
 
-.mgThumbRow {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.35rem;
-  max-width: 100%;
-  overflow-x: auto;
-  padding: 0.25rem 0;
-}
-
-.mgThumbRow form > div {
-  display: flex;
-  align-items: center;
-  gap: 0.35rem;
-}
-
 @media (max-width: 40rem) {
   .mg-media-popup {
     align-items: flex-start;
@@ -189,7 +152,7 @@ p.write_text(text + css, encoding='utf-8')
 p = Path('ROADMAP.md')
 text = p.read_text(encoding='utf-8')
 needle = '- [x] Modernize secondary public autotag, random-block, fullscreen-slideshow and maintained HTML5 audio rendering for responsive output.\n'
-addition = needle + '- [x] Modernize active media popups, profile/file-list fragments and thumbnail navigation for responsive public rendering.\n'
+addition = needle + '- [x] Modernize active media popups plus profile, file-list and remaining audio fragments for responsive public rendering.\n'
 if text.count(needle) != 1:
     raise SystemExit('ROADMAP remaining public template marker mismatch')
 p.write_text(text.replace(needle, addition, 1), encoding='utf-8')
