@@ -8,14 +8,14 @@
 <!-- BEGIN ImageRow -->
 <!-- BEGIN ImageColumn -->
   <tr>
-    <td style="text-align:center;">
+    <td class="mg-text-center">
         <input type="checkbox" name="sel[]" value="{wm_id}"{xhtml}>
         <input type="hidden" name="wid[]" value="{wm_id}"{xhtml}>
     </td>
-    <td style="text-align:center;">
+    <td class="mg-text-center">
         {media_zoom}{lang_preview}</a>
     </td>
-    <td style="text-align:center;">
+    <td class="mg-text-center">
         {owner}
     </td>
     <td><textarea name="wmtitle[]" cols="40" rows="2">{wm_desc}</textarea></td>

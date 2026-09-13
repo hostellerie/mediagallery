@@ -1,19 +1,19 @@
 
 <table class="mg_mediaitems_table">
   <tr>
-    <th class="pluginCellTitle" style="width:50%;text-align:center;" >{lang_media_item}</th>
-    <th class="pluginCellTitle" style="width:50%;text-align:center;">{lang_attached_thumbnail}</th>
+    <th class="pluginCellTitle mg-half-center" >{lang_media_item}</th>
+    <th class="pluginCellTitle mg-half-center">{lang_attached_thumbnail}</th>
   </tr>
   <tr>
-    <td align="center" style="padding:10px;">
+    <td align="center" class="mg-pad-md">
       {preview}
       <img src="{media_thumbnail}" alt=""{xhtml}>{preview_end}&nbsp;
-      <div style="width:200px;height:25px;margin:0px auto;">
-        <div style="float:left;">{s_rotate_left}</div>
-        <div style="float:right;">{s_rotate_right}</div>
+      <div class="mg-media-rotate-controls">
+        <div class="mg-float-left">{s_rotate_left}</div>
+        <div class="mg-float-right">{s_rotate_right}</div>
       </div>
     </td>
-    <td align="center" style="padding:10px;">
+    <td align="center" class="mg-pad-md">
       &nbsp;{attached_thumbnail}
     </td>
   </tr>

@@ -6,16 +6,16 @@
 and replace the image with a Media Gallery auto tag.</p>
 <p><b>This will change all of your stories with embedded images, be sure you have a good backup!</b></p>
 
-<fieldset style="border: none; border-top: 1px solid #000000">
+<fieldset class="mg-border-none mg-border-top">
     <legend>Import Options</legend>
-    <div style="padding:10px 0">
+    <div class="mg-py-md">
     <label for="autotag">Autotag&nbsp;&nbsp;</label>
         <select id="autotag" name="autotag">
         <option value="image">image:</option>
         <option value="media">media:</option>
         </select>
     </div>
-    <div style="padding-bottom:10px">
+    <div class="mg-pb-md">
     <label for="alignment">Alignment&nbsp;&nbsp;</label>
         <select id="alignment" name="alignment">
         <option value="none">None</option>
@@ -24,20 +24,20 @@ and replace the image with a Media Gallery auto tag.</p>
         <option value="auto">Auto</option>
         </select>
     </div>
-    <div style="padding-bottom:10px">
+    <div class="mg-pb-md">
     <label for="delete">Delete Reference&nbsp;&nbsp;</label>
         <select id="delete" name="delete">
         <option value="0">No</option>
         <option value="1">Yes</option>
         </select>
     </div>
-    <div style="padding-bottom:10px">
+    <div class="mg-pb-md">
     <label for="destination">Destination Album&nbsp;&nbsp;</label>
         {dest_select}
     </div>
 </fieldset>
 
-<fieldset style="border: none; border-top: 1px solid #000000">
+<fieldset class="mg-border-none mg-border-top">
     <legend>Geeklog Stories with embedded images</legend>
     {picklist}
 </fieldset>

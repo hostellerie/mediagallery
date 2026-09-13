@@ -3,7 +3,7 @@
   <div class="mg_search">{pagination}</div>
 </div>
 <!-- BEGIN noItems -->
-<div style="text-align:center">
+<div class="mg-text-center">
   {no_images}
 </div>
 <!-- END noItems -->
@@ -154,7 +154,7 @@ function setCaption(text) {
 </script>
 
 <form name="TopForm" id="TopForm" action="" class="uk-form">
-  <div class="mg_navbar" style="text-align:center">
+  <div class="mg_navbar mg-text-center">
     <button type="button" onclick="stopOrStart();"><span id="stopOrStartText">{play}</span></button>
     &nbsp;&nbsp;|&nbsp;&nbsp;{full_toggle}&nbsp;&nbsp;|&nbsp;&nbsp;
     <label for="slideshowDelay">{delay}:</label>
@@ -181,7 +181,7 @@ function setCaption(text) {
     </div>
   </div>
 
-  <div class="mg_navbar" style="text-align:center">
+  <div class="mg_navbar mg-text-center">
     <div id="caption" aria-live="polite"></div>
   </div>
 

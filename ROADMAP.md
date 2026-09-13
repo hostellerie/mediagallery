@@ -141,9 +141,9 @@ The Geeklog 2.1.1 / PHP 5.6 validation confirmed that image uploads succeed once
 - [x] Page-number suffix in album titles on page 2+.
 - [x] Correct sort-form page indexing.
 - [x] Improve HTML attribute escaping in media popup output.
-- [ ] Review remaining inline presentation styles.
+- [x] Review remaining inline presentation styles.
   - [x] Remove dead playback templates and migrate the largest active public/admin static style clusters to responsive CSS.
-  - [ ] Classify and resolve the residual inline-style inventory; retain only justified runtime dimensions.
+  - [x] Resolve all static inline presentation styles; retain only justified runtime dimensions used by responsive autotag/media sizing.
 - [x] Modernize default album/search/media rendering with responsive CSS Grid/Flexbox, semantic media/card headings and responsive thumbnail frames.
 - [x] Modernize bundled file-list, podcast, jQuery gallery and SimpleViewer skins for responsive layouts and semantic album headings.
 - [x] Replace the public advanced-search presentation tables with a semantic responsive search form.

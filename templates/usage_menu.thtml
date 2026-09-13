@@ -1,7 +1,7 @@
 <form method="post" action="{s_form_action}" class="uk-form">
-<table cellspacing="0" cellpadding="2" style="width:100%;">
+<table cellspacing="0" cellpadding="2" class="mg-w-full">
   <tr>
-    <td class="alignright" style="white-space:nowrap; width:100px;">{lang_select_date}:</td>
+    <td class="alignright mg-nowrap mg-w-100">{lang_select_date}:</td>
     <td>
       {month_select}&nbsp;/
       {day_select}&nbsp;/

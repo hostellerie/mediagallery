@@ -73,7 +73,7 @@ div.mg-block-exif {
 <body>
 <table class="mg_mediaitems_table">
  <tr>
-   <td style="text-align:center;width:100%;">
+   <td class="mg-full-center">
      {media_thumbnail}
    </td>
  </tr>
@@ -83,7 +83,7 @@ div.mg-block-exif {
 </table>
 <br>
 <form action="PHP_SELF" class="uk-form">
- <div style="text-align:center;">
+ <div class="mg-text-center">
  <input type="button" value="{lang_close}" onclick="javascript:window.close();">
  </div>
 </form>

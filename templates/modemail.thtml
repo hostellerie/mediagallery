@@ -8,14 +8,14 @@
 {lang_new_upload}
 <br>
 <br>
-<span style="font-weight:bold;">{lang_details}</span>
+<span class="mg-fw-bold">{lang_details}</span>
 <br><br>
 {lang_album_title} - {album_title}<br>
 {lang_uploaded_by} - {username}<br>
 <br>
 {url_moderate}
 <br><br>
-<div style="font-size:smaller">
+<div class="mg-text-small">
 {site_name}<br>
 {site_url}
 </div>

@@ -2,7 +2,7 @@
   <div>
   <table border="0" cellspacing="0" cellpadding="5">
     <tr>
-      <td class="mg_alignright" style="width:180px">{lang_starting_album}: </td>
+      <td class="mg_alignright mg-w-180">{lang_starting_album}: </td>
       <td>
         {album_select}
       </td>

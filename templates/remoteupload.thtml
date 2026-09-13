@@ -22,7 +22,7 @@ function formControl(){
 <form method="post" enctype="multipart/form-data" name="remoteupload" action="{s_form_action}" class="compact uk-form">
   <div>
     <input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}>
-    <p><span style="font-weight:bold;">{lang_destination_album}</span>&nbsp;{album_select}</p>
+    <p><span class="mg-fw-bold">{lang_destination_album}</span>&nbsp;{album_select}</p>
 
     <fieldset>
       <legend>{lang_file_number}1</legend>

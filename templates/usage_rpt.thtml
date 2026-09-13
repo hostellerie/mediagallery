@@ -1,6 +1,6 @@
 <form method="post" action="{s_form_action}" class="uk-form">
 <div>
-  <div style="height:20px;">{report_date}</div>
+  <div class="mg-h-20">{report_date}</div>
 </div>
 <table class="mg_admin_table">
   <tr>

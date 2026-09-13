@@ -1,11 +1,11 @@
-<fieldset style="margin-bottom:6px">
+<fieldset class="mg-mb-xs">
   <legend>{exif_title}</legend>
   <table class="mg_exif_table">
   <!-- BEGIN exifRow -->
     <tr>
     <!-- BEGIN exifColumn -->
-      <td style="font-weight:bold;width:25%;text-align:right;">{label}:</td>
-      <td style="width:25%;">{value}</td>
+      <td class="mg-fw-bold mg-w-quarter mg-text-right">{label}:</td>
+      <td class="mg-w-quarter">{value}</td>
     <!-- END exifColumn -->
     </tr>
   <!-- END exifRow -->

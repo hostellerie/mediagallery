@@ -2,9 +2,9 @@
 <form name="sortalbum" method="post" action="{s_form_action}" class="uk-form">
   <table class="mg_admin_table">
     <tr>
-      <th style="width:50px">{lang_order}</th>
+      <th class="mg-select-column">{lang_order}</th>
       <th>{lang_album_name_desc}</th>
-      <th style="width:50px">{lang_count}</th>
+      <th class="mg-select-column">{lang_count}</th>
     </tr>
     <!-- BEGIN AlbumRow -->
     <tr>
@@ -12,7 +12,7 @@
         <input type="text" name="seq[]" value="{album_order}" size="4"{xhtml}>
         <input type="hidden" name="aid[]" value="{album_id}"{xhtml}>
       </td>
-      <td style="height:25px;">{album_title}</td>
+      <td class="mg-h-25">{album_title}</td>
       <td>{media_count}</td>
     </tr>
     <!-- END AlbumRow -->

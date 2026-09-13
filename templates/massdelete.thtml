@@ -1,5 +1,5 @@
 <form name="galselect" method="post" action="{s_form_action}" class="uk-form">
-<div class="pluginRow1" style="padding:10px;line-height:2em">
+<div class="pluginRow1 mg-pad-md mg-line-loose">
 {album_list}
 </div>
 <div class="mg_submit">

@@ -21,8 +21,8 @@ function doUnCheckAll_cat()
 <form name="category" method="post" action="{s_form_action}" class="uk-form">
   <table class="mg_admin_table">
     <tr>
-      <th style="width:50px;">{lang_select}</th>
-      <th style="width:80px;">{lang_catid}</th>
+      <th class="mg-select-column">{lang_select}</th>
+      <th class="mg-w-80px">{lang_catid}</th>
       <th>{lang_cat_name}</th>
       <th>{lang_cat_description}</th>
     </tr>
@@ -46,7 +46,7 @@ function doUnCheckAll_cat()
     </tr>
     <!-- END catRow -->
   </table>
-  <div style="margin-top:5px;">
+  <div class="mg-mt-xs">
     <input onclick="javascript:doCheckAll_cat()" type="button" value="{lang_checkall}"{xhtml}>
     <input onclick="javascript:doUnCheckAll_cat()" type="button" value="{lang_uncheckall}"{xhtml}>
   </div>

@@ -3,36 +3,36 @@
 <div>
   <table class="mg_admin_table">
     <tr>
-      <th colspan="2" style="width:100%;">
+      <th colspan="2" class="mg-w-full">
         {lang_sort_options}
       </th>
     </tr>
     <tr>
-      <td class="mg_alignright" style="width:50%;">{lang_media_capture_time}</td>
+      <td class="mg_alignright mg-w-half">{lang_media_capture_time}</td>
       <td>
         <input type="radio" name="sortyby" value="0"{xhtml}>
       </td>
     </tr>
     <tr>
-      <td class="mg_alignright" style="width:50%;">{lang_media_upload_time}</td>
+      <td class="mg_alignright mg-w-half">{lang_media_upload_time}</td>
       <td>
         <input type="radio" name="sortyby" value="1"{xhtml}>
       </td>
     </tr>
     <tr>
-      <td class="mg_alignright" style="width:50%;">{lang_media_title}</td>
+      <td class="mg_alignright mg-w-half">{lang_media_title}</td>
       <td>
         <input type="radio" name="sortyby" value="2"{xhtml}>
       </td>
     </tr>
     <tr>
-      <td class="mg_alignright" style="width:50%;">{lang_media_filename}</td>
+      <td class="mg_alignright mg-w-half">{lang_media_filename}</td>
       <td>
         <input type="radio" name="sortyby" value="3"{xhtml}>
       </td>
     </tr>
     <tr>
-      <td class="mg_alignright" style="width:50%;">{lang_rating}</td>
+      <td class="mg_alignright mg-w-half">{lang_rating}</td>
       <td>
         <input type="radio" name="sortyby" value="4"{xhtml}>
       </td>
@@ -43,13 +43,13 @@
       </th>
     </tr>
     <tr>
-      <td class="mg_alignright" style="width:50%;">{lang_ascending}</td>
+      <td class="mg_alignright mg-w-half">{lang_ascending}</td>
       <td>
         <input type="radio" name="sortorder" value="0"{xhtml}>
       </td>
     </tr>
     <tr>
-      <td class="mg_alignright" style="width:50%;">{lang_descending}</td>
+      <td class="mg_alignright mg-w-half">{lang_descending}</td>
       <td>
         <input type="radio" name="sortorder" value="1"{xhtml}>
       </td>

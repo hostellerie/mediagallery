@@ -4,7 +4,7 @@
   <div>
     {!if lang_no_image}<div class="noitems">{lang_no_image}</div>{!endif}
     {mediaitems}
-    <span style="text-align:center;margin-top:10px">{bottom_pagination}</span>
+    <span class="mg-text-center mg-mt-sm">{bottom_pagination}</span>
   </div>
   <div class="mg_submit_center">
     <input type="hidden" name="album_id" value="{album_id}"{xhtml}>

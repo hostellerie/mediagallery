@@ -191,9 +191,9 @@ function change(what) {
       <legend>{lang_allowed_formats}</legend>
       <table class="mg_mediatype_table">
         <tr>
-          <th style="text-align:center">{lang_image}</th>
-          <th style="text-align:center">{lang_audio} / {lang_video}</th>
-          <th style="text-align:center">{lang_other}</th>
+          <th class="mg-text-center">{lang_image}</th>
+          <th class="mg-text-center">{lang_audio} / {lang_video}</th>
+          <th class="mg-text-center">{lang_other}</th>
         </tr>
         <tr>
           <td valign="top" align="center">

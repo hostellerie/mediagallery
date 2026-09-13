@@ -34,9 +34,9 @@ function doUnCheckAll_ftpinput()
     <input type="hidden" name="album_id" value="{album_id}"{xhtml}>
     <input type="hidden" name="purgefiles" value="{purgefiles}"{xhtml}>
     <input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}>
-    <table class="uk-table uk-table-small" style="width:100%;text-align:left;">
+    <table class="uk-table uk-table-small mg-w-full mg-text-left">
       <tr>
-        <th class="pluginCellTitle" style="text-align:center;">{lang_filelist}</th>
+        <th class="pluginCellTitle mg-text-center">{lang_filelist}</th>
       </tr>
       <tr>
         <td>{filelist}</td>
@@ -48,7 +48,7 @@ function doUnCheckAll_ftpinput()
         </td>
       </tr>
       <tr>
-        <td style="text-align:center;">
+        <td class="mg-text-center">
           <input type="submit" value="{lang_save}" name="mode"{xhtml}>
           <input type="submit" value="{lang_cancel}" name="mode"{xhtml}>
         </td>

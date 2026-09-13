@@ -1896,3 +1896,53 @@ a.SWFUProgressCancel:hover {
   .mg-admin-action-row > select,
   .mg-admin-action-row > input[type="submit"] { max-width: 100%; }
 }
+
+
+/* MediaGallery 1.8 residual inline-style utilities */
+.mg-text-right { text-align: right; }
+.mg-valign-top { vertical-align: top; }
+.mg-fw-bold { font-weight: bold; }
+.mg-text-small { font-size: smaller; }
+.mg-nowrap { white-space: nowrap; }
+.mg-float-left { float: left; }
+.mg-float-right { float: right; }
+.mg-w-full { width: 100%; }
+.mg-w-80 { width: 80%; }
+.mg-w-half { width: 50%; }
+.mg-w-quarter { width: 25%; }
+.mg-w-15 { width: 15%; }
+.mg-w-10 { width: 10%; }
+.mg-w-200 { width: 12.5rem; }
+.mg-w-180 { width: 11.25rem; }
+.mg-w-100 { width: 6.25rem; }
+.mg-w-80px { width: 5rem; }
+.mg-h-25 { height: 1.5625rem; }
+.mg-h-20 { height: 1.25rem; }
+.mg-mt-xs { margin-top: 0.3125rem; }
+.mg-mt-sm { margin-top: 0.625rem; }
+.mg-mb-xs { margin-bottom: 0.375rem; }
+.mg-mb-sm { margin-bottom: 0.625rem; }
+.mg-mb-half-em { margin-bottom: 0.5em; }
+.mg-my-sm { margin-top: 0.625rem; margin-bottom: 0.625rem; }
+.mg-pad-admin-icon { padding: 0.3125rem 0.3125rem 0 0; }
+.mg-pad-md { padding: 0.625rem; }
+.mg-py-md { padding-top: 0.625rem; padding-bottom: 0.625rem; }
+.mg-pb-md { padding-bottom: 0.625rem; }
+.mg-line-loose { line-height: 2; }
+.mg-border-none { border: 0; }
+.mg-border-top { border-top: 1px solid currentColor; }
+.mg-half-center { width: 50%; text-align: center; }
+.mg-full-center { width: 100%; text-align: center; }
+.mg-media-rotate-controls { width: 12.5rem; min-height: 1.5625rem; margin: 0 auto; }
+.mg-status-box { width: min(80%, 50rem); margin: 0 auto; }
+.mg-status-line { text-align: center; margin: 0.625rem 0; }
+
+@media (max-width: 34rem) {
+  .mg-w-80,
+  .mg-w-half,
+  .mg-half-center,
+  .mg-status-box { width: 100%; }
+  .mg-w-200,
+  .mg-w-180 { max-width: 100%; }
+  .mg-nowrap { white-space: normal; }
+}

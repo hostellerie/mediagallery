@@ -24,7 +24,7 @@ function doUnCheckAll_exif()
 <form name="exif" method="post" action="{s_form_action}" class="uk-form">
   <table class="mg_admin_table">
     <tr>
-      <th style="width:50px;">{lang_select}</th>
+      <th class="mg-select-column">{lang_select}</th>
       <th>{lang_exiftag}</th>
     </tr>
     <!-- BEGIN exifRow -->
@@ -39,7 +39,7 @@ function doUnCheckAll_exif()
     </tr>
     <!-- END exifRow -->
   </table>
-  <div style="margin-top:5px;">
+  <div class="mg-mt-xs">
     <input onclick="javascript:doCheckAll_exif()" type="button" value="{lang_check_all}"{xhtml}>
     <input onclick="javascript:doUnCheckAll_exif()" type="button" value="{lang_uncheck_all}"{xhtml}>
   </div>
