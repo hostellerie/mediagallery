@@ -77,7 +77,7 @@ function MG_imageAdmin($album_id, $page, $actionURL = '')
 
     $album_cover = $album->cover;
 
-    $album_selectbox = '<select name="album">';
+    $album_selectbox = '<select id="mg-media-destination-album" name="album">';
     $root_album = new mgAlbum(0);
     $root_album->buildAlbumBox($album_selectbox, $album_id, 3, $album_id, 'manage');
     $album_selectbox .= '</select>';
@@ -106,7 +106,7 @@ function MG_imageAdmin($album_id, $page, $actionURL = '')
     $result = DB_query($sql);
     $nrows = DB_numRows($result);
 
-    $batchOptionSelect = '<select name="batchOption">';
+    $batchOptionSelect = '<select id="mg-media-batch-option" name="batchOption">';
     if ($_CONF['image_lib'] == 'gdlib' && !function_exists("imagerotate")) {
         $batchOptionSelect .= '';
     } else {
@@ -176,15 +176,16 @@ function MG_imageAdmin($album_id, $page, $actionURL = '')
                 if (($row['media_type'] == 0 || $row['media_tn_attached'] == 1) && $album->tn_attached == 0) {
                     $checked = ($album_cover == $row['media_id']) ? ' checked="checked"' : '';
                     $radio_box = '<input type="radio" name="cover" value="'
-                               . $row['media_id'] . '"' . $checked . XHTML . '>';
+                               . $row['media_id'] . '" aria-label="' . MG_escapeHTML($LANG_MG01['cover']) . '"'
+                               . $checked . XHTML . '>';
                     $album_cover_check = $checked;
                 }
 
                 $include_ss = '&nbsp;';
                 if ($row['media_type'] == 0) {
                     $checked = ($row['include_ss'] == 1) ? ' checked="checked"' : '';
-                    $include_ss = '<input type="checkbox" name="ss[' . $counter . ']" value="1"'
-                                . $checked . XHTML . '>';
+                    $include_ss = '<input type="checkbox" name="ss[' . $counter . ']" value="1" aria-label="'
+                                . MG_escapeHTML($LANG_MG01['include_ss']) . '"' . $checked . XHTML . '>';
                 }
 
                 switch ($row['media_type']) {
@@ -213,7 +214,8 @@ function MG_imageAdmin($album_id, $page, $actionURL = '')
                     $thumbnail = $_MG_CONF['mediaobjects_url'] . '/missing.png';
                 }
 
-                $cat_select = '<select name="cat_id[]">';
+                $cat_select = '<select id="mg-media-category-' . $counter . '" name="cat_id[]" aria-label="'
+                            . MG_escapeHTML($LANG_MG01['category']) . '">';
                 $cat_select .= '<option value="0">' . $LANG_MG01['no_category'] . '</option>';
                 $cRows = count($catRow);
                 for ($i = 0; $i < $cRows; $i++) {

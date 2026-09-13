@@ -159,7 +159,8 @@ The Geeklog 2.1.1 / PHP 5.6 validation confirmed that image uploads succeed once
 - [ ] Review keyboard accessibility and form labeling across remaining admin/public templates.
   - [x] Connect primary album/category, batch, export and user-quota controls to explicit labels; retain already-valid implicit FTP radio labels.
   - [x] Remove obsolete per-media playback controls instead of labeling settings that no longer affect HTML5 rendering; retain only video width/height controls.
-  - [ ] Resolve remaining generated-control/global-management labeling.
+  - [x] Label generated media-manager controls, row fields, destination album and batch-action selectors without changing array bindings.
+  - [ ] Resolve remaining global album-management and maintenance-form labeling.
 - [x] Add structured data only where MediaGallery has reliable source data and does not conflict with Geeklog core/theme output.
   - [x] Emit conservative JSON-LD for local `ImageObject` / `AudioObject`, and `VideoObject` only when a real attached thumbnail and upload date are available.
   - [x] Skip remote/embedded media whose content, thumbnail or publication metadata MediaGallery does not own.
