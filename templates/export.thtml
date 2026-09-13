@@ -27,8 +27,8 @@ For more detailed directions, see the <a href="http://www.gllabs.org/wiki/doku.p
         Destination System:
       </td>
       <td>
-        <input type="radio" name="unix" value=0 />Windows&nbsp;&nbsp;
-        <input type="radio" name="unix" value=1>Unix
+        <input type="radio" id="mg-export-windows" name="unix" value="0"> <label for="mg-export-windows">Windows</label>&nbsp;&nbsp;
+        <input type="radio" id="mg-export-unix" name="unix" value="1"> <label for="mg-export-unix">Unix</label>
       </td>
     </tr>
     <tr>
@@ -36,24 +36,24 @@ For more detailed directions, see the <a href="http://www.gllabs.org/wiki/doku.p
         Move or Copy:
       </td>
       <td>
-        <input type="radio" name="moveorcopy" value=0 />Move&nbsp;&nbsp;
-        <input type="radio" name="moveorcopy" value=1>Copy
+        <input type="radio" id="mg-export-move" name="moveorcopy" value="0"> <label for="mg-export-move">Move</label>&nbsp;&nbsp;
+        <input type="radio" id="mg-export-copy" name="moveorcopy" value="1"> <label for="mg-export-copy">Copy</label>
       </td>
     </tr>
     <tr>
       <td class="mg_alignright" width="35%">
-        Temp directory on dest system:
+        <label for="mg-export-srcroot">Temp directory on dest system:</label>
       </td>
       <td>
-        <input type="text" name="srcroot" size="40" value="">
+        <input type="text" id="mg-export-srcroot" name="srcroot" size="40" value="">
       </td>
     </tr>
     <tr>
       <td class="mg_alignright" width="35%">
-        Base Directory:
+        <label for="mg-export-destroot">Base Directory:</label>
       </td>
       <td>
-        <input type="text" name="destroot" size="40" value="">
+        <input type="text" id="mg-export-destroot" name="destroot" size="40" value="">
       </td>
     </tr>
   </table>

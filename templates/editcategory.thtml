@@ -1,11 +1,11 @@
 <form action="{s_form_action}" method="post" id="mg-editcategory" class="compact uk-form">
   <div class="admin_basic">
     <dl class="form_block">
-      <dt>{lang_title}</dt>
-      <dd><input type="text" name="cat_name" value="{cat_name}" class="size5"{xhtml}></dd>
+      <dt><label for="mg-category-name">{lang_title}</label></dt>
+      <dd><input type="text" id="mg-category-name" name="cat_name" value="{cat_name}" class="size5"{xhtml}></dd>
 
-      <dt>{lang_description}</dt>
-      <dd><textarea name="cat_desc" cols="50" rows="5" class="wide">{cat_description}</textarea></dd>
+      <dt><label for="mg-category-desc">{lang_description}</label></dt>
+      <dd><textarea id="mg-category-desc" name="cat_desc" cols="50" rows="5" class="wide">{cat_description}</textarea></dd>
     </dl>
     <div class="mg_submit">
       <input type="submit" value="{lang_save}"   name="mode" class="submit"{xhtml}>

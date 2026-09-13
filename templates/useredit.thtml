@@ -12,9 +12,9 @@
       </td>
     </tr>
     <tr>
-      <td class="mg_alignright" width="40%">{lang_quota}</td>
+      <td class="mg_alignright" width="40%"><label for="mg-user-quota">{lang_quota}</label></td>
       <td>
-        <input type="text" maxlength="4" size="4" name="quota" value="{quota}" align="right"{xhtml}>&nbsp;Mb&nbsp;&nbsp;{lang_unlimited}
+        <input type="text" id="mg-user-quota" maxlength="4" size="4" name="quota" value="{quota}" align="right"{xhtml}>&nbsp;Mb&nbsp;&nbsp;{lang_unlimited}
       </td>
     </tr>
   </table>

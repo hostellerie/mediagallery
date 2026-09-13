@@ -16,7 +16,7 @@ function updateButton() {
         } else {
             document.form_batch_progress.submit_button.value = label_next + " (" + ticker + ")";
             ticker--;
-            refresh = setTimeout("updateButton()", 1000);
+            refresh = setTimeout(updateButton, 1000);
         }
     }
 }
@@ -39,12 +39,12 @@ function updateButton() {
     <td>{TIME_LIMIT}</td>
   </tr>
   <tr>
-    <td style="text-align:right;while-space:nowrap;">{L_REFRESH_RATE}: </td>
-    <td><input type="text" name="refresh_rate" value="{REFRESH_RATE}" size="5" style="texi-align:right"{xhtml}></td>
+    <td style="text-align:right;white-space:nowrap;"><label for="mg-batch-refresh-rate">{L_REFRESH_RATE}</label>: </td>
+    <td><input type="text" id="mg-batch-refresh-rate" name="refresh_rate" value="{REFRESH_RATE}" size="5"{xhtml}></td>
   </tr>
   <tr>
-    <td style="text-align:right;while-space:nowrap;">{L_ITEMS_PER_CYCLE}: </td>
-    <td><input type="text" name="item_limit" value="{ITEM_LIMIT}" size="5" style="texi-align:right"{xhtml}></td>
+    <td style="text-align:right;white-space:nowrap;"><label for="mg-batch-item-limit">{L_ITEMS_PER_CYCLE}</label>: </td>
+    <td><input type="text" id="mg-batch-item-limit" name="item_limit" value="{ITEM_LIMIT}" size="5"{xhtml}></td>
   </tr>
 </table>
 
@@ -78,7 +78,7 @@ function updateButton() {
 </table>
 
 <div class="mg_submit">
-  <input class="mainoption" type="submit" name="submit_button" value="{L_NEXT}" onclick="javascript:ticker=0"{xhtml}>&nbsp;
+  <input class="mainoption" type="submit" name="submit_button" value="{L_NEXT}" onclick="ticker=0"{xhtml}>&nbsp;
   <input class="mainoption" type="submit" name="cancel_button" value="{L_CANCEL}"{xhtml}>
   <script type="text/javascript"><!--
       updateButton();

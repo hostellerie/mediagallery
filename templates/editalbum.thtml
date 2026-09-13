@@ -13,11 +13,11 @@ function change(what) {
 <form enctype="multipart/form-data" method="post" action="{s_form_action}" class="MG_editform compact uk-form">
   <div class="admin_basic">
     <dl class="form_block">
-      <dt><label>{lang_title}</label></dt>
-      <dd><input type="text" name="album_name" value="{album_title}" class="size6"{xhtml}></dd>
+      <dt><label for="mg-album-name">{lang_title}</label></dt>
+      <dd><input type="text" id="mg-album-name" name="album_name" value="{album_title}" class="size6"{xhtml}></dd>
 
-      <dt><label>{lang_description}</label></dt>
-      <dd><textarea name="album_desc" cols="50" rows="3" class="wide">{album_desc}</textarea></dd>
+      <dt><label for="mg-album-desc">{lang_description}</label></dt>
+      <dd><textarea id="mg-album-desc" name="album_desc" cols="50" rows="3" class="wide">{album_desc}</textarea></dd>
 
       <dt><label>{lang_parent_album}</label></dt>
       <dd>{parent_select}</dd>
@@ -117,8 +117,8 @@ function change(what) {
         <dt><label>{lang_attached_thumbnail}</label></dt>
         <dd>{attach_select}</dd>
 
-        <dt><label>{lang_thumbnail}</label></dt>
-        <dd><input type="file" dir="ltr" name="thumbnail"{xhtml}></dd>
+        <dt><label for="mg-album-thumbnail-upload">{lang_thumbnail}</label></dt>
+        <dd><input type="file" id="mg-album-thumbnail-upload" dir="ltr" name="thumbnail"{xhtml}></dd>
       </dl>
     </fieldset>
 
@@ -200,13 +200,13 @@ function change(what) {
             <table>
               <tr>
                 <td align="left">
-                  <input type="checkbox" name="format_jpg" value="1" {jpg_checked}{xhtml}> <span>{lang_jpg}</span><br{xhtml}>
-                  <input type="checkbox" name="format_png" value="2" {png_checked}{xhtml}> <span>{lang_png}</span><br{xhtml}>
-                  <input type="checkbox" name="format_tif" value="4" {tif_checked}{xhtml}> <span>{lang_tif}</span><br{xhtml}>
-                  <input type="checkbox" name="format_gif" value="8" {gif_checked}{xhtml}> <span>{lang_gif}</span><br{xhtml}>
-                  <input type="checkbox" name="format_bmp" value="16" {bmp_checked}{xhtml}> <span>{lang_bmp}</span><br{xhtml}>
-                  <input type="checkbox" name="format_tga" value="32" {tga_checked}{xhtml}> <span>{lang_tga}</span><br{xhtml}>
-                  <input type="checkbox" name="format_psd" value="64" {psd_checked}{xhtml}> <span>{lang_psd}</span><br{xhtml}>
+                  <input type="checkbox" id="mg-format-jpg" name="format_jpg" value="1" {jpg_checked}{xhtml}> <label for="mg-format-jpg">{lang_jpg}</label><br{xhtml}>
+                  <input type="checkbox" id="mg-format-png" name="format_png" value="2" {png_checked}{xhtml}> <label for="mg-format-png">{lang_png}</label><br{xhtml}>
+                  <input type="checkbox" id="mg-format-tif" name="format_tif" value="4" {tif_checked}{xhtml}> <label for="mg-format-tif">{lang_tif}</label><br{xhtml}>
+                  <input type="checkbox" id="mg-format-gif" name="format_gif" value="8" {gif_checked}{xhtml}> <label for="mg-format-gif">{lang_gif}</label><br{xhtml}>
+                  <input type="checkbox" id="mg-format-bmp" name="format_bmp" value="16" {bmp_checked}{xhtml}> <label for="mg-format-bmp">{lang_bmp}</label><br{xhtml}>
+                  <input type="checkbox" id="mg-format-tga" name="format_tga" value="32" {tga_checked}{xhtml}> <label for="mg-format-tga">{lang_tga}</label><br{xhtml}>
+                  <input type="checkbox" id="mg-format-psd" name="format_psd" value="64" {psd_checked}{xhtml}> <label for="mg-format-psd">{lang_psd}</label><br{xhtml}>
                 </td>
               </tr>
             </table>
@@ -215,16 +215,16 @@ function change(what) {
             <table>
               <tr>
                 <td align="left">
-                  <input type="checkbox" name="format_mp3" value="128" {mp3_checked}{xhtml}> <span>{lang_mp3}</span><br{xhtml}>
-                  <input type="checkbox" name="format_ogg" value="256" {ogg_checked}{xhtml}> <span>{lang_ogg}</span><br{xhtml}>
-                  <input type="checkbox" name="format_asf" value="512" {asf_checked}{xhtml}> <span>{lang_asf}</span><br{xhtml}>
-                  <input type="checkbox" name="format_swf" value="1024" {swf_checked}{xhtml}> <span>{lang_swf}</span><br{xhtml}>
-                  <input type="checkbox" name="format_mov" value="2048" {mov_checked}{xhtml}> <span>{lang_mov}</span><br{xhtml}>
-                  <input type="checkbox" name="format_mp4" value="4096" {mp4_checked}{xhtml}> <span>{lang_mp4}</span><br{xhtml}>
-                  <input type="checkbox" name="format_mpg" value="8192" {mpg_checked}{xhtml}> <span>{lang_mpg}</span><br{xhtml}>
-                  <input type="checkbox" name="format_flv" value="131072" {flv_checked}{xhtml}> <span>{lang_flv}</span><br{xhtml}>
-                  <input type="checkbox" name="format_rflv" value="262144" {rflv_checked}{xhtml}> <span>{lang_rflv}</span><br{xhtml}>
-                  <input type="checkbox" name="format_emb" value="524288" {emb_checked}{xhtml}> <span>{lang_emb}</span><br{xhtml}>
+                  <input type="checkbox" id="mg-format-mp3" name="format_mp3" value="128" {mp3_checked}{xhtml}> <label for="mg-format-mp3">{lang_mp3}</label><br{xhtml}>
+                  <input type="checkbox" id="mg-format-ogg" name="format_ogg" value="256" {ogg_checked}{xhtml}> <label for="mg-format-ogg">{lang_ogg}</label><br{xhtml}>
+                  <input type="checkbox" id="mg-format-asf" name="format_asf" value="512" {asf_checked}{xhtml}> <label for="mg-format-asf">{lang_asf}</label><br{xhtml}>
+                  <input type="checkbox" id="mg-format-swf" name="format_swf" value="1024" {swf_checked}{xhtml}> <label for="mg-format-swf">{lang_swf}</label><br{xhtml}>
+                  <input type="checkbox" id="mg-format-mov" name="format_mov" value="2048" {mov_checked}{xhtml}> <label for="mg-format-mov">{lang_mov}</label><br{xhtml}>
+                  <input type="checkbox" id="mg-format-mp4" name="format_mp4" value="4096" {mp4_checked}{xhtml}> <label for="mg-format-mp4">{lang_mp4}</label><br{xhtml}>
+                  <input type="checkbox" id="mg-format-mpg" name="format_mpg" value="8192" {mpg_checked}{xhtml}> <label for="mg-format-mpg">{lang_mpg}</label><br{xhtml}>
+                  <input type="checkbox" id="mg-format-flv" name="format_flv" value="131072" {flv_checked}{xhtml}> <label for="mg-format-flv">{lang_flv}</label><br{xhtml}>
+                  <input type="checkbox" id="mg-format-rflv" name="format_rflv" value="262144" {rflv_checked}{xhtml}> <label for="mg-format-rflv">{lang_rflv}</label><br{xhtml}>
+                  <input type="checkbox" id="mg-format-emb" name="format_emb" value="524288" {emb_checked}{xhtml}> <label for="mg-format-emb">{lang_emb}</label><br{xhtml}>
                 </td>
               </tr>
             </table>
@@ -233,8 +233,8 @@ function change(what) {
             <table>
               <tr>
                 <td align="left">
-                  <input type="checkbox" name="format_zip" value="16384" {zip_checked}{xhtml}> <span>{lang_zip}</span><br{xhtml}>
-                  <input type="checkbox" name="format_other" value="32768" {other_checked}{xhtml}> <span>{lang_other}</span><br{xhtml}>
+                  <input type="checkbox" id="mg-format-zip" name="format_zip" value="16384" {zip_checked}{xhtml}> <label for="mg-format-zip">{lang_zip}</label><br{xhtml}>
+                  <input type="checkbox" id="mg-format-other" name="format_other" value="32768" {other_checked}{xhtml}> <label for="mg-format-other">{lang_other}</label><br{xhtml}>
                 </td>
               </tr>
             </table>
