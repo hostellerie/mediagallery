@@ -1,15 +1,14 @@
 <article class="mg_media_item">
-<div class="mg_thumbnail" style="height:{row_height}px">
+<div class="mg_thumbnail">
   <div class="mg_thumbnail_wrapper">{media_item_thumbnail}{mp3_podcast}</div>
 </div>
 
-<div class="mg_title">
-<strong>{media_title}</strong>
+<h2 class="mg_title">
+{media_title}
 {!if musicalbum}
 &nbsp;/&nbsp;{musicalbum}
 {!endif}
-</div>
-
+</h2>
 {!if artist}
 <div class="mg_artist">{artist}</div>
 {!endif}

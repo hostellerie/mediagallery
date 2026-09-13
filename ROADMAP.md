@@ -142,6 +142,7 @@ The Geeklog 2.1.1 / PHP 5.6 validation confirmed that image uploads succeed once
 - [x] Correct sort-form page indexing.
 - [x] Improve HTML attribute escaping in media popup output.
 - [ ] Review remaining inline presentation styles.
+- [x] Modernize default album/search/media rendering with responsive CSS Grid/Flexbox, semantic media/card headings and responsive thumbnail frames.
 - [x] Remove the legacy IE-only slideshow transition code and keep browser-neutral slideshow controls.
 - [x] Audit attribute escaping across all frame/theme variants.
 - [x] Centralize HTML escaping for framed-image attributes, media edit/manage values, lightbox links and advanced-search values.

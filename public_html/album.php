@@ -346,6 +346,7 @@ $T->set_var(array(
     'birdseed'           => $birdseed,
     'album_title'        => PLG_replaceTags($album->title),
     'table_columns'      => $columns_per_page,
+    'grid_class'         => 'mg-cols-' . max(1, min(10, (int) $columns_per_page)),
     'table_column_width' => intval(100 / $columns_per_page) . '%',
     'top_pagination'     => $pagination,
     'bottom_pagination'  => $pagination,

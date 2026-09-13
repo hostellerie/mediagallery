@@ -48,16 +48,15 @@
 {!endif}
 
 {!if album_body}
-<div class="mg_album_grid" style="width:100%;margin:10px 0;clear:both">
+<div class="mg_album_grid {grid_class}" role="list">
 <!-- BEGIN ImageRow -->
 <!-- BEGIN ImageColumn -->
-<div class="mg_album_cell" style="width:{table_column_width};{clear_float}">
+<div class="mg_album_cell" role="listitem">
 {CELL_DISPLAY_IMAGE}
 </div>
 <!-- END ImageColumn -->
 <!-- END ImageRow -->
 </div>
-<div style="clear:both"></div>
 {!endif}
 
 {!if lang_no_image}<div class="noitems">{lang_no_image}</div>{!endif}
