@@ -29,14 +29,13 @@ DECL_CLASSES = {
     'height:25px': 'mg-h-25',
     'height:20px': 'mg-h-20',
     'margin-top:5px': 'mg-mt-xs',
+    'margin-top:10px': 'mg-mt-sm',
     'margin-bottom:6px': 'mg-mb-xs',
     'margin-bottom:10px': 'mg-mb-sm',
     'margin-bottom:0.5em': 'mg-mb-half-em',
     'margin:0 auto': 'mg-table-centered',
     'margin:0px auto': 'mg-table-centered',
     'margin:10px 0': 'mg-my-sm',
-    'text-align:center;margin:10px 0': 'mg-status-line',
-    'width:80%;margin:0 auto': 'mg-status-box',
     'padding:5px 5px 0 0': 'mg-pad-admin-icon',
     'padding:10px': 'mg-pad-md',
     'padding:10px 0': 'mg-py-md',
@@ -54,10 +53,8 @@ EXACT = {
     'width:200px;height:25px;margin:0px auto': 'mg-media-rotate-controls',
     'text-align:center;width:100%': 'mg-full-center',
     'white-space:nowrap;width:100px': 'mg-nowrap mg-w-100',
-    'white-space:nowrap; width:100px': 'mg-nowrap mg-w-100',
     'padding:10px;line-height:2em': 'mg-pad-md mg-line-loose',
     'font-weight:bold;width:25%;text-align:right': 'mg-fw-bold mg-w-quarter mg-text-right',
-    'border: none; border-top: 1px solid #000000': 'mg-border-none mg-border-top',
 }
 
 def canonical(style):
@@ -78,7 +75,6 @@ def classes_for(style):
             out.extend(DECL_CLASSES[decl].split())
         else:
             raise KeyError(decl)
-    # stable dedupe
     seen = set()
     return ' '.join(x for x in out if not (x in seen or seen.add(x)))
 
@@ -101,7 +97,6 @@ def convert_tag(match, path, line_hint):
             merged = (cm.group(1).strip() + ' ' + extra).strip()
             tag = tag[:cm.start()] + ' class="' + merged + '"' + tag[cm.end():]
         else:
-            # insert before closing > or />
             pos = tag.rfind('>')
             before = tag[:pos]
             suffix = tag[pos:]
@@ -116,7 +111,6 @@ def convert_tag(match, path, line_hint):
 paths = sorted(set(list(Path('templates').rglob('*.thtml')) + list(Path('public_html/frames').rglob('*.thtml'))))
 for p in paths:
     text = p.read_text(encoding='utf-8', errors='strict')
-    # Opening tags do not contain > inside style values in these templates.
     def repl(m):
         return convert_tag(m, str(p), text.count('\n', 0, m.start()) + 1)
     text = re.sub(r'<[^>]+\sstyle="[^"]*"[^>]*>', repl, text)
@@ -127,7 +121,7 @@ p = Path('public_html/style.css')
 css = p.read_text(encoding='utf-8')
 marker = '/* MediaGallery 1.8 residual inline-style utilities */'
 if marker not in css:
-    css += '''\n\n/* MediaGallery 1.8 residual inline-style utilities */\n.mg-text-right { text-align: right; }\n.mg-valign-top { vertical-align: top; }\n.mg-fw-bold { font-weight: bold; }\n.mg-text-small { font-size: smaller; }\n.mg-nowrap { white-space: nowrap; }\n.mg-float-left { float: left; }\n.mg-float-right { float: right; }\n.mg-w-full { width: 100%; }\n.mg-w-80 { width: 80%; }\n.mg-w-half { width: 50%; }\n.mg-w-quarter { width: 25%; }\n.mg-w-15 { width: 15%; }\n.mg-w-10 { width: 10%; }\n.mg-w-200 { width: 12.5rem; }\n.mg-w-180 { width: 11.25rem; }\n.mg-w-100 { width: 6.25rem; }\n.mg-w-80px { width: 5rem; }\n.mg-h-25 { height: 1.5625rem; }\n.mg-h-20 { height: 1.25rem; }\n.mg-mt-xs { margin-top: 0.3125rem; }\n.mg-mb-xs { margin-bottom: 0.375rem; }\n.mg-mb-sm { margin-bottom: 0.625rem; }\n.mg-mb-half-em { margin-bottom: 0.5em; }\n.mg-my-sm { margin-top: 0.625rem; margin-bottom: 0.625rem; }\n.mg-pad-admin-icon { padding: 0.3125rem 0.3125rem 0 0; }\n.mg-pad-md { padding: 0.625rem; }\n.mg-py-md { padding-top: 0.625rem; padding-bottom: 0.625rem; }\n.mg-pb-md { padding-bottom: 0.625rem; }\n.mg-line-loose { line-height: 2; }\n.mg-border-none { border: 0; }\n.mg-border-top { border-top: 1px solid currentColor; }\n.mg-half-center { width: 50%; text-align: center; }\n.mg-full-center { width: 100%; text-align: center; }\n.mg-media-rotate-controls { width: 12.5rem; min-height: 1.5625rem; margin: 0 auto; }\n.mg-status-box { width: min(80%, 50rem); margin: 0 auto; }\n.mg-status-line { text-align: center; margin: 0.625rem 0; }\n\n@media (max-width: 34rem) {\n  .mg-w-80,\n  .mg-w-half,\n  .mg-half-center,\n  .mg-status-box { width: 100%; }\n  .mg-w-200,\n  .mg-w-180 { max-width: 100%; }\n  .mg-nowrap { white-space: normal; }\n}\n'''
+    css += '''\n\n/* MediaGallery 1.8 residual inline-style utilities */\n.mg-text-right { text-align: right; }\n.mg-valign-top { vertical-align: top; }\n.mg-fw-bold { font-weight: bold; }\n.mg-text-small { font-size: smaller; }\n.mg-nowrap { white-space: nowrap; }\n.mg-float-left { float: left; }\n.mg-float-right { float: right; }\n.mg-w-full { width: 100%; }\n.mg-w-80 { width: 80%; }\n.mg-w-half { width: 50%; }\n.mg-w-quarter { width: 25%; }\n.mg-w-15 { width: 15%; }\n.mg-w-10 { width: 10%; }\n.mg-w-200 { width: 12.5rem; }\n.mg-w-180 { width: 11.25rem; }\n.mg-w-100 { width: 6.25rem; }\n.mg-w-80px { width: 5rem; }\n.mg-h-25 { height: 1.5625rem; }\n.mg-h-20 { height: 1.25rem; }\n.mg-mt-xs { margin-top: 0.3125rem; }\n.mg-mt-sm { margin-top: 0.625rem; }\n.mg-mb-xs { margin-bottom: 0.375rem; }\n.mg-mb-sm { margin-bottom: 0.625rem; }\n.mg-mb-half-em { margin-bottom: 0.5em; }\n.mg-my-sm { margin-top: 0.625rem; margin-bottom: 0.625rem; }\n.mg-pad-admin-icon { padding: 0.3125rem 0.3125rem 0 0; }\n.mg-pad-md { padding: 0.625rem; }\n.mg-py-md { padding-top: 0.625rem; padding-bottom: 0.625rem; }\n.mg-pb-md { padding-bottom: 0.625rem; }\n.mg-line-loose { line-height: 2; }\n.mg-border-none { border: 0; }\n.mg-border-top { border-top: 1px solid currentColor; }\n.mg-half-center { width: 50%; text-align: center; }\n.mg-full-center { width: 100%; text-align: center; }\n.mg-media-rotate-controls { width: 12.5rem; min-height: 1.5625rem; margin: 0 auto; }\n.mg-status-box { width: min(80%, 50rem); margin: 0 auto; }\n.mg-status-line { text-align: center; margin: 0.625rem 0; }\n\n@media (max-width: 34rem) {\n  .mg-w-80,\n  .mg-w-half,\n  .mg-half-center,\n  .mg-status-box { width: 100%; }\n  .mg-w-200,\n  .mg-w-180 { max-width: 100%; }\n  .mg-nowrap { white-space: normal; }\n}\n'''
 p.write_text(css, encoding='utf-8')
 
 # Close the review only if no static inline style remains.
