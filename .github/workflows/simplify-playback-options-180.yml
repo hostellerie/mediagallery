@@ -1,0 +1,45 @@
+name: MediaGallery playback option simplification
+
+on:
+  push:
+    paths:
+      - '.github/simplify-playback-options-trigger'
+
+permissions:
+  contents: write
+
+jobs:
+  simplify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: modernize-1.8.0
+          fetch-depth: 0
+      - name: Simplify legacy playback options
+        run: python tools/simplify_playback_options_180.py
+      - name: Validate playback simplification
+        shell: bash
+        run: |
+          set -euo pipefail
+          php -l include/mediamanage.php
+          php -l include/lib-media.php
+          grep -n 'name="playback_geometry"' templates/edit_asf_options.thtml templates/edit_mov_options.thtml
+          grep -n 'type="number"' templates/edit_asf_options.thtml templates/edit_mov_options.thtml
+          grep -n "HTML5 playback no longer uses" include/mediamanage.php
+          grep -n "MG_savePBOption(\$media_id, 'width'" include/mediamanage.php
+          grep -n "MG_savePBOption(\$media_id, 'height'" include/mediamanage.php
+          if grep -n "parse('playback_options', 'mp3_options')" include/mediamanage.php; then exit 1; fi
+          if grep -n "parse('playback_options', 'swf_options')" include/mediamanage.php; then exit 1; fi
+          if grep -n "parse('playback_options', 'flv_options')" include/mediamanage.php; then exit 1; fi
+          if grep -n "isset(\$_POST\['autostart'\])" include/mediamanage.php; then exit 1; fi
+          if grep -n "isset(\$_POST\['play'\])" include/mediamanage.php; then exit 1; fi
+          if grep -n "isset(\$_POST\['autoplay'\])" include/mediamanage.php; then exit 1; fi
+          grep -n 'remove settings without a useful HTML5 equivalent' ROADMAP.md
+      - name: Commit playback simplification
+        run: |
+          git config user.name 'hostellerie'
+          git config user.email 'hostellerie.org@gmail.com'
+          git add include/mediamanage.php include/lib-media.php templates/edit_asf_options.thtml templates/edit_mov_options.thtml ROADMAP.md
+          git commit -m 'Simplify MediaGallery legacy playback options'
+          git push origin HEAD:modernize-1.8.0
