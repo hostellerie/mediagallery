@@ -1,0 +1,46 @@
+name: MediaGallery admin form accessibility
+
+on:
+  push:
+    paths:
+      - '.github/improve-admin-form-accessibility-trigger'
+
+permissions:
+  contents: write
+
+jobs:
+  accessibility:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: modernize-1.8.0
+          fetch-depth: 0
+      - name: Apply admin accessibility update
+        run: python tools/improve_admin_form_accessibility_180.py
+      - name: Validate admin accessibility changes
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -n 'for="mg-album-name"' templates/editalbum.thtml
+          grep -n 'id="mg-album-desc"' templates/editalbum.thtml
+          grep -n 'id="mg-format-jpg"' templates/editalbum.thtml
+          grep -n 'for="mg-category-name"' templates/editcategory.thtml
+          grep -n 'id="mg-category-desc"' templates/editcategory.thtml
+          grep -n 'id="mg-batch-refresh-rate"' templates/batch_progress.thtml
+          grep -n 'setTimeout(updateButton, 1000)' templates/batch_progress.thtml
+          grep -n 'id="mg-export-windows"' templates/export.thtml
+          grep -n 'for="mg-export-destroot"' templates/export.thtml
+          grep -n 'id="mg-user-quota"' templates/useredit.thtml
+          grep -n 'retain already-valid implicit FTP radio labels' ROADMAP.md
+          if grep -n 'setTimeout("updateButton()"' templates/batch_progress.thtml; then
+            echo 'String callback remains in batch progress' >&2
+            exit 1
+          fi
+      - name: Commit admin accessibility update
+        run: |
+          git config user.name 'hostellerie'
+          git config user.email 'hostellerie.org@gmail.com'
+          git add templates/editalbum.thtml templates/editcategory.thtml templates/batch_progress.thtml templates/export.thtml templates/useredit.thtml ROADMAP.md
+          git commit -m 'Improve MediaGallery admin form accessibility'
+          git push origin HEAD:modernize-1.8.0
