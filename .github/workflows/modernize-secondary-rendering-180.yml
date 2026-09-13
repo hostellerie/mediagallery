@@ -1,0 +1,44 @@
+name: MediaGallery secondary public rendering modernization
+
+on:
+  push:
+    paths:
+      - '.github/modernize-secondary-rendering-trigger'
+
+permissions:
+  contents: write
+
+jobs:
+  modernize:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: modernize-1.8.0
+          fetch-depth: 0
+      - name: Apply secondary rendering modernization
+        run: python tools/modernize_secondary_rendering_180.py
+      - name: Validate secondary rendering
+        shell: bash
+        run: |
+          set -euo pipefail
+          php -l include/autotags.php
+          grep -n '<figure class="MG_autotag' templates/autotag.thtml templates/autotag_nb.thtml templates/autotag_ss.thtml
+          grep -n '<h1 class="mg_album_title">' templates/fslideshow.thtml
+          grep -n 'meta name="viewport"' templates/mp3_qt.thtml
+          grep -n 'mg-media-player-audio' templates/view_mp3_flv.thtml templates/view_mp3_qt.thtml templates/view_mp3_wmp.thtml
+          if grep -n 'style="max-width:100%;width:' templates/view_mp3_flv.thtml templates/view_mp3_qt.thtml templates/view_mp3_wmp.thtml templates/mp3_qt.thtml; then
+            echo 'Legacy audio inline width remains' >&2
+            exit 1
+          fi
+          if grep -n 'style="width:{width}px' templates/autotag.thtml templates/autotag_nb.thtml; then
+            echo 'Legacy fixed autotag width remains' >&2
+            exit 1
+          fi
+      - name: Commit secondary rendering modernization
+        run: |
+          git config user.name 'hostellerie'
+          git config user.email 'hostellerie.org@gmail.com'
+          git add include/autotags.php templates public_html/style.css ROADMAP.md
+          git commit -m 'Modernize MediaGallery secondary responsive rendering'
+          git push origin HEAD:modernize-1.8.0
