@@ -1,3 +1,22 @@
+# MediaGallery 1.9.0 development notes
+
+MediaGallery 1.9.0 extends the SEO/interoperability work introduced in 1.8.0 while keeping OGP optional.
+
+## SEO and structured data
+
+- Album pages now publish Schema.org `CollectionPage` JSON-LD with an `ItemList` for the items displayed on the current page.
+- Media pages keep their content-aware `ImageObject`, `VideoObject` and `AudioObject` JSON-LD.
+- Local media `contentUrl` and video `thumbnailUrl` values are normalized to absolute public URLs.
+- Album and media pages now provide content-specific meta-description fallbacks instead of relying on the site's generic description when no dedicated description exists.
+
+## Optional OGP integration
+
+- When an active OGP plugin exposes `OGP_registerSocialMetadata()`, MediaGallery delegates Open Graph and Twitter/X metadata to OGP.
+- Albums delegate title, description, canonical URL and a representative image when one is available.
+- Media pages delegate title, description, canonical URL, media image and subtype metadata; video pages use `video.other`.
+- When OGP is absent or an older OGP release is installed, MediaGallery renders equivalent Open Graph and Twitter/X metadata itself.
+- MediaGallery remains authoritative for canonical URLs, descriptions and Schema.org structured data.
+
 # MediaGallery 1.8.0 release notes
 
 MediaGallery 1.8.0 is a major modernization and hardening release for Geeklog. It preserves the mature gallery feature set while updating storage, security, playback, administration, interoperability and compatibility for current Geeklog installations.
