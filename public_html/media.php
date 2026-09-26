@@ -120,10 +120,6 @@ $mediaSocialMetadata = array(
     'subtype' => $mediaType === 0 ? 'image'
         : ($mediaType === 1 ? 'video' : ($mediaType === 2 ? 'audio' : 'media'))
 );
-if (!empty($mediaMeta['media_resolution_x']) && !empty($mediaMeta['media_resolution_y'])) {
-    $mediaSocialMetadata['image_width'] = (int) $mediaMeta['media_resolution_x'];
-    $mediaSocialMetadata['image_height'] = (int) $mediaMeta['media_resolution_y'];
-}
 if (!MG_delegateSocialMetadata($mediaSocialMetadata)) {
     $meta .= MG_renderSocialMetadata($mediaSocialMetadata);
 }
