@@ -87,8 +87,45 @@ if (!empty($mediaMeta) && trim(strip_tags(isset($mediaMeta['media_title']) ? $me
 
 $mediaDescription = isset($mediaMeta['media_desc']) ? $mediaMeta['media_desc'] : '';
 $seoDescription = MG_prepareMetaDescription(PLG_replaceTags($mediaDescription), 160);
+if ($seoDescription === '') {
+    $seoDescription = MG_prepareMetaDescription($ptitle, 160);
+}
 if ($seoDescription !== '') {
     $meta .= '<meta name="description" content="' . MG_escapeHTML($seoDescription) . '"' . XHTML . '>' . LB;
+}
+
+$mediaType = isset($mediaMeta['media_type']) ? (int) $mediaMeta['media_type'] : -1;
+$mediaImage = '';
+if (!empty($mediaMeta['media_filename'])) {
+    if (!empty($mediaMeta['media_tn_attached'])) {
+        $mediaImage = MG_absolutePublicUrl(
+            Media::getFileUrl('tn', $mediaMeta['media_filename'], 'jpg', 1)
+        );
+    } elseif ($mediaType === 0 && !empty($mediaMeta['media_mime_ext'])) {
+        $mediaImage = MG_absolutePublicUrl(
+            Media::getFileUrl('disp', $mediaMeta['media_filename'], $mediaMeta['media_mime_ext'])
+        );
+    }
+}
+
+$mediaSocialMetadata = array(
+    'title' => trim(strip_tags($ptitle)),
+    'description' => $seoDescription,
+    'url' => $canonicalUrl,
+    'type' => $mediaType === 1 ? 'video.other' : 'website',
+    'image' => $mediaImage,
+    'image_alt' => trim(strip_tags($ptitle)),
+    'twitter_card' => $mediaImage !== '' ? 'summary_large_image' : 'summary',
+    'item_id' => (string) $mid,
+    'subtype' => $mediaType === 0 ? 'image'
+        : ($mediaType === 1 ? 'video' : ($mediaType === 2 ? 'audio' : 'media'))
+);
+if (!empty($mediaMeta['media_resolution_x']) && !empty($mediaMeta['media_resolution_y'])) {
+    $mediaSocialMetadata['image_width'] = (int) $mediaMeta['media_resolution_x'];
+    $mediaSocialMetadata['image_height'] = (int) $mediaMeta['media_resolution_y'];
+}
+if (!MG_delegateSocialMetadata($mediaSocialMetadata)) {
+    $meta .= MG_renderSocialMetadata($mediaSocialMetadata);
 }
 
 $structuredData = MG_buildMediaStructuredData($mediaMeta, $canonicalUrl);
