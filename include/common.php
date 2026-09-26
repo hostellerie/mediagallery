@@ -119,6 +119,159 @@ function MG_renderJsonLd($data)
     return '<script type="application/ld+json">' . $json . '</script>' . LB;
 }
 
+function MG_absolutePublicUrl($url)
+{
+    global $_CONF;
+
+    $url = trim((string) $url);
+    if ($url === '') {
+        return '';
+    }
+    if (preg_match('#^https?://#i', $url)) {
+        return $url;
+    }
+    if (strpos($url, '//') === 0) {
+        $scheme = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https:' : 'http:';
+        return $scheme . $url;
+    }
+
+    return rtrim((string) $_CONF['site_url'], '/') . '/' . ltrim($url, '/');
+}
+
+function MG_delegateSocialMetadata($metadata)
+{
+    global $_PLUGINS;
+
+    if (!is_array($metadata) || empty($metadata['title']) || empty($metadata['url'])) {
+        return false;
+    }
+    if (!isset($_PLUGINS) || !is_array($_PLUGINS) || !in_array('ogp', $_PLUGINS, true)) {
+        return false;
+    }
+    if (!function_exists('OGP_registerSocialMetadata')) {
+        return false;
+    }
+
+    $metadata['plugin'] = 'mediagallery';
+
+    return OGP_registerSocialMetadata($metadata) === true;
+}
+
+function MG_renderSocialMetadata($metadata)
+{
+    global $_CONF;
+
+    if (!is_array($metadata) || empty($metadata['title']) || empty($metadata['url'])) {
+        return '';
+    }
+
+    $title = MG_escapeHTML($metadata['title']);
+    $description = isset($metadata['description']) ? MG_escapeHTML($metadata['description']) : '';
+    $url = MG_escapeHTML($metadata['url']);
+    $type = !empty($metadata['type']) ? MG_escapeHTML($metadata['type']) : 'website';
+    $image = !empty($metadata['image']) ? MG_escapeHTML($metadata['image']) : '';
+    $imageAlt = !empty($metadata['image_alt']) ? MG_escapeHTML($metadata['image_alt']) : $title;
+    $siteName = !empty($_CONF['site_name']) ? MG_escapeHTML($_CONF['site_name']) : '';
+
+    $header = '<meta property="og:type" content="' . $type . '"' . XHTML . '>' . LB
+        . '<meta property="og:title" content="' . $title . '"' . XHTML . '>' . LB
+        . '<meta property="og:url" content="' . $url . '"' . XHTML . '>' . LB;
+
+    if ($description !== '') {
+        $header .= '<meta property="og:description" content="' . $description . '"' . XHTML . '>' . LB;
+    }
+    if ($siteName !== '') {
+        $header .= '<meta property="og:site_name" content="' . $siteName . '"' . XHTML . '>' . LB;
+    }
+    if ($image !== '') {
+        $header .= '<meta property="og:image" content="' . $image . '"' . XHTML . '>' . LB
+            . '<meta property="og:image:alt" content="' . $imageAlt . '"' . XHTML . '>' . LB;
+    }
+
+    $header .= '<meta name="twitter:card" content="'
+        . ($image !== '' ? 'summary_large_image' : 'summary') . '"' . XHTML . '>' . LB
+        . '<meta name="twitter:title" content="' . $title . '"' . XHTML . '>' . LB;
+    if ($description !== '') {
+        $header .= '<meta name="twitter:description" content="' . $description . '"' . XHTML . '>' . LB;
+    }
+    if ($image !== '') {
+        $header .= '<meta name="twitter:image" content="' . $image . '"' . XHTML . '>' . LB
+            . '<meta name="twitter:image:alt" content="' . $imageAlt . '"' . XHTML . '>' . LB;
+    }
+
+    return $header;
+}
+
+function MG_buildAlbumStructuredData($album, $canonicalUrl, $items = array(), $image = '')
+{
+    if (!is_object($album) || empty($canonicalUrl)) {
+        return array();
+    }
+
+    $title = isset($album->title)
+        ? trim(strip_tags(PLG_replaceTags($album->title)))
+        : '';
+    if ($title === '') {
+        return array();
+    }
+
+    $data = array(
+        '@context' => 'https://schema.org',
+        '@type' => 'CollectionPage',
+        '@id' => $canonicalUrl . '#album',
+        'url' => $canonicalUrl,
+        'name' => $title
+    );
+
+    $description = isset($album->description)
+        ? MG_prepareMetaDescription(PLG_replaceTags($album->description), 500)
+        : '';
+    if ($description !== '') {
+        $data['description'] = $description;
+    }
+
+    $image = MG_absolutePublicUrl($image);
+    if ($image !== '') {
+        $data['image'] = $image;
+    }
+
+    $itemList = array();
+    $position = 1;
+    foreach ($items as $item) {
+        if (!is_array($item) || empty($item['url']) || empty($item['name'])) {
+            continue;
+        }
+
+        $entry = array(
+            '@type' => 'ListItem',
+            'position' => $position++,
+            'url' => $item['url'],
+            'name' => $item['name']
+        );
+        if (!empty($item['type'])) {
+            $entry['item'] = array(
+                '@type' => $item['type'],
+                'url' => $item['url'],
+                'name' => $item['name']
+            );
+            if (!empty($item['image'])) {
+                $entry['item']['image'] = MG_absolutePublicUrl($item['image']);
+            }
+        }
+        $itemList[] = $entry;
+    }
+
+    if (!empty($itemList)) {
+        $data['mainEntity'] = array(
+            '@type' => 'ItemList',
+            'numberOfItems' => count($itemList),
+            'itemListElement' => $itemList
+        );
+    }
+
+    return $data;
+}
+
 function MG_buildMediaStructuredData($media, $canonicalUrl)
 {
     if (!is_array($media) || empty($canonicalUrl)) {
@@ -174,7 +327,7 @@ function MG_buildMediaStructuredData($media, $canonicalUrl)
         '@id'      => $canonicalUrl . '#media',
         'url'      => $canonicalUrl,
         'name'     => $title,
-        'contentUrl' => Media::getFileUrl('orig', $filename, $extension),
+        'contentUrl' => MG_absolutePublicUrl(Media::getFileUrl('orig', $filename, $extension)),
     );
 
     $description = isset($media['media_desc'])
@@ -202,7 +355,7 @@ function MG_buildMediaStructuredData($media, $canonicalUrl)
     }
 
     if ($type === 1) {
-        $data['thumbnailUrl'] = Media::getFileUrl('tn', $filename, 'jpg', 1);
+        $data['thumbnailUrl'] = MG_absolutePublicUrl(Media::getFileUrl('tn', $filename, 'jpg', 1));
     }
 
     return $data;
