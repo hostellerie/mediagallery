@@ -443,7 +443,10 @@ $meta = '<link rel="canonical" href="'
 $descriptionLength = ($current_print_page > 1) ? 145 : 160;
 $seoDescription = MG_prepareMetaDescription(PLG_replaceTags($album->description), $descriptionLength);
 if ($seoDescription === '') {
-    $seoDescription = MG_prepareMetaDescription($pageTitle, $descriptionLength);
+    $seoDescription = MG_prepareMetaDescription(
+        trim(strip_tags(PLG_replaceTags($album->title))),
+        $descriptionLength
+    );
 }
 if ($seoDescription !== '') {
     if ($current_print_page > 1) {
