@@ -725,6 +725,30 @@ function plugin_getheadercode_mediagallery()
 }
 
 /**
+ * Return whether MediaGallery is currently enabled in Geeklog.
+ *
+ * Plugin callbacks may remain callable after a plugin is disabled, depending
+ * on the calling core path or an existing PHP block. Public callbacks must
+ * therefore not assume that loading functions.inc means the plugin is enabled.
+ *
+ * @return bool
+ */
+function MG_pluginEnabled190()
+{
+    global $_TABLES;
+
+    if (empty($_TABLES['plugins'])) {
+        return false;
+    }
+
+    return ((int) DB_getItem(
+        $_TABLES['plugins'],
+        'pi_enabled',
+        "pi_name = 'mediagallery'"
+    ) === 1);
+}
+
+/**
   * Whats New Block API Support
   * Return the Headline and Byline for the new section in the Whatsnew Block
 */
@@ -732,6 +756,7 @@ function plugin_whatsnewsupported_mediagallery()
 {
     global $_CONF, $_MG_CONF, $LANG_MG00;
 
+    if (!MG_pluginEnabled190()) return '';
     if ($_MG_CONF['whatsnew'] == 0) return '';
     if ($_MG_CONF['installed_version'] != $_MG_CONF['pi_version']) return '';
     if (COM_isAnonUser() && $_MG_CONF['loginrequired'] == 1) return '';
@@ -747,6 +772,10 @@ function plugin_whatsnewsupported_mediagallery()
 function plugin_getwhatsnew_mediagallery()
 {
     global $_TABLES, $_CONF, $_MG_CONF, $_USER, $LANG_MG03;
+
+    if (!MG_pluginEnabled190()) {
+        return array();
+    }
 
     require_once $_CONF['path'].'plugins/mediagallery/include/classAlbum.php';
 
@@ -823,6 +852,10 @@ function plugin_getwhatsnewcomment_mediagallery($numreturn = 0, $uid = 0)
 {
     global $_CONF, $_TABLES, $_DLM_CONF;
 
+    if (!MG_pluginEnabled190()) {
+        return array();
+    }
+
     $stwhere = ($uid > 0) ? "AND (c.uid = $uid) " : ' ';
 
     if ($numreturn == 0) {
@@ -866,6 +899,10 @@ function plugin_showstats_mediagallery($showsitestats)
 {
     global $_CONF;
 
+    if (!MG_pluginEnabled190()) {
+        return '';
+    }
+
     require_once $_CONF['path'] . 'plugins/mediagallery/include/statistics.php';
     return MG_showstats($showsitestats);
 }
@@ -875,6 +912,7 @@ function plugin_statssummary_mediagallery()
 {
     global $_CONF, $_MG_CONF, $_TABLES, $LANG_MG00, $_USER;
 
+    if (!MG_pluginEnabled190()) return '';
     if (COM_isAnonUser() && $_MG_CONF['loginrequired'] == 1) return '';
 
     // This shows in the summary box
@@ -1249,6 +1287,10 @@ function phpblock_mg_randommedia($parm1=array(), $parm2='')
 {
     global $_CONF, $_MG_CONF, $_TABLES, $_USER, $LANG_MG03, $_DB_dbms;
 
+    if (!MG_pluginEnabled190()) {
+        return '';
+    }
+
     require_once $_CONF['path'] . 'plugins/mediagallery/include/common.php';
 
     $retval = '';
@@ -1344,6 +1386,10 @@ function phpblock_mg_randommedia($parm1=array(), $parm2='')
 function phpblock_mg_maenroll()
 {
     global $_CONF, $_MG_CONF, $_TABLES, $_USER, $LANG_MG03;
+
+    if (!MG_pluginEnabled190()) {
+        return '';
+    }
 
     // PHP blocks are invoked from normal Geeklog pages as well as MediaGallery
     // pages, so load the shared helpers explicitly just like randommedia does.
