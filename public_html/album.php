@@ -442,11 +442,104 @@ $meta = '<link rel="canonical" href="'
 
 $descriptionLength = ($current_print_page > 1) ? 145 : 160;
 $seoDescription = MG_prepareMetaDescription(PLG_replaceTags($album->description), $descriptionLength);
+if ($seoDescription === '') {
+    $seoDescription = MG_prepareMetaDescription($pageTitle, $descriptionLength);
+}
 if ($seoDescription !== '') {
     if ($current_print_page > 1) {
         $seoDescription .= ' - ' . $LANG_MG03['page'] . ' ' . $current_print_page;
     }
     $meta .= '<meta name="description" content="' . MG_escapeHTML($seoDescription) . '"' . XHTML . '>' . LB;
+}
+
+$albumStructuredItems = array();
+$albumSocialImage = '';
+foreach ($MG_media as $entry) {
+    if (!is_array($entry) || !isset($entry['type'], $entry['obj']) || !is_object($entry['obj'])) {
+        continue;
+    }
+
+    if ((int) $entry['type'] === 0) {
+        $childAlbum = $entry['obj'];
+        $childName = isset($childAlbum->title)
+            ? trim(strip_tags(PLG_replaceTags($childAlbum->title)))
+            : '';
+        if (!empty($childAlbum->id) && $childName !== '') {
+            $albumStructuredItems[] = array(
+                'type' => 'CollectionPage',
+                'url' => $_MG_CONF['site_url'] . '/album.php?aid=' . (int) $childAlbum->id,
+                'name' => $childName
+            );
+        }
+        continue;
+    }
+
+    $mediaObject = $entry['obj'];
+    $mediaName = isset($mediaObject->title)
+        ? trim(strip_tags(PLG_replaceTags($mediaObject->title)))
+        : '';
+    if ($mediaName === '' && !empty($mediaObject->filename)) {
+        $mediaName = (string) $mediaObject->filename;
+    }
+    if (empty($mediaObject->id) || $mediaName === '') {
+        continue;
+    }
+
+    $schemaType = 'CreativeWork';
+    if ((int) $mediaObject->type === 0) {
+        $schemaType = 'ImageObject';
+    } elseif ((int) $mediaObject->type === 1) {
+        $schemaType = 'VideoObject';
+    } elseif ((int) $mediaObject->type === 2) {
+        $schemaType = 'AudioObject';
+    }
+
+    $itemImage = '';
+    if (!empty($mediaObject->tn_attached)) {
+        $itemImage = MG_absolutePublicUrl(
+            Media::getFileUrl('tn', $mediaObject->filename, 'jpg', 1)
+        );
+    } elseif ((int) $mediaObject->type === 0 && !empty($mediaObject->mime_ext)) {
+        $itemImage = MG_absolutePublicUrl(
+            Media::getFileUrl('disp', $mediaObject->filename, $mediaObject->mime_ext)
+        );
+    }
+
+    if ($albumSocialImage === '' && $itemImage !== '') {
+        $albumSocialImage = $itemImage;
+    }
+
+    $albumStructuredItems[] = array(
+        'type' => $schemaType,
+        'url' => $_MG_CONF['site_url'] . '/media.php?s=' . rawurlencode((string) $mediaObject->id),
+        'name' => $mediaName,
+        'image' => $itemImage
+    );
+}
+
+$albumSocialMetadata = array(
+    'title' => $pageTitle,
+    'description' => $seoDescription,
+    'url' => $canonicalUrl,
+    'type' => 'website',
+    'image' => $albumSocialImage,
+    'image_alt' => $pageTitle,
+    'twitter_card' => $albumSocialImage !== '' ? 'summary_large_image' : 'summary',
+    'item_id' => (string) $album_id,
+    'subtype' => 'album'
+);
+if (!MG_delegateSocialMetadata($albumSocialMetadata)) {
+    $meta .= MG_renderSocialMetadata($albumSocialMetadata);
+}
+
+$albumStructuredData = MG_buildAlbumStructuredData(
+    $album,
+    $canonicalUrl,
+    $albumStructuredItems,
+    $albumSocialImage
+);
+if (!empty($albumStructuredData)) {
+    $meta .= MG_renderJsonLd($albumStructuredData);
 }
 
 $display = MG_createHTMLDocument($display, $pageTitle, $meta);
