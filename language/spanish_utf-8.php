@@ -829,7 +829,7 @@ $LANG_MG03 = array (
     'member_album_terms'    => 'Al presionar abajo el botón de Acepto, usted esta de acuerdo en obedecer los términos y condiciones aquí establecidos por los administradores del sitio. Si usted abusa o le da un uso inapropiado a su Álbum de Miembro,  su cuenta podrá ser suspendida.',
     'agree'                 => 'Acepto',
     'existing_member_album' => 'Al parecer usted ya cuenta con un Álbum de Miembro y solo puede obtener 1 directamente afuera del album raiz de los miembros. Si usted percibe que esto es un error, favor de contactar al administrador del sitio.',
-    'member_album_signup'   => 'Obtén tu propio album en nuestros medios Gallery.<br /><br /><center><a href="%s">Firmar Aqui</a></center>' . XHTML . '><br' . XHTML . '><center><a href="%s">Sign Up Here</a></center>',
+    'member_album_signup'   => 'Obtén tu propio álbum en nuestra Media Gallery.<br' . XHTML . '><br' . XHTML . '><center><a href="%s">Regístrate aquí</a></center>',
     'album_id_display'      => ' ID del Album: ',
     'upload_help'           => 'Cargar archivos directamente desde su computadora. Ingresar la localizacion al archivo y titulo opcional / descripcin /palabras clave en las espacios de abajo.',
     'upload_size'           => '<b>Nota:</b> Usted puede cargar hasta %s megabytes a la vez.  Ningún archivo individual puede ser mas grande de %s megabytes. Si usted desea cargar más de eso, debe de cargar los archivos por separado, usar un formato diferente, o preguntar al administrador del sitio para permitir cargas mayores.',
