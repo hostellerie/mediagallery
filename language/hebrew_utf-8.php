@@ -195,23 +195,23 @@ $LANG_MG01 = array (
     'mg_directories'            => 'ספריות גלריית המדיה',
     'mg_dir_structure'          => 'מבנה ספריות גלריית המדיה',
     'media_storage'             => 'Persistent media storage',
-    'active_media_path'         => 'Active media path',
-    'expected_media_path'       => 'Expected media path',
-    'active_media_url'          => 'Active media URL',
-    'media_storage_root'        => 'Storage root',
-    'plugin_media_assets'       => 'Plugin image resources',
-    'valid_media_assets'        => '%d of %d required images are valid',
-    'storage_unresolved'        => 'Unable to resolve the persistent storage target',
-    'storage_path_mismatch'     => 'Active path does not match the expected path',
-    'storage_root_invalid'      => 'Directory missing, unreadable or not writable',
-    'invalid_media_asset'       => 'Missing, unreadable or invalid image',
-    'storage_operation'         => 'Storage synchronization',
-    'repair_media_storage'      => 'Synchronize media storage',
-    'repair_media_storage_help' => 'Copies and verifies historical user media (originals, display images, thumbnails and covers) in the persistent images directory. Plugin images remain in the plugin directory and source files are retained.',
-    'repair_media_storage_success' => 'User media synchronization completed successfully.',
-    'media_storage_current'      => 'No historical user media needs to be synchronized.',
-    'repair_media_storage_failed' => 'Synchronization failed. See the Geeklog error log for the affected path.',
-    'invalid_security_token'    => 'The security token is invalid or has expired. Reload this page and try again.',
+    'active_media_path'         => 'נתיב מדיה פעיל',
+    'expected_media_path'       => 'נתיב מדיה צפוי',
+    'active_media_url'          => 'כתובת URL פעילה של מדיה',
+    'media_storage_root'        => 'שורש האחסון',
+    'plugin_media_assets'       => 'משאבי תמונה של התוסף',
+    'valid_media_assets'        => '%d מתוך %d תמונות נדרשות תקינות',
+    'storage_unresolved'        => 'לא ניתן לזהות את יעד האחסון המתמשך',
+    'storage_path_mismatch'     => 'הנתיב הפעיל אינו תואם לנתיב הצפוי',
+    'storage_root_invalid'      => 'התיקייה חסרה, אינה קריאה או אינה ניתנת לכתיבה',
+    'invalid_media_asset'       => 'התמונה חסרה, אינה קריאה או אינה תקינה',
+    'storage_operation'         => 'סנכרון אחסון',
+    'repair_media_storage'      => 'סנכרון אחסון מדיה',
+    'repair_media_storage_help' => 'מעתיק ומאמת מדיית משתמש היסטורית (מקור, תמונות תצוגה, תמונות ממוזערות ועטיפות) לתיקיית התמונות המתמשכת. תמונות התוסף נשארות בתיקיית התוסף וקובצי המקור נשמרים.',
+    'repair_media_storage_success' => 'סנכרון מדיית המשתמש הושלם בהצלחה.',
+    'media_storage_current'      => 'אין מדיית משתמש היסטורית שיש לסנכרן.',
+    'repair_media_storage_failed' => 'הסנכרון נכשל. יש לעיין ביומן השגיאות של Geeklog עבור הנתיב המושפע.',
+    'invalid_security_token'    => 'אסימון האבטחה אינו תקין או שפג תוקפו. יש לטעון מחדש את הדף ולנסות שוב.',
     'ok'                        => 'אישור',
     'not_found'                 => 'לא נמצא',
     'not_writable'              => '*חסום* לכתיבה',
@@ -829,7 +829,7 @@ $LANG_MG03 = array (
     'member_album_terms'    => 'על ידי לחיצה על כפתור ההסכמה, הנכם מסכימים לשמור על המונחים והתנאים שנקבעו להלן על ידי מנהלי האתר. אם תפגעו או תשתמשו לרעה באלבום המשתמש שלכם, חשבונכם עלול להיות מושהה.',
     'agree'                 => 'אנו מסכימים',
     'existing_member_album' => 'נראה שכבר יש לכם אלבום משתמש ויכול להיות לכם רק אלבום משתמש אחד ישירות מתחת לאלבום המשתמשים הראשי. אם הנכם מרגישים שזו טעות, אנא צרו קשר עם מנהלי האתר.',
-    'member_album_signup'   => 'פיתחו אלבום משלכם בגלריית המדיה.<br /><br /><center><a href="%s">הירשמו כאן</a></center>' . XHTML . '><br' . XHTML . '><center><a href="%s">Sign Up Here</a></center>',
+    'member_album_signup'   => 'צרו אלבום משלכם בגלריית המדיה שלנו.<br' . XHTML . '><br' . XHTML . '><center><a href="%s">הירשמו כאן</a></center>',
     'album_id_display'      => 'קוד זיהוי אלבום: ',
     'upload_help'           => 'ליחצו על ה-<b>Browse</b> כדי לבחור מדיה להעלאה',
     'upload_size'           => '<b>הערה:</b> הנכם יכולים להעלות עד %s מגה בפעם אחת. שום קובץ אינדיבידואלי אינו יכול להיות יותר מ-%s מגה. אם הנכם רוצים להעלות יותר מזה, הנכם חייבים להעלות את הקבצים באופן נפרד, להשתמש בפורמט העלאה אחר, או לבקש ממנהלי המערכת שלכם לאפשר העלאות גדולות יותר.',
@@ -1635,78 +1635,78 @@ if (isset($_MG_CONF, $_MG_CONF['custom_image_width'], $_MG_CONF['custom_image_he
 }
 
 // MediaGallery 1.8.0 template accessibility labels
-$LANG_MG03['aria_breadcrumb'] = 'Breadcrumb';
-$LANG_MG03['aria_album_actions'] = 'Album actions';
-$LANG_MG03['aria_album_pagination'] = 'Album pagination';
-$LANG_MG03['aria_album_pagination_info'] = 'Album pagination and information';
-$LANG_MG03['aria_media_actions'] = 'Media actions and navigation';
-$LANG_MG03['media_id_label'] = 'Media ID';
-$LANG_MG03['aria_search_results_navigation'] = 'Search results navigation';
-$LANG_MG03['aria_album_navigation'] = 'Album navigation';
-$LANG_MG03['aria_media_list'] = 'Media list';
+$LANG_MG03['aria_breadcrumb'] = 'ניווט פירורי לחם';
+$LANG_MG03['aria_album_actions'] = 'פעולות אלבום';
+$LANG_MG03['aria_album_pagination'] = 'דפדוף באלבום';
+$LANG_MG03['aria_album_pagination_info'] = 'דפדוף ומידע על האלבום';
+$LANG_MG03['aria_media_actions'] = 'פעולות וניווט במדיה';
+$LANG_MG03['media_id_label'] = 'מזהה מדיה';
+$LANG_MG03['aria_search_results_navigation'] = 'ניווט בתוצאות חיפוש';
+$LANG_MG03['aria_album_navigation'] = 'ניווט באלבום';
+$LANG_MG03['aria_media_list'] = 'רשימת מדיה';
 
-$LANG_MG01['admin_help'] = 'MediaGallery administration gives you quick access to albums, member galleries, maintenance tasks, reports and plugin configuration.';
+$LANG_MG01['admin_help'] = 'ממשק הניהול של MediaGallery מספק גישה מהירה לאלבומים, גלריות חברים, משימות תחזוקה, דוחות והגדרות התוסף.';
 
 
-$LANG_MG01['manage_albums'] = 'Manage Albums';
-$LANG_MG01['manage_albums_help'] = 'Manage albums, media items and the gallery structure.';
-$LANG_MG01['overview'] = 'Overview';
-$LANG_MG01['media_items'] = 'Media items';
-$LANG_MG01['pending_media'] = 'Pending media';
+$LANG_MG01['manage_albums'] = 'ניהול אלבומים';
+$LANG_MG01['manage_albums_help'] = 'ניהול אלבומים, פריטי מדיה ומבנה הגלריה.';
+$LANG_MG01['overview'] = 'סקירה';
+$LANG_MG01['media_items'] = 'פריטי מדיה';
+$LANG_MG01['pending_media'] = 'מדיה ממתינה';
 $LANG_MG01['status_ok'] = 'OK';
-$LANG_MG01['status_check'] = 'Check';
-$LANG_MG01['media_storage'] = 'Media storage';
-$LANG_MG01['content'] = 'Content';
-$LANG_MG01['content_categories'] = 'Categories';
-$LANG_MG01['content_categories_help'] = 'Organize and maintain MediaGallery categories.';
-$LANG_MG01['member_albums_help'] = 'Manage member galleries, quotas and related album tools.';
-$LANG_MG01['manage'] = 'Manage';
-$LANG_MG01['maintenance_reports'] = 'Maintenance & reports';
-$LANG_MG01['maintenance_tools'] = 'Batch & maintenance';
-$LANG_MG01['maintenance_tools_help'] = 'Run thumbnail, resize, quota, sorting and batch maintenance tools.';
-$LANG_MG01['reports_tools'] = 'Reports & tools';
-$LANG_MG01['reports_tools_help'] = 'Open usage reports, EXIF tools, RSS rebuilds and environment checks.';
-$LANG_MG01['open_tools'] = 'Open tools';
+$LANG_MG01['status_check'] = 'בדיקה';
+$LANG_MG01['media_storage'] = 'אחסון מדיה מתמשך';
+$LANG_MG01['content'] = 'תוכן';
+$LANG_MG01['content_categories'] = 'קטגוריות';
+$LANG_MG01['content_categories_help'] = 'ארגון ותחזוקה של קטגוריות MediaGallery.';
+$LANG_MG01['member_albums_help'] = 'ניהול גלריות חברים, מכסות וכלי אלבומים קשורים.';
+$LANG_MG01['manage'] = 'ניהול';
+$LANG_MG01['maintenance_reports'] = 'תחזוקה ודוחות';
+$LANG_MG01['maintenance_tools'] = 'אצווה ותחזוקה';
+$LANG_MG01['maintenance_tools_help'] = 'הרצת כלים לתמונות ממוזערות, שינוי גודל, מכסות, מיון ותחזוקה באצווה.';
+$LANG_MG01['reports_tools'] = 'דוחות וכלים';
+$LANG_MG01['reports_tools_help'] = 'פתיחת דוחות שימוש, כלי EXIF, בנייה מחדש של RSS ובדיקות סביבה.';
+$LANG_MG01['open_tools'] = 'פתיחת כלים';
 
 
 // MediaGallery 1.8 modern browser uploader
-$LANG_MG03['upload_drop_title'] = "Drop files here to upload";
-$LANG_MG03['upload_drop_help'] = "Add several files at once by dragging them here or by choosing them from your computer.";
-$LANG_MG03['upload_choose_files'] = "Choose files";
-$LANG_MG03['upload_queue'] = "Upload queue";
-$LANG_MG03['upload_remove'] = "Remove";
-$LANG_MG03['upload_file_details'] = "File details";
-$LANG_MG03['upload_files_selected'] = "files selected";
-$LANG_MG03['upload_noscript'] = "Multiple file selection is available. Drag-and-drop and the editable upload queue require JavaScript.";
+$LANG_MG03['upload_drop_title'] = 'גררו קבצים לכאן כדי להעלות';
+$LANG_MG03['upload_drop_help'] = 'ניתן להוסיף כמה קבצים בבת אחת על ידי גרירה לכאן או בחירה מהמחשב.';
+$LANG_MG03['upload_choose_files'] = 'בחירת קבצים';
+$LANG_MG03['upload_queue'] = 'תור העלאה';
+$LANG_MG03['upload_remove'] = 'הסרה';
+$LANG_MG03['upload_file_details'] = 'פרטי קובץ';
+$LANG_MG03['upload_files_selected'] = 'קבצים נבחרו';
+$LANG_MG03['upload_noscript'] = 'ניתן לבחור כמה קבצים. גרירה ושחרור ותור העלאה ניתן לעריכה דורשים JavaScript.';
 
 
 // MediaGallery 1.8 media manager labels
-$LANG_MG01['manager_select_media'] = "Select media";
-$LANG_MG01['manager_album_cover'] = "Album cover";
-$LANG_MG01['manager_slideshow'] = "Slideshow";
+$LANG_MG01['manager_select_media'] = 'בחירת מדיה';
+$LANG_MG01['manager_album_cover'] = 'עטיפת אלבום';
+$LANG_MG01['manager_slideshow'] = 'מצגת';
 
 
 // MediaGallery 1.8 non-image manager states
-$LANG_MG01['manager_cover_unavailable'] = "Unavailable without a thumbnail";
-$LANG_MG01['manager_slideshow_unavailable'] = "Images only";
+$LANG_MG01['manager_cover_unavailable'] = 'לא זמין ללא תמונה ממוזערת';
+$LANG_MG01['manager_slideshow_unavailable'] = 'תמונות בלבד';
 
 
 // MediaGallery 1.8 media access editor
-$LANG_MG01['media_access_ownership'] = "Access & ownership";
-$LANG_MG01['media_access_inherited'] = "Access rights for this media are inherited from album “%s”.";
-$LANG_MG01['media_edit_album_rights'] = "Edit album access rights";
+$LANG_MG01['media_access_ownership'] = 'גישה ובעלות';
+$LANG_MG01['media_access_inherited'] = 'הרשאות הגישה למדיה זו עוברות בירושה מהאלבום „%s”.';
+$LANG_MG01['media_edit_album_rights'] = 'עריכת הרשאות גישה לאלבום';
 
 
 // MediaGallery 1.8 storage diagnostics
 $LANG_MG01['core_path_images'] = "Geeklog path_images";
 $LANG_MG01['core_images_url'] = "Geeklog images_url";
-$LANG_MG01['persistent_storage_files'] = "Persistent storage files";
-$LANG_MG01['legacy_storage_user_files'] = "Legacy storage user files";
-$LANG_MG01['legacy_storage_files_warning'] = "Unexpected on a fresh 1.8 installation";
-$LANG_MG01['local_media_db_rows'] = "Local media rows in database";
-$LANG_MG01['image_original_files'] = "Readable image originals";
-$LANG_MG01['image_display_files'] = "Readable display images";
-$LANG_MG01['image_thumbnail_files'] = "Readable thumbnails";
-$LANG_MG01['missing_media_files'] = "Missing media IDs";
+$LANG_MG01['persistent_storage_files'] = 'קבצי אחסון מתמשך';
+$LANG_MG01['legacy_storage_user_files'] = 'קבצי משתמש מאחסון ישן';
+$LANG_MG01['legacy_storage_files_warning'] = 'לא צפוי בהתקנה חדשה של 1.8';
+$LANG_MG01['local_media_db_rows'] = 'רשומות מדיה מקומיות במסד הנתונים';
+$LANG_MG01['image_original_files'] = 'תמונות מקור קריאות';
+$LANG_MG01['image_display_files'] = 'תמונות תצוגה קריאות';
+$LANG_MG01['image_thumbnail_files'] = 'תמונות ממוזערות קריאות';
+$LANG_MG01['missing_media_files'] = 'מזהי מדיה חסרים';
 
 ?>
