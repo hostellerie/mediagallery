@@ -1145,134 +1145,134 @@ $LANG_MG05 = array (
     'doors'                 => 'Türen',
     'gradient'              => 'Verlauf',
     'iris'                  => 'Iris',
-    'pinwheel'              => 'Pinwheel',
-    'pixelate'              => 'Pixelate',
+    'pinwheel'              => 'Windrad',
+    'pixelate'              => 'Verpixeln',
     'radial'                => 'Radial',
-    'rain'                  => 'Rain',
-    'slide'                 => 'Slide',
-    'snow'                  => 'Snow',
-    'spiral'                => 'Spiral',
-    'stretch'               => 'Stretch',
-    'random'                => 'Random'
+    'rain'                  => 'Regen',
+    'slide'                 => 'Gleiten',
+    'snow'                  => 'Schnee',
+    'spiral'                => 'Spirale',
+    'stretch'               => 'Strecken',
+    'random'                => 'Zufällig'
 );
 
 $LANG_MG07 = array (
-    'playback_options'          => 'Playback Options',
-    'none'                      => 'none',
+    'playback_options'          => 'Wiedergabeoptionen',
+    'none'                      => 'keine',
     'mini'                      => 'mini',
-    'full'                      => 'full',
-    'low'                       => 'low',
-    'high'                      => 'high',
-    'showall'                   => 'Show All',
-    'noborder'                  => 'No Border',
-    'exactfit'                  => 'Exact Fit',
-    'window'                    => 'Window',
-    'opaque'                    => 'Opaque',
+    'full'                      => 'vollständig',
+    'low'                       => 'niedrig',
+    'high'                      => 'hoch',
+    'showall'                   => 'Alles anzeigen',
+    'noborder'                  => 'Ohne Rahmen',
+    'exactfit'                  => 'Exakt anpassen',
+    'window'                    => 'Fenster',
+    'opaque'                    => 'Undurchsichtig',
     'transparent'               => 'Transparent',
-    'to_fit'                    => 'To Fit',
-    'aspect'                    => 'Aspect',
+    'to_fit'                    => 'Einpassen',
+    'aspect'                    => 'Seitenverhältnis',
     'normal_size'               => 'Normale Größe',
     'description'               => 'Beschreibung',
     'option'                    => 'Option',
     'on'                        => 'Am',
-    'off'                       => 'Off',
-    'auto_start'                => 'Auto Start',
-    'auto_start_help'           => 'When set to On, the autoplay attribute causes the item to start playing as soon as the Player Plug-In estimates that it wil be able to play the entire item without waiting or additional data.',
-    'enable_context_menu'       => 'Enable Context Menu',
-    'enable_context_menu_help'  => 'If on, the context menu, which appears when the right mouse button is clicked.',
-    'stretch_to_fit'            => 'Stretch to Fit',
-    'stretch_to_fit_help'       => 'If on, the video will stretch to fit the size of the Windows Media Player video display.',
-    'status_bar'                => 'Show Status Bar',
-    'status_bar_help'           => 'If on, the status bar is displayed.',
-    'ui_mode'                   => 'User Interface Mode',
-    'ui_mode_help'              => 'Specifies which controls are shown in the user interface.',
+    'off'                       => 'Aus',
+    'auto_start'                => 'Automatischer Start',
+    'auto_start_help'           => 'Wenn aktiviert, startet die automatische Wiedergabe, sobald der Player davon ausgeht, das gesamte Element ohne Warten auf weitere Daten abspielen zu können.',
+    'enable_context_menu'       => 'Kontextmenü aktivieren',
+    'enable_context_menu_help'  => 'Wenn aktiviert, erscheint beim Rechtsklick das Kontextmenü.',
+    'stretch_to_fit'            => 'Auf Größe strecken',
+    'stretch_to_fit_help'       => 'Wenn aktiviert, wird das Video an die Größe der Windows-Media-Player-Anzeige angepasst.',
+    'status_bar'                => 'Statusleiste anzeigen',
+    'status_bar_help'           => 'Wenn aktiviert, wird die Statusleiste angezeigt.',
+    'ui_mode'                   => 'Benutzeroberflächenmodus',
+    'ui_mode_help'              => 'Legt fest, welche Steuerelemente in der Benutzeroberfläche angezeigt werden.',
     'height'                    => 'Höhe',
     'width'                     => 'Breite',
-    'height_help'               => 'Size of the playback window',
-    'width_help'                => 'Size of the playback window',
-    'menu'                      => 'Menu',
-    'menu_help'                 => 'Displays the full menu, allowing the user a variety of options to enhance or control playback.',
+    'height_help'               => 'Größe des Wiedergabefensters',
+    'width_help'                => 'Größe des Wiedergabefensters',
+    'menu'                      => 'Menü',
+    'menu_help'                 => 'Zeigt das vollständige Menü mit verschiedenen Optionen zur Steuerung der Wiedergabe.',
     'quality'                   => 'Qualität',
-    'quality_help'              => 'Playback Quality',
-    'flash_vars'                => 'Flash Variables',
-    'auto_ref'                  => 'Auto Ref',
-    'auto_ref_help'             => 'When set to On, the AUTOREF attribute causes any movie to load immediately, without waiting for a mouse click.',
-    'controller'                => 'Controller',
-    'controller_help'           => 'When set to On, the movie controller will be displayed.',
-    'kiosk_mode'                => 'Kiosk Mode',
-    'kiosk_mode_help'           => 'When Kiosk Mode is On, the plug-in does not include its pop-up menu in the movie controller and does not allow drag and drop to save the movie.',
-    'scale'                     => 'Scale',
-    'scale_help'                => 'Scale can be either TOFIT, ASPECT of Normal.  If set to ToFit, the moview is scaled to fit the embedded box as specified by height and width.  If set to Aspect, the movie will be scaled to fit the embedded box while maintaining the aspect ratio. If set to Normal, the movie will play the size it was saved.',
-    'swf_scale_help'            => 'Default (Show all) makes the entire movie visible in the specified area without distortion, while maintaining the original aspect ratio of the movie. Borders may appear on two sides of the movie. No Border scales the movie to fill the specified area, without distortion but possibly with some cropping, while maintaining the original aspect ratio of the movie.  Exact Fit makes the entire movie visible in the specified area without trying to preserve the original aspect ratio. Distortion may occur.',
-    'wmode'                     => 'Window Mode',
-    'wmode_help'                => 'Sets the Window Mode property of the Flash movie for transparency, layering, and positioning in the browser.',
+    'quality_help'              => 'Wiedergabequalität',
+    'flash_vars'                => 'Flash-Variablen',
+    'auto_ref'                  => 'Automatische Referenz',
+    'auto_ref_help'             => 'Wenn aktiviert, lädt das AUTOREF-Attribut einen Film sofort, ohne auf einen Mausklick zu warten.',
+    'controller'                => 'Steuerung',
+    'controller_help'           => 'Wenn aktiviert, wird die Filmsteuerung angezeigt.',
+    'kiosk_mode'                => 'Kioskmodus',
+    'kiosk_mode_help'           => 'Im Kioskmodus zeigt das Plugin kein Popup-Menü in der Filmsteuerung und erlaubt kein Drag-and-drop zum Speichern des Films.',
+    'scale'                     => 'Skalierung',
+    'scale_help'                => 'Die Skalierung kann TOFIT, ASPECT oder Normal sein. ToFit passt den Film an Breite und Höhe des eingebetteten Bereichs an. Aspect passt ihn unter Beibehaltung des Seitenverhältnisses an. Normal gibt ihn in der gespeicherten Größe wieder.',
+    'swf_scale_help'            => 'Standard (Alles anzeigen) zeigt den gesamten Film unverzerrt unter Beibehaltung des Seitenverhältnisses; an zwei Seiten können Ränder erscheinen. Ohne Rahmen füllt den Bereich unter Beibehaltung des Seitenverhältnisses, kann aber beschneiden. Exakt anpassen zeigt den gesamten Film ohne Erhalt des Seitenverhältnisses und kann verzerren.',
+    'wmode'                     => 'Fenstermodus',
+    'wmode_help'                => 'Legt den Fenstermodus des Flash-Films für Transparenz, Ebenen und Positionierung im Browser fest.',
     'loop'                      => 'Schleife',
-    'loop_help'                 => 'Specifies whether the movie repeats indefinitely or stops when it reaches the last frame',
+    'loop_help'                 => 'Legt fest, ob der Film endlos wiederholt oder beim letzten Bild angehalten wird',
     'always'                    => 'Immer',
-    'sameDomain'                => 'SameDomain',
-    'never'                     => 'Never',
-    'asa'                       => 'Allow Script Access',
-    'asa_help'                  => 'This parameter controls whether ActionScript in a SWF is permitted to call JavaScript in the HTML page that contains it.',
-    'bgcolor'                   => 'Background Color',
-    'bgcolor_help'              => 'Sets the background color for the playback window',
-    'clsid'                     => 'Object Class ID',
-    'codebase'                  => 'Codebase',
-    'playcount'                 => 'Playcount',
-    'playcount_help'            => 'How many times the file should be repeated',
+    'sameDomain'                => 'Gleiche Domain',
+    'never'                     => 'Nie',
+    'asa'                       => 'Skriptzugriff erlauben',
+    'asa_help'                  => 'Dieser Parameter steuert, ob ActionScript in einer SWF-Datei JavaScript in der umgebenden HTML-Seite aufrufen darf.',
+    'bgcolor'                   => 'Hintergrundfarbe',
+    'bgcolor_help'              => 'Legt die Hintergrundfarbe des Wiedergabefensters fest',
+    'clsid'                     => 'Objektklassen-ID',
+    'codebase'                  => 'Codebasis',
+    'playcount'                 => 'Wiedergabeanzahl',
+    'playcount_help'            => 'Wie oft die Datei wiederholt werden soll',
     'loop'                      => 'Schleife',
-    'loop_help'                 => 'Continuous playback',
+    'loop_help'                 => 'Fortlaufende Wiedergabe',
     'wmp_options'               => 'Windows Media Player',
     'qt_options'                => 'QuickTime-Player',
-    'mp3_options'               => 'MP3 Playback',
-    'swf_options'               => 'Flash Media Player',
-    'swf_version_help'          => 'Flash version required to play this file.',
-    'resolution'                => 'Resolution (WxH)',
-    'resolution_x_help'         => 'Video X (Width) Resolution',
-    'resolution_y_help'         => 'Video Y (Height) Resolution',
-    'resolution_x'              => 'Video Width',
-    'resolution_y'              => 'Video Height',
+    'mp3_options'               => 'MP3-Wiedergabe',
+    'swf_options'               => 'Flash-Medienplayer',
+    'swf_version_help'          => 'Zum Abspielen dieser Datei erforderliche Flash-Version.',
+    'resolution'                => 'Auflösung (BxH)',
+    'resolution_x_help'         => 'Video-X-Auflösung (Breite)',
+    'resolution_y_help'         => 'Video-Y-Auflösung (Höhe)',
+    'resolution_x'              => 'Videobreite',
+    'resolution_y'              => 'Videohöhe',
 );
 
 $LANG_MG09 = array (
-    1                       => 'Sort Operation Completed Successfully',
-    2                       => 'Configuration Options Saved Successfully',
-    3                       => 'EXIF/IPTC Data Saved Successfully',
-    4                       => 'Album Defaults Saved Successfully',
-    5                       => 'Audio / Video Defaults Saved Successfully',
-    6                       => 'RSS Options Saved Successfully',
-    7                       => 'Feeds Successfully Rebuilt',
-    8                       => 'Selected Member Albums Have Been Successfully Removed',
-    9                       => 'System Configuration Successfully Reset to Installation Defaults',
-    10                      => 'Global Permissions Have Bueen Successfully Applied',
-    11                      => 'Global Album Attributes Have Been Successfully Applied',
-    12                      => 'Member Album Options Have Been Successfully Saved',
-    13                      => 'Selected Member Albums Successfully Created',
-    14                      => 'Member Album Gallery Flag Has Been Successfully Reset',
-    15                      => 'Selected Albums Have Been Successfully Deleted',
-    16                      => 'User Quotas Have Been Successfully Rebuilt',
-    17                      => 'Selected Files Have Been Removed',
+    1                       => 'Sortierung erfolgreich abgeschlossen',
+    2                       => 'Konfigurationsoptionen erfolgreich gespeichert',
+    3                       => 'EXIF/IPTC-Daten erfolgreich gespeichert',
+    4                       => 'Albumstandards erfolgreich gespeichert',
+    5                       => 'Audio-/Video-Standards erfolgreich gespeichert',
+    6                       => 'RSS-Optionen erfolgreich gespeichert',
+    7                       => 'Feeds erfolgreich neu erstellt',
+    8                       => 'Ausgewählte Mitgliederalben erfolgreich entfernt',
+    9                       => 'Systemkonfiguration erfolgreich auf Installationsstandards zurückgesetzt',
+    10                      => 'Globale Berechtigungen erfolgreich angewendet',
+    11                      => 'Globale Albumattribute erfolgreich angewendet',
+    12                      => 'Optionen für Mitgliederalben erfolgreich gespeichert',
+    13                      => 'Ausgewählte Mitgliederalben erfolgreich erstellt',
+    14                      => 'Galeriekennzeichen des Mitgliederalbums erfolgreich zurückgesetzt',
+    15                      => 'Ausgewählte Alben erfolgreich gelöscht',
+    16                      => 'Benutzerkontingente erfolgreich neu berechnet',
+    17                      => 'Ausgewählte Dateien wurden entfernt',
 );
 
 // profile
 
 $LANG_MG10 = array (
-    'last_10'          => 'Last 5 media items uploaded by user ',
-    'albums_owned'     => 'Gallery albums owned by user ',
+    'last_10'          => 'Letzte 5 vom Benutzer hochgeladene Medienelemente ',
+    'albums_owned'     => 'Galeriealben im Besitz des Benutzers ',
     'thumbnail'        => 'Vorschaubild',
-    'upload_date'      => 'Upload Date',
+    'upload_date'      => 'Upload-Datum',
     'title'            => 'Titel',
     'album'            => 'Album',
     'album_desc'       => 'Beschreibung'
 );
 
-$PLG_mediagallery_MESSAGE1 = 'Media Gallery plugin upgrade: Update completed successfully.';
-$PLG_mediagallery_MESSAGE2 = 'Media Gallery plugin upgrade: We are unable to update this version automatically. Refer to the plugin documentation.';
-$PLG_mediagallery_MESSAGE3 = 'Media Gallery plugin upgrade failed - check error.log';
-$PLG_mediagallery_MESSAGE4 = 'Thank you for rating the media item';
-$PLG_mediagallery_MESSAGE5 = 'Sorry, you have already rated this item';
-$PLG_mediagallery_MESSAGE6 = 'There was an error recording your rating - please notify the system administrator';
-$PLG_mediagallery_MESSAGE7 = 'There were no items found to process.';
-$PLG_mediagallery_MESSAGE10 = 'There was an error in replacing your media file, see error.log for details';
+$PLG_mediagallery_MESSAGE1 = 'Plugin-Upgrade der Mediengalerie: Aktualisierung erfolgreich abgeschlossen.';
+$PLG_mediagallery_MESSAGE2 = 'Plugin-Upgrade der Mediengalerie: Diese Version kann nicht automatisch aktualisiert werden. Siehe Plugin-Dokumentation.';
+$PLG_mediagallery_MESSAGE3 = 'Plugin-Upgrade der Mediengalerie fehlgeschlagen - error.log prüfen';
+$PLG_mediagallery_MESSAGE4 = 'Danke für die Bewertung des Medienelements';
+$PLG_mediagallery_MESSAGE5 = 'Du hast dieses Element bereits bewertet';
+$PLG_mediagallery_MESSAGE6 = 'Beim Speichern deiner Bewertung ist ein Fehler aufgetreten - informiere den Systemadministrator';
+$PLG_mediagallery_MESSAGE7 = 'Keine Elemente zur Verarbeitung gefunden.';
+$PLG_mediagallery_MESSAGE10 = 'Beim Ersetzen der Mediendatei ist ein Fehler aufgetreten; Details siehe error.log';
 
 // Messages for the plugin upgrade
 global $LANG32;
@@ -1290,14 +1290,14 @@ $LANG_confignames['mediagallery'] = array(
     'htmlallowed'               => 'HTML in Titeln erlauben',
     'usage_tracking'            => 'Nutzungsverfolgung',
     'whatsnew'                  => 'Geeklog-Liste „Neu“ aktivieren',
-    'title_length'              => 'What\'s New Title Length (byte)',
-    'whatsnew_time'             => 'What\'s New Time (day)',
+    'title_length'              => 'Titellänge bei Neuigkeiten (Byte)',
+    'whatsnew_time'             => 'Zeitraum für Neuigkeiten (Tage)',
     'preserve_filename'         => 'Ursprünglichen Dateinamen beibehalten',
     'discard_original'          => 'Originalbilder verwerfen',
     'verbose'                   => 'Ausführlich (Debug-Protokollierung)',
     'disable_whatsnew_comments' => 'Kommentare unter Neuigkeiten deaktivieren',
     'profile_hook'              => 'MG-Informationen im Benutzerprofil anzeigen',
-    'root_album_name'           => 'Root Album Name',
+    'root_album_name'           => 'Name des Stammalbums',
 
     'at_border'                 => 'Rahmen',
     'at_align'                  => 'Ausrichtung',
@@ -1318,10 +1318,10 @@ $LANG_confignames['mediagallery'] = array(
 
     'dfid'                      => 'Datumsformat',
     'displayblocks'             => 'Geeklog-Blöcke anzeigen',
-    'album_display_columns'     => 'Root Album Display Colums',
-    'album_display_rows'        => 'Root Album Display Rows',
+    'album_display_columns'     => 'Anzeigespalten des Stammalbums',
+    'album_display_rows'        => 'Anzeigezeilen des Stammalbums',
     'subalbum_select'           => 'Unteralben im Auswahlfeld anzeigen',
-    'indextheme'                => 'Root Album Theme',
+    'indextheme'                => 'Design des Stammalbums',
     'indexskin'                 => 'Design des Stammalbums',
     'jpg_orig_quality'          => 'JPG-Qualität des Originals',
     'jpg_quality'               => 'JPG-Anzeigequalität',
@@ -1347,9 +1347,9 @@ $LANG_confignames['mediagallery'] = array(
     'search_playback_type'      => 'Audio-/Video-Wiedergabetyp in Suchergebnissen',
     'search_enable_views'       => 'Aufrufzähler in Suchergebnissen anzeigen',
     'search_enable_rating'      => 'Bewertung in Suchergebnissen anzeigen',
-    'search_album_skin'         => 'Search Results Theme',
-    'search_frame_skin'         => 'Search Results Thumbnail Skin',
-    'search_tn_size'            => 'Search Results Thumbnail Size',
+    'search_album_skin'         => 'Design der Suchergebnisse',
+    'search_frame_skin'         => 'Vorschaubilddesign der Suchergebnisse',
+    'search_tn_size'            => 'Vorschaubildgröße der Suchergebnisse',
 
     'def_refresh_rate'          => 'Aktualisierungsrate',
     'def_item_limit'            => 'Maximale Elemente pro Zyklus',
@@ -1435,47 +1435,47 @@ $LANG_confignames['mediagallery'] = array(
     'ad_mod_group_id'           => 'Moderatorengruppe',
     'ad_email_mod'              => 'Moderatoren bei Einreichung per E-Mail benachrichtigen',
 
-    'ad_group_id'               => 'Group',
-    'ad_permissions'            => 'Album Default Permissions',
+    'ad_group_id'               => 'Gruppe',
+    'ad_permissions'            => 'Standardberechtigungen für Alben',
 
-    'asf_autostart'             => 'Auto Start',
-    'asf_enablecontextmenu'     => 'Enable Context Menu',
-    'asf_stretchtofit'          => 'Stretch to Fit',
-    'asf_showstatusbar'         => 'Show Status Bar',
-    'asf_uimode'                => 'User Interface Mode',
-    'asf_playcount'             => 'Playcount',
-    'asf_bgcolor'               => 'Background Color',
+    'asf_autostart'             => 'Automatischer Start',
+    'asf_enablecontextmenu'     => 'Kontextmenü aktivieren',
+    'asf_stretchtofit'          => 'Auf Größe strecken',
+    'asf_showstatusbar'         => 'Statusleiste anzeigen',
+    'asf_uimode'                => 'Benutzeroberflächenmodus',
+    'asf_playcount'             => 'Wiedergabeanzahl',
+    'asf_bgcolor'               => 'Hintergrundfarbe',
     'asf_width'                 => 'Breite',
     'asf_height'                => 'Höhe',
 
-    'mov_autoref'               => 'Auto Ref',
-    'mov_autoplay'              => 'Auto Start',
-    'mov_controller'            => 'Controller',
-    'mov_kioskmode'             => 'Kiosk Mode',
-    'mov_scale'                 => 'Scale',
+    'mov_autoref'               => 'Automatische Referenz',
+    'mov_autoplay'              => 'Automatischer Start',
+    'mov_controller'            => 'Steuerung',
+    'mov_kioskmode'             => 'Kioskmodus',
+    'mov_scale'                 => 'Skalierung',
     'mov_loop'                  => 'Schleife',
-    'mov_bgcolor'               => 'Background Color',
+    'mov_bgcolor'               => 'Hintergrundfarbe',
     'mov_width'                 => 'Breite',
     'mov_height'                => 'Höhe',
 
-    'mp3_autostart'             => 'Auto Start',
-    'mp3_enablecontextmenu'     => 'Enable Context Menu',
-    'mp3_showstatusbar'         => 'Show Status Bar',
+    'mp3_autostart'             => 'Automatischer Start',
+    'mp3_enablecontextmenu'     => 'Kontextmenü aktivieren',
+    'mp3_showstatusbar'         => 'Statusleiste anzeigen',
     'mp3_loop'                  => 'Schleife',
-    'mp3_uimode'                => 'User Interface Mode',
+    'mp3_uimode'                => 'Benutzeroberflächenmodus',
 
-    'swf_play'                  => 'Auto Start',
-    'swf_menu'                  => 'Menu',
-    'swf_scale'                 => 'Scale',
-    'swf_wmode'                 => 'Window Mode',
-    'swf_allowscriptaccess'     => 'Allow Script Access',
+    'swf_play'                  => 'Automatischer Start',
+    'swf_menu'                  => 'Menü',
+    'swf_scale'                 => 'Skalierung',
+    'swf_wmode'                 => 'Fenstermodus',
+    'swf_allowscriptaccess'     => 'Skriptzugriff erlauben',
     'swf_quality'               => 'Qualität',
     'swf_loop'                  => 'Schleife',
-    'swf_bgcolor'               => 'Background Color',
+    'swf_bgcolor'               => 'Hintergrundfarbe',
     'swf_width'                 => 'Breite',
     'swf_height'                => 'Höhe',
-    'swf_flashvars'             => 'Flash Variables',
-    'swf_version'               => 'Codebase',
+    'swf_flashvars'             => 'Flash-Variablen',
+    'swf_version'               => 'Codebasis',
 
     'member_albums'             => 'Mitgliederalben aktivieren',
     'allow_remote'              => 'Remote-Benutzer aktivieren',
@@ -1517,14 +1517,14 @@ $LANG_confignames['mediagallery'] = array(
     'member_mod_group_id'       => 'Moderatorengruppe',
     'member_email_mod'          => 'Moderatoren bei Einreichung per E-Mail benachrichtigen',
 
-    'member_permissions'        => 'Album Default Permissions',
+    'member_permissions'        => 'Standardberechtigungen für Alben',
 
     'display_rows'              => 'Anzeigezeilen',
-    'display_columns'           => 'Display Colums',
+    'display_columns'           => 'Anzeigespalten',
 );
 
 $LANG_configsubgroups['mediagallery'] = array(
-    'sg_main'  => 'System Settings',
+    'sg_main'  => 'Systemeinstellungen',
     'sg_album' => 'Albumstandards',
     'sg_av'    => 'Audio-/Video-Standards',
     'sg_member_album' => 'Mitgliederalben',
@@ -1537,22 +1537,22 @@ $LANG_tab['mediagallery'] = array(
     'tab_userprefs'    => 'Benutzereinstellungen',
     'tab_graphics'     => 'Grafikpaket',
 
-    'tab_album'        => 'Album Default Settings',
+    'tab_album'        => 'Album-Standardeinstellungen',
     'tab_watermark'    => 'Wasserzeichen',
     'tab_allowedmediatypes' => 'Erlaubte Medientypen',
     'tab_useruploads'  => 'Benutzer-Uploads',
-    'tab_accessrights' => 'Access Rights',
+    'tab_accessrights' => 'Zugriffsrechte',
 
     'tab_wmedia'       => 'Windows Media',
     'tab_quicktime'    => 'QuickTime',
     'tab_mp3'          => 'MP3',
-    'tab_flashmedia'   => 'Flash Media',
+    'tab_flashmedia'   => 'Flash-Medien',
 
     'tab_member_albums' => 'Mitgliederalben',
     'tab_member_allowedmediatypes' => 'Erlaubte Medientypen',
     'tab_member_album_attributes' => 'Albumattribute',
     'tab_member_useruploads'  => 'Benutzer-Uploads',
-    'tab_member_accessrights' => 'Access Rights',
+    'tab_member_accessrights' => 'Zugriffsrechte',
 
 );
 
@@ -1576,19 +1576,19 @@ $LANG_fs['mediagallery'] = array(
     'fs_other_format' => 'Andere',
 
     'fs_useruploads'  => 'Benutzer-Uploads',
-    'fs_accessrights' => 'Access Rights',
-    'fs_permissions'  => 'Album Permissions',
+    'fs_accessrights' => 'Zugriffsrechte',
+    'fs_permissions'  => 'Albumberechtigungen',
 
     'fs_wmedia'       => 'Windows Media',
     'fs_quicktime'    => 'QuickTime',
     'fs_mp3'          => 'MP3',
-    'fs_flashmedia'   => 'Flash Media',
+    'fs_flashmedia'   => 'Flash-Medien',
 
     'fs_member_albums' => 'Mitgliederalben',
     'fs_member_allowedmediatypes' => 'Erlaubte Medientypen',
     'fs_member_album_attributes' => 'Albumattribute',
     'fs_member_useruploads'  => 'Benutzer-Uploads',
-    'fs_member_permissions' => 'Member Album Permissions',
+    'fs_member_permissions' => 'Berechtigungen für Mitgliederalben',
 );
 
 // Note: entries 0, 1, and 12 are the same as in $LANG_configselects['Core']
@@ -1596,9 +1596,9 @@ $LANG_configselects['mediagallery'] = array(
     0 => array('True' => 1, 'False' => 0),
     1 => array('True' => TRUE, 'False' => FALSE),
     5 => array('Top Of Page' => 1, 'After Featured Story' => 2, 'Bottom Of Page' => 3),
-    6 => array('Left Blocks' => 'leftblocks', 'Right Blocks' => 'rightblocks', 'All Blocks' => 'allblocks', 'No Blocks' => 'noblocks'),
-    7 => array('None' => 'none', 'Auto' => 'auto', 'Left' => 'left', 'Right' => 'right', 'Center' => 'center'),
-    8 => array('Thumbnail' => 'tn', 'Display Image' => 'disp', 'Original Image' => 'orig'),
+    6 => array('Left Blocks' => 'linkebloecke', 'Right Blocks' => 'rechtebloecke', 'All Blocks' => 'allebloecke', 'No Blocks' => 'keinebloecke'),
+    7 => array('None' => 'keine', 'Auto' => 'automatisch', 'Left' => 'links', 'Right' => 'rechts', 'Center' => 'mitte'),
+    8 => array('Thumbnail' => 'vorschau', 'Display Image' => 'anzeige', 'Original Image' => 'original'),
     9 => array('True' => 1, 'False' => 0, 'Lightbox ' => 2),
     10 => array($LANG_MG01['left_blocks_only'] => 0, $LANG_MG01['right_blocks_only'] => 1, $LANG_MG01['left_right_blocks'] => 2, $LANG_MG01['none'] => 3),
     11 => array($LANG_MG01['include_small'] => 0, $LANG_MG01['include_medium'] => 1, $LANG_MG01['include_large'] => 2, $LANG_MG01['include_custom'] => 3,
@@ -1618,12 +1618,12 @@ $LANG_configselects['mediagallery'] = array(
     22 => array('10%' => 10, '20%' => 20, '30%' => 30, '40%' => 40, '50%' => 50, '60%' => 60, '70%' => 70, '80%' => 80, '90%' => 90),
     23 => array($LANG_MG01['top_left'] => 1, $LANG_MG01['top_center'] => 2, $LANG_MG01['top_right'] => 3, $LANG_MG01['middle_left'] => 4, $LANG_MG01['middle_center'] => 5,
                 $LANG_MG01['middle_right'] => 6, $LANG_MG01['bottom_left'] => 7, $LANG_MG01['bottom_center'] => 8, $LANG_MG01['bottom_right'] => 9),
-    24 => array('None' => 'none', 'Mini' => 'mini', 'Full' => 'full'),
-    25 => array($LANG_MG07['to_fit'] => 'tofit', $LANG_MG07['aspect'] => 'aspect', $LANG_MG07['normal_size'] => '1'),
-    26 => array($LANG_MG07['showall'] => 'showall', $LANG_MG07['noborder'] => 'noborder', $LANG_MG07['exactfit'] => 'exactfit'),
-    27 => array($LANG_MG07['window'] => 'window', $LANG_MG07['opaque'] => 'opaque', $LANG_MG07['transparent'] => 'transparent'),
-    28 => array($LANG_MG07['always'] => 'always', $LANG_MG07['sameDomain'] => 'sameDomain', $LANG_MG07['never'] => 'never'),
-    29 => array($LANG_MG07['low'] => 'low', $LANG_MG07['high'] => 'high'),
+    24 => array('None' => 'keine', 'Mini' => 'mini', 'Full' => 'vollständig'),
+    25 => array($LANG_MG07['to_fit'] => 'einpassen', $LANG_MG07['aspect'] => 'seitenverhaeltnis', $LANG_MG07['normal_size'] => '1'),
+    26 => array($LANG_MG07['showall'] => 'allesanzeigen', $LANG_MG07['noborder'] => 'ohnerahmen', $LANG_MG07['exactfit'] => 'exaktanpassen'),
+    27 => array($LANG_MG07['window'] => 'fenster', $LANG_MG07['opaque'] => 'undurchsichtig', $LANG_MG07['transparent'] => 'transparent'),
+    28 => array($LANG_MG07['always'] => 'immer', $LANG_MG07['sameDomain'] => 'gleicheDomain', $LANG_MG07['never'] => 'nie'),
+    29 => array($LANG_MG07['low'] => 'niedrig', $LANG_MG07['high'] => 'hoch'),
     30 => array('RSS2.0' => 'RSS2.0', 'RSS1.0' => 'RSS1.0', 'RSS0.91' => 'RSS0.91', 'PIE0.1' => 'PIE0.1', 'OPML' => 'OPML', 'ATOM' => 'ATOM', 'ATOM0.3' => 'ATOM0.3'),
 
     31 => array($LANG_MG01['small'] => 0, $LANG_MG01['medium'] => 1, $LANG_MG01['large'] => 2),
@@ -1636,77 +1636,77 @@ if (isset($_MG_CONF, $_MG_CONF['custom_image_width'], $_MG_CONF['custom_image_he
 
 // MediaGallery 1.8.0 template accessibility labels
 $LANG_MG03['aria_breadcrumb'] = 'Breadcrumb';
-$LANG_MG03['aria_album_actions'] = 'Album actions';
-$LANG_MG03['aria_album_pagination'] = 'Album pagination';
-$LANG_MG03['aria_album_pagination_info'] = 'Album pagination and information';
-$LANG_MG03['aria_media_actions'] = 'Media actions and navigation';
-$LANG_MG03['media_id_label'] = 'Media ID';
-$LANG_MG03['aria_search_results_navigation'] = 'Search results navigation';
-$LANG_MG03['aria_album_navigation'] = 'Album navigation';
-$LANG_MG03['aria_media_list'] = 'Media list';
+$LANG_MG03['aria_album_actions'] = 'Albumaktionen';
+$LANG_MG03['aria_album_pagination'] = 'Albumpaginierung';
+$LANG_MG03['aria_album_pagination_info'] = 'Albumpaginierung und Informationen';
+$LANG_MG03['aria_media_actions'] = 'Medienaktionen und Navigation';
+$LANG_MG03['media_id_label'] = 'Medien-ID';
+$LANG_MG03['aria_search_results_navigation'] = 'Navigation der Suchergebnisse';
+$LANG_MG03['aria_album_navigation'] = 'Albumnavigation';
+$LANG_MG03['aria_media_list'] = 'Medienliste';
 
-$LANG_MG01['admin_help'] = 'MediaGallery administration gives you quick access to albums, member galleries, maintenance tasks, reports and plugin configuration.';
+$LANG_MG01['admin_help'] = 'Die MediaGallery-Verwaltung bietet schnellen Zugriff auf Alben, Mitgliedergalerien, Wartungsaufgaben, Berichte und Plugin-Konfiguration.';
 
 
-$LANG_MG01['manage_albums'] = 'Manage Albums';
-$LANG_MG01['manage_albums_help'] = 'Manage albums, media items and the gallery structure.';
+$LANG_MG01['manage_albums'] = 'Alben verwalten';
+$LANG_MG01['manage_albums_help'] = 'Alben, Medienelemente und Galeriestruktur verwalten.';
 $LANG_MG01['overview'] = 'Übersicht';
-$LANG_MG01['media_items'] = 'Media items';
-$LANG_MG01['pending_media'] = 'Pending media';
+$LANG_MG01['media_items'] = 'Medienelemente';
+$LANG_MG01['pending_media'] = 'Ausstehende Medien';
 $LANG_MG01['status_ok'] = 'OK';
-$LANG_MG01['status_check'] = 'Check';
-$LANG_MG01['media_storage'] = 'Media storage';
-$LANG_MG01['content'] = 'Content';
+$LANG_MG01['status_check'] = 'Prüfen';
+$LANG_MG01['media_storage'] = 'Medienspeicher';
+$LANG_MG01['content'] = 'Inhalt';
 $LANG_MG01['content_categories'] = 'Kategorien';
-$LANG_MG01['content_categories_help'] = 'Organize and maintain MediaGallery categories.';
-$LANG_MG01['member_albums_help'] = 'Manage member galleries, quotas and related album tools.';
-$LANG_MG01['manage'] = 'Manage';
-$LANG_MG01['maintenance_reports'] = 'Maintenance & reports';
-$LANG_MG01['maintenance_tools'] = 'Batch & maintenance';
-$LANG_MG01['maintenance_tools_help'] = 'Run thumbnail, resize, quota, sorting and batch maintenance tools.';
-$LANG_MG01['reports_tools'] = 'Reports & tools';
-$LANG_MG01['reports_tools_help'] = 'Open usage reports, EXIF tools, RSS rebuilds and environment checks.';
-$LANG_MG01['open_tools'] = 'Open tools';
+$LANG_MG01['content_categories_help'] = 'MediaGallery-Kategorien organisieren und pflegen.';
+$LANG_MG01['member_albums_help'] = 'Mitgliedergalerien, Kontingente und zugehörige Albumwerkzeuge verwalten.';
+$LANG_MG01['manage'] = 'Verwalten';
+$LANG_MG01['maintenance_reports'] = 'Wartung und Berichte';
+$LANG_MG01['maintenance_tools'] = 'Stapel und Wartung';
+$LANG_MG01['maintenance_tools_help'] = 'Werkzeuge für Vorschaubilder, Skalierung, Kontingente, Sortierung und Stapelwartung ausführen.';
+$LANG_MG01['reports_tools'] = 'Berichte und Werkzeuge';
+$LANG_MG01['reports_tools_help'] = 'Nutzungsberichte, EXIF-Werkzeuge, RSS-Neuaufbau und Umgebungsprüfungen öffnen.';
+$LANG_MG01['open_tools'] = 'Werkzeuge öffnen';
 
 
 // MediaGallery 1.8 modern browser uploader
-$LANG_MG03['upload_drop_title'] = "Drop files here to upload";
-$LANG_MG03['upload_drop_help'] = "Add several files at once by dragging them here or by choosing them from your computer.";
-$LANG_MG03['upload_choose_files'] = "Choose files";
-$LANG_MG03['upload_queue'] = "Upload queue";
-$LANG_MG03['upload_remove'] = "Remove";
-$LANG_MG03['upload_file_details'] = "File details";
-$LANG_MG03['upload_files_selected'] = "files selected";
-$LANG_MG03['upload_noscript'] = "Multiple file selection is available. Drag-and-drop and the editable upload queue require JavaScript.";
+$LANG_MG03['upload_drop_title'] = "Dateien zum Hochladen hier ablegen";
+$LANG_MG03['upload_drop_help'] = "Füge mehrere Dateien gleichzeitig durch Ziehen hierher oder Auswahl vom Computer hinzu.";
+$LANG_MG03['upload_choose_files'] = "Dateien auswählen";
+$LANG_MG03['upload_queue'] = "Upload-Warteschlange";
+$LANG_MG03['upload_remove'] = "Entfernen";
+$LANG_MG03['upload_file_details'] = "Dateidetails";
+$LANG_MG03['upload_files_selected'] = "Dateien ausgewählt";
+$LANG_MG03['upload_noscript'] = "Mehrfachauswahl ist möglich. Drag-and-drop und die bearbeitbare Upload-Warteschlange benötigen JavaScript.";
 
 
 // MediaGallery 1.8 media manager labels
-$LANG_MG01['manager_select_media'] = "Select media";
-$LANG_MG01['manager_album_cover'] = "Album cover";
-$LANG_MG01['manager_slideshow'] = "Slideshow";
+$LANG_MG01['manager_select_media'] = "Medien auswählen";
+$LANG_MG01['manager_album_cover'] = "Albumcover";
+$LANG_MG01['manager_slideshow'] = "Diashow";
 
 
 // MediaGallery 1.8 non-image manager states
-$LANG_MG01['manager_cover_unavailable'] = "Unavailable without a thumbnail";
-$LANG_MG01['manager_slideshow_unavailable'] = "Images only";
+$LANG_MG01['manager_cover_unavailable'] = "Ohne Vorschaubild nicht verfügbar";
+$LANG_MG01['manager_slideshow_unavailable'] = "Nur Bilder";
 
 
 // MediaGallery 1.8 media access editor
-$LANG_MG01['media_access_ownership'] = "Access & ownership";
-$LANG_MG01['media_access_inherited'] = "Access rights for this media are inherited from album “%s”.";
-$LANG_MG01['media_edit_album_rights'] = "Edit album access rights";
+$LANG_MG01['media_access_ownership'] = "Zugriff und Eigentum";
+$LANG_MG01['media_access_inherited'] = "Die Zugriffsrechte dieses Mediums werden vom Album „%s“ geerbt.";
+$LANG_MG01['media_edit_album_rights'] = "Zugriffsrechte des Albums bearbeiten";
 
 
 // MediaGallery 1.8 storage diagnostics
 $LANG_MG01['core_path_images'] = "Geeklog path_images";
 $LANG_MG01['core_images_url'] = "Geeklog images_url";
-$LANG_MG01['persistent_storage_files'] = "Persistent storage files";
-$LANG_MG01['legacy_storage_user_files'] = "Legacy storage user files";
-$LANG_MG01['legacy_storage_files_warning'] = "Unexpected on a fresh 1.8 installation";
-$LANG_MG01['local_media_db_rows'] = "Local media rows in database";
-$LANG_MG01['image_original_files'] = "Readable image originals";
-$LANG_MG01['image_display_files'] = "Readable display images";
-$LANG_MG01['image_thumbnail_files'] = "Readable thumbnails";
-$LANG_MG01['missing_media_files'] = "Missing media IDs";
+$LANG_MG01['persistent_storage_files'] = "Dateien im persistenten Speicher";
+$LANG_MG01['legacy_storage_user_files'] = "Benutzerdateien im alten Speicher";
+$LANG_MG01['legacy_storage_files_warning'] = "Bei einer neuen 1.8-Installation unerwartet";
+$LANG_MG01['local_media_db_rows'] = "Lokale Medienzeilen in der Datenbank";
+$LANG_MG01['image_original_files'] = "Lesbare Bildoriginale";
+$LANG_MG01['image_display_files'] = "Lesbare Anzeigebilder";
+$LANG_MG01['image_thumbnail_files'] = "Lesbare Vorschaubilder";
+$LANG_MG01['missing_media_files'] = "Fehlende Medien-IDs";
 
 ?>
