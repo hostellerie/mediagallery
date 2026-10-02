@@ -1257,6 +1257,20 @@ $LANG_MG09 = array (
     17                      => '選択されたファイルを削除しました。',
 );
 
+
+// MediaGallery 1.8/1.9 additions
+$LANG_MG03['aria_breadcrumb'] = 'パンくずリスト';
+$LANG_MG03['aria_album_actions'] = 'アルバム操作';
+$LANG_MG03['aria_album_pagination'] = 'アルバムのページ送り';
+$LANG_MG03['aria_album_pagination_info'] = 'アルバムのページ送りと情報';
+$LANG_MG03['aria_media_actions'] = 'メディア操作とナビゲーション';
+$LANG_MG03['media_id_label'] = 'メディア ID';
+$LANG_MG03['aria_search_results_navigation'] = '検索結果のナビゲーション';
+$LANG_MG03['aria_album_navigation'] = 'アルバムナビゲーション';
+$LANG_MG03['aria_media_list'] = 'メディア一覧';
+$LANG_MG01['admin_help'] = 'MediaGallery 管理では、アルバム、メンバーギャラリー、メンテナンス、レポート、プラグイン設定へすばやくアクセスできます。';
+$LANG_MG01['upload_usage'] = '<p>保存先アルバムを選択し、「アップロード」をクリックしてファイルブラウザーを表示します。複数のファイルを選択するには Ctrl キーを押しながらクリックします。範囲を選択するには最初のファイルをクリックし、Shift キーを押しながら最後のファイルをクリックします。「開く」をクリックしてアップロードを開始します。</p>';
+
 // profile
 
 $LANG_MG10 = array (
