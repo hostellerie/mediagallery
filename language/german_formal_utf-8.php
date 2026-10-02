@@ -194,24 +194,24 @@ $LANG_MG01 = array (
     'recheck'                   => 'Erneut prüfen',
     'mg_directories'            => 'Mediengalerie-Ordner    ',
     'mg_dir_structure'          => 'Mediengalerie-Ordnerstruktur',
-    'media_storage'             => 'Persistent media storage',
-    'active_media_path'         => 'Active media path',
-    'expected_media_path'       => 'Expected media path',
-    'active_media_url'          => 'Active media URL',
-    'media_storage_root'        => 'Storage root',
-    'plugin_media_assets'       => 'Plugin image resources',
-    'valid_media_assets'        => '%d of %d required images are valid',
-    'storage_unresolved'        => 'Unable to resolve the persistent storage target',
-    'storage_path_mismatch'     => 'Active path does not match the expected path',
-    'storage_root_invalid'      => 'Directory missing, unreadable or not writable',
-    'invalid_media_asset'       => 'Missing, unreadable or invalid image',
-    'storage_operation'         => 'Storage synchronization',
-    'repair_media_storage'      => 'Synchronize media storage',
-    'repair_media_storage_help' => 'Copies and verifies historical user media (originals, display images, thumbnails and covers) in the persistent images directory. Plugin images remain in the plugin directory and source files are retained.',
-    'repair_media_storage_success' => 'User media synchronization completed successfully.',
-    'media_storage_current'      => 'No historical user media needs to be synchronized.',
-    'repair_media_storage_failed' => 'Synchronization failed. See the Geeklog error log for the affected path.',
-    'invalid_security_token'    => 'The security token is invalid or has expired. Reload this page and try again.',
+    'media_storage'             => 'Persistenter Medienspeicher',
+    'active_media_path'         => 'Aktiver Medienpfad',
+    'expected_media_path'       => 'Erwarteter Medienpfad',
+    'active_media_url'          => 'Aktive Medien-URL',
+    'media_storage_root'        => 'Speicherwurzel',
+    'plugin_media_assets'       => 'Bildressourcen des Plugins',
+    'valid_media_assets'        => '%d von %d erforderlichen Bildern sind gültig',
+    'storage_unresolved'        => 'Das Ziel des persistenten Speichers kann nicht ermittelt werden',
+    'storage_path_mismatch'     => 'Der aktive Pfad entspricht nicht dem erwarteten Pfad',
+    'storage_root_invalid'      => 'Verzeichnis fehlt, ist nicht lesbar oder nicht beschreibbar',
+    'invalid_media_asset'       => 'Bild fehlt, ist nicht lesbar oder ungültig',
+    'storage_operation'         => 'Speichersynchronisierung',
+    'repair_media_storage'      => 'Medienspeicher synchronisieren',
+    'repair_media_storage_help' => 'Kopiert und überprüft historische Benutzermedien (Originale, Anzeigebilder, Vorschaubilder und Cover) im persistenten Bilderverzeichnis. Plugin-Bilder bleiben im Plugin-Verzeichnis und Quelldateien werden beibehalten.',
+    'repair_media_storage_success' => 'Die Synchronisierung der Benutzermedien wurde erfolgreich abgeschlossen.',
+    'media_storage_current'      => 'Es müssen keine historischen Benutzermedien synchronisiert werden.',
+    'repair_media_storage_failed' => 'Die Synchronisierung ist fehlgeschlagen. Prüfen Sie das Geeklog-Fehlerprotokoll für den betroffenen Pfad.',
+    'invalid_security_token'    => 'Das Sicherheitstoken ist ungültig oder abgelaufen. Laden Sie diese Seite neu und versuchen Sie es erneut.',
     'ok'                        => 'OK',
     'not_found'                 => 'Nicht gefunden',
     'not_writable'              => 'Ordner NICHT beschreibbar',
@@ -369,32 +369,32 @@ $LANG_MG01 = array (
     'recurse'                   => 'inkl. Unterordner',
     'include_ss'                => 'inkl. Diashow',
     'original_filename'         => 'Originaler Dateiname:',
-    'upload_usage'              => "<p>Select the destination Album, and then click 'Upload' to display the file browser.  To select multiple items, hold down the 'Ctrl' key while clicking on multiple individual files. To select a range of items, click on the first file, and then while holding down the 'Shift' key, click on the last file in the range.    Click 'Open' to begin the upload.</p>",
+    'upload_usage'              => "<p>Wählen Sie das Zielalbum und klicken Sie anschließend auf „Upload“, um den Dateidialog zu öffnen. Für mehrere einzelne Dateien halten Sie Strg gedrückt. Für einen Bereich wählen Sie die erste Datei und anschließend mit gedrückter Umschalttaste die letzte Datei. Klicken Sie auf „Öffnen“, um den Upload zu starten.</p>",
     'upload_media'              => 'Medienobjekt hochladen',
-    'upload_pending'            => 'Pending...',
-    'upload_q_too_many'         => 'You have attempted to queue too many files.\n',
-    'upload_q_limit'            => 'You have reached the upload limit.',
-    'upload_q_select'           => 'You may select',
-    'upload_q_up_to'            => 'up to',
-    'upload_files'              => 'files',
-    'upload_one_file'           => 'one file',
-    'upload_err_filesize'       => 'File is too large',
-    'upload_err_zerosize'       => 'File is zero bytes in length',
-    'upload_err_filetype'       => 'File is invalid type',
-    'upload_err_general'        => 'File upload error',
-    'upload_err_album_id'       => 'Unable to determine destination album',
-    'upload_err_session'        => 'Session information unavailable - Please reload the page',
-    'upload_uploading'          => 'Uploading..',
-    'upload_complete'           => 'Complete',
-    'upload_error'              => 'Upload Error:',
-    'upload_failed'             => 'Upload Failed',
-    'upload_io_error'           => 'Server (IO) Error',
-    'upload_sec_error'          => 'Security Error',
-    'upload_limit_exceeded'     => 'Upload Limit Exceeded',
-    'upload_fail_validation'    => 'Failed Validation.  Upload skipped.',
-    'upload_cancelled'          => 'Cancelled',
-    'upload_stopped'            => 'Stopped',
-    'upload_unhandled'          => 'Unhandled Error:',
+    'upload_pending'            => 'Ausstehend...',
+    'upload_q_too_many'         => 'Sie haben versucht, zu viele Dateien in die Warteschlange aufzunehmen.\\n',
+    'upload_q_limit'            => 'Sie haben das Upload-Limit erreicht.',
+    'upload_q_select'           => 'Sie können auswählen',
+    'upload_q_up_to'            => 'bis zu',
+    'upload_files'              => 'Dateien',
+    'upload_one_file'           => 'eine Datei',
+    'upload_err_filesize'       => 'Die Datei ist zu groß',
+    'upload_err_zerosize'       => 'Die Datei ist 0 Byte groß',
+    'upload_err_filetype'       => 'Der Dateityp ist ungültig',
+    'upload_err_general'        => 'Fehler beim Hochladen der Datei',
+    'upload_err_album_id'       => 'Das Zielalbum kann nicht ermittelt werden',
+    'upload_err_session'        => 'Sitzungsinformationen sind nicht verfügbar. Laden Sie die Seite neu.',
+    'upload_uploading'          => 'Wird hochgeladen...',
+    'upload_complete'           => 'Abgeschlossen',
+    'upload_error'              => 'Upload-Fehler:',
+    'upload_failed'             => 'Upload fehlgeschlagen',
+    'upload_io_error'           => 'Serverfehler (E/A)',
+    'upload_sec_error'          => 'Sicherheitsfehler',
+    'upload_limit_exceeded'     => 'Upload-Limit überschritten',
+    'upload_fail_validation'    => 'Validierung fehlgeschlagen. Upload wurde übersprungen.',
+    'upload_cancelled'          => 'Abgebrochen',
+    'upload_stopped'            => 'Gestoppt',
+    'upload_unhandled'          => 'Unbehandelter Fehler:',
     'upload_file'               => 'file',
     'upload_uploaded'           => 'uploaded',
     'upload_types_desc'         => 'Selected File Types',
@@ -829,7 +829,7 @@ $LANG_MG03 = array (
     'member_album_terms'    => 'Indem Sie akzeptieren, bestätigen Sie, daß Sie sich an die Regeln des Seiten-Admins hälten. Die Veröffentlichung von Bildmaterial, welches gegen Gesetze oder moralische Grundsätze verstößt, sowie der allgemeine Missbrauch dieses Albums kann mit der Löschung Ihres Accounts geahndet werden.',
     'agree'                 => 'Akzeptieren',
     'existing_member_album' => 'Es scheint, dass Sie bereits ein Mitgliederalbum haben. Sollte das ein Fehler sein, kontaktieren Sie bitte den Seiten-Admin.',
-    'member_album_signup'   => 'Ihr eigenes Album in der Mediengalerie einrichten.<br /><br /><center><a href="%s">Hier bestätigen.</a></center>' . XHTML . '><br' . XHTML . '><center><a href="%s">Sign Up Here</a></center>',
+    'member_album_signup'   => 'Erstellen Sie Ihr eigenes Album in unserer Media Gallery.<br' . XHTML . '><br' . XHTML . '><center><a href="%s">Hier registrieren</a></center>',
     'album_id_display'      => 'Alben-ID: ',
     'upload_help'           => 'Dateien direkt von Ihrem Computer hochladen. Geben Sie den kompletten Pfad zu der Datei, und optional Titel/Beschreibung/Schlüsselwörter in den Feldern unten, ein.',
     'upload_size'           => '<b>Hinweis:</b> Sie können bis zu %s MB auf einmal hochladen. Einzelne Dateien dürfen nicht größer als %s MB sein. Möchten Sie mehr als das hochladen, dann laden Sie die Dateien seperat hoch, unter Verwendung eines anderen Upload-Formats, oder fragen Sie den System-Admin, größere Uploads zu erlauben.',
@@ -1635,78 +1635,78 @@ if (isset($_MG_CONF, $_MG_CONF['custom_image_width'], $_MG_CONF['custom_image_he
 }
 
 // MediaGallery 1.8.0 template accessibility labels
-$LANG_MG03['aria_breadcrumb'] = 'Breadcrumb';
-$LANG_MG03['aria_album_actions'] = 'Album actions';
-$LANG_MG03['aria_album_pagination'] = 'Album pagination';
-$LANG_MG03['aria_album_pagination_info'] = 'Album pagination and information';
-$LANG_MG03['aria_media_actions'] = 'Media actions and navigation';
-$LANG_MG03['media_id_label'] = 'Media ID';
-$LANG_MG03['aria_search_results_navigation'] = 'Search results navigation';
-$LANG_MG03['aria_album_navigation'] = 'Album navigation';
-$LANG_MG03['aria_media_list'] = 'Media list';
+$LANG_MG03['aria_breadcrumb'] = 'Brotkrümelnavigation';
+$LANG_MG03['aria_album_actions'] = 'Albumaktionen';
+$LANG_MG03['aria_album_pagination'] = 'Albumnavigation';
+$LANG_MG03['aria_album_pagination_info'] = 'Albumnavigation und Informationen';
+$LANG_MG03['aria_media_actions'] = 'Medienaktionen und Navigation';
+$LANG_MG03['media_id_label'] = 'Medien-ID';
+$LANG_MG03['aria_search_results_navigation'] = 'Navigation der Suchergebnisse';
+$LANG_MG03['aria_album_navigation'] = 'Albumnavigation';
+$LANG_MG03['aria_media_list'] = 'Medienliste';
 
-$LANG_MG01['admin_help'] = 'MediaGallery administration gives you quick access to albums, member galleries, maintenance tasks, reports and plugin configuration.';
+$LANG_MG01['admin_help'] = 'Die MediaGallery-Verwaltung bietet schnellen Zugriff auf Alben, Mitgliedergalerien, Wartungsaufgaben, Berichte und die Plugin-Konfiguration.';
 
 
-$LANG_MG01['manage_albums'] = 'Manage Albums';
-$LANG_MG01['manage_albums_help'] = 'Manage albums, media items and the gallery structure.';
-$LANG_MG01['overview'] = 'Overview';
-$LANG_MG01['media_items'] = 'Media items';
-$LANG_MG01['pending_media'] = 'Pending media';
+$LANG_MG01['manage_albums'] = 'Alben verwalten';
+$LANG_MG01['manage_albums_help'] = 'Verwalten Sie Alben, Medienelemente und die Galeriestruktur.';
+$LANG_MG01['overview'] = 'Übersicht';
+$LANG_MG01['media_items'] = 'Medienelemente';
+$LANG_MG01['pending_media'] = 'Ausstehende Medien';
 $LANG_MG01['status_ok'] = 'OK';
-$LANG_MG01['status_check'] = 'Check';
+$LANG_MG01['status_check'] = 'Prüfen';
 $LANG_MG01['media_storage'] = 'Media storage';
-$LANG_MG01['content'] = 'Content';
-$LANG_MG01['content_categories'] = 'Categories';
-$LANG_MG01['content_categories_help'] = 'Organize and maintain MediaGallery categories.';
-$LANG_MG01['member_albums_help'] = 'Manage member galleries, quotas and related album tools.';
-$LANG_MG01['manage'] = 'Manage';
-$LANG_MG01['maintenance_reports'] = 'Maintenance & reports';
-$LANG_MG01['maintenance_tools'] = 'Batch & maintenance';
-$LANG_MG01['maintenance_tools_help'] = 'Run thumbnail, resize, quota, sorting and batch maintenance tools.';
-$LANG_MG01['reports_tools'] = 'Reports & tools';
-$LANG_MG01['reports_tools_help'] = 'Open usage reports, EXIF tools, RSS rebuilds and environment checks.';
-$LANG_MG01['open_tools'] = 'Open tools';
+$LANG_MG01['content'] = 'Inhalte';
+$LANG_MG01['content_categories'] = 'Kategorien';
+$LANG_MG01['content_categories_help'] = 'Organisieren und pflegen Sie MediaGallery-Kategorien.';
+$LANG_MG01['member_albums_help'] = 'Verwalten Sie Mitgliedergalerien, Kontingente und zugehörige Albumwerkzeuge.';
+$LANG_MG01['manage'] = 'Verwalten';
+$LANG_MG01['maintenance_reports'] = 'Wartung und Berichte';
+$LANG_MG01['maintenance_tools'] = 'Stapelverarbeitung und Wartung';
+$LANG_MG01['maintenance_tools_help'] = 'Führen Sie Werkzeuge für Vorschaubilder, Größenänderung, Kontingente, Sortierung und Stapelwartung aus.';
+$LANG_MG01['reports_tools'] = 'Berichte und Werkzeuge';
+$LANG_MG01['reports_tools_help'] = 'Öffnen Sie Nutzungsberichte, EXIF-Werkzeuge, RSS-Neuaufbau und Umgebungsprüfungen.';
+$LANG_MG01['open_tools'] = 'Werkzeuge öffnen';
 
 
 // MediaGallery 1.8 modern browser uploader
-$LANG_MG03['upload_drop_title'] = "Drop files here to upload";
-$LANG_MG03['upload_drop_help'] = "Add several files at once by dragging them here or by choosing them from your computer.";
-$LANG_MG03['upload_choose_files'] = "Choose files";
-$LANG_MG03['upload_queue'] = "Upload queue";
-$LANG_MG03['upload_remove'] = "Remove";
-$LANG_MG03['upload_file_details'] = "File details";
-$LANG_MG03['upload_files_selected'] = "files selected";
-$LANG_MG03['upload_noscript'] = "Multiple file selection is available. Drag-and-drop and the editable upload queue require JavaScript.";
+$LANG_MG03['upload_drop_title'] = "Dateien zum Hochladen hier ablegen";
+$LANG_MG03['upload_drop_help'] = "Fügen Sie mehrere Dateien gleichzeitig hinzu, indem Sie sie hierher ziehen oder von Ihrem Computer auswählen.";
+$LANG_MG03['upload_choose_files'] = "Dateien auswählen";
+$LANG_MG03['upload_queue'] = "Upload-Warteschlange";
+$LANG_MG03['upload_remove'] = "Entfernen";
+$LANG_MG03['upload_file_details'] = "Dateidetails";
+$LANG_MG03['upload_files_selected'] = "Dateien ausgewählt";
+$LANG_MG03['upload_noscript'] = "Mehrfachauswahl ist verfügbar. Drag-and-drop und die bearbeitbare Upload-Warteschlange benötigen JavaScript.";
 
 
 // MediaGallery 1.8 media manager labels
-$LANG_MG01['manager_select_media'] = "Select media";
-$LANG_MG01['manager_album_cover'] = "Album cover";
-$LANG_MG01['manager_slideshow'] = "Slideshow";
+$LANG_MG01['manager_select_media'] = "Medien auswählen";
+$LANG_MG01['manager_album_cover'] = "Albumcover";
+$LANG_MG01['manager_slideshow'] = "Diashow";
 
 
 // MediaGallery 1.8 non-image manager states
-$LANG_MG01['manager_cover_unavailable'] = "Unavailable without a thumbnail";
-$LANG_MG01['manager_slideshow_unavailable'] = "Images only";
+$LANG_MG01['manager_cover_unavailable'] = "Ohne Vorschaubild nicht verfügbar";
+$LANG_MG01['manager_slideshow_unavailable'] = "Nur Bilder";
 
 
 // MediaGallery 1.8 media access editor
-$LANG_MG01['media_access_ownership'] = "Access & ownership";
-$LANG_MG01['media_access_inherited'] = "Access rights for this media are inherited from album “%s”.";
-$LANG_MG01['media_edit_album_rights'] = "Edit album access rights";
+$LANG_MG01['media_access_ownership'] = "Zugriff und Eigentum";
+$LANG_MG01['media_access_inherited'] = "Die Zugriffsrechte für dieses Medium werden vom Album „%s“ geerbt.";
+$LANG_MG01['media_edit_album_rights'] = "Album-Zugriffsrechte bearbeiten";
 
 
 // MediaGallery 1.8 storage diagnostics
 $LANG_MG01['core_path_images'] = "Geeklog path_images";
 $LANG_MG01['core_images_url'] = "Geeklog images_url";
-$LANG_MG01['persistent_storage_files'] = "Persistent storage files";
-$LANG_MG01['legacy_storage_user_files'] = "Legacy storage user files";
-$LANG_MG01['legacy_storage_files_warning'] = "Unexpected on a fresh 1.8 installation";
-$LANG_MG01['local_media_db_rows'] = "Local media rows in database";
-$LANG_MG01['image_original_files'] = "Readable image originals";
-$LANG_MG01['image_display_files'] = "Readable display images";
-$LANG_MG01['image_thumbnail_files'] = "Readable thumbnails";
-$LANG_MG01['missing_media_files'] = "Missing media IDs";
+$LANG_MG01['persistent_storage_files'] = "Dateien im persistenten Speicher";
+$LANG_MG01['legacy_storage_user_files'] = "Benutzerdateien aus dem alten Speicher";
+$LANG_MG01['legacy_storage_files_warning'] = "Bei einer neuen 1.8-Installation unerwartet";
+$LANG_MG01['local_media_db_rows'] = "Lokale Medienzeilen in der Datenbank";
+$LANG_MG01['image_original_files'] = "Lesbare Bildoriginale";
+$LANG_MG01['image_display_files'] = "Lesbare Anzeigebilder";
+$LANG_MG01['image_thumbnail_files'] = "Lesbare Vorschaubilder";
+$LANG_MG01['missing_media_files'] = "Fehlende Medien-IDs";
 
 ?>
