@@ -1144,135 +1144,135 @@ $LANG_MG05 = array (
     'diagonal'              => '对角线',
     'doors'                 => '门',
     'gradient'              => '渐变',
-    'iris'                  => 'Iris',
-    'pinwheel'              => 'Pinwheel',
-    'pixelate'              => 'Pixelate',
-    'radial'                => 'Radial',
-    'rain'                  => 'Rain',
-    'slide'                 => 'Slide',
-    'snow'                  => 'Snow',
-    'spiral'                => 'Spiral',
-    'stretch'               => 'Stretch',
-    'random'                => 'Random'
+    'iris'                  => '虹膜',
+    'pinwheel'              => '风车',
+    'pixelate'              => '像素化',
+    'radial'                => '径向',
+    'rain'                  => '雨',
+    'slide'                 => '滑动',
+    'snow'                  => '雪',
+    'spiral'                => '螺旋',
+    'stretch'               => '拉伸',
+    'random'                => '随机'
 );
 
 $LANG_MG07 = array (
-    'playback_options'          => 'Playback Options',
-    'none'                      => 'none',
-    'mini'                      => 'mini',
-    'full'                      => 'full',
-    'low'                       => 'low',
-    'high'                      => 'high',
-    'showall'                   => 'Show All',
-    'noborder'                  => 'No Border',
-    'exactfit'                  => 'Exact Fit',
-    'window'                    => 'Window',
-    'opaque'                    => 'Opaque',
-    'transparent'               => 'Transparent',
-    'to_fit'                    => 'To Fit',
-    'aspect'                    => 'Aspect',
+    'playback_options'          => '播放选项',
+    'none'                      => '无',
+    'mini'                      => '迷你',
+    'full'                      => '完整',
+    'low'                       => '低',
+    'high'                      => '高',
+    'showall'                   => '全部显示',
+    'noborder'                  => '无边框',
+    'exactfit'                  => '精确适配',
+    'window'                    => '窗口',
+    'opaque'                    => '不透明',
+    'transparent'               => '透明',
+    'to_fit'                    => '适应',
+    'aspect'                    => '宽高比',
     'normal_size'               => '正常大小',
     'description'               => '描述',
-    'option'                    => 'Option',
+    'option'                    => '选项',
     'on'                        => '日期',
-    'off'                       => 'Off',
-    'auto_start'                => 'Auto Start',
-    'auto_start_help'           => 'When set to On, the autoplay attribute causes the item to start playing as soon as the Player Plug-In estimates that it wil be able to play the entire item without waiting or additional data.',
-    'enable_context_menu'       => 'Enable Context Menu',
-    'enable_context_menu_help'  => 'If on, the context menu, which appears when the right mouse button is clicked.',
-    'stretch_to_fit'            => 'Stretch to Fit',
-    'stretch_to_fit_help'       => 'If on, the video will stretch to fit the size of the Windows Media Player video display.',
-    'status_bar'                => 'Show Status Bar',
-    'status_bar_help'           => 'If on, the status bar is displayed.',
-    'ui_mode'                   => 'User Interface Mode',
-    'ui_mode_help'              => 'Specifies which controls are shown in the user interface.',
+    'off'                       => '关闭',
+    'auto_start'                => '自动开始',
+    'auto_start_help'           => '启用后，当播放器判断无需等待更多数据即可播放完整项目时，会自动开始播放。',
+    'enable_context_menu'       => '启用上下文菜单',
+    'enable_context_menu_help'  => '启用后，点击鼠标右键会显示上下文菜单。',
+    'stretch_to_fit'            => '拉伸以适配',
+    'stretch_to_fit_help'       => '启用后，视频会拉伸以适应 Windows Media Player 的显示区域。',
+    'status_bar'                => '显示状态栏',
+    'status_bar_help'           => '启用后会显示状态栏。',
+    'ui_mode'                   => '用户界面模式',
+    'ui_mode_help'              => '指定用户界面中显示哪些控件。',
     'height'                    => '高度',
     'width'                     => '宽度',
-    'height_help'               => 'Size of the playback window',
-    'width_help'                => 'Size of the playback window',
-    'menu'                      => 'Menu',
-    'menu_help'                 => 'Displays the full menu, allowing the user a variety of options to enhance or control playback.',
+    'height_help'               => '播放窗口大小',
+    'width_help'                => '播放窗口大小',
+    'menu'                      => '菜单',
+    'menu_help'                 => '显示完整菜单，为用户提供增强或控制播放的各种选项。',
     'quality'                   => '质量',
-    'quality_help'              => 'Playback Quality',
-    'flash_vars'                => 'Flash Variables',
-    'auto_ref'                  => 'Auto Ref',
-    'auto_ref_help'             => 'When set to On, the AUTOREF attribute causes any movie to load immediately, without waiting for a mouse click.',
-    'controller'                => 'Controller',
-    'controller_help'           => 'When set to On, the movie controller will be displayed.',
-    'kiosk_mode'                => 'Kiosk Mode',
-    'kiosk_mode_help'           => 'When Kiosk Mode is On, the plug-in does not include its pop-up menu in the movie controller and does not allow drag and drop to save the movie.',
-    'scale'                     => 'Scale',
-    'scale_help'                => 'Scale can be either TOFIT, ASPECT of Normal.  If set to ToFit, the moview is scaled to fit the embedded box as specified by height and width.  If set to Aspect, the movie will be scaled to fit the embedded box while maintaining the aspect ratio. If set to Normal, the movie will play the size it was saved.',
-    'swf_scale_help'            => 'Default (Show all) makes the entire movie visible in the specified area without distortion, while maintaining the original aspect ratio of the movie. Borders may appear on two sides of the movie. No Border scales the movie to fill the specified area, without distortion but possibly with some cropping, while maintaining the original aspect ratio of the movie.  Exact Fit makes the entire movie visible in the specified area without trying to preserve the original aspect ratio. Distortion may occur.',
-    'wmode'                     => 'Window Mode',
-    'wmode_help'                => 'Sets the Window Mode property of the Flash movie for transparency, layering, and positioning in the browser.',
+    'quality_help'              => '播放质量',
+    'flash_vars'                => 'Flash 变量',
+    'auto_ref'                  => '自动引用',
+    'auto_ref_help'             => '启用后，AUTOREF 属性会立即加载影片，无需等待鼠标点击。',
+    'controller'                => '控制器',
+    'controller_help'           => '启用后会显示影片控制器。',
+    'kiosk_mode'                => '信息亭模式',
+    'kiosk_mode_help'           => '启用信息亭模式后，插件不会在影片控制器中显示弹出菜单，也不允许通过拖放保存影片。',
+    'scale'                     => '缩放',
+    'scale_help'                => '缩放可以是 TOFIT、ASPECT 或 Normal。ToFit 按宽高适配嵌入区域；Aspect 在保持宽高比的同时适配；Normal 按保存时的尺寸播放。',
+    'swf_scale_help'            => '默认（全部显示）在保持原始宽高比的情况下完整显示影片，可能在两侧出现边框。无边框会填满区域并保持比例，但可能裁剪。精确适配会完整显示影片，但不保持原始比例，可能产生变形。',
+    'wmode'                     => '窗口模式',
+    'wmode_help'                => '设置 Flash 影片的窗口模式，用于透明、分层和浏览器中的定位。',
     'loop'                      => '循环',
-    'loop_help'                 => 'Specifies whether the movie repeats indefinitely or stops when it reaches the last frame',
+    'loop_help'                 => '指定影片无限重复还是在最后一帧停止',
     'always'                    => '始终',
-    'sameDomain'                => 'SameDomain',
-    'never'                     => 'Never',
-    'asa'                       => 'Allow Script Access',
-    'asa_help'                  => 'This parameter controls whether ActionScript in a SWF is permitted to call JavaScript in the HTML page that contains it.',
-    'bgcolor'                   => 'Background Color',
-    'bgcolor_help'              => 'Sets the background color for the playback window',
-    'clsid'                     => 'Object Class ID',
-    'codebase'                  => 'Codebase',
-    'playcount'                 => 'Playcount',
-    'playcount_help'            => 'How many times the file should be repeated',
+    'sameDomain'                => '同一域',
+    'never'                     => '从不',
+    'asa'                       => '允许脚本访问',
+    'asa_help'                  => '此参数控制 SWF 中的 ActionScript 是否可以调用所在 HTML 页面中的 JavaScript。',
+    'bgcolor'                   => '背景颜色',
+    'bgcolor_help'              => '设置播放窗口的背景颜色',
+    'clsid'                     => '对象类 ID',
+    'codebase'                  => '代码库',
+    'playcount'                 => '播放次数',
+    'playcount_help'            => '文件重复播放的次数',
     'loop'                      => '循环',
-    'loop_help'                 => 'Continuous playback',
+    'loop_help'                 => '连续播放',
     'wmp_options'               => 'Windows Media Player',
     'qt_options'                => 'QuickTime 播放器',
-    'mp3_options'               => 'MP3 Playback',
-    'swf_options'               => 'Flash Media Player',
-    'swf_version_help'          => 'Flash version required to play this file.',
-    'resolution'                => 'Resolution (WxH)',
-    'resolution_x_help'         => 'Video X (Width) Resolution',
-    'resolution_y_help'         => 'Video Y (Height) Resolution',
-    'resolution_x'              => 'Video Width',
-    'resolution_y'              => 'Video Height',
+    'mp3_options'               => 'MP3 播放',
+    'swf_options'               => 'Flash 媒体播放器',
+    'swf_version_help'          => '播放此文件所需的 Flash 版本。',
+    'resolution'                => '分辨率（宽×高）',
+    'resolution_x_help'         => '视频 X（宽度）分辨率',
+    'resolution_y_help'         => '视频 Y（高度）分辨率',
+    'resolution_x'              => '视频宽度',
+    'resolution_y'              => '视频高度',
 );
 
 $LANG_MG09 = array (
-    1                       => 'Sort Operation Completed Successfully',
-    2                       => 'Configuration Options Saved Successfully',
-    3                       => 'EXIF/IPTC Data Saved Successfully',
-    4                       => 'Album Defaults Saved Successfully',
-    5                       => 'Audio / Video Defaults Saved Successfully',
-    6                       => 'RSS Options Saved Successfully',
-    7                       => 'Feeds Successfully Rebuilt',
-    8                       => 'Selected Member Albums Have Been Successfully Removed',
-    9                       => 'System Configuration Successfully Reset to Installation Defaults',
-    10                      => 'Global Permissions Have Bueen Successfully Applied',
-    11                      => 'Global Album Attributes Have Been Successfully Applied',
-    12                      => 'Member Album Options Have Been Successfully Saved',
-    13                      => 'Selected Member Albums Successfully Created',
-    14                      => 'Member Album Gallery Flag Has Been Successfully Reset',
-    15                      => 'Selected Albums Have Been Successfully Deleted',
-    16                      => 'User Quotas Have Been Successfully Rebuilt',
-    17                      => 'Selected Files Have Been Removed',
+    1                       => '排序操作成功完成',
+    2                       => '配置选项保存成功',
+    3                       => 'EXIF/IPTC 数据保存成功',
+    4                       => '相册默认值保存成功',
+    5                       => '音频 / 视频默认值保存成功',
+    6                       => 'RSS 选项保存成功',
+    7                       => '订阅源重建成功',
+    8                       => '所选成员相册已成功移除',
+    9                       => '系统配置已成功重置为安装默认值',
+    10                      => '全局权限已成功应用',
+    11                      => '全局相册属性已成功应用',
+    12                      => '成员相册选项已成功保存',
+    13                      => '所选成员相册已成功创建',
+    14                      => '成员相册图库标记已成功重置',
+    15                      => '所选相册已成功删除',
+    16                      => '用户配额已成功重建',
+    17                      => '所选文件已移除',
 );
 
 // profile
 
 $LANG_MG10 = array (
-    'last_10'          => 'Last 5 media items uploaded by user ',
-    'albums_owned'     => 'Gallery albums owned by user ',
+    'last_10'          => '用户最近上传的 5 个媒体项目 ',
+    'albums_owned'     => '用户拥有的图库相册 ',
     'thumbnail'        => '缩略图',
-    'upload_date'      => 'Upload Date',
+    'upload_date'      => '上传日期',
     'title'            => '标题',
     'album'            => '相册',
     'album_desc'       => '描述'
 );
 
-$PLG_mediagallery_MESSAGE1 = 'Media Gallery plugin upgrade: Update completed successfully.';
-$PLG_mediagallery_MESSAGE2 = 'Media Gallery plugin upgrade: We are unable to update this version automatically. Refer to the plugin documentation.';
-$PLG_mediagallery_MESSAGE3 = 'Media Gallery plugin upgrade failed - check error.log';
-$PLG_mediagallery_MESSAGE4 = 'Thank you for rating the media item';
-$PLG_mediagallery_MESSAGE5 = 'Sorry, you have already rated this item';
-$PLG_mediagallery_MESSAGE6 = 'There was an error recording your rating - please notify the system administrator';
-$PLG_mediagallery_MESSAGE7 = 'There were no items found to process.';
-$PLG_mediagallery_MESSAGE10 = 'There was an error in replacing your media file, see error.log for details';
+$PLG_mediagallery_MESSAGE1 = 'Media Gallery 插件升级：更新成功完成。';
+$PLG_mediagallery_MESSAGE2 = 'Media Gallery 插件升级：无法自动更新此版本，请参阅插件文档。';
+$PLG_mediagallery_MESSAGE3 = 'Media Gallery 插件升级失败，请检查 error.log';
+$PLG_mediagallery_MESSAGE4 = '感谢您为媒体项目评分';
+$PLG_mediagallery_MESSAGE5 = '您已经为此项目评分';
+$PLG_mediagallery_MESSAGE6 = '记录评分时出错，请通知系统管理员';
+$PLG_mediagallery_MESSAGE7 = '没有找到需要处理的项目。';
+$PLG_mediagallery_MESSAGE10 = '替换媒体文件时发生错误，详情请查看 error.log';
 
 // Messages for the plugin upgrade
 global $LANG32;
@@ -1290,14 +1290,14 @@ $LANG_confignames['mediagallery'] = array(
     'htmlallowed'               => '允许标题使用 HTML',
     'usage_tracking'            => '使用跟踪',
     'whatsnew'                  => '启用 Geeklog“最新内容”列表',
-    'title_length'              => 'What\'s New Title Length (byte)',
-    'whatsnew_time'             => 'What\'s New Time (day)',
+    'title_length'              => '“最新内容”标题长度（字节）',
+    'whatsnew_time'             => '“最新内容”时间范围（天）',
     'preserve_filename'         => '保留原始文件名',
     'discard_original'          => '丢弃原始图像',
     'verbose'                   => '详细模式（调试日志）',
     'disable_whatsnew_comments' => '禁用“最新内容”评论',
     'profile_hook'              => '在用户资料中显示 MG 信息',
-    'root_album_name'           => 'Root Album Name',
+    'root_album_name'           => '根相册名称',
 
     'at_border'                 => '边框',
     'at_align'                  => '对齐',
@@ -1318,10 +1318,10 @@ $LANG_confignames['mediagallery'] = array(
 
     'dfid'                      => '日期格式',
     'displayblocks'             => '显示 Geeklog 区块',
-    'album_display_columns'     => 'Root Album Display Colums',
-    'album_display_rows'        => 'Root Album Display Rows',
+    'album_display_columns'     => '根相册显示列数',
+    'album_display_rows'        => '根相册显示行数',
     'subalbum_select'           => '在选择框中显示子相册',
-    'indextheme'                => 'Root Album Theme',
+    'indextheme'                => '根相册主题',
     'indexskin'                 => '根相册主题',
     'jpg_orig_quality'          => '原始 JPG 质量',
     'jpg_quality'               => '显示 JPG 质量',
@@ -1347,9 +1347,9 @@ $LANG_confignames['mediagallery'] = array(
     'search_playback_type'      => '搜索结果音频/视频播放类型',
     'search_enable_views'       => '在搜索结果中显示浏览计数',
     'search_enable_rating'      => '在搜索结果中显示评分',
-    'search_album_skin'         => 'Search Results Theme',
-    'search_frame_skin'         => 'Search Results Thumbnail Skin',
-    'search_tn_size'            => 'Search Results Thumbnail Size',
+    'search_album_skin'         => '搜索结果主题',
+    'search_frame_skin'         => '搜索结果缩略图主题',
+    'search_tn_size'            => '搜索结果缩略图大小',
 
     'def_refresh_rate'          => '刷新频率',
     'def_item_limit'            => '每周期最大项目数',
@@ -1435,47 +1435,47 @@ $LANG_confignames['mediagallery'] = array(
     'ad_mod_group_id'           => '审核组',
     'ad_email_mod'              => '提交时向审核员发送邮件',
 
-    'ad_group_id'               => 'Group',
-    'ad_permissions'            => 'Album Default Permissions',
+    'ad_group_id'               => '组',
+    'ad_permissions'            => '相册默认权限',
 
-    'asf_autostart'             => 'Auto Start',
-    'asf_enablecontextmenu'     => 'Enable Context Menu',
-    'asf_stretchtofit'          => 'Stretch to Fit',
-    'asf_showstatusbar'         => 'Show Status Bar',
-    'asf_uimode'                => 'User Interface Mode',
-    'asf_playcount'             => 'Playcount',
-    'asf_bgcolor'               => 'Background Color',
+    'asf_autostart'             => '自动开始',
+    'asf_enablecontextmenu'     => '启用上下文菜单',
+    'asf_stretchtofit'          => '拉伸以适配',
+    'asf_showstatusbar'         => '显示状态栏',
+    'asf_uimode'                => '用户界面模式',
+    'asf_playcount'             => '播放次数',
+    'asf_bgcolor'               => '背景颜色',
     'asf_width'                 => '宽度',
     'asf_height'                => '高度',
 
-    'mov_autoref'               => 'Auto Ref',
-    'mov_autoplay'              => 'Auto Start',
-    'mov_controller'            => 'Controller',
-    'mov_kioskmode'             => 'Kiosk Mode',
-    'mov_scale'                 => 'Scale',
+    'mov_autoref'               => '自动引用',
+    'mov_autoplay'              => '自动开始',
+    'mov_controller'            => '控制器',
+    'mov_kioskmode'             => '信息亭模式',
+    'mov_scale'                 => '缩放',
     'mov_loop'                  => '循环',
-    'mov_bgcolor'               => 'Background Color',
+    'mov_bgcolor'               => '背景颜色',
     'mov_width'                 => '宽度',
     'mov_height'                => '高度',
 
-    'mp3_autostart'             => 'Auto Start',
-    'mp3_enablecontextmenu'     => 'Enable Context Menu',
-    'mp3_showstatusbar'         => 'Show Status Bar',
+    'mp3_autostart'             => '自动开始',
+    'mp3_enablecontextmenu'     => '启用上下文菜单',
+    'mp3_showstatusbar'         => '显示状态栏',
     'mp3_loop'                  => '循环',
-    'mp3_uimode'                => 'User Interface Mode',
+    'mp3_uimode'                => '用户界面模式',
 
-    'swf_play'                  => 'Auto Start',
-    'swf_menu'                  => 'Menu',
-    'swf_scale'                 => 'Scale',
-    'swf_wmode'                 => 'Window Mode',
-    'swf_allowscriptaccess'     => 'Allow Script Access',
+    'swf_play'                  => '自动开始',
+    'swf_menu'                  => '菜单',
+    'swf_scale'                 => '缩放',
+    'swf_wmode'                 => '窗口模式',
+    'swf_allowscriptaccess'     => '允许脚本访问',
     'swf_quality'               => '质量',
     'swf_loop'                  => '循环',
-    'swf_bgcolor'               => 'Background Color',
+    'swf_bgcolor'               => '背景颜色',
     'swf_width'                 => '宽度',
     'swf_height'                => '高度',
-    'swf_flashvars'             => 'Flash Variables',
-    'swf_version'               => 'Codebase',
+    'swf_flashvars'             => 'Flash 变量',
+    'swf_version'               => '代码库',
 
     'member_albums'             => '启用成员相册',
     'allow_remote'              => '启用远程用户',
@@ -1517,14 +1517,14 @@ $LANG_confignames['mediagallery'] = array(
     'member_mod_group_id'       => '审核组',
     'member_email_mod'          => '提交时向审核员发送邮件',
 
-    'member_permissions'        => 'Album Default Permissions',
+    'member_permissions'        => '相册默认权限',
 
     'display_rows'              => '显示行数',
-    'display_columns'           => 'Display Colums',
+    'display_columns'           => '显示列数',
 );
 
 $LANG_configsubgroups['mediagallery'] = array(
-    'sg_main'  => 'System Settings',
+    'sg_main'  => '系统设置',
     'sg_album' => '相册默认值',
     'sg_av'    => '音频 / 视频默认值',
     'sg_member_album' => '成员相册',
@@ -1537,22 +1537,22 @@ $LANG_tab['mediagallery'] = array(
     'tab_userprefs'    => '用户偏好',
     'tab_graphics'     => '图形处理包',
 
-    'tab_album'        => 'Album Default Settings',
+    'tab_album'        => '相册默认设置',
     'tab_watermark'    => '水印',
     'tab_allowedmediatypes' => '允许的媒体类型',
     'tab_useruploads'  => '用户上传',
-    'tab_accessrights' => 'Access Rights',
+    'tab_accessrights' => '访问权限',
 
     'tab_wmedia'       => 'Windows Media',
     'tab_quicktime'    => 'QuickTime',
     'tab_mp3'          => 'MP3',
-    'tab_flashmedia'   => 'Flash Media',
+    'tab_flashmedia'   => 'Flash 媒体',
 
     'tab_member_albums' => '成员相册',
     'tab_member_allowedmediatypes' => '允许的媒体类型',
     'tab_member_album_attributes' => '相册属性',
     'tab_member_useruploads'  => '用户上传',
-    'tab_member_accessrights' => 'Access Rights',
+    'tab_member_accessrights' => '访问权限',
 
 );
 
@@ -1576,19 +1576,19 @@ $LANG_fs['mediagallery'] = array(
     'fs_other_format' => '其他',
 
     'fs_useruploads'  => '用户上传',
-    'fs_accessrights' => 'Access Rights',
-    'fs_permissions'  => 'Album Permissions',
+    'fs_accessrights' => '访问权限',
+    'fs_permissions'  => '相册权限',
 
     'fs_wmedia'       => 'Windows Media',
     'fs_quicktime'    => 'QuickTime',
     'fs_mp3'          => 'MP3',
-    'fs_flashmedia'   => 'Flash Media',
+    'fs_flashmedia'   => 'Flash 媒体',
 
     'fs_member_albums' => '成员相册',
     'fs_member_allowedmediatypes' => '允许的媒体类型',
     'fs_member_album_attributes' => '相册属性',
     'fs_member_useruploads'  => '用户上传',
-    'fs_member_permissions' => 'Member Album Permissions',
+    'fs_member_permissions' => '成员相册权限',
 );
 
 // Note: entries 0, 1, and 12 are the same as in $LANG_configselects['Core']
@@ -1596,9 +1596,9 @@ $LANG_configselects['mediagallery'] = array(
     0 => array('True' => 1, 'False' => 0),
     1 => array('True' => TRUE, 'False' => FALSE),
     5 => array('Top Of Page' => 1, 'After Featured Story' => 2, 'Bottom Of Page' => 3),
-    6 => array('Left Blocks' => 'leftblocks', 'Right Blocks' => 'rightblocks', 'All Blocks' => 'allblocks', 'No Blocks' => 'noblocks'),
-    7 => array('None' => 'none', 'Auto' => 'auto', 'Left' => 'left', 'Right' => 'right', 'Center' => 'center'),
-    8 => array('Thumbnail' => 'tn', 'Display Image' => 'disp', 'Original Image' => 'orig'),
+    6 => array('Left Blocks' => '左侧区块', 'Right Blocks' => '右侧区块', 'All Blocks' => '所有区块', 'No Blocks' => '无区块'),
+    7 => array('None' => '无', 'Auto' => '自动', 'Left' => '左', 'Right' => '右', 'Center' => '居中'),
+    8 => array('Thumbnail' => '缩略图', 'Display Image' => '显示图', 'Original Image' => '原图'),
     9 => array('True' => 1, 'False' => 0, 'Lightbox ' => 2),
     10 => array($LANG_MG01['left_blocks_only'] => 0, $LANG_MG01['right_blocks_only'] => 1, $LANG_MG01['left_right_blocks'] => 2, $LANG_MG01['none'] => 3),
     11 => array($LANG_MG01['include_small'] => 0, $LANG_MG01['include_medium'] => 1, $LANG_MG01['include_large'] => 2, $LANG_MG01['include_custom'] => 3,
@@ -1618,12 +1618,12 @@ $LANG_configselects['mediagallery'] = array(
     22 => array('10%' => 10, '20%' => 20, '30%' => 30, '40%' => 40, '50%' => 50, '60%' => 60, '70%' => 70, '80%' => 80, '90%' => 90),
     23 => array($LANG_MG01['top_left'] => 1, $LANG_MG01['top_center'] => 2, $LANG_MG01['top_right'] => 3, $LANG_MG01['middle_left'] => 4, $LANG_MG01['middle_center'] => 5,
                 $LANG_MG01['middle_right'] => 6, $LANG_MG01['bottom_left'] => 7, $LANG_MG01['bottom_center'] => 8, $LANG_MG01['bottom_right'] => 9),
-    24 => array('None' => 'none', 'Mini' => 'mini', 'Full' => 'full'),
-    25 => array($LANG_MG07['to_fit'] => 'tofit', $LANG_MG07['aspect'] => 'aspect', $LANG_MG07['normal_size'] => '1'),
-    26 => array($LANG_MG07['showall'] => 'showall', $LANG_MG07['noborder'] => 'noborder', $LANG_MG07['exactfit'] => 'exactfit'),
-    27 => array($LANG_MG07['window'] => 'window', $LANG_MG07['opaque'] => 'opaque', $LANG_MG07['transparent'] => 'transparent'),
-    28 => array($LANG_MG07['always'] => 'always', $LANG_MG07['sameDomain'] => 'sameDomain', $LANG_MG07['never'] => 'never'),
-    29 => array($LANG_MG07['low'] => 'low', $LANG_MG07['high'] => 'high'),
+    24 => array('None' => '无', 'Mini' => '迷你', 'Full' => '完整'),
+    25 => array($LANG_MG07['to_fit'] => '适配', $LANG_MG07['aspect'] => '宽高比', $LANG_MG07['normal_size'] => '1'),
+    26 => array($LANG_MG07['showall'] => '全部显示', $LANG_MG07['noborder'] => '无边框', $LANG_MG07['exactfit'] => '精确适配'),
+    27 => array($LANG_MG07['window'] => '窗口', $LANG_MG07['opaque'] => '不透明', $LANG_MG07['transparent'] => '透明'),
+    28 => array($LANG_MG07['always'] => '始终', $LANG_MG07['sameDomain'] => '同一域', $LANG_MG07['never'] => '从不'),
+    29 => array($LANG_MG07['low'] => '低', $LANG_MG07['high'] => '高'),
     30 => array('RSS2.0' => 'RSS2.0', 'RSS1.0' => 'RSS1.0', 'RSS0.91' => 'RSS0.91', 'PIE0.1' => 'PIE0.1', 'OPML' => 'OPML', 'ATOM' => 'ATOM', 'ATOM0.3' => 'ATOM0.3'),
 
     31 => array($LANG_MG01['small'] => 0, $LANG_MG01['medium'] => 1, $LANG_MG01['large'] => 2),
@@ -1635,78 +1635,78 @@ if (isset($_MG_CONF, $_MG_CONF['custom_image_width'], $_MG_CONF['custom_image_he
 }
 
 // MediaGallery 1.8.0 template accessibility labels
-$LANG_MG03['aria_breadcrumb'] = 'Breadcrumb';
-$LANG_MG03['aria_album_actions'] = 'Album actions';
-$LANG_MG03['aria_album_pagination'] = 'Album pagination';
-$LANG_MG03['aria_album_pagination_info'] = 'Album pagination and information';
-$LANG_MG03['aria_media_actions'] = 'Media actions and navigation';
-$LANG_MG03['media_id_label'] = 'Media ID';
-$LANG_MG03['aria_search_results_navigation'] = 'Search results navigation';
-$LANG_MG03['aria_album_navigation'] = 'Album navigation';
-$LANG_MG03['aria_media_list'] = 'Media list';
+$LANG_MG03['aria_breadcrumb'] = '导航路径';
+$LANG_MG03['aria_album_actions'] = '相册操作';
+$LANG_MG03['aria_album_pagination'] = '相册分页';
+$LANG_MG03['aria_album_pagination_info'] = '相册分页和信息';
+$LANG_MG03['aria_media_actions'] = '媒体操作和导航';
+$LANG_MG03['media_id_label'] = '媒体 ID';
+$LANG_MG03['aria_search_results_navigation'] = '搜索结果导航';
+$LANG_MG03['aria_album_navigation'] = '相册导航';
+$LANG_MG03['aria_media_list'] = '媒体列表';
 
-$LANG_MG01['admin_help'] = 'MediaGallery administration gives you quick access to albums, member galleries, maintenance tasks, reports and plugin configuration.';
+$LANG_MG01['admin_help'] = 'MediaGallery 管理提供相册、成员图库、维护任务、报告和插件配置的快速入口。';
 
 
-$LANG_MG01['manage_albums'] = 'Manage Albums';
-$LANG_MG01['manage_albums_help'] = 'Manage albums, media items and the gallery structure.';
+$LANG_MG01['manage_albums'] = '管理相册';
+$LANG_MG01['manage_albums_help'] = '管理相册、媒体项目和图库结构。';
 $LANG_MG01['overview'] = '概览';
-$LANG_MG01['media_items'] = 'Media items';
-$LANG_MG01['pending_media'] = 'Pending media';
+$LANG_MG01['media_items'] = '媒体项目';
+$LANG_MG01['pending_media'] = '待审核媒体';
 $LANG_MG01['status_ok'] = 'OK';
-$LANG_MG01['status_check'] = 'Check';
-$LANG_MG01['media_storage'] = 'Media storage';
-$LANG_MG01['content'] = 'Content';
+$LANG_MG01['status_check'] = '检查';
+$LANG_MG01['media_storage'] = '媒体存储';
+$LANG_MG01['content'] = '内容';
 $LANG_MG01['content_categories'] = '类别';
-$LANG_MG01['content_categories_help'] = 'Organize and maintain MediaGallery categories.';
-$LANG_MG01['member_albums_help'] = 'Manage member galleries, quotas and related album tools.';
-$LANG_MG01['manage'] = 'Manage';
-$LANG_MG01['maintenance_reports'] = 'Maintenance & reports';
-$LANG_MG01['maintenance_tools'] = 'Batch & maintenance';
-$LANG_MG01['maintenance_tools_help'] = 'Run thumbnail, resize, quota, sorting and batch maintenance tools.';
-$LANG_MG01['reports_tools'] = 'Reports & tools';
-$LANG_MG01['reports_tools_help'] = 'Open usage reports, EXIF tools, RSS rebuilds and environment checks.';
-$LANG_MG01['open_tools'] = 'Open tools';
+$LANG_MG01['content_categories_help'] = '组织和维护 MediaGallery 类别。';
+$LANG_MG01['member_albums_help'] = '管理成员图库、配额和相关相册工具。';
+$LANG_MG01['manage'] = '管理';
+$LANG_MG01['maintenance_reports'] = '维护与报告';
+$LANG_MG01['maintenance_tools'] = '批处理与维护';
+$LANG_MG01['maintenance_tools_help'] = '运行缩略图、调整大小、配额、排序和批量维护工具。';
+$LANG_MG01['reports_tools'] = '报告与工具';
+$LANG_MG01['reports_tools_help'] = '打开使用报告、EXIF 工具、RSS 重建和环境检查。';
+$LANG_MG01['open_tools'] = '打开工具';
 
 
 // MediaGallery 1.8 modern browser uploader
-$LANG_MG03['upload_drop_title'] = "Drop files here to upload";
-$LANG_MG03['upload_drop_help'] = "Add several files at once by dragging them here or by choosing them from your computer.";
-$LANG_MG03['upload_choose_files'] = "Choose files";
-$LANG_MG03['upload_queue'] = "Upload queue";
-$LANG_MG03['upload_remove'] = "Remove";
-$LANG_MG03['upload_file_details'] = "File details";
-$LANG_MG03['upload_files_selected'] = "files selected";
-$LANG_MG03['upload_noscript'] = "Multiple file selection is available. Drag-and-drop and the editable upload queue require JavaScript.";
+$LANG_MG03['upload_drop_title'] = "将文件拖到此处上传";
+$LANG_MG03['upload_drop_help'] = "可将多个文件拖到此处，或从计算机中选择，一次添加。";
+$LANG_MG03['upload_choose_files'] = "选择文件";
+$LANG_MG03['upload_queue'] = "上传队列";
+$LANG_MG03['upload_remove'] = "移除";
+$LANG_MG03['upload_file_details'] = "文件详情";
+$LANG_MG03['upload_files_selected'] = "个文件已选择";
+$LANG_MG03['upload_noscript'] = "支持选择多个文件。拖放和可编辑上传队列需要 JavaScript。";
 
 
 // MediaGallery 1.8 media manager labels
-$LANG_MG01['manager_select_media'] = "Select media";
-$LANG_MG01['manager_album_cover'] = "Album cover";
-$LANG_MG01['manager_slideshow'] = "Slideshow";
+$LANG_MG01['manager_select_media'] = "选择媒体";
+$LANG_MG01['manager_album_cover'] = "相册封面";
+$LANG_MG01['manager_slideshow'] = "幻灯片";
 
 
 // MediaGallery 1.8 non-image manager states
-$LANG_MG01['manager_cover_unavailable'] = "Unavailable without a thumbnail";
-$LANG_MG01['manager_slideshow_unavailable'] = "Images only";
+$LANG_MG01['manager_cover_unavailable'] = "没有缩略图时不可用";
+$LANG_MG01['manager_slideshow_unavailable'] = "仅图像";
 
 
 // MediaGallery 1.8 media access editor
-$LANG_MG01['media_access_ownership'] = "Access & ownership";
-$LANG_MG01['media_access_inherited'] = "Access rights for this media are inherited from album “%s”.";
-$LANG_MG01['media_edit_album_rights'] = "Edit album access rights";
+$LANG_MG01['media_access_ownership'] = "访问与所有权";
+$LANG_MG01['media_access_inherited'] = "此媒体的访问权限继承自相册“%s”。";
+$LANG_MG01['media_edit_album_rights'] = "编辑相册访问权限";
 
 
 // MediaGallery 1.8 storage diagnostics
 $LANG_MG01['core_path_images'] = "Geeklog path_images";
 $LANG_MG01['core_images_url'] = "Geeklog images_url";
-$LANG_MG01['persistent_storage_files'] = "Persistent storage files";
-$LANG_MG01['legacy_storage_user_files'] = "Legacy storage user files";
-$LANG_MG01['legacy_storage_files_warning'] = "Unexpected on a fresh 1.8 installation";
-$LANG_MG01['local_media_db_rows'] = "Local media rows in database";
-$LANG_MG01['image_original_files'] = "Readable image originals";
-$LANG_MG01['image_display_files'] = "Readable display images";
-$LANG_MG01['image_thumbnail_files'] = "Readable thumbnails";
-$LANG_MG01['missing_media_files'] = "Missing media IDs";
+$LANG_MG01['persistent_storage_files'] = "持久存储文件";
+$LANG_MG01['legacy_storage_user_files'] = "旧版存储用户文件";
+$LANG_MG01['legacy_storage_files_warning'] = "全新 1.8 安装中不应出现";
+$LANG_MG01['local_media_db_rows'] = "数据库中的本地媒体记录";
+$LANG_MG01['image_original_files'] = "可读取的原始图像";
+$LANG_MG01['image_display_files'] = "可读取的显示图像";
+$LANG_MG01['image_thumbnail_files'] = "可读取的缩略图";
+$LANG_MG01['missing_media_files'] = "缺失的媒体 ID";
 
 ?>
