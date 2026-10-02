@@ -55,7 +55,7 @@ $LANG_MG00 = array (
     'no_title'          => 'Kein Medientitel verfügbar',
     'album'             => 'Album',
     'whatsnew_title'    => 'Mediengalerie',
-    'deny_msg'          => 'Der Zugriff auf diese Seite wurde verweigert. Die Seite wurde möglicherweise verschoben oder entfernt, oder Sie verfügen nicht über ausreichende Berechtigungen.',
+    'deny_msg'          => 'Der Zugriff auf diese Seite wurde verweigert. Die Seite wurde möglicherweise verschoben oder entfernt, oder du verfügst nicht über ausreichende Berechtigungen.',
 );
 
 // administration items....
@@ -110,7 +110,7 @@ $LANG_MG01 = array (
     'configuration_help'        => 'Stelle die Konfigurationsoptionen für das Standardverhalten des Mediengalerie-Plugins ein.',
     'media_edit_help'           => "Bearbeitet einzelen Medienobjekte und dessen Eigenschaften.  Um eine größere Ansicht zu bekommen, klicken auf das Bild.",
     'album_edit_help'           => 'Setzen die Albumeigenschaften, inkl. Berechtigungen, Anzeigestatus, Titel und Beschreibung.',
-    'album_delete_help'         => 'Hier löschen Sie ein Album und dessen Unteralben. Bitte wählen aus, ob die Dateien in einen anderes Album verschoben werden sollen oder die Löschung endgültig sein soll.<br /><b>Löschungen können nicht wieder hergestellt werden.</b>' . XHTML . '><strong>You cannot undo a delete</strong>',
+    'album_delete_help'         => 'Hier löschst du ein Album und dessen Unteralben. Bitte wähle aus, ob die Dateien in ein anderes Album verschoben werden sollen oder die Löschung endgültig sein soll.<br /><b>Löschungen können nicht rückgängig gemacht werden.</b>' . XHTML . '><strong>You cannot undo a delete</strong>',
     'configuration_title'       => 'Mediengalerie-Konfiguration',
     'configuration_header'      => 'Mediengalerie-Optionen',
     'album_maintenance'         => 'Mediengalerie: Alben-Wartung',
@@ -174,7 +174,7 @@ $LANG_MG01 = array (
     'album_link'                => 'Albumlink',
     'status_header'             => 'Mediengalerie-Status',
     'status'                    => 'Status',
-    'redirect'                  => 'Nach 5 Sekunden werden Sie weitergeleitet oder klicken Sie <a href="%s">hier</a>, um sofort weitergeleitet zu werden.',
+    'redirect'                  => 'Nach 5 Sekunden wirst du weitergeleitet oder klicke <a href="%s">hier</a>, um sofort weitergeleitet zu werden.',
     'delete_all_media'          => 'Alle Medienobjekte in diesem Album löschen',
     'move_all_media'            => 'Alle Medien verschieben.',
     'mod_album'                 => 'Moderation für diese Album aktivieren',
@@ -211,7 +211,7 @@ $LANG_MG01 = array (
     'repair_media_storage_success' => 'Die Synchronisierung der Benutzermedien wurde erfolgreich abgeschlossen.',
     'media_storage_current'      => 'Es müssen keine historischen Benutzermedien synchronisiert werden.',
     'repair_media_storage_failed' => 'Die Synchronisierung ist fehlgeschlagen. Prüfe das Geeklog-Fehlerprotokoll für den betroffenen Pfad.',
-    'invalid_security_token'    => 'Das Sicherheitstoken ist ungültig oder abgelaufen. Lade diese Seite neu und versuchen Sie es erneut.',
+    'invalid_security_token'    => 'Das Sicherheitstoken ist ungültig oder abgelaufen. Lade diese Seite neu und versuche es erneut.',
     'ok'                        => 'OK',
     'not_found'                 => 'Nicht gefunden',
     'not_writable'              => 'Ordner NICHT beschreibbar',
@@ -353,8 +353,8 @@ $LANG_MG01 = array (
     'resize_display'            => 'Bildgrößen verändern',
     'resize_help'               => 'Es werden alle Anzeige-Bilder neu erzeugt, entsprechend der Größe, die für jedes Album festgelegt ist.',
     'resize_details'            => 'Dieser Vorgang ändert die Größe aller Anzeige-Bilder Mediengalerie.',
-    'resize_confirm'            => 'Möchten Sie wirklich alle Anzeige-Bilder für dieses Album neu erzeugen lassen?',
-    'rebuild_confirm'           => 'Möchten Sie wirklich alle Vorschaubilder für dieses Album neu erzeugen lassen?',
+    'resize_confirm'            => 'Möchtest du wirklich alle Anzeigebilder für dieses Album neu erzeugen lassen?',
+    'rebuild_confirm'           => 'Möchtest du wirklich alle Vorschaubilder für dieses Album neu erzeugen lassen?',
     'remove_originals'          => 'Originale der hochgeladenen Bilder löschen/entfernen?',
     'remove_help'               => 'Entfernt die originalen Bilder aus der Mediengalerie.',
     'remove_details'            => 'Dieser Vorgang entfernt die Originale der hochgeladenen Bilder und belässt nur das Anzeige-Bilder und Vorschaubilder.<br /><br /><b>Dies kann nicht rückgängig gemacht werden!</b>' . XHTML . '><br' . XHTML . '><strong>There is no UNDO, be sure this is what you want to do!</strong>',
@@ -369,7 +369,7 @@ $LANG_MG01 = array (
     'recurse'                   => 'inkl. Unterordner',
     'include_ss'                => 'inkl. Diashow',
     'original_filename'         => 'Originaler Dateiname:',
-    'upload_usage'              => "<p>Wähle das Zielalbum und klicken Sie anschließend auf „Upload“, um den Dateidialog zu öffnen. Für mehrere einzelne Dateien halten Sie Strg gedrückt. Für einen Bereich wählen Sie die erste Datei und anschließend mit gedrückter Umschalttaste die letzte Datei. Klicke auf „Öffnen“, um den Upload zu starten.</p>",
+    'upload_usage'              => '<p>Wähle das Zielalbum und klicke anschließend auf „Upload“, um den Dateidialog zu öffnen. Für mehrere einzelne Dateien halte Strg gedrückt. Für einen Bereich wähle die erste Datei und anschließend mit gedrückter Umschalttaste die letzte Datei. Klicke auf „Öffnen“, um den Upload zu starten.</p>',
     'upload_media'              => 'Medienobjekt hochladen',
     'upload_pending'            => 'Ausstehend...',
     'upload_q_too_many'         => 'Du hast versucht, zu viele Dateien in die Warteschlange aufzunehmen.\\n',
@@ -432,7 +432,7 @@ $LANG_MG01 = array (
     'watermark_redirect'        => 'Klicke <a href="%s">hier</a>, um zur Wasserzeichen-Verwaltung zurückzukehren..',
     'preview'                   => 'Vorschau',
     'wm_upload_help'            => 'Wähle eine Datei zum Hochladen aus - Unterstütze Dateitypen: .GIF, .PNG, .JPG. <br /><br /><b>Max. Dateigröße für das Wasserzeichen ist 64kb.</b>' . XHTML . '><strong>Maximum watermark file size is 64kb.</strong>',
-    'no_applet'                 => 'Der verwendete Browser unterstützt keine Applets oder diese wurden deaktiviert.<br /> Um dieses Applet zu nutzen, installiereN Sie bitte die neueste Version von SUNs Java. Du kannst es unter <a href="http://www.java.com/">java.com</a> herunterladen' . XHTML . '> To use this applet, please install the newest version of Sun\'s java. You can get it from <a href="http://www.java.com/">java.com</a>',
+    'no_applet'                 => 'Der verwendete Browser unterstützt keine Applets oder diese wurden deaktiviert.<br /> Um dieses Applet zu nutzen, installiere bitte die neueste Version von SUNs Java. Du kannst sie unter <a href="http://www.java.com/">java.com</a> herunterladen' . XHTML . '> To use this applet, please install the newest version of Sun\'s java. You can get it from <a href="http://www.java.com/">java.com</a>',
     'watermarked'               => 'WM',
     'category'                  => 'Kategorie',
     'category_manage_help'      => 'Kategorie-Wartung',
@@ -542,7 +542,7 @@ $LANG_MG01 = array (
     'resize_all_images'         => 'Alle Bilder neu skalieren',
     'starting_album'            => 'Start-Album',
     'media_original_filename'   => 'Originaler Dateiname',
-    'delete_item_confirm'       => 'Möchten Sie die ausgewählten Objekte wirklich löschen?',
+    'delete_item_confirm'       => 'Möchtest du die ausgewählten Objekte wirklich löschen?',
     'static_sort_albums'        => 'Stat. Sortierung der Alben',
     'static_sort_media'         => 'Stat. Sortierung der Medien',
     'process_subs'              => 'Verarbeite Unteralben',
@@ -711,7 +711,7 @@ $LANG_MG01 = array (
 // error messages
 
 $LANG_MG02 = array (
-    'generic_error'             => 'Die Mediengalerie stieß auf einen Fehler beim Verarbeiten Deiner Anfrage. Bitte versuchen Sie es erneut',
+    'generic_error'             => 'Die Media Gallery ist bei der Verarbeitung deiner Anfrage auf einen Fehler gestoßen. Bitte versuche es erneut.',
     'upload_too_big'            => '%s - Die hochgeladene Datei ist größer als der Wert für upload_max_filesize in der php.ini.',
     'upload_too_big_html'       => '%s  - Die hochgeladene Datei ist größer der Wert für MAX_FILE_SIZE im HTML-Formular.',
     'partial_upload'            => '%s  - Die Datei wurde nur teilweise hochgeladen.',
@@ -719,7 +719,7 @@ $LANG_MG02 = array (
     'missing_tmp'               => 'Kein Temp-Ordner vorhanden.',
     'disk_fail'                 => 'Datei konnten nicht auf Disk gescrieben werden.',
     'unknown_err'               => 'Unbekannter Fehler beim Datei-Upload',
-    'albumaccessdeny'           => "Du hast keinen Zugriff auf dieses Album. Dies kann sein weil Sie kein Mitglied von {$_CONF['site_name']} sind. Bitte <a href={$_CONF['site_url']}/users.php?mode=new> registrieren Sie sich als Mitglied.</a> von {$_CONF['site_name']} ,um volle Mitgliederrechte zu erhalten!",
+    'albumaccessdeny'           => 'Du hast keinen Zugriff auf dieses Album. Das kann daran liegen, dass du kein Mitglied von {$_CONF[\'site_name\']} bist. Bitte <a href={$_CONF[\'site_url\']}/users.php?mode=new>registriere dich als Mitglied</a> von {$_CONF[\'site_name\']}, um die vollständigen Mitgliederrechte zu erhalten.',
     'admin_access_deny'         => 'Sorry, Du hastt keinen Zugriff zur Mediengalerie-Administration. Zugriffsversuche auf nicht authorisierte Features werden aufgezeichnet.',
     'no_target_album'           => 'Es wurde kein Zielalbum ausgewählt.',
     'invalid_directory'         => 'Ordner existiert nicht',
@@ -730,13 +730,13 @@ $LANG_MG02 = array (
     'convert_error'             => ' Fehler bei Konvertieren von %s<br />' . XHTML . '>',
     'perm_error'                => ' Datei kann nicht geöffnet werden (fehlende Berechtigung)',
     'album_nonexist'            => 'Album exisitiert nicht, Uploads können nicht verarbeitet werden.',
-    'upload_not_found'          => 'Die hochgeladene Datei kann nicht gefunden werden.  Schauen Sie in die Datei error.log, und überprüfen auch, dass post_max_size und max_upload_size Paramenter in der php.ini höher sind, als die Größe der Datei, die Sie versuchen hochzuladen.',
-    'upload_not_readable'       => 'Die hochgeladene/importierte Datei kann nicht geöffnet werden.  Überprüfen Sie die Dateiberechtigungen und stellen sicher, dass der Webserver Lesezugriff auf die Datei hat.',
+    'upload_not_found'          => 'Die hochgeladene Datei kann nicht gefunden werden. Prüfe die Datei error.log und stelle außerdem sicher, dass die Parameter post_max_size und max_upload_size in der php.ini größer sind als die Datei, die du hochladen möchtest.',
+    'upload_not_readable'       => 'Die hochgeladene/importierte Datei kann nicht geöffnet werden. Prüfe die Dateiberechtigungen und stelle sicher, dass der Webserver Lesezugriff auf die Datei hat.',
     'upload_exceeds_max_filesize' => '%s - überschreitet die festgelgte Gesamtgröße dieses Albums.',
     'unsupported_wm_type'       => ' - Dateityp wird für Wasserzeichen nicht unterstützt',
     'wm_success'                => ' - Wasserzeichen erfolgreich hochgeladen<br />' . XHTML . '>',
     'upload_exceeds_quota'      => '%s - Dieser Upload würde Deine zugewiesene Quote übersteigen.',
-    'error_create_tmp'          => 'Fehler beim Erzeugen eines temporären Ordners. Bitte setzen Sie sich mit dem Seiten-Admin in Verbindung.',
+    'error_create_tmp'          => 'Fehler beim Erzeugen eines temporären Ordners. Bitte wende dich an den Seitenadministrator.',
     'wm_already_exists'         => 'Die Wasserzeichendatei %s existiert bereits auf dem Server.',
     'invalid_remote_url'        => 'Datei %d ist keine gültige Streaming FLV URL',
     'invalid_embed_url'         => 'Datei %d ist keine gültige eingebettete URL',
@@ -810,7 +810,7 @@ $LANG_MG03 = array (
     'sort_alpha_asc'        => 'Titel, aufsteigend',
     'advanced_search'       => 'Mediagalerie: Erweiterte Suche',
     'search_query'          => 'Suchabfrage',
-    'search_help'           => 'Du kannst Worte verwenden UND definieren, die in den Ergbnissen vorkommen sollen, ODER Sie definieren Worte die in den Ergbnissen vorkommen könnten und KEINE Worte definieren, die nicht in den Ergebnissen vorkommen sollen. Verwende * als Wildcard für teilweise Übereinstimmungen.',
+    'search_help'           => 'Du kannst AND verwenden, um Wörter festzulegen, die in den Ergebnissen enthalten sein müssen, OR für Wörter, die enthalten sein können, und NOT für Wörter, die nicht enthalten sein sollen. Verwende * als Platzhalter für Teiltreffer.',
     'options'               => 'Optionen',
     'keywords'              => 'Schlüsselwörter',
     'all_fields'            => 'Titel, Beschreibungen, Schlüsselwörter',
@@ -826,13 +826,13 @@ $LANG_MG03 = array (
     'overview'              => 'Übersicht',
     'terms'                 => 'Nutzungsbedingungen',
     'member_album_overview' => 'Das Mitgliederalbum ermöglicht Dir, ein eigenens Mediengalerie-Album zu haben. Dir steht der Großteil des vollen Funktionsumfanges in diesem Album zur Verfügung, mit Ausnahme einiger Funktionen wie z.B. Veröffentlichung des Albums auf der Hauptseite.',
-    'member_album_terms'    => 'Indem Sie akzeptieren, bestätigen Sie, daß Sie sich an die Regeln des Seiten-Admins hälten. Die Veröffentlichung von Bildmaterial, welches gegen Gesetze oder moralische Grundsätze verstößt, sowie der allgemeine Missbrauch dieses Albums kann mit der Löschung Deines Accounts geahndet werden.',
+    'member_album_terms'    => 'Indem du zustimmst, bestätigst du, dass du die Regeln des Seitenadministrators einhältst. Die Veröffentlichung unzulässiger Inhalte oder der Missbrauch dieses Albums kann zur Sperrung deines Kontos führen.',
     'agree'                 => 'Akzeptieren',
-    'existing_member_album' => 'Es scheint, dass du bereits ein Mitgliederalbum haben. Sollte das ein Fehler sein, kontaktieren Sie bitte den Seiten-Admin.',
+    'existing_member_album' => 'Es scheint, dass du bereits ein Mitgliederalbum hast. Falls das ein Fehler ist, wende dich bitte an den Seitenadministrator.',
     'member_album_signup'   => 'Erstelle Dein eigenes Album in unserer Media Gallery.<br' . XHTML . '><br' . XHTML . '><center><a href="%s">Hier registrieren</a></center>',
     'album_id_display'      => 'Alben-ID: ',
     'upload_help'           => 'Dateien direkt von Deinem Computer hochladen. Gib den kompletten Pfad zu der Datei, und optional Titel/Beschreibung/Schlüsselwörter in den Feldern unten, ein.',
-    'upload_size'           => '<b>Hinweis:</b> Du kannst bis zu %s MB auf einmal hochladen. Einzelne Dateien dürfen nicht größer als %s MB sein. Möchten Sie mehr als das hochladen, dann laden Sie die Dateien seperat hoch, unter Verwendung eines anderen Upload-Formats, oder fragen Sie den System-Admin, größere Uploads zu erlauben.',
+    'upload_size'           => '<b>Hinweis:</b> Du kannst bis zu %s MB auf einmal hochladen. Einzelne Dateien dürfen nicht größer als %s MB sein. Möchtest du mehr hochladen, lade die Dateien getrennt hoch, verwende ein anderes Upload-Format oder bitte den Systemadministrator, größere Uploads zu erlauben.',
     'ftp_help'              => 'Übertrage Dateien in die Mediengalerie, die sich schon auf Deinem Server befinden. Diese Dateien müssen schon auf auf andere Weise (z.B. FTP) auf Deinen Server hochgeladen sein und sich in einem Ordner befinden, auf die der Webserver Zugriff hat.',
     'no_new_items'          => 'Keine Medienobjekte',
     'no_comments'           => 'Keine neuen Medienkommentare',
@@ -1658,7 +1658,7 @@ $LANG_MG01['status_check'] = 'Prüfen';
 $LANG_MG01['media_storage'] = 'Media storage';
 $LANG_MG01['content'] = 'Inhalte';
 $LANG_MG01['content_categories'] = 'Kategorien';
-$LANG_MG01['content_categories_help'] = 'Organisieren und pflegen Sie MediaGallery-Kategorien.';
+$LANG_MG01['content_categories_help'] = 'Organisiere und pflege MediaGallery-Kategorien.';
 $LANG_MG01['member_albums_help'] = 'Verwalte Mitgliedergalerien, Kontingente und zugehörige Albumwerkzeuge.';
 $LANG_MG01['manage'] = 'Verwalten';
 $LANG_MG01['maintenance_reports'] = 'Wartung und Berichte';
@@ -1671,7 +1671,7 @@ $LANG_MG01['open_tools'] = 'Werkzeuge öffnen';
 
 // MediaGallery 1.8 modern browser uploader
 $LANG_MG03['upload_drop_title'] = "Dateien zum Hochladen hier ablegen";
-$LANG_MG03['upload_drop_help'] = "Füge mehrere Dateien gleichzeitig hinzu, indem Sie sie hierher ziehen oder von Deinem Computer auswählen.";
+$LANG_MG03['upload_drop_help'] = 'Füge mehrere Dateien gleichzeitig hinzu, indem du sie hierher ziehst oder von deinem Computer auswählst.';
 $LANG_MG03['upload_choose_files'] = "Dateien auswählen";
 $LANG_MG03['upload_queue'] = "Upload-Warteschlange";
 $LANG_MG03['upload_remove'] = "Entfernen";
