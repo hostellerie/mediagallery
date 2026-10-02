@@ -369,39 +369,39 @@ $LANG_MG01 = array (
     'recurse'                   => 'Procesar Subdirectorios',
     'include_ss'                => 'SS',
     'original_filename'         => 'Nombre del Archivo Original',
-    'upload_usage'              => "<p>Select the destination Album, and then click 'Upload' to display the file browser.  To select multiple items, hold down the 'Ctrl' key while clicking on multiple individual files. To select a range of items, click on the first file, and then while holding down the 'Shift' key, click on the last file in the range.    Click 'Open' to begin the upload.</p>",
+    'upload_usage'              => "<p>Seleccione el álbum de destino y haga clic en «Subir» para abrir el selector de archivos. Para seleccionar varios archivos, mantenga pulsada la tecla Ctrl mientras hace clic en cada uno. Para seleccionar un intervalo, haga clic en el primer archivo y, manteniendo pulsada la tecla Mayús, haga clic en el último. Haga clic en «Abrir» para iniciar la subida.</p>",
     'upload_media'              => 'Cargar Medio',
-    'upload_pending'            => 'Pending...',
-    'upload_q_too_many'         => 'You have attempted to queue too many files.\n',
-    'upload_q_limit'            => 'You have reached the upload limit.',
-    'upload_q_select'           => 'You may select',
-    'upload_q_up_to'            => 'up to',
-    'upload_files'              => 'files',
-    'upload_one_file'           => 'one file',
-    'upload_err_filesize'       => 'File is too large',
-    'upload_err_zerosize'       => 'File is zero bytes in length',
-    'upload_err_filetype'       => 'File is invalid type',
-    'upload_err_general'        => 'File upload error',
-    'upload_err_album_id'       => 'Unable to determine destination album',
-    'upload_err_session'        => 'Session information unavailable - Please reload the page',
-    'upload_uploading'          => 'Uploading..',
-    'upload_complete'           => 'Complete',
-    'upload_error'              => 'Upload Error:',
-    'upload_failed'             => 'Upload Failed',
-    'upload_io_error'           => 'Server (IO) Error',
-    'upload_sec_error'          => 'Security Error',
-    'upload_limit_exceeded'     => 'Upload Limit Exceeded',
-    'upload_fail_validation'    => 'Failed Validation.  Upload skipped.',
-    'upload_cancelled'          => 'Cancelled',
-    'upload_stopped'            => 'Stopped',
-    'upload_unhandled'          => 'Unhandled Error:',
+    'upload_pending'            => 'Pendiente...',
+    'upload_q_too_many'         => 'Ha intentado añadir demasiados archivos a la cola.\\n',
+    'upload_q_limit'            => 'Ha alcanzado el límite de subida.',
+    'upload_q_select'           => 'Puede seleccionar',
+    'upload_q_up_to'            => 'hasta',
+    'upload_files'              => 'archivos',
+    'upload_one_file'           => 'un archivo',
+    'upload_err_filesize'       => 'El archivo es demasiado grande',
+    'upload_err_zerosize'       => 'El archivo tiene un tamaño de cero bytes',
+    'upload_err_filetype'       => 'El tipo de archivo no es válido',
+    'upload_err_general'        => 'Error al subir el archivo',
+    'upload_err_album_id'       => 'No se pudo determinar el álbum de destino',
+    'upload_err_session'        => 'La información de la sesión no está disponible. Vuelva a cargar la página.',
+    'upload_uploading'          => 'Subiendo...',
+    'upload_complete'           => 'Completado',
+    'upload_error'              => 'Error de subida:',
+    'upload_failed'             => 'La subida ha fallado',
+    'upload_io_error'           => 'Error del servidor (E/S)',
+    'upload_sec_error'          => 'Error de seguridad',
+    'upload_limit_exceeded'     => 'Se superó el límite de subida',
+    'upload_fail_validation'    => 'La validación ha fallado. Se omitió la subida.',
+    'upload_cancelled'          => 'Cancelado',
+    'upload_stopped'            => 'Detenido',
+    'upload_unhandled'          => 'Error no gestionado:',
     'upload_file'               => 'file',
     'upload_uploaded'           => 'uploaded',
     'upload_types_desc'         => 'Selected File Types',
     'upload_allowed_types'      => '<strong>File Types Allowed:</strong> ',
     'upload_file_size_limit'    => '<strong>File Size Limit:</strong> ',
     'upload_queue'              => 'Upload Queue',
-    'upload_continue'           => 'Continue',
+    'upload_continue'           => 'Continuar',
     'upload_cancel_all'         => 'Cancel All Uploads',
     'download'                  => 'Descargar',
     'zip_enable'                => 'Permitir Cargar archivos ZIP',
@@ -1635,15 +1635,15 @@ if (isset($_MG_CONF, $_MG_CONF['custom_image_width'], $_MG_CONF['custom_image_he
 }
 
 // MediaGallery 1.8.0 template accessibility labels
-$LANG_MG03['aria_breadcrumb'] = 'Breadcrumb';
-$LANG_MG03['aria_album_actions'] = 'Album actions';
-$LANG_MG03['aria_album_pagination'] = 'Album pagination';
-$LANG_MG03['aria_album_pagination_info'] = 'Album pagination and information';
-$LANG_MG03['aria_media_actions'] = 'Media actions and navigation';
-$LANG_MG03['media_id_label'] = 'Media ID';
-$LANG_MG03['aria_search_results_navigation'] = 'Search results navigation';
-$LANG_MG03['aria_album_navigation'] = 'Album navigation';
-$LANG_MG03['aria_media_list'] = 'Media list';
+$LANG_MG03['aria_breadcrumb'] = 'Migas de pan';
+$LANG_MG03['aria_album_actions'] = 'Acciones del álbum';
+$LANG_MG03['aria_album_pagination'] = 'Paginación del álbum';
+$LANG_MG03['aria_album_pagination_info'] = 'Paginación e información del álbum';
+$LANG_MG03['aria_media_actions'] = 'Acciones y navegación de medios';
+$LANG_MG03['media_id_label'] = 'ID del medio';
+$LANG_MG03['aria_search_results_navigation'] = 'Navegación por los resultados de búsqueda';
+$LANG_MG03['aria_album_navigation'] = 'Navegación del álbum';
+$LANG_MG03['aria_media_list'] = 'Lista de medios';
 
 $LANG_MG01['admin_help'] = 'MediaGallery administration gives you quick access to albums, member galleries, maintenance tasks, reports and plugin configuration.';
 
@@ -1670,14 +1670,14 @@ $LANG_MG01['open_tools'] = 'Open tools';
 
 
 // MediaGallery 1.8 modern browser uploader
-$LANG_MG03['upload_drop_title'] = "Drop files here to upload";
-$LANG_MG03['upload_drop_help'] = "Add several files at once by dragging them here or by choosing them from your computer.";
-$LANG_MG03['upload_choose_files'] = "Choose files";
-$LANG_MG03['upload_queue'] = "Upload queue";
-$LANG_MG03['upload_remove'] = "Remove";
-$LANG_MG03['upload_file_details'] = "File details";
-$LANG_MG03['upload_files_selected'] = "files selected";
-$LANG_MG03['upload_noscript'] = "Multiple file selection is available. Drag-and-drop and the editable upload queue require JavaScript.";
+$LANG_MG03['upload_drop_title'] = "Suelte los archivos aquí para subirlos";
+$LANG_MG03['upload_drop_help'] = "Añada varios archivos a la vez arrastrándolos aquí o seleccionándolos desde su equipo.";
+$LANG_MG03['upload_choose_files'] = "Seleccionar archivos";
+$LANG_MG03['upload_queue'] = "Cola de subida";
+$LANG_MG03['upload_remove'] = "Eliminar";
+$LANG_MG03['upload_file_details'] = "Detalles del archivo";
+$LANG_MG03['upload_files_selected'] = "archivos seleccionados";
+$LANG_MG03['upload_noscript'] = "Se pueden seleccionar varios archivos. Arrastrar y soltar y la cola de subida editable requieren JavaScript.";
 
 
 // MediaGallery 1.8 media manager labels
