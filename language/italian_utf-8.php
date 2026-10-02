@@ -53,7 +53,7 @@ $LANG_MG00 = array (
     'stats_rate_title'  => 'Top Ten dei Media più votati',
     'rating'            => 'Vota',
     'no_title'          => 'Non hai inserito un titolo al Media',
-    'album'             => 'Album: ',
+    'album'             => 'Album',
     'whatsnew_title'    => 'MEDIA GALLERY',
     'deny_msg'          => 'Access to this page is denied.  Either the page has been moved/removed or you do not have sufficient permissions.',
 );
@@ -715,7 +715,7 @@ $LANG_MG02 = array (
     'upload_too_big'            => '%s - Il file caricato è troppo grande (secondo le direttive di php.ini).',
     'upload_too_big_html'       => '%s - Il file caricato è troppo grande (secondo le direttive del form HTML).',
     'partial_upload'            => '%s - Il file è stato caricato SOLO PARZIALMENTE.',
-    'no_file_uploaded'          => 'No watermark image file was uploaded.',
+    'no_file_uploaded'          => 'Nessun file immagine per la filigrana è stato caricato.',
     'missing_tmp'               => 'Non trovo la cartella temporanea.',
     'disk_fail'                 => 'Non posso scrivere il file sul disco.',
     'unknown_err'               => 'Ho trovato un errore sconosciuto caricando il file',
@@ -732,18 +732,18 @@ $LANG_MG02 = array (
     'album_nonexist'            => 'L\'Album non esiste, non ho potuto effettuare l\'upload',
     'upload_not_found'          => 'Non ho trovato il file caricato.  Controlla gli "error Logs" del tuo webserver e controlla che i paramentri di massime dimensioni permesse (nel file php.ini) siano più grandi delle dimensioni del documento che stai cercando di caricare.',
     'upload_not_readable'       => 'Non ho potuto aprire il documento caricato / importato.  Controlla che i permessi del file siano corretti e accertati che il webserver abbia impostato come READ l\'accesso ai file',
-    'upload_exceeds_max_filesize' => '%s - Exceeds the maximum configured filesize for this album',
-    'unsupported_wm_type'       => ' - Unsupported watermark file type',
+    'upload_exceeds_max_filesize' => '%s - Supera la dimensione massima configurata per questo album',
+    'unsupported_wm_type'       => ' - Tipo di file filigrana non supportato',
     'wm_success'                => ' - Watermark succesfully uploaded<br />' . XHTML . '>',
-    'upload_exceeds_quota'      => '%s - This upload would exceed your usage quota.',
-    'error_create_tmp'          => 'Error creating temporary directory. Please contact the site administrator',
-    'wm_already_exists'         => 'The watermark file %s already exists on the server',
-    'invalid_remote_url'        => 'File %d is not a valid streaming FLV URL',
-    'invalid_embed_url'         => 'File %d is not a valid embed URL',
-    'go_back'                   => 'Go Back',
-    'error'                     => 'ERROR:',
-    'no_format'                 => 'No format selected',
-    'format_not_allowed'        => 'Format not allowed',
+    'upload_exceeds_quota'      => '%s - Questo caricamento supererebbe la quota disponibile.',
+    'error_create_tmp'          => 'Errore durante la creazione della directory temporanea. Contatta l\'amministratore del sito',
+    'wm_already_exists'         => 'Il file filigrana %s esiste già sul server',
+    'invalid_remote_url'        => 'Il file %d non è un URL FLV in streaming valido',
+    'invalid_embed_url'         => 'Il file %d non è un URL di incorporamento valido',
+    'go_back'                   => 'Torna indietro',
+    'error'                     => 'ERRORE:',
+    'no_format'                 => 'Nessun formato selezionato',
+    'format_not_allowed'        => 'Formato non consentito',
 );
 
 // userland items...
@@ -1234,35 +1234,35 @@ $LANG_MG07 = array (
 );
 
 $LANG_MG09 = array (
-    1                       => 'Sort Operation Completed Successfully',
-    2                       => 'Configuration Options Saved Successfully',
-    3                       => 'EXIF/IPTC Data Saved Successfully',
-    4                       => 'Album Defaults Saved Successfully',
-    5                       => 'Audio / Video Defaults Saved Successfully',
-    6                       => 'RSS Options Saved Successfully',
+    1                       => 'Ordinamento completato correttamente',
+    2                       => 'Opzioni di configurazione salvate correttamente',
+    3                       => 'Dati EXIF/IPTC salvati correttamente',
+    4                       => 'Impostazioni predefinite dell\'album salvate correttamente',
+    5                       => 'Impostazioni predefinite audio/video salvate correttamente',
+    6                       => 'Opzioni RSS salvate correttamente',
     7                       => 'RSS Feeds Successfully Rebuilt',
     8                       => 'Member Albums Have Been Successfully Removed',
-    9                       => 'System Configuration Successfully Reset to Installation Defaults',
-    10                      => 'Global Permissions Have Bueen Successfully Applied',
-    11                      => 'Global Album Attributes Have Been Successfully Applied',
-    12                      => 'Member Album Options Have Been Successfully Saved',
-    13                      => 'Selected Member Albums Successfully Created',
-    14                      => 'Member Album Gallery Flag Has Been Successfully Reset',
-    15                      => 'Selected Albums Have Been Successfully Deleted',
-    16                      => 'User Quotas Have Been Successfully Rebuilt',
-    17                      => 'Selected Files Have Been Removed',
+    9                       => 'Configurazione di sistema ripristinata correttamente ai valori di installazione',
+    10                      => 'Permessi globali applicati correttamente',
+    11                      => 'Attributi globali degli album applicati correttamente',
+    12                      => 'Opzioni degli album dei membri salvate correttamente',
+    13                      => 'Album dei membri selezionati creati correttamente',
+    14                      => 'Flag della galleria album dei membri reimpostato correttamente',
+    15                      => 'Album selezionati eliminati correttamente',
+    16                      => 'Quote utenti ricostruite correttamente',
+    17                      => 'File selezionati rimossi correttamente',
 );
 
 // profile
 
 $LANG_MG10 = array (
-    'last_10'          => 'Last 5 media items uploaded by user ',
-    'albums_owned'     => 'Gallery albums owned by user ',
-    'thumbnail'        => 'Thumbnail',
-    'upload_date'      => 'Upload Date',
-    'title'            => 'Title',
+    'last_10'          => 'Ultimi 5 elementi multimediali caricati dall\'utente ',
+    'albums_owned'     => 'Album della galleria appartenenti all\'utente ',
+    'thumbnail'        => 'Miniatura',
+    'upload_date'      => 'Data di caricamento',
+    'title'            => 'Titolo',
     'album'            => 'Album',
-    'album_desc'       => 'Description'
+    'album_desc'       => 'Descrizione'
 );
 
 $PLG_mediagallery_MESSAGE1 = 'Media Gallery plugin upgrade: Update completed successfully.';
@@ -1281,7 +1281,7 @@ $PLG_mediagallery_MESSAGE3002 = $LANG32[9];
 // Localization of the Admin Configuration UI
 $LANG_configsections['mediagallery'] = array(
     'label' => 'Media Gallery',
-    'title' => 'Media Gallery Configuration'
+    'title' => 'Titolo'
 );
 
 $LANG_confignames['mediagallery'] = array(
