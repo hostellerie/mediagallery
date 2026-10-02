@@ -1144,135 +1144,135 @@ $LANG_MG05 = array (
     'diagonal'              => 'Диагональ',
     'doors'                 => 'Двери',
     'gradient'              => 'Градиент',
-    'iris'                  => 'Iris',
-    'pinwheel'              => 'Pinwheel',
-    'pixelate'              => 'Pixelate',
-    'radial'                => 'Radial',
-    'rain'                  => 'Rain',
-    'slide'                 => 'Slide',
-    'snow'                  => 'Snow',
-    'spiral'                => 'Spiral',
-    'stretch'               => 'Stretch',
-    'random'                => 'Random'
+    'iris'                  => 'Ирис',
+    'pinwheel'              => 'Вертушка',
+    'pixelate'              => 'Пикселизация',
+    'radial'                => 'Радиальный',
+    'rain'                  => 'Дождь',
+    'slide'                 => 'Сдвиг',
+    'snow'                  => 'Снег',
+    'spiral'                => 'Спираль',
+    'stretch'               => 'Растяжение',
+    'random'                => 'Случайно'
 );
 
 $LANG_MG07 = array (
-    'playback_options'          => 'Playback Options',
-    'none'                      => 'none',
-    'mini'                      => 'mini',
-    'full'                      => 'full',
-    'low'                       => 'low',
-    'high'                      => 'high',
-    'showall'                   => 'Show All',
-    'noborder'                  => 'No Border',
-    'exactfit'                  => 'Exact Fit',
-    'window'                    => 'Window',
-    'opaque'                    => 'Opaque',
-    'transparent'               => 'Transparent',
-    'to_fit'                    => 'To Fit',
-    'aspect'                    => 'Aspect',
+    'playback_options'          => 'Параметры воспроизведения',
+    'none'                      => 'нет',
+    'mini'                      => 'мини',
+    'full'                      => 'полный',
+    'low'                       => 'низкое',
+    'high'                      => 'высокое',
+    'showall'                   => 'Показать всё',
+    'noborder'                  => 'Без рамки',
+    'exactfit'                  => 'Точное заполнение',
+    'window'                    => 'Окно',
+    'opaque'                    => 'Непрозрачный',
+    'transparent'               => 'Прозрачный',
+    'to_fit'                    => 'По размеру',
+    'aspect'                    => 'Пропорции',
     'normal_size'               => 'Обычный размер',
     'description'               => 'Описание',
-    'option'                    => 'Option',
+    'option'                    => 'Параметр',
     'on'                        => 'Дата',
-    'off'                       => 'Off',
-    'auto_start'                => 'Auto Start',
-    'auto_start_help'           => 'When set to On, the autoplay attribute causes the item to start playing as soon as the Player Plug-In estimates that it wil be able to play the entire item without waiting or additional data.',
-    'enable_context_menu'       => 'Enable Context Menu',
-    'enable_context_menu_help'  => 'If on, the context menu, which appears when the right mouse button is clicked.',
-    'stretch_to_fit'            => 'Stretch to Fit',
-    'stretch_to_fit_help'       => 'If on, the video will stretch to fit the size of the Windows Media Player video display.',
-    'status_bar'                => 'Show Status Bar',
-    'status_bar_help'           => 'If on, the status bar is displayed.',
-    'ui_mode'                   => 'User Interface Mode',
-    'ui_mode_help'              => 'Specifies which controls are shown in the user interface.',
+    'off'                       => 'Выкл.',
+    'auto_start'                => 'Автозапуск',
+    'auto_start_help'           => 'При включении автоматическое воспроизведение запускается, как только проигрыватель определит, что элемент можно воспроизвести без ожидания дополнительных данных.',
+    'enable_context_menu'       => 'Включить контекстное меню',
+    'enable_context_menu_help'  => 'Если включено, при щелчке правой кнопкой отображается контекстное меню.',
+    'stretch_to_fit'            => 'Растянуть по размеру',
+    'stretch_to_fit_help'       => 'Если включено, видео растягивается до размера области Windows Media Player.',
+    'status_bar'                => 'Показывать строку состояния',
+    'status_bar_help'           => 'Если включено, отображается строка состояния.',
+    'ui_mode'                   => 'Режим интерфейса',
+    'ui_mode_help'              => 'Определяет, какие элементы управления показываются в интерфейсе.',
     'height'                    => 'Высота',
     'width'                     => 'Ширина',
-    'height_help'               => 'Size of the playback window',
-    'width_help'                => 'Size of the playback window',
-    'menu'                      => 'Menu',
-    'menu_help'                 => 'Displays the full menu, allowing the user a variety of options to enhance or control playback.',
+    'height_help'               => 'Размер окна воспроизведения',
+    'width_help'                => 'Размер окна воспроизведения',
+    'menu'                      => 'Меню',
+    'menu_help'                 => 'Показывает полное меню с различными параметрами управления воспроизведением.',
     'quality'                   => 'Качество',
-    'quality_help'              => 'Playback Quality',
-    'flash_vars'                => 'Flash Variables',
-    'auto_ref'                  => 'Auto Ref',
-    'auto_ref_help'             => 'When set to On, the AUTOREF attribute causes any movie to load immediately, without waiting for a mouse click.',
-    'controller'                => 'Controller',
-    'controller_help'           => 'When set to On, the movie controller will be displayed.',
-    'kiosk_mode'                => 'Kiosk Mode',
-    'kiosk_mode_help'           => 'When Kiosk Mode is On, the plug-in does not include its pop-up menu in the movie controller and does not allow drag and drop to save the movie.',
-    'scale'                     => 'Scale',
-    'scale_help'                => 'Scale can be either TOFIT, ASPECT of Normal.  If set to ToFit, the moview is scaled to fit the embedded box as specified by height and width.  If set to Aspect, the movie will be scaled to fit the embedded box while maintaining the aspect ratio. If set to Normal, the movie will play the size it was saved.',
-    'swf_scale_help'            => 'Default (Show all) makes the entire movie visible in the specified area without distortion, while maintaining the original aspect ratio of the movie. Borders may appear on two sides of the movie. No Border scales the movie to fill the specified area, without distortion but possibly with some cropping, while maintaining the original aspect ratio of the movie.  Exact Fit makes the entire movie visible in the specified area without trying to preserve the original aspect ratio. Distortion may occur.',
-    'wmode'                     => 'Window Mode',
-    'wmode_help'                => 'Sets the Window Mode property of the Flash movie for transparency, layering, and positioning in the browser.',
+    'quality_help'              => 'Качество воспроизведения',
+    'flash_vars'                => 'Переменные Flash',
+    'auto_ref'                  => 'Автоматическая ссылка',
+    'auto_ref_help'             => 'При включении AUTOREF фильм загружается сразу, без ожидания щелчка мышью.',
+    'controller'                => 'Контроллер',
+    'controller_help'           => 'При включении отображается контроллер фильма.',
+    'kiosk_mode'                => 'Режим киоска',
+    'kiosk_mode_help'           => 'В режиме киоска плагин не показывает всплывающее меню в контроллере и не позволяет сохранять фильм перетаскиванием.',
+    'scale'                     => 'Масштаб',
+    'scale_help'                => 'Масштаб может быть TOFIT, ASPECT или Normal. ToFit подгоняет фильм под ширину и высоту встроенной области. Aspect сохраняет соотношение сторон. Normal воспроизводит фильм в сохранённом размере.',
+    'swf_scale_help'            => 'По умолчанию (Показать всё) весь фильм виден без искажения с сохранением пропорций; по двум сторонам могут появиться поля. Без рамки заполняет область с сохранением пропорций и возможной обрезкой. Точное заполнение показывает весь фильм без сохранения пропорций и может вызвать искажение.',
+    'wmode'                     => 'Режим окна',
+    'wmode_help'                => 'Настраивает режим окна Flash для прозрачности, слоёв и позиционирования в браузере.',
     'loop'                      => 'Цикл',
-    'loop_help'                 => 'Specifies whether the movie repeats indefinitely or stops when it reaches the last frame',
+    'loop_help'                 => 'Определяет, повторяется ли фильм бесконечно или останавливается на последнем кадре',
     'always'                    => 'Всегда',
-    'sameDomain'                => 'SameDomain',
-    'never'                     => 'Never',
-    'asa'                       => 'Allow Script Access',
-    'asa_help'                  => 'This parameter controls whether ActionScript in a SWF is permitted to call JavaScript in the HTML page that contains it.',
-    'bgcolor'                   => 'Background Color',
-    'bgcolor_help'              => 'Sets the background color for the playback window',
-    'clsid'                     => 'Object Class ID',
-    'codebase'                  => 'Codebase',
-    'playcount'                 => 'Playcount',
-    'playcount_help'            => 'How many times the file should be repeated',
+    'sameDomain'                => 'Тот же домен',
+    'never'                     => 'Никогда',
+    'asa'                       => 'Разрешить доступ скриптов',
+    'asa_help'                  => 'Этот параметр определяет, может ли ActionScript в SWF вызывать JavaScript на содержащей его HTML-странице.',
+    'bgcolor'                   => 'Цвет фона',
+    'bgcolor_help'              => 'Устанавливает цвет фона окна воспроизведения',
+    'clsid'                     => 'ID класса объекта',
+    'codebase'                  => 'Кодовая база',
+    'playcount'                 => 'Число воспроизведений',
+    'playcount_help'            => 'Сколько раз повторять файл',
     'loop'                      => 'Цикл',
-    'loop_help'                 => 'Continuous playback',
+    'loop_help'                 => 'Непрерывное воспроизведение',
     'wmp_options'               => 'Windows Media Player',
     'qt_options'                => 'Проигрыватель QuickTime',
-    'mp3_options'               => 'MP3 Playback',
-    'swf_options'               => 'Flash Media Player',
-    'swf_version_help'          => 'Flash version required to play this file.',
-    'resolution'                => 'Resolution (WxH)',
-    'resolution_x_help'         => 'Video X (Width) Resolution',
-    'resolution_y_help'         => 'Video Y (Height) Resolution',
-    'resolution_x'              => 'Video Width',
-    'resolution_y'              => 'Video Height',
+    'mp3_options'               => 'Воспроизведение MP3',
+    'swf_options'               => 'Flash-медиапроигрыватель',
+    'swf_version_help'          => 'Версия Flash, необходимая для воспроизведения файла.',
+    'resolution'                => 'Разрешение (ШxВ)',
+    'resolution_x_help'         => 'Разрешение видео X (ширина)',
+    'resolution_y_help'         => 'Разрешение видео Y (высота)',
+    'resolution_x'              => 'Ширина видео',
+    'resolution_y'              => 'Высота видео',
 );
 
 $LANG_MG09 = array (
-    1                       => 'Sort Operation Completed Successfully',
-    2                       => 'Configuration Options Saved Successfully',
-    3                       => 'EXIF/IPTC Data Saved Successfully',
-    4                       => 'Album Defaults Saved Successfully',
-    5                       => 'Audio / Video Defaults Saved Successfully',
-    6                       => 'RSS Options Saved Successfully',
-    7                       => 'Feeds Successfully Rebuilt',
-    8                       => 'Selected Member Albums Have Been Successfully Removed',
-    9                       => 'System Configuration Successfully Reset to Installation Defaults',
-    10                      => 'Global Permissions Have Bueen Successfully Applied',
-    11                      => 'Global Album Attributes Have Been Successfully Applied',
-    12                      => 'Member Album Options Have Been Successfully Saved',
-    13                      => 'Selected Member Albums Successfully Created',
-    14                      => 'Member Album Gallery Flag Has Been Successfully Reset',
-    15                      => 'Selected Albums Have Been Successfully Deleted',
-    16                      => 'User Quotas Have Been Successfully Rebuilt',
-    17                      => 'Selected Files Have Been Removed',
+    1                       => 'Сортировка успешно завершена',
+    2                       => 'Параметры конфигурации успешно сохранены',
+    3                       => 'Данные EXIF/IPTC успешно сохранены',
+    4                       => 'Настройки альбома по умолчанию успешно сохранены',
+    5                       => 'Настройки аудио / видео по умолчанию успешно сохранены',
+    6                       => 'Параметры RSS успешно сохранены',
+    7                       => 'Ленты успешно пересозданы',
+    8                       => 'Выбранные альбомы участников успешно удалены',
+    9                       => 'Системная конфигурация успешно сброшена к значениям установки',
+    10                      => 'Глобальные права успешно применены',
+    11                      => 'Глобальные атрибуты альбомов успешно применены',
+    12                      => 'Параметры альбомов участников успешно сохранены',
+    13                      => 'Выбранные альбомы участников успешно созданы',
+    14                      => 'Флаг галереи альбома участника успешно сброшен',
+    15                      => 'Выбранные альбомы успешно удалены',
+    16                      => 'Квоты пользователей успешно пересчитаны',
+    17                      => 'Выбранные файлы удалены',
 );
 
 // profile
 
 $LANG_MG10 = array (
-    'last_10'          => 'Last 5 media items uploaded by user ',
-    'albums_owned'     => 'Gallery albums owned by user ',
+    'last_10'          => 'Последние 5 медиаэлементов, загруженных пользователем ',
+    'albums_owned'     => 'Альбомы галереи пользователя ',
     'thumbnail'        => 'Миниатюра',
-    'upload_date'      => 'Upload Date',
+    'upload_date'      => 'Дата загрузки',
     'title'            => 'Название',
     'album'            => 'Альбом',
     'album_desc'       => 'Описание'
 );
 
-$PLG_mediagallery_MESSAGE1 = 'Media Gallery plugin upgrade: Update completed successfully.';
-$PLG_mediagallery_MESSAGE2 = 'Media Gallery plugin upgrade: We are unable to update this version automatically. Refer to the plugin documentation.';
-$PLG_mediagallery_MESSAGE3 = 'Media Gallery plugin upgrade failed - check error.log';
-$PLG_mediagallery_MESSAGE4 = 'Thank you for rating the media item';
-$PLG_mediagallery_MESSAGE5 = 'Sorry, you have already rated this item';
-$PLG_mediagallery_MESSAGE6 = 'There was an error recording your rating - please notify the system administrator';
-$PLG_mediagallery_MESSAGE7 = 'There were no items found to process.';
-$PLG_mediagallery_MESSAGE10 = 'There was an error in replacing your media file, see error.log for details';
+$PLG_mediagallery_MESSAGE1 = 'Обновление плагина Media Gallery: успешно завершено.';
+$PLG_mediagallery_MESSAGE2 = 'Обновление плагина Media Gallery: эту версию нельзя обновить автоматически. См. документацию плагина.';
+$PLG_mediagallery_MESSAGE3 = 'Обновление плагина Media Gallery не удалось — проверьте error.log';
+$PLG_mediagallery_MESSAGE4 = 'Спасибо за оценку медиаэлемента';
+$PLG_mediagallery_MESSAGE5 = 'Вы уже оценивали этот элемент';
+$PLG_mediagallery_MESSAGE6 = 'При сохранении оценки произошла ошибка — сообщите системному администратору';
+$PLG_mediagallery_MESSAGE7 = 'Элементы для обработки не найдены.';
+$PLG_mediagallery_MESSAGE10 = 'При замене медиафайла произошла ошибка; подробности см. в error.log';
 
 // Messages for the plugin upgrade
 global $LANG32;
@@ -1290,14 +1290,14 @@ $LANG_confignames['mediagallery'] = array(
     'htmlallowed'               => 'Разрешить HTML в названиях',
     'usage_tracking'            => 'Учёт использования',
     'whatsnew'                  => 'Включить список «Что нового» Geeklog',
-    'title_length'              => 'What\'s New Title Length (byte)',
-    'whatsnew_time'             => 'What\'s New Time (day)',
+    'title_length'              => 'Длина заголовка «Что нового» (байт)',
+    'whatsnew_time'             => 'Период «Что нового» (дни)',
     'preserve_filename'         => 'Сохранять исходное имя файла',
     'discard_original'          => 'Удалять оригинальные изображения',
     'verbose'                   => 'Подробно (отладочный журнал)',
     'disable_whatsnew_comments' => 'Отключить комментарии в «Что нового»',
     'profile_hook'              => 'Показывать информацию MG в профиле',
-    'root_album_name'           => 'Root Album Name',
+    'root_album_name'           => 'Название корневого альбома',
 
     'at_border'                 => 'Рамка',
     'at_align'                  => 'Выравнивание',
@@ -1318,10 +1318,10 @@ $LANG_confignames['mediagallery'] = array(
 
     'dfid'                      => 'Формат даты',
     'displayblocks'             => 'Показывать блоки Geeklog',
-    'album_display_columns'     => 'Root Album Display Colums',
-    'album_display_rows'        => 'Root Album Display Rows',
+    'album_display_columns'     => 'Столбцы корневого альбома',
+    'album_display_rows'        => 'Строки корневого альбома',
     'subalbum_select'           => 'Показывать подальбомы в списке выбора',
-    'indextheme'                => 'Root Album Theme',
+    'indextheme'                => 'Тема корневого альбома',
     'indexskin'                 => 'Тема корневого альбома',
     'jpg_orig_quality'          => 'Качество исходного JPG',
     'jpg_quality'               => 'Качество отображаемого JPG',
@@ -1347,9 +1347,9 @@ $LANG_confignames['mediagallery'] = array(
     'search_playback_type'      => 'Тип воспроизведения аудио/видео в результатах',
     'search_enable_views'       => 'Показывать счётчик просмотров в результатах',
     'search_enable_rating'      => 'Показывать рейтинг в результатах',
-    'search_album_skin'         => 'Search Results Theme',
-    'search_frame_skin'         => 'Search Results Thumbnail Skin',
-    'search_tn_size'            => 'Search Results Thumbnail Size',
+    'search_album_skin'         => 'Тема результатов поиска',
+    'search_frame_skin'         => 'Тема миниатюр результатов',
+    'search_tn_size'            => 'Размер миниатюр результатов',
 
     'def_refresh_rate'          => 'Частота обновления',
     'def_item_limit'            => 'Максимум элементов за цикл',
@@ -1435,47 +1435,47 @@ $LANG_confignames['mediagallery'] = array(
     'ad_mod_group_id'           => 'Группа модераторов',
     'ad_email_mod'              => 'Уведомлять модераторов по электронной почте при отправке',
 
-    'ad_group_id'               => 'Group',
-    'ad_permissions'            => 'Album Default Permissions',
+    'ad_group_id'               => 'Группа',
+    'ad_permissions'            => 'Права альбома по умолчанию',
 
-    'asf_autostart'             => 'Auto Start',
-    'asf_enablecontextmenu'     => 'Enable Context Menu',
-    'asf_stretchtofit'          => 'Stretch to Fit',
-    'asf_showstatusbar'         => 'Show Status Bar',
-    'asf_uimode'                => 'User Interface Mode',
-    'asf_playcount'             => 'Playcount',
-    'asf_bgcolor'               => 'Background Color',
+    'asf_autostart'             => 'Автозапуск',
+    'asf_enablecontextmenu'     => 'Включить контекстное меню',
+    'asf_stretchtofit'          => 'Растянуть по размеру',
+    'asf_showstatusbar'         => 'Показывать строку состояния',
+    'asf_uimode'                => 'Режим интерфейса',
+    'asf_playcount'             => 'Число воспроизведений',
+    'asf_bgcolor'               => 'Цвет фона',
     'asf_width'                 => 'Ширина',
     'asf_height'                => 'Высота',
 
-    'mov_autoref'               => 'Auto Ref',
-    'mov_autoplay'              => 'Auto Start',
-    'mov_controller'            => 'Controller',
-    'mov_kioskmode'             => 'Kiosk Mode',
-    'mov_scale'                 => 'Scale',
+    'mov_autoref'               => 'Автоматическая ссылка',
+    'mov_autoplay'              => 'Автозапуск',
+    'mov_controller'            => 'Контроллер',
+    'mov_kioskmode'             => 'Режим киоска',
+    'mov_scale'                 => 'Масштаб',
     'mov_loop'                  => 'Цикл',
-    'mov_bgcolor'               => 'Background Color',
+    'mov_bgcolor'               => 'Цвет фона',
     'mov_width'                 => 'Ширина',
     'mov_height'                => 'Высота',
 
-    'mp3_autostart'             => 'Auto Start',
-    'mp3_enablecontextmenu'     => 'Enable Context Menu',
-    'mp3_showstatusbar'         => 'Show Status Bar',
+    'mp3_autostart'             => 'Автозапуск',
+    'mp3_enablecontextmenu'     => 'Включить контекстное меню',
+    'mp3_showstatusbar'         => 'Показывать строку состояния',
     'mp3_loop'                  => 'Цикл',
-    'mp3_uimode'                => 'User Interface Mode',
+    'mp3_uimode'                => 'Режим интерфейса',
 
-    'swf_play'                  => 'Auto Start',
-    'swf_menu'                  => 'Menu',
-    'swf_scale'                 => 'Scale',
-    'swf_wmode'                 => 'Window Mode',
-    'swf_allowscriptaccess'     => 'Allow Script Access',
+    'swf_play'                  => 'Автозапуск',
+    'swf_menu'                  => 'Меню',
+    'swf_scale'                 => 'Масштаб',
+    'swf_wmode'                 => 'Режим окна',
+    'swf_allowscriptaccess'     => 'Разрешить доступ скриптов',
     'swf_quality'               => 'Качество',
     'swf_loop'                  => 'Цикл',
-    'swf_bgcolor'               => 'Background Color',
+    'swf_bgcolor'               => 'Цвет фона',
     'swf_width'                 => 'Ширина',
     'swf_height'                => 'Высота',
-    'swf_flashvars'             => 'Flash Variables',
-    'swf_version'               => 'Codebase',
+    'swf_flashvars'             => 'Переменные Flash',
+    'swf_version'               => 'Кодовая база',
 
     'member_albums'             => 'Включить альбомы участников',
     'allow_remote'              => 'Включить удалённых пользователей',
@@ -1517,14 +1517,14 @@ $LANG_confignames['mediagallery'] = array(
     'member_mod_group_id'       => 'Группа модераторов',
     'member_email_mod'          => 'Уведомлять модераторов по электронной почте при отправке',
 
-    'member_permissions'        => 'Album Default Permissions',
+    'member_permissions'        => 'Права альбома по умолчанию',
 
     'display_rows'              => 'Строк на странице',
-    'display_columns'           => 'Display Colums',
+    'display_columns'           => 'Столбцы отображения',
 );
 
 $LANG_configsubgroups['mediagallery'] = array(
-    'sg_main'  => 'System Settings',
+    'sg_main'  => 'Системные настройки',
     'sg_album' => 'Настройки альбома по умолчанию',
     'sg_av'    => 'Настройки аудио / видео по умолчанию',
     'sg_member_album' => 'Альбомы участников',
@@ -1537,22 +1537,22 @@ $LANG_tab['mediagallery'] = array(
     'tab_userprefs'    => 'Настройки пользователя',
     'tab_graphics'     => 'Графический пакет',
 
-    'tab_album'        => 'Album Default Settings',
+    'tab_album'        => 'Настройки альбома по умолчанию',
     'tab_watermark'    => 'Водяной знак',
     'tab_allowedmediatypes' => 'Разрешённые типы медиа',
     'tab_useruploads'  => 'Загрузки пользователей',
-    'tab_accessrights' => 'Access Rights',
+    'tab_accessrights' => 'Права доступа',
 
     'tab_wmedia'       => 'Windows Media',
     'tab_quicktime'    => 'QuickTime',
     'tab_mp3'          => 'MP3',
-    'tab_flashmedia'   => 'Flash Media',
+    'tab_flashmedia'   => 'Flash-медиа',
 
     'tab_member_albums' => 'Альбомы участников',
     'tab_member_allowedmediatypes' => 'Разрешённые типы медиа',
     'tab_member_album_attributes' => 'Атрибуты альбома',
     'tab_member_useruploads'  => 'Загрузки пользователей',
-    'tab_member_accessrights' => 'Access Rights',
+    'tab_member_accessrights' => 'Права доступа',
 
 );
 
@@ -1576,19 +1576,19 @@ $LANG_fs['mediagallery'] = array(
     'fs_other_format' => 'Другое',
 
     'fs_useruploads'  => 'Загрузки пользователей',
-    'fs_accessrights' => 'Access Rights',
-    'fs_permissions'  => 'Album Permissions',
+    'fs_accessrights' => 'Права доступа',
+    'fs_permissions'  => 'Права альбома',
 
     'fs_wmedia'       => 'Windows Media',
     'fs_quicktime'    => 'QuickTime',
     'fs_mp3'          => 'MP3',
-    'fs_flashmedia'   => 'Flash Media',
+    'fs_flashmedia'   => 'Flash-медиа',
 
     'fs_member_albums' => 'Альбомы участников',
     'fs_member_allowedmediatypes' => 'Разрешённые типы медиа',
     'fs_member_album_attributes' => 'Атрибуты альбома',
     'fs_member_useruploads'  => 'Загрузки пользователей',
-    'fs_member_permissions' => 'Member Album Permissions',
+    'fs_member_permissions' => 'Права альбомов участников',
 );
 
 // Note: entries 0, 1, and 12 are the same as in $LANG_configselects['Core']
@@ -1596,9 +1596,9 @@ $LANG_configselects['mediagallery'] = array(
     0 => array('True' => 1, 'False' => 0),
     1 => array('True' => TRUE, 'False' => FALSE),
     5 => array('Top Of Page' => 1, 'After Featured Story' => 2, 'Bottom Of Page' => 3),
-    6 => array('Left Blocks' => 'leftblocks', 'Right Blocks' => 'rightblocks', 'All Blocks' => 'allblocks', 'No Blocks' => 'noblocks'),
-    7 => array('None' => 'none', 'Auto' => 'auto', 'Left' => 'left', 'Right' => 'right', 'Center' => 'center'),
-    8 => array('Thumbnail' => 'tn', 'Display Image' => 'disp', 'Original Image' => 'orig'),
+    6 => array('Left Blocks' => 'левыеблоки', 'Right Blocks' => 'правыеблоки', 'All Blocks' => 'всеблоки', 'No Blocks' => 'безблоков'),
+    7 => array('None' => 'нет', 'Auto' => 'авто', 'Left' => 'слева', 'Right' => 'справа', 'Center' => 'центр'),
+    8 => array('Thumbnail' => 'миниатюра', 'Display Image' => 'показ', 'Original Image' => 'оригинал'),
     9 => array('True' => 1, 'False' => 0, 'Lightbox ' => 2),
     10 => array($LANG_MG01['left_blocks_only'] => 0, $LANG_MG01['right_blocks_only'] => 1, $LANG_MG01['left_right_blocks'] => 2, $LANG_MG01['none'] => 3),
     11 => array($LANG_MG01['include_small'] => 0, $LANG_MG01['include_medium'] => 1, $LANG_MG01['include_large'] => 2, $LANG_MG01['include_custom'] => 3,
@@ -1618,12 +1618,12 @@ $LANG_configselects['mediagallery'] = array(
     22 => array('10%' => 10, '20%' => 20, '30%' => 30, '40%' => 40, '50%' => 50, '60%' => 60, '70%' => 70, '80%' => 80, '90%' => 90),
     23 => array($LANG_MG01['top_left'] => 1, $LANG_MG01['top_center'] => 2, $LANG_MG01['top_right'] => 3, $LANG_MG01['middle_left'] => 4, $LANG_MG01['middle_center'] => 5,
                 $LANG_MG01['middle_right'] => 6, $LANG_MG01['bottom_left'] => 7, $LANG_MG01['bottom_center'] => 8, $LANG_MG01['bottom_right'] => 9),
-    24 => array('None' => 'none', 'Mini' => 'mini', 'Full' => 'full'),
-    25 => array($LANG_MG07['to_fit'] => 'tofit', $LANG_MG07['aspect'] => 'aspect', $LANG_MG07['normal_size'] => '1'),
-    26 => array($LANG_MG07['showall'] => 'showall', $LANG_MG07['noborder'] => 'noborder', $LANG_MG07['exactfit'] => 'exactfit'),
-    27 => array($LANG_MG07['window'] => 'window', $LANG_MG07['opaque'] => 'opaque', $LANG_MG07['transparent'] => 'transparent'),
-    28 => array($LANG_MG07['always'] => 'always', $LANG_MG07['sameDomain'] => 'sameDomain', $LANG_MG07['never'] => 'never'),
-    29 => array($LANG_MG07['low'] => 'low', $LANG_MG07['high'] => 'high'),
+    24 => array('None' => 'нет', 'Mini' => 'мини', 'Full' => 'полный'),
+    25 => array($LANG_MG07['to_fit'] => 'подогнать', $LANG_MG07['aspect'] => 'пропорции', $LANG_MG07['normal_size'] => '1'),
+    26 => array($LANG_MG07['showall'] => 'показатьвсё', $LANG_MG07['noborder'] => 'безрамки', $LANG_MG07['exactfit'] => 'точноподогнать'),
+    27 => array($LANG_MG07['window'] => 'окно', $LANG_MG07['opaque'] => 'непрозрачный', $LANG_MG07['transparent'] => 'прозрачный'),
+    28 => array($LANG_MG07['always'] => 'всегда', $LANG_MG07['sameDomain'] => 'тотжеДомен', $LANG_MG07['never'] => 'никогда'),
+    29 => array($LANG_MG07['low'] => 'низкое', $LANG_MG07['high'] => 'высокое'),
     30 => array('RSS2.0' => 'RSS2.0', 'RSS1.0' => 'RSS1.0', 'RSS0.91' => 'RSS0.91', 'PIE0.1' => 'PIE0.1', 'OPML' => 'OPML', 'ATOM' => 'ATOM', 'ATOM0.3' => 'ATOM0.3'),
 
     31 => array($LANG_MG01['small'] => 0, $LANG_MG01['medium'] => 1, $LANG_MG01['large'] => 2),
@@ -1635,78 +1635,78 @@ if (isset($_MG_CONF, $_MG_CONF['custom_image_width'], $_MG_CONF['custom_image_he
 }
 
 // MediaGallery 1.8.0 template accessibility labels
-$LANG_MG03['aria_breadcrumb'] = 'Breadcrumb';
-$LANG_MG03['aria_album_actions'] = 'Album actions';
-$LANG_MG03['aria_album_pagination'] = 'Album pagination';
-$LANG_MG03['aria_album_pagination_info'] = 'Album pagination and information';
-$LANG_MG03['aria_media_actions'] = 'Media actions and navigation';
-$LANG_MG03['media_id_label'] = 'Media ID';
-$LANG_MG03['aria_search_results_navigation'] = 'Search results navigation';
-$LANG_MG03['aria_album_navigation'] = 'Album navigation';
-$LANG_MG03['aria_media_list'] = 'Media list';
+$LANG_MG03['aria_breadcrumb'] = 'Навигационная цепочка';
+$LANG_MG03['aria_album_actions'] = 'Действия альбома';
+$LANG_MG03['aria_album_pagination'] = 'Навигация страниц альбома';
+$LANG_MG03['aria_album_pagination_info'] = 'Навигация и информация альбома';
+$LANG_MG03['aria_media_actions'] = 'Действия и навигация медиа';
+$LANG_MG03['media_id_label'] = 'ID медиа';
+$LANG_MG03['aria_search_results_navigation'] = 'Навигация результатов поиска';
+$LANG_MG03['aria_album_navigation'] = 'Навигация альбома';
+$LANG_MG03['aria_media_list'] = 'Список медиа';
 
-$LANG_MG01['admin_help'] = 'MediaGallery administration gives you quick access to albums, member galleries, maintenance tasks, reports and plugin configuration.';
+$LANG_MG01['admin_help'] = 'Управление MediaGallery даёт быстрый доступ к альбомам, галереям участников, обслуживанию, отчётам и настройкам плагина.';
 
 
-$LANG_MG01['manage_albums'] = 'Manage Albums';
-$LANG_MG01['manage_albums_help'] = 'Manage albums, media items and the gallery structure.';
+$LANG_MG01['manage_albums'] = 'Управлять альбомами';
+$LANG_MG01['manage_albums_help'] = 'Управляйте альбомами, медиаэлементами и структурой галереи.';
 $LANG_MG01['overview'] = 'Обзор';
-$LANG_MG01['media_items'] = 'Media items';
-$LANG_MG01['pending_media'] = 'Pending media';
+$LANG_MG01['media_items'] = 'Медиаэлементы';
+$LANG_MG01['pending_media'] = 'Медиа на рассмотрении';
 $LANG_MG01['status_ok'] = 'OK';
-$LANG_MG01['status_check'] = 'Check';
-$LANG_MG01['media_storage'] = 'Media storage';
-$LANG_MG01['content'] = 'Content';
+$LANG_MG01['status_check'] = 'Проверить';
+$LANG_MG01['media_storage'] = 'Хранилище медиа';
+$LANG_MG01['content'] = 'Содержимое';
 $LANG_MG01['content_categories'] = 'Категории';
-$LANG_MG01['content_categories_help'] = 'Organize and maintain MediaGallery categories.';
-$LANG_MG01['member_albums_help'] = 'Manage member galleries, quotas and related album tools.';
-$LANG_MG01['manage'] = 'Manage';
-$LANG_MG01['maintenance_reports'] = 'Maintenance & reports';
-$LANG_MG01['maintenance_tools'] = 'Batch & maintenance';
-$LANG_MG01['maintenance_tools_help'] = 'Run thumbnail, resize, quota, sorting and batch maintenance tools.';
-$LANG_MG01['reports_tools'] = 'Reports & tools';
-$LANG_MG01['reports_tools_help'] = 'Open usage reports, EXIF tools, RSS rebuilds and environment checks.';
-$LANG_MG01['open_tools'] = 'Open tools';
+$LANG_MG01['content_categories_help'] = 'Организуйте и обслуживайте категории MediaGallery.';
+$LANG_MG01['member_albums_help'] = 'Управляйте галереями участников, квотами и связанными инструментами.';
+$LANG_MG01['manage'] = 'Управлять';
+$LANG_MG01['maintenance_reports'] = 'Обслуживание и отчёты';
+$LANG_MG01['maintenance_tools'] = 'Пакетные операции и обслуживание';
+$LANG_MG01['maintenance_tools_help'] = 'Запускайте инструменты миниатюр, масштабирования, квот, сортировки и пакетного обслуживания.';
+$LANG_MG01['reports_tools'] = 'Отчёты и инструменты';
+$LANG_MG01['reports_tools_help'] = 'Открывайте отчёты, инструменты EXIF, пересоздание RSS и проверку окружения.';
+$LANG_MG01['open_tools'] = 'Открыть инструменты';
 
 
 // MediaGallery 1.8 modern browser uploader
-$LANG_MG03['upload_drop_title'] = "Drop files here to upload";
-$LANG_MG03['upload_drop_help'] = "Add several files at once by dragging them here or by choosing them from your computer.";
-$LANG_MG03['upload_choose_files'] = "Choose files";
-$LANG_MG03['upload_queue'] = "Upload queue";
-$LANG_MG03['upload_remove'] = "Remove";
-$LANG_MG03['upload_file_details'] = "File details";
-$LANG_MG03['upload_files_selected'] = "files selected";
-$LANG_MG03['upload_noscript'] = "Multiple file selection is available. Drag-and-drop and the editable upload queue require JavaScript.";
+$LANG_MG03['upload_drop_title'] = "Перетащите файлы сюда для загрузки";
+$LANG_MG03['upload_drop_help'] = "Добавьте несколько файлов одновременно, перетащив их сюда или выбрав на компьютере.";
+$LANG_MG03['upload_choose_files'] = "Выбрать файлы";
+$LANG_MG03['upload_queue'] = "Очередь загрузки";
+$LANG_MG03['upload_remove'] = "Удалить";
+$LANG_MG03['upload_file_details'] = "Сведения о файле";
+$LANG_MG03['upload_files_selected'] = "файлов выбрано";
+$LANG_MG03['upload_noscript'] = "Доступен выбор нескольких файлов. Перетаскивание и редактируемая очередь требуют JavaScript.";
 
 
 // MediaGallery 1.8 media manager labels
-$LANG_MG01['manager_select_media'] = "Select media";
-$LANG_MG01['manager_album_cover'] = "Album cover";
-$LANG_MG01['manager_slideshow'] = "Slideshow";
+$LANG_MG01['manager_select_media'] = "Выбрать медиа";
+$LANG_MG01['manager_album_cover'] = "Обложка альбома";
+$LANG_MG01['manager_slideshow'] = "Слайд-шоу";
 
 
 // MediaGallery 1.8 non-image manager states
-$LANG_MG01['manager_cover_unavailable'] = "Unavailable without a thumbnail";
-$LANG_MG01['manager_slideshow_unavailable'] = "Images only";
+$LANG_MG01['manager_cover_unavailable'] = "Недоступно без миниатюры";
+$LANG_MG01['manager_slideshow_unavailable'] = "Только изображения";
 
 
 // MediaGallery 1.8 media access editor
-$LANG_MG01['media_access_ownership'] = "Access & ownership";
-$LANG_MG01['media_access_inherited'] = "Access rights for this media are inherited from album “%s”.";
-$LANG_MG01['media_edit_album_rights'] = "Edit album access rights";
+$LANG_MG01['media_access_ownership'] = "Доступ и владелец";
+$LANG_MG01['media_access_inherited'] = "Права доступа к этому медиа наследуются от альбома «%s».";
+$LANG_MG01['media_edit_album_rights'] = "Изменить права доступа альбома";
 
 
 // MediaGallery 1.8 storage diagnostics
 $LANG_MG01['core_path_images'] = "Geeklog path_images";
 $LANG_MG01['core_images_url'] = "Geeklog images_url";
-$LANG_MG01['persistent_storage_files'] = "Persistent storage files";
-$LANG_MG01['legacy_storage_user_files'] = "Legacy storage user files";
-$LANG_MG01['legacy_storage_files_warning'] = "Unexpected on a fresh 1.8 installation";
-$LANG_MG01['local_media_db_rows'] = "Local media rows in database";
-$LANG_MG01['image_original_files'] = "Readable image originals";
-$LANG_MG01['image_display_files'] = "Readable display images";
-$LANG_MG01['image_thumbnail_files'] = "Readable thumbnails";
-$LANG_MG01['missing_media_files'] = "Missing media IDs";
+$LANG_MG01['persistent_storage_files'] = "Файлы постоянного хранилища";
+$LANG_MG01['legacy_storage_user_files'] = "Пользовательские файлы старого хранилища";
+$LANG_MG01['legacy_storage_files_warning'] = "Неожиданно для новой установки 1.8";
+$LANG_MG01['local_media_db_rows'] = "Локальные строки медиа в базе данных";
+$LANG_MG01['image_original_files'] = "Читаемые оригиналы изображений";
+$LANG_MG01['image_display_files'] = "Читаемые отображаемые изображения";
+$LANG_MG01['image_thumbnail_files'] = "Читаемые миниатюры";
+$LANG_MG01['missing_media_files'] = "Отсутствующие ID медиа";
 
 ?>
