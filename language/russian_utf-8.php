@@ -195,23 +195,23 @@ $LANG_MG01 = array (
     'mg_directories'            => 'Media Gallery Directories',
     'mg_dir_structure'          => 'Media Gallery Directory Structure',
     'media_storage'             => 'Persistent media storage',
-    'active_media_path'         => 'Active media path',
-    'expected_media_path'       => 'Expected media path',
-    'active_media_url'          => 'Active media URL',
-    'media_storage_root'        => 'Storage root',
-    'plugin_media_assets'       => 'Plugin image resources',
-    'valid_media_assets'        => '%d of %d required images are valid',
-    'storage_unresolved'        => 'Unable to resolve the persistent storage target',
-    'storage_path_mismatch'     => 'Active path does not match the expected path',
-    'storage_root_invalid'      => 'Directory missing, unreadable or not writable',
-    'invalid_media_asset'       => 'Missing, unreadable or invalid image',
-    'storage_operation'         => 'Storage synchronization',
-    'repair_media_storage'      => 'Synchronize media storage',
-    'repair_media_storage_help' => 'Copies and verifies historical user media (originals, display images, thumbnails and covers) in the persistent images directory. Plugin images remain in the plugin directory and source files are retained.',
-    'repair_media_storage_success' => 'User media synchronization completed successfully.',
-    'media_storage_current'      => 'No historical user media needs to be synchronized.',
-    'repair_media_storage_failed' => 'Synchronization failed. See the Geeklog error log for the affected path.',
-    'invalid_security_token'    => 'The security token is invalid or has expired. Reload this page and try again.',
+    'active_media_path'         => 'Активный путь к медиа',
+    'expected_media_path'       => 'Ожидаемый путь к медиа',
+    'active_media_url'          => 'Активный URL медиа',
+    'media_storage_root'        => 'Корень хранилища',
+    'plugin_media_assets'       => 'Графические ресурсы плагина',
+    'valid_media_assets'        => '%d из %d обязательных изображений корректны',
+    'storage_unresolved'        => 'Не удалось определить назначение постоянного хранилища',
+    'storage_path_mismatch'     => 'Активный путь не совпадает с ожидаемым',
+    'storage_root_invalid'      => 'Каталог отсутствует, недоступен для чтения или записи',
+    'invalid_media_asset'       => 'Изображение отсутствует, недоступно для чтения или повреждено',
+    'storage_operation'         => 'Синхронизация хранилища',
+    'repair_media_storage'      => 'Синхронизировать хранилище медиа',
+    'repair_media_storage_help' => 'Копирует и проверяет исторические пользовательские медиафайлы (оригиналы, изображения для показа, миниатюры и обложки) в постоянном каталоге изображений. Изображения плагина остаются в каталоге плагина, исходные файлы сохраняются.',
+    'repair_media_storage_success' => 'Синхронизация пользовательских медиа успешно завершена.',
+    'media_storage_current'      => 'Нет исторических пользовательских медиа, требующих синхронизации.',
+    'repair_media_storage_failed' => 'Синхронизация не удалась. Проверьте журнал ошибок Geeklog для соответствующего пути.',
+    'invalid_security_token'    => 'Токен безопасности недействителен или истёк. Перезагрузите страницу и повторите попытку.',
     'ok'                        => 'OK',
     'not_found'                 => 'Not Found',
     'not_writable'              => 'NOT Writable',
@@ -1635,78 +1635,78 @@ if (isset($_MG_CONF, $_MG_CONF['custom_image_width'], $_MG_CONF['custom_image_he
 }
 
 // MediaGallery 1.8.0 template accessibility labels
-$LANG_MG03['aria_breadcrumb'] = 'Breadcrumb';
-$LANG_MG03['aria_album_actions'] = 'Album actions';
-$LANG_MG03['aria_album_pagination'] = 'Album pagination';
-$LANG_MG03['aria_album_pagination_info'] = 'Album pagination and information';
-$LANG_MG03['aria_media_actions'] = 'Media actions and navigation';
-$LANG_MG03['media_id_label'] = 'Media ID';
-$LANG_MG03['aria_search_results_navigation'] = 'Search results navigation';
-$LANG_MG03['aria_album_navigation'] = 'Album navigation';
-$LANG_MG03['aria_media_list'] = 'Media list';
+$LANG_MG03['aria_breadcrumb'] = 'Навигационная цепочка';
+$LANG_MG03['aria_album_actions'] = 'Действия с альбомом';
+$LANG_MG03['aria_album_pagination'] = 'Навигация по страницам альбома';
+$LANG_MG03['aria_album_pagination_info'] = 'Навигация и информация об альбоме';
+$LANG_MG03['aria_media_actions'] = 'Действия и навигация по медиа';
+$LANG_MG03['media_id_label'] = 'ID медиа';
+$LANG_MG03['aria_search_results_navigation'] = 'Навигация по результатам поиска';
+$LANG_MG03['aria_album_navigation'] = 'Навигация по альбому';
+$LANG_MG03['aria_media_list'] = 'Список медиа';
 
-$LANG_MG01['admin_help'] = 'MediaGallery administration gives you quick access to albums, member galleries, maintenance tasks, reports and plugin configuration.';
+$LANG_MG01['admin_help'] = 'Администрирование MediaGallery предоставляет быстрый доступ к альбомам, галереям пользователей, задачам обслуживания, отчётам и настройкам плагина.';
 
 
-$LANG_MG01['manage_albums'] = 'Manage Albums';
-$LANG_MG01['manage_albums_help'] = 'Manage albums, media items and the gallery structure.';
-$LANG_MG01['overview'] = 'Overview';
-$LANG_MG01['media_items'] = 'Media items';
-$LANG_MG01['pending_media'] = 'Pending media';
+$LANG_MG01['manage_albums'] = 'Управление альбомами';
+$LANG_MG01['manage_albums_help'] = 'Управление альбомами, медиафайлами и структурой галереи.';
+$LANG_MG01['overview'] = 'Обзор';
+$LANG_MG01['media_items'] = 'Медиафайлы';
+$LANG_MG01['pending_media'] = 'Медиа на модерации';
 $LANG_MG01['status_ok'] = 'OK';
-$LANG_MG01['status_check'] = 'Check';
-$LANG_MG01['media_storage'] = 'Media storage';
-$LANG_MG01['content'] = 'Content';
-$LANG_MG01['content_categories'] = 'Categories';
-$LANG_MG01['content_categories_help'] = 'Organize and maintain MediaGallery categories.';
-$LANG_MG01['member_albums_help'] = 'Manage member galleries, quotas and related album tools.';
-$LANG_MG01['manage'] = 'Manage';
-$LANG_MG01['maintenance_reports'] = 'Maintenance & reports';
-$LANG_MG01['maintenance_tools'] = 'Batch & maintenance';
-$LANG_MG01['maintenance_tools_help'] = 'Run thumbnail, resize, quota, sorting and batch maintenance tools.';
-$LANG_MG01['reports_tools'] = 'Reports & tools';
-$LANG_MG01['reports_tools_help'] = 'Open usage reports, EXIF tools, RSS rebuilds and environment checks.';
-$LANG_MG01['open_tools'] = 'Open tools';
+$LANG_MG01['status_check'] = 'Проверить';
+$LANG_MG01['media_storage'] = 'Постоянное хранилище медиа';
+$LANG_MG01['content'] = 'Содержимое';
+$LANG_MG01['content_categories'] = 'Категории';
+$LANG_MG01['content_categories_help'] = 'Организация и обслуживание категорий MediaGallery.';
+$LANG_MG01['member_albums_help'] = 'Управление пользовательскими галереями, квотами и связанными инструментами альбомов.';
+$LANG_MG01['manage'] = 'Управлять';
+$LANG_MG01['maintenance_reports'] = 'Обслуживание и отчёты';
+$LANG_MG01['maintenance_tools'] = 'Пакетная обработка и обслуживание';
+$LANG_MG01['maintenance_tools_help'] = 'Запуск инструментов миниатюр, изменения размеров, квот, сортировки и пакетного обслуживания.';
+$LANG_MG01['reports_tools'] = 'Отчёты и инструменты';
+$LANG_MG01['reports_tools_help'] = 'Открыть отчёты об использовании, инструменты EXIF, перестроение RSS и проверку окружения.';
+$LANG_MG01['open_tools'] = 'Открыть инструменты';
 
 
 // MediaGallery 1.8 modern browser uploader
-$LANG_MG03['upload_drop_title'] = "Drop files here to upload";
-$LANG_MG03['upload_drop_help'] = "Add several files at once by dragging them here or by choosing them from your computer.";
-$LANG_MG03['upload_choose_files'] = "Choose files";
-$LANG_MG03['upload_queue'] = "Upload queue";
-$LANG_MG03['upload_remove'] = "Remove";
-$LANG_MG03['upload_file_details'] = "File details";
-$LANG_MG03['upload_files_selected'] = "files selected";
-$LANG_MG03['upload_noscript'] = "Multiple file selection is available. Drag-and-drop and the editable upload queue require JavaScript.";
+$LANG_MG03['upload_drop_title'] = 'Перетащите файлы сюда для загрузки';
+$LANG_MG03['upload_drop_help'] = 'Добавьте несколько файлов сразу, перетащив их сюда или выбрав на компьютере.';
+$LANG_MG03['upload_choose_files'] = 'Выбрать файлы';
+$LANG_MG03['upload_queue'] = 'Очередь загрузки';
+$LANG_MG03['upload_remove'] = 'Удалить';
+$LANG_MG03['upload_file_details'] = 'Сведения о файле';
+$LANG_MG03['upload_files_selected'] = 'файлов выбрано';
+$LANG_MG03['upload_noscript'] = 'Можно выбрать несколько файлов. Перетаскивание и редактируемая очередь загрузки требуют JavaScript.';
 
 
 // MediaGallery 1.8 media manager labels
-$LANG_MG01['manager_select_media'] = "Select media";
-$LANG_MG01['manager_album_cover'] = "Album cover";
-$LANG_MG01['manager_slideshow'] = "Slideshow";
+$LANG_MG01['manager_select_media'] = 'Выбрать медиа';
+$LANG_MG01['manager_album_cover'] = 'Обложка альбома';
+$LANG_MG01['manager_slideshow'] = 'Слайд-шоу';
 
 
 // MediaGallery 1.8 non-image manager states
-$LANG_MG01['manager_cover_unavailable'] = "Unavailable without a thumbnail";
-$LANG_MG01['manager_slideshow_unavailable'] = "Images only";
+$LANG_MG01['manager_cover_unavailable'] = 'Недоступно без миниатюры';
+$LANG_MG01['manager_slideshow_unavailable'] = 'Только изображения';
 
 
 // MediaGallery 1.8 media access editor
-$LANG_MG01['media_access_ownership'] = "Access & ownership";
-$LANG_MG01['media_access_inherited'] = "Access rights for this media are inherited from album “%s”.";
-$LANG_MG01['media_edit_album_rights'] = "Edit album access rights";
+$LANG_MG01['media_access_ownership'] = 'Доступ и владелец';
+$LANG_MG01['media_access_inherited'] = 'Права доступа к этому медиа наследуются от альбома «%s».';
+$LANG_MG01['media_edit_album_rights'] = 'Изменить права доступа к альбому';
 
 
 // MediaGallery 1.8 storage diagnostics
 $LANG_MG01['core_path_images'] = "Geeklog path_images";
 $LANG_MG01['core_images_url'] = "Geeklog images_url";
-$LANG_MG01['persistent_storage_files'] = "Persistent storage files";
-$LANG_MG01['legacy_storage_user_files'] = "Legacy storage user files";
-$LANG_MG01['legacy_storage_files_warning'] = "Unexpected on a fresh 1.8 installation";
-$LANG_MG01['local_media_db_rows'] = "Local media rows in database";
-$LANG_MG01['image_original_files'] = "Readable image originals";
-$LANG_MG01['image_display_files'] = "Readable display images";
-$LANG_MG01['image_thumbnail_files'] = "Readable thumbnails";
-$LANG_MG01['missing_media_files'] = "Missing media IDs";
+$LANG_MG01['persistent_storage_files'] = 'Файлы постоянного хранилища';
+$LANG_MG01['legacy_storage_user_files'] = 'Пользовательские файлы старого хранилища';
+$LANG_MG01['legacy_storage_files_warning'] = 'Не ожидается в новой установке версии 1.8';
+$LANG_MG01['local_media_db_rows'] = 'Локальные записи медиа в базе данных';
+$LANG_MG01['image_original_files'] = 'Доступные оригиналы изображений';
+$LANG_MG01['image_display_files'] = 'Доступные изображения для показа';
+$LANG_MG01['image_thumbnail_files'] = 'Доступные миниатюры';
+$LANG_MG01['missing_media_files'] = 'Отсутствующие ID медиа';
 
 ?>
