@@ -1142,17 +1142,17 @@ $LANG_MG05 = array (
     'blinds'                => 'Tendine',
     'checkerboard'          => 'Scacchiera',
     'diagonal'              => 'Diagonale',
-    'doors'                 => 'Doors',
+    'doors'                 => 'Porte',
     'gradient'              => 'Gradiente',
-    'iris'                  => 'Iris',
+    'iris'                  => 'Iride',
     'pinwheel'              => 'Girandola',
-    'pixelate'              => 'Pixelate',
+    'pixelate'              => 'Pixelatura',
     'radial'                => 'Radiale',
     'rain'                  => 'Pioggia',
-    'slide'                 => 'Slide',
+    'slide'                 => 'Scorrimento',
     'snow'                  => 'Nevicata',
     'spiral'                => 'Spirale',
-    'stretch'               => 'Stretch',
+    'stretch'               => 'Allungamento',
     'random'                => 'Casuale'
 );
 
