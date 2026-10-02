@@ -195,23 +195,23 @@ $LANG_MG01 = array (
     'mg_directories'            => '媒体画廊目录',
     'mg_dir_structure'          => '媒体画廊目录构',
     'media_storage'             => 'Persistent media storage',
-    'active_media_path'         => 'Active media path',
-    'expected_media_path'       => 'Expected media path',
-    'active_media_url'          => 'Active media URL',
-    'media_storage_root'        => 'Storage root',
-    'plugin_media_assets'       => 'Plugin image resources',
-    'valid_media_assets'        => '%d of %d required images are valid',
-    'storage_unresolved'        => 'Unable to resolve the persistent storage target',
-    'storage_path_mismatch'     => 'Active path does not match the expected path',
-    'storage_root_invalid'      => 'Directory missing, unreadable or not writable',
-    'invalid_media_asset'       => 'Missing, unreadable or invalid image',
-    'storage_operation'         => 'Storage synchronization',
-    'repair_media_storage'      => 'Synchronize media storage',
-    'repair_media_storage_help' => 'Copies and verifies historical user media (originals, display images, thumbnails and covers) in the persistent images directory. Plugin images remain in the plugin directory and source files are retained.',
-    'repair_media_storage_success' => 'User media synchronization completed successfully.',
-    'media_storage_current'      => 'No historical user media needs to be synchronized.',
-    'repair_media_storage_failed' => 'Synchronization failed. See the Geeklog error log for the affected path.',
-    'invalid_security_token'    => 'The security token is invalid or has expired. Reload this page and try again.',
+    'active_media_path'         => '当前媒体路径',
+    'expected_media_path'       => '预期媒体路径',
+    'active_media_url'          => '当前媒体 URL',
+    'media_storage_root'        => '存储根目录',
+    'plugin_media_assets'       => '插件图片资源',
+    'valid_media_assets'        => '%d / %d 个必需图片有效',
+    'storage_unresolved'        => '无法解析持久存储目标',
+    'storage_path_mismatch'     => '当前路径与预期路径不一致',
+    'storage_root_invalid'      => '目录不存在、不可读或不可写',
+    'invalid_media_asset'       => '图片缺失、不可读或无效',
+    'storage_operation'         => '存储同步',
+    'repair_media_storage'      => '同步媒体存储',
+    'repair_media_storage_help' => '将历史用户媒体（原图、显示图、缩略图和封面）复制并验证到持久图片目录中。插件图片仍保留在插件目录中，源文件也会保留。',
+    'repair_media_storage_success' => '用户媒体同步成功完成。',
+    'media_storage_current'      => '没有需要同步的历史用户媒体。',
+    'repair_media_storage_failed' => '同步失败。请查看 Geeklog 错误日志中的相关路径。',
+    'invalid_security_token'    => '安全令牌无效或已过期。请重新加载此页面后再试。',
     'ok'                        => '好',
     'not_found'                 => '找不到',
     'not_writable'              => '不能写入',
@@ -829,10 +829,10 @@ $LANG_MG03 = array (
     'member_album_terms'    => '在你点击“同意” Agree 时，你同意管理员所规定的一切条件.  若滥用你的会员会被停止.',
     'agree'                 => '同意',
     'existing_member_album' => '你已有会员影集.  你意味这是错误，请联络管理员.',
-    'member_album_signup'   => '拥有一个你自己的影集在这媒体画廊里.<br /><br /><center><a href="%s">在这儿参加</a></center>' . XHTML . '><br' . XHTML . '><center><a href="%s">Sign Up Here</a></center>',
+    'member_album_signup'   => '在我们的媒体图库中创建您自己的相册。<br' . XHTML . '><br' . XHTML . '><center><a href="%s">在此注册</a></center>',
     'album_id_display'      => '影集ID: ',
     'upload_help'           => '从你的计算机里上载媒体档案. 请输入档案的路径然后在下面提供标题和描述.',
-    'upload_size'           => '<b>注:</b> 你的媒体不可超过 %s mb.',
+    'upload_size'           => '<strong>注意：</strong>一次最多可以上传 %s MB。单个文件不得大于 %s MB。如果需要上传更多内容，请分批上传、使用其他上传方式，或联系系统管理员提高上传限制。',
     'ftp_help'              => '传送网站服务器里已经有的档案到媒体画廊里. 档案必需要已经经过 FTP 或其它方法传送到网站服务器里，而且路径必需已公开给服务器进入.',
     'no_new_items'          => '没有新媒体',
     'no_comments'           => '没有新媒体评论',
@@ -1635,78 +1635,78 @@ if (isset($_MG_CONF, $_MG_CONF['custom_image_width'], $_MG_CONF['custom_image_he
 }
 
 // MediaGallery 1.8.0 template accessibility labels
-$LANG_MG03['aria_breadcrumb'] = 'Breadcrumb';
-$LANG_MG03['aria_album_actions'] = 'Album actions';
-$LANG_MG03['aria_album_pagination'] = 'Album pagination';
-$LANG_MG03['aria_album_pagination_info'] = 'Album pagination and information';
-$LANG_MG03['aria_media_actions'] = 'Media actions and navigation';
-$LANG_MG03['media_id_label'] = 'Media ID';
-$LANG_MG03['aria_search_results_navigation'] = 'Search results navigation';
-$LANG_MG03['aria_album_navigation'] = 'Album navigation';
-$LANG_MG03['aria_media_list'] = 'Media list';
+$LANG_MG03['aria_breadcrumb'] = '面包屑导航';
+$LANG_MG03['aria_album_actions'] = '相册操作';
+$LANG_MG03['aria_album_pagination'] = '相册分页';
+$LANG_MG03['aria_album_pagination_info'] = '相册分页和信息';
+$LANG_MG03['aria_media_actions'] = '媒体操作和导航';
+$LANG_MG03['media_id_label'] = '媒体 ID';
+$LANG_MG03['aria_search_results_navigation'] = '搜索结果导航';
+$LANG_MG03['aria_album_navigation'] = '相册导航';
+$LANG_MG03['aria_media_list'] = '媒体列表';
 
-$LANG_MG01['admin_help'] = 'MediaGallery administration gives you quick access to albums, member galleries, maintenance tasks, reports and plugin configuration.';
+$LANG_MG01['admin_help'] = 'MediaGallery 管理可快速访问相册、会员图库、维护任务、报告和插件配置。';
 
 
-$LANG_MG01['manage_albums'] = 'Manage Albums';
-$LANG_MG01['manage_albums_help'] = 'Manage albums, media items and the gallery structure.';
-$LANG_MG01['overview'] = 'Overview';
-$LANG_MG01['media_items'] = 'Media items';
-$LANG_MG01['pending_media'] = 'Pending media';
+$LANG_MG01['manage_albums'] = '管理相册';
+$LANG_MG01['manage_albums_help'] = '管理相册、媒体项目和图库结构。';
+$LANG_MG01['overview'] = '概览';
+$LANG_MG01['media_items'] = '媒体项目';
+$LANG_MG01['pending_media'] = '待处理媒体';
 $LANG_MG01['status_ok'] = 'OK';
-$LANG_MG01['status_check'] = 'Check';
-$LANG_MG01['media_storage'] = 'Media storage';
-$LANG_MG01['content'] = 'Content';
-$LANG_MG01['content_categories'] = 'Categories';
-$LANG_MG01['content_categories_help'] = 'Organize and maintain MediaGallery categories.';
-$LANG_MG01['member_albums_help'] = 'Manage member galleries, quotas and related album tools.';
-$LANG_MG01['manage'] = 'Manage';
-$LANG_MG01['maintenance_reports'] = 'Maintenance & reports';
-$LANG_MG01['maintenance_tools'] = 'Batch & maintenance';
-$LANG_MG01['maintenance_tools_help'] = 'Run thumbnail, resize, quota, sorting and batch maintenance tools.';
-$LANG_MG01['reports_tools'] = 'Reports & tools';
-$LANG_MG01['reports_tools_help'] = 'Open usage reports, EXIF tools, RSS rebuilds and environment checks.';
-$LANG_MG01['open_tools'] = 'Open tools';
+$LANG_MG01['status_check'] = '检查';
+$LANG_MG01['media_storage'] = '持久媒体存储';
+$LANG_MG01['content'] = '内容';
+$LANG_MG01['content_categories'] = '分类';
+$LANG_MG01['content_categories_help'] = '整理和维护 MediaGallery 分类。';
+$LANG_MG01['member_albums_help'] = '管理会员图库、配额及相关相册工具。';
+$LANG_MG01['manage'] = '管理';
+$LANG_MG01['maintenance_reports'] = '维护与报告';
+$LANG_MG01['maintenance_tools'] = '批处理与维护';
+$LANG_MG01['maintenance_tools_help'] = '运行缩略图、调整大小、配额、排序和批量维护工具。';
+$LANG_MG01['reports_tools'] = '报告与工具';
+$LANG_MG01['reports_tools_help'] = '打开使用报告、EXIF 工具、RSS 重建和环境检查。';
+$LANG_MG01['open_tools'] = '打开工具';
 
 
 // MediaGallery 1.8 modern browser uploader
-$LANG_MG03['upload_drop_title'] = "Drop files here to upload";
-$LANG_MG03['upload_drop_help'] = "Add several files at once by dragging them here or by choosing them from your computer.";
-$LANG_MG03['upload_choose_files'] = "Choose files";
-$LANG_MG03['upload_queue'] = "Upload queue";
-$LANG_MG03['upload_remove'] = "Remove";
-$LANG_MG03['upload_file_details'] = "File details";
-$LANG_MG03['upload_files_selected'] = "files selected";
-$LANG_MG03['upload_noscript'] = "Multiple file selection is available. Drag-and-drop and the editable upload queue require JavaScript.";
+$LANG_MG03['upload_drop_title'] = '将文件拖到此处上传';
+$LANG_MG03['upload_drop_help'] = '可将多个文件拖到此处，或从计算机中选择，一次添加多个文件。';
+$LANG_MG03['upload_choose_files'] = '选择文件';
+$LANG_MG03['upload_queue'] = '上传队列';
+$LANG_MG03['upload_remove'] = '移除';
+$LANG_MG03['upload_file_details'] = '文件详情';
+$LANG_MG03['upload_files_selected'] = '个文件已选择';
+$LANG_MG03['upload_noscript'] = '支持选择多个文件。拖放和可编辑上传队列需要 JavaScript。';
 
 
 // MediaGallery 1.8 media manager labels
-$LANG_MG01['manager_select_media'] = "Select media";
-$LANG_MG01['manager_album_cover'] = "Album cover";
-$LANG_MG01['manager_slideshow'] = "Slideshow";
+$LANG_MG01['manager_select_media'] = '选择媒体';
+$LANG_MG01['manager_album_cover'] = '相册封面';
+$LANG_MG01['manager_slideshow'] = '幻灯片';
 
 
 // MediaGallery 1.8 non-image manager states
-$LANG_MG01['manager_cover_unavailable'] = "Unavailable without a thumbnail";
-$LANG_MG01['manager_slideshow_unavailable'] = "Images only";
+$LANG_MG01['manager_cover_unavailable'] = '没有缩略图时不可用';
+$LANG_MG01['manager_slideshow_unavailable'] = '仅限图片';
 
 
 // MediaGallery 1.8 media access editor
-$LANG_MG01['media_access_ownership'] = "Access & ownership";
-$LANG_MG01['media_access_inherited'] = "Access rights for this media are inherited from album “%s”.";
-$LANG_MG01['media_edit_album_rights'] = "Edit album access rights";
+$LANG_MG01['media_access_ownership'] = '访问权限与所有权';
+$LANG_MG01['media_access_inherited'] = '此媒体的访问权限继承自相册“%s”。';
+$LANG_MG01['media_edit_album_rights'] = '编辑相册访问权限';
 
 
 // MediaGallery 1.8 storage diagnostics
 $LANG_MG01['core_path_images'] = "Geeklog path_images";
 $LANG_MG01['core_images_url'] = "Geeklog images_url";
-$LANG_MG01['persistent_storage_files'] = "Persistent storage files";
-$LANG_MG01['legacy_storage_user_files'] = "Legacy storage user files";
-$LANG_MG01['legacy_storage_files_warning'] = "Unexpected on a fresh 1.8 installation";
-$LANG_MG01['local_media_db_rows'] = "Local media rows in database";
-$LANG_MG01['image_original_files'] = "Readable image originals";
-$LANG_MG01['image_display_files'] = "Readable display images";
-$LANG_MG01['image_thumbnail_files'] = "Readable thumbnails";
-$LANG_MG01['missing_media_files'] = "Missing media IDs";
+$LANG_MG01['persistent_storage_files'] = '持久存储文件';
+$LANG_MG01['legacy_storage_user_files'] = '旧存储中的用户文件';
+$LANG_MG01['legacy_storage_files_warning'] = '在全新 1.8 安装中不应出现';
+$LANG_MG01['local_media_db_rows'] = '数据库中的本地媒体记录';
+$LANG_MG01['image_original_files'] = '可读取的原始图片';
+$LANG_MG01['image_display_files'] = '可读取的显示图片';
+$LANG_MG01['image_thumbnail_files'] = '可读取的缩略图';
+$LANG_MG01['missing_media_files'] = '缺失的媒体 ID';
 
 ?>
