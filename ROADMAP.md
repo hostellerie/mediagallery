@@ -516,3 +516,103 @@ Creating a Geeklog user account must **not** be required to buy and retrieve Eve
 
 Event / Quick Share is a workflow layer, not a second gallery system. MediaGallery albums and media remain canonical. A special Events album acts as a container for multiple events; an event is not required to become a separate normal MediaGallery album. Events organize temporary/event-oriented publication inside that container; sessions provide selective delivery; QR codes provide fast access. The architecture should remain useful for weddings, parties, trade shows, sports, excursions, associations and professional event photographers without forcing personal-data collection or facial recognition.
 
+
+
+---
+
+# MediaGallery 2.0.0 — Shared content collection
+
+MediaGallery 2.0.0 completes the generic Geeklog Item Info collection contract so
+content consumers such as Hello, Hub and future indexing/agent tools can consume
+MediaGallery content without direct access to `mg_*` tables.
+
+## Generic Item Info collection
+
+- [x] Extend `plugin_getiteminfo_mediagallery()` for `id='*'`.
+- [x] Keep media items as the canonical generic collection.
+- [x] Keep namespaced album reads through `album:<id>`.
+- [x] Apply album visibility and Geeklog permission filtering for the requested `$uid`.
+- [x] Support `since`.
+- [x] Support bounded `limit` with a maximum of 500.
+- [x] Support `modified-desc`, `modified-asc`, `created-desc` and `created-asc`.
+- [x] Deduplicate media that belong to more than one accessible album.
+- [x] Expose normalized fields required by generic consumers.
+
+Supported normalized media properties include:
+
+```text
+id
+type = mediagallery
+subtype = media
+title
+url
+canonical_url
+description
+excerpt
+raw-description
+date-created
+date-modified
+image
+thumbnail_url
+uid
+album_id
+media_type
+mime_type
+label
+status
+```
+
+For the current MediaGallery schema, `date-created` and `date-modified` both
+map to the media upload timestamp because there is no separate authoritative
+media-modification timestamp yet. A future schema may split these values without
+changing the consumer contract.
+
+## Consumer rule
+
+Generic consumers must use:
+
+```php
+PLG_getItemInfo(
+    'mediagallery',
+    '*',
+    'id,title,url,excerpt,date-created,date-modified,type,subtype,image',
+    $uid,
+    array(
+        'since' => $since,
+        'limit' => 200,
+        'order' => 'modified-desc'
+    )
+);
+```
+
+They must not query `mg_media`, `mg_media_albums` or `mg_albums` directly.
+
+## Hello compatibility
+
+This contract makes MediaGallery eligible as an editorial source for Hello when
+MediaGallery 2.0.0 is installed and enabled.
+
+Hello may expose MediaGallery as a selectable digest source because the provider
+already advertises:
+
+```text
+content.read
+content.collection
+content.url.resolve
+```
+
+The owning MediaGallery plugin remains authoritative for permissions and public
+visibility.
+
+## 2.0.0 validation
+
+Before release:
+
+- [ ] Test anonymous collection reads against public, private and hidden albums.
+- [ ] Test registered-user collection reads with mixed group permissions.
+- [ ] Test administrator collection reads.
+- [ ] Test one media belonging to multiple albums and confirm one collection item.
+- [ ] Test `since`, `limit` and all supported sort orders.
+- [ ] Test Hello preview/test digest with MediaGallery as the only non-Story source.
+- [ ] Test mixed Story + MediaGallery digest.
+- [ ] Confirm no private/hidden media title, excerpt, URL or thumbnail leaks to an unauthorized `$uid`.
