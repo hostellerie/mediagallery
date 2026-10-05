@@ -1686,130 +1686,226 @@ function MG_execWrapper($cmd)
 */
 function plugin_getiteminfo_mediagallery($id, $what, $uid = 0, $options = array())
 {
-    global $_CONF, $_TABLES, $_MG_CONF, $LANG_MG00, $LANG_MG03;
+    global $_TABLES, $_MG_CONF, $_USER, $LANG_MG03;
 
+    $options = is_array($options) ? $options : array();
     $item180 = MG_parseItemId180($id);
+
     if ($item180['type'] === 'album') {
         return MG_getAlbumItemInfo180($item180['id'], $what, $uid);
     }
-    $id = $item180['id'];
 
-    $properties = explode(',', $what);
-    $fields = array();
-    foreach ($properties as $p) {
-        switch ($p) {
-            case 'date-modified':
-                $fields[] = 'UNIX_TIMESTAMP(media_upload_time) AS unixdate';
-                break;
-            case 'description':
-            case 'excerpt':
-            case 'raw-description' :
-                $fields[] = 'media_desc';
-                break;
-            case 'id':
-                $fields[] = 'a.media_id';
-                break;
-            case 'title':
-                $fields[] = 'media_title';
-                break;
-            case 'label':
-            case 'url':
-                $fields[] = 'a.media_id';
-                break;
-            default:
-                break;
+    $id = $item180['id'];
+    $collection = ((string) $id === '*');
+    $properties = array();
+
+    foreach (explode(',', (string) $what) as $property) {
+        $property = trim($property);
+        if ($property !== '' && !in_array($property, $properties, true)) {
+            $properties[] = $property;
         }
     }
 
-    $fields = array_unique($fields);
-
-    if (count($fields) == 0) {
+    if (empty($properties)) {
         return array();
     }
 
-    $sql = "SELECT " . implode(',', $fields)
-         . ", owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon "
-         . "FROM {$_TABLES['mg_media']} AS a "
-         . "LEFT JOIN {$_TABLES['mg_media_albums']} AS b ON a.media_id=b.media_id "
-         . "LEFT JOIN {$_TABLES['mg_albums']} AS c ON b.album_id=c.album_id";
-
-    if ($id != '*') {
-        $sql .= " WHERE a.media_id = '" . DB_escapeString($id) . "' LIMIT 1";
+    $effectiveUid = (int) $uid;
+    if ($effectiveUid <= 0) {
+        $effectiveUid = isset($_USER['uid']) ? (int) $_USER['uid'] : 1;
     }
+
+    $fields = array('a.*', 'b.album_id');
+    $sql = "SELECT " . implode(',', $fields)
+         . " FROM {$_TABLES['mg_media']} AS a "
+         . "INNER JOIN {$_TABLES['mg_media_albums']} AS b ON a.media_id=b.media_id "
+         . "INNER JOIN {$_TABLES['mg_albums']} AS c ON b.album_id=c.album_id "
+         . "WHERE 1=1";
+
+    $isCurrentAdmin = isset($_USER['uid'])
+        && (int) $_USER['uid'] === $effectiveUid
+        && SEC_hasRights('mediagallery.admin');
+
+    if (!$isCurrentAdmin) {
+        $sql .= " AND c.hidden = 0";
+        $sql .= COM_getPermSQL('AND', $effectiveUid, 2, 'c');
+    }
+
+    if (!$collection) {
+        $sql .= " AND a.media_id='" . DB_escapeString((string) $id) . "'";
+    }
+
+    if ($collection && isset($options['since']) && $options['since'] !== '' && $options['since'] !== null) {
+        $since = $options['since'];
+        if (is_numeric($since)) {
+            $since = date('Y-m-d H:i:s', (int) $since);
+        } else {
+            $sinceTs = strtotime((string) $since);
+            $since = $sinceTs === false ? '' : date('Y-m-d H:i:s', $sinceTs);
+        }
+
+        if ($since !== '') {
+            $sql .= " AND a.media_upload_time >= '" . DB_escapeString($since) . "'";
+        }
+    }
+
+    if ($collection) {
+        $order = isset($options['order'])
+            ? strtolower(trim((string) $options['order']))
+            : 'modified-desc';
+
+        switch ($order) {
+            case 'modified-asc':
+            case 'created-asc':
+                $sql .= " ORDER BY a.media_upload_time ASC, a.media_id ASC";
+                break;
+
+            case 'created-desc':
+            case 'modified-desc':
+            default:
+                $sql .= " ORDER BY a.media_upload_time DESC, a.media_id DESC";
+                break;
+        }
+
+        $limit = isset($options['limit']) ? (int) $options['limit'] : 50;
+        if ($limit < 1) {
+            $limit = 50;
+        } elseif ($limit > 500) {
+            $limit = 500;
+        }
+
+        // A media item may belong to several albums. Fetch some headroom and
+        // deduplicate after the permission-aware join.
+        $sql .= " LIMIT " . ($limit * 4);
+    } else {
+        $sql .= " LIMIT 20";
+    }
+
+    require_once __DIR__ . '/include/classMedia.php';
 
     $result = DB_query($sql);
-    $numRows = DB_numRows($result);
-
-    $mgadmin = SEC_hasRights('mediagallery.admin');
     $retval = array();
-    for ($i = 0; $i < $numRows; $i++) {
-        $A = DB_fetchArray($result);
-        $access = 3;
-        if (!$mgadmin) {
-            $access = SEC_hasAccess($A['owner_id'], $A['group_id'], $A['perm_owner'],
-                                    $A['perm_group'], $A['perm_members'], $A['perm_anon']);
+    $seen = array();
+
+    while ($A = DB_fetchArray($result)) {
+        $mediaId = isset($A['media_id']) ? (string) $A['media_id'] : '';
+        if ($mediaId === '' || isset($seen[$mediaId])) {
+            continue;
         }
-        if ($access > 0) {
-            $props = array();
-            foreach ($properties as $p) {
-                switch ($p) {
-                    case 'date-modified':
-                        $props['date-modified'] = $A['unixdate'];
-                        break;
-                    case 'description':
-                    case 'excerpt':
-                        $props[$p] = PLG_replaceTags($A['media_desc']);
-                        break;
-                    case 'raw-description' :
-                        $props[$p] = $A['media_desc'];
-                        break;
-                    case 'id':
-                        $props['id'] = $A['media_id'];
-                        break;
-                    case 'title':
-                        $props['title'] = stripslashes($A['media_title']);
-                        break;
-                    case 'url':
-                        if (empty($A['id'])) {
-                            $props['url'] = $_MG_CONF['site_url'].'/media.php?f=0&sort=0&s='.$id;
-                        } else {
-                            $props['url'] = $_MG_CONF['site_url'].'/media.php?f=0&sort=0&s='.$A['media_id'];
-                        }
-                        break;
-                    case 'label':
-                        $props['label'] = $LANG_MG03['menulabel'];
-                        break;
-                    case 'status':
-                        $props['status'] = 1; // stub - default
-                        break;
-                    default:
-                        $props[$p] = '';
-                        break;
-                }
+
+        $albumId = isset($A['album_id']) ? (int) $A['album_id'] : 0;
+        if ($albumId <= 0) {
+            continue;
+        }
+
+        $media = new Media($A, $albumId);
+        if (isset($media->access) && $media->access <= 0 && !$isCurrentAdmin) {
+            continue;
+        }
+
+        $seen[$mediaId] = true;
+        $thumbnail = $media->displayRawThumb(1);
+        $url = $_MG_CONF['site_url'] . '/media.php?f=0&sort=0&s=' . rawurlencode($mediaId);
+        $uploadTs = !empty($A['media_upload_time'])
+            ? (int) strtotime($A['media_upload_time'])
+            : 0;
+
+        $props = array();
+        foreach ($properties as $property) {
+            switch ($property) {
+                case 'date-created':
+                case 'date-modified':
+                    $props[$property] = $uploadTs;
+                    break;
+
+                case 'description':
+                case 'excerpt':
+                    $props[$property] = PLG_replaceTags(isset($A['media_desc']) ? $A['media_desc'] : '');
+                    break;
+
+                case 'raw-description':
+                    $props[$property] = isset($A['media_desc']) ? $A['media_desc'] : '';
+                    break;
+
+                case 'id':
+                    $props['id'] = $mediaId;
+                    break;
+
+                case 'title':
+                    $props['title'] = isset($A['media_title']) && $A['media_title'] !== ''
+                        ? stripslashes($A['media_title'])
+                        : $mediaId;
+                    break;
+
+                case 'url':
+                case 'canonical_url':
+                    $props[$property] = $url;
+                    break;
+
+                case 'image':
+                case 'thumbnail_url':
+                    $props[$property] = isset($thumbnail[0]) ? $thumbnail[0] : '';
+                    break;
+
+                case 'type':
+                    $props['type'] = 'mediagallery';
+                    break;
+
+                case 'subtype':
+                    $props['subtype'] = 'media';
+                    break;
+
+                case 'uid':
+                    $props['uid'] = isset($A['media_user_id']) ? (int) $A['media_user_id'] : 0;
+                    break;
+
+                case 'album_id':
+                    $props['album_id'] = $albumId;
+                    break;
+
+                case 'mime_type':
+                    $props['mime_type'] = isset($media->mime_type) ? (string) $media->mime_type : '';
+                    break;
+
+                case 'media_type':
+                    $props['media_type'] = isset($media->type) ? (int) $media->type : 0;
+                    break;
+
+                case 'label':
+                    $props['label'] = $LANG_MG03['menulabel'];
+                    break;
+
+                case 'status':
+                    $props['status'] = 1;
+                    break;
+
+                default:
+                    $props[$property] = '';
+                    break;
             }
         }
 
-        $mapped = array();
-        foreach ($props as $key => $value) {
-            if ($id == '*') {
-                if ($value != '') {
+        if ($collection) {
+            $mapped = array();
+            foreach ($props as $key => $value) {
+                if ($value !== '') {
                     $mapped[$key] = $value;
                 }
-            } else {
-                $mapped[] = $value;
             }
-        }
-
-        if ($id == '*') {
             $retval[] = $mapped;
+
+            if (count($retval) >= $limit) {
+                break;
+            }
         } else {
-            $retval = $mapped;
+            $ordered = array();
+            foreach ($properties as $property) {
+                $ordered[] = isset($props[$property]) ? $props[$property] : '';
+            }
+
+            $retval = count($ordered) === 1 ? $ordered[0] : $ordered;
             break;
         }
-    }
-
-    if (($id != '*') && (count($retval) == 1)) {
-        $retval = array_shift($retval);
     }
 
     return $retval;
