@@ -315,3 +315,90 @@ Agent, Eclipse, Hub and other consumers must not infer permissions from the
 capability declaration. Each service remains authoritative for access checks.
 Consumers should not query MediaGallery's `mg_*` tables or persistent file
 paths directly.
+
+
+## Generic `PLG_getItemInfo()` media collection
+
+MediaGallery 2.0.0 extends the historical item-info callback with a bounded,
+permission-aware collection mode.
+
+A consumer can request media visible to a specific Geeklog user:
+
+```php
+$items = PLG_getItemInfo(
+    'mediagallery',
+    '*',
+    'id,title,url,excerpt,date-created,date-modified,type,subtype,image',
+    $uid,
+    array(
+        'since' => '2026-10-01 00:00:00',
+        'limit' => 100,
+        'order' => 'modified-desc'
+    )
+);
+```
+
+### Collection semantics
+
+The generic `id='*'` collection represents **media items**, not albums.
+
+Albums remain available through namespaced item IDs such as:
+
+```text
+album:52
+```
+
+This keeps the generic editorial collection useful for Hello and similar
+consumers while preserving album-specific navigation through the existing
+MediaGallery services.
+
+### Options
+
+| Option | Meaning |
+| --- | --- |
+| `since` | Media uploaded on or after the supplied timestamp/date |
+| `limit` | Maximum returned media, default 50, maximum 500 |
+| `order` | `modified-desc`, `modified-asc`, `created-desc`, `created-asc` |
+
+MediaGallery currently has one authoritative media upload timestamp, so created
+and modified ordering use the same stored value.
+
+### Normalized fields
+
+The collection can expose:
+
+```text
+id
+title
+url
+canonical_url
+description
+excerpt
+raw-description
+date-created
+date-modified
+image
+thumbnail_url
+type
+subtype
+uid
+album_id
+media_type
+mime_type
+label
+status
+```
+
+`image` and `thumbnail_url` map to the MediaGallery thumbnail suitable for
+consumers such as Hello.
+
+### Permissions
+
+The collection is filtered for the requested `$uid` through the permissions
+of albums containing each media item. Hidden albums are excluded from generic
+non-administrator collection reads.
+
+A media item stored in several accessible albums is returned only once.
+
+Consumers must not infer access from `plugin_getcapabilities_mediagallery()`;
+the Item Info call remains authoritative for each user context.
