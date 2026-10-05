@@ -144,6 +144,17 @@ The maintained MediaGallery templates include:
 
 MediaGallery declares provider-neutral capabilities for Agent, Eclipse, Hub and future Geeklog consumers. It exposes bounded read-only album/media services and an administration `dashboard_summary` service, while keeping MediaGallery permissions authoritative and avoiding direct consumer access to `mg_*` tables.
 
+### Generic media collection for content consumers
+
+On the `mediagallery_2.0.0` development branch, the existing
+`plugin_getiteminfo_mediagallery()` callback also supports a permission-aware
+`id='*'` media collection with `since`, `limit` and `order`.
+
+This allows generic consumers such as Hello to discover MediaGallery media
+without direct SQL. The normalized result can expose IDs, titles, URLs,
+excerpts, timestamps, type/subtype and thumbnail images. Albums remain
+addressable separately with the existing `album:<id>` namespace.
+
 
 ### Album discovery
 
