@@ -529,7 +529,8 @@ MediaGallery content without direct access to `mg_*` tables.
 ## Generic Item Info collection
 
 - [x] Extend `plugin_getiteminfo_mediagallery()` for `id='*'`.
-- [x] Keep media items as the canonical generic collection.
+- [x] Keep media items as the default generic collection for backward compatibility.
+- [x] Allow generic collections to request `subtypes = media`, `album` or both.
 - [x] Keep namespaced album reads through `album:<id>`.
 - [x] Apply album visibility and Geeklog permission filtering for the requested `$uid`.
 - [x] Support `since`.
@@ -580,7 +581,8 @@ PLG_getItemInfo(
     array(
         'since' => $since,
         'limit' => 200,
-        'order' => 'modified-desc'
+        'order' => 'modified-desc',
+        'subtypes' => array('album', 'media')
     )
 );
 ```
@@ -613,6 +615,7 @@ Before release:
 - [ ] Test administrator collection reads.
 - [ ] Test one media belonging to multiple albums and confirm one collection item.
 - [ ] Test `since`, `limit` and all supported sort orders.
+- [ ] Test album-only, media-only and mixed album + media collection reads.
 - [ ] Test Hello preview/test digest with MediaGallery as the only non-Story source.
 - [ ] Test mixed Story + MediaGallery digest.
 - [ ] Confirm no private/hidden media title, excerpt, URL or thumbnail leaks to an unauthorized `$uid`.
