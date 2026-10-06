@@ -229,3 +229,12 @@ Some historical MediaGallery documents are still present for reference but descr
 ## License
 
 MediaGallery is distributed under the GNU General Public License v2 (GPLv2). Historical copyright notices remain in the source files inherited from the original MediaGallery/glFusion codebase.
+
+
+### Generic album candidates
+
+MediaGallery 2.0.0 can expose both albums and individual media items through its
+generic content collection. Existing consumers remain media-only unless they
+request the `album` subtype explicitly. Albums use stable `album:<id>`
+identifiers and MediaGallery remains responsible for visibility and permission
+filtering.
