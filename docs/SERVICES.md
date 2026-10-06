@@ -402,3 +402,25 @@ A media item stored in several accessible albums is returned only once.
 
 Consumers must not infer access from `plugin_getcapabilities_mediagallery()`;
 the Item Info call remains authoritative for each user context.
+
+
+## Generic album + media collection
+
+MediaGallery 2.0.0 extends the generic `PLG_getItemInfo()` collection without
+breaking existing consumers. Collection calls remain media-only by default.
+
+Consumers that want albums, media, or both may pass:
+
+```php
+array(
+    'subtypes' => array('album', 'media'),
+    'since' => $since,
+    'limit' => 200,
+    'order' => 'modified-desc',
+)
+```
+
+Supported subtype values are `media` and `album`. Album IDs are namespaced as
+`album:<id>` so they cannot collide with media IDs. Permission filtering and
+hidden-album filtering remain owned by MediaGallery and are evaluated for the
+requested user ID.
