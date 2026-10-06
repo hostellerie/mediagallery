@@ -1697,6 +1697,28 @@ function plugin_getiteminfo_mediagallery($id, $what, $uid = 0, $options = array(
 
     $id = $item180['id'];
     $collection = ((string) $id === '*');
+
+    // Generic collection subtype filter. Existing consumers that do not pass
+    // this option keep the historical media-only collection.
+    $requestedSubtypes = array('media');
+    if ($collection && isset($options['subtypes'])) {
+        $requestedSubtypes = is_array($options['subtypes'])
+            ? $options['subtypes']
+            : explode(',', (string) $options['subtypes']);
+
+        $requestedSubtypes = array_values(array_unique(array_filter(array_map(
+            function ($value) {
+                $value = strtolower(trim((string) $value));
+                return in_array($value, array('media', 'album'), true) ? $value : '';
+            },
+            $requestedSubtypes
+        ))));
+
+        if (empty($requestedSubtypes)) {
+            $requestedSubtypes = array('media');
+        }
+    }
+
     $properties = array();
 
     foreach (explode(',', (string) $what) as $property) {
@@ -1713,6 +1735,13 @@ function plugin_getiteminfo_mediagallery($id, $what, $uid = 0, $options = array(
     $effectiveUid = (int) $uid;
     if ($effectiveUid <= 0) {
         $effectiveUid = isset($_USER['uid']) ? (int) $_USER['uid'] : 1;
+    }
+
+    if ($collection
+        && in_array('album', $requestedSubtypes, true)
+        && !in_array('media', $requestedSubtypes, true)
+    ) {
+        return MG_getAlbumCollection180($what, $effectiveUid, $options);
     }
 
     $fields = array('a.*', 'b.album_id');
@@ -1905,6 +1934,47 @@ function plugin_getiteminfo_mediagallery($id, $what, $uid = 0, $options = array(
 
             $retval = count($ordered) === 1 ? $ordered[0] : $ordered;
             break;
+        }
+    }
+
+    if ($collection && in_array('album', $requestedSubtypes, true)) {
+        $albumItems = MG_getAlbumCollection180($what, $effectiveUid, $options);
+        if (!empty($albumItems)) {
+            $retval = array_merge($retval, $albumItems);
+
+            $dateField = in_array('date-modified', $properties, true)
+                ? 'date-modified'
+                : (in_array('date-created', $properties, true) ? 'date-created' : '');
+
+            if ($dateField !== '') {
+                $descending = !isset($options['order'])
+                    || substr(strtolower((string) $options['order']), -3) !== 'asc';
+
+                usort($retval, function ($a, $b) use ($dateField, $descending) {
+                    $aDate = isset($a[$dateField]) ? (int) $a[$dateField] : 0;
+                    $bDate = isset($b[$dateField]) ? (int) $b[$dateField] : 0;
+
+                    if ($aDate === $bDate) {
+                        return 0;
+                    }
+
+                    if ($descending) {
+                        return ($aDate < $bDate) ? 1 : -1;
+                    }
+
+                    return ($aDate > $bDate) ? 1 : -1;
+                });
+            }
+
+            $collectionLimit = isset($options['limit']) ? (int) $options['limit'] : 50;
+            if ($collectionLimit < 1) {
+                $collectionLimit = 50;
+            } elseif ($collectionLimit > 500) {
+                $collectionLimit = 500;
+            }
+            if (count($retval) > $collectionLimit) {
+                $retval = array_slice($retval, 0, $collectionLimit);
+            }
         }
     }
 
