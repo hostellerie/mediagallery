@@ -33,6 +33,8 @@
 // |                                                                          |
 // +--------------------------------------------------------------------------+
 
+require_once __DIR__ . '/version.php';
+
 function plugin_autoinstall_mediagallery($pi_name)
 {
     $pi_name         = 'mediagallery';
@@ -43,8 +45,8 @@ function plugin_autoinstall_mediagallery($pi_name)
     $info = array(
         'pi_name'         => $pi_name,
         'pi_display_name' => $pi_display_name,
-        'pi_version'      => '1.8.0',
-        'pi_gl_version'   => '2.1.1',
+        'pi_version'      => MG_VERSION,
+        'pi_gl_version'   => MG_MIN_GEEKLOG_VERSION,
         'pi_homepage'     => 'https://github.com/hostellerie/mediagallery'
     );
 
@@ -148,11 +150,11 @@ function plugin_postinstall_mediagallery($pi_name)
     require_once $_CONF['path'] . 'plugins/mediagallery/include/config_180.php';
     require_once $_CONF['path'] . 'plugins/mediagallery/include/schema_180.php';
     if (!MG_ensureAlbumSchema180(true)) {
-        COM_errorLog('Media Gallery 1.8.0: unable to verify album database schema after install.', 1);
+        COM_errorLog('Media Gallery: unable to verify album database schema after install.', 1);
         return false;
     }
     if (!MG_migrateMediaStorage180(MG_getLegacyMediaStorage180())) {
-        COM_errorLog('Media Gallery 1.8.0: unable to prepare persistent media storage after install.', 1);
+        COM_errorLog('Media Gallery: unable to prepare persistent media storage after install.', 1);
         return false;
     }
 
@@ -168,7 +170,7 @@ function plugin_compatible_with_this_version_mediagallery($pi_name)
         return false;
     }
 
-    if (COM_versionCompare(VERSION, '2.1.1', '<')) {
+    if (COM_versionCompare(VERSION, MG_MIN_GEEKLOG_VERSION, '<')) {
         return false;
     }
 
@@ -251,6 +253,12 @@ function MG_upgrade()
             break;
 
         case '1.8.0':
+            // 1.9.0 is a compatibility/maintenance release. No schema
+            // migration is required beyond the existing 1.8.0 state.
+            $current_version = '1.9.0';
+            break;
+
+        case '1.9.0':
         default:
             $done = true;
             break;

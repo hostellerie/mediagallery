@@ -1,0 +1,7 @@
+<div class="mg-picker-grid">
+<!-- BEGIN ImageRow -->
+<!-- BEGIN ImageColumn -->
+  <div class="cell">{CELL_DISPLAY_IMAGE}</div>
+<!-- END ImageColumn -->
+<!-- END ImageRow -->
+</div>

@@ -38,9 +38,11 @@ if (strpos(strtolower($_SERVER['PHP_SELF']), strtolower(basename(__FILE__))) !==
     die('This file can not be used on its own!');
 }
 
+require_once __DIR__ . '/version.php';
+
 global $_TABLES, $_DB_table_prefix; // Needs to be set for when plugin enabled (if plugin already disabled)
 $_MG_CONF = array();
-$_MG_CONF['pi_version'] = '1.7.3';
+$_MG_CONF['pi_version'] = MG_VERSION;
 $_MG_CONF['installed_version'] = DB_getItem($_TABLES['plugins'], 'pi_version', "pi_name = 'mediagallery'");
 $_MG_CONF['var_current_code'] = version_compare($_MG_CONF['installed_version'], $_MG_CONF['pi_version'], '>=');
 $_MG_CONF['custom_image_width'] = 0;
@@ -674,7 +676,7 @@ function plugin_getheadercode_mediagallery()
     global $_CONF, $_MG_CONF, $_SCRIPTS, $mgLightBox, $swfjsinclude;
 
     $retval = '';
-    $assetVersion = !empty($_MG_CONF['pi_version']) ? $_MG_CONF['pi_version'] : '1.8.0';
+    $assetVersion = MG_VERSION;
 
     //
     // Check to see if the template path is using the plugins/ directory, if yes,
@@ -698,15 +700,15 @@ function plugin_getheadercode_mediagallery()
     $styleFile .= '?v=' . rawurlencode($styleCacheVersion);
     $retval .= LB . '<link rel="stylesheet" type="text/css" href="' . $styleFile . '"' . XHTML . '>' . LB;
 
-    $_SCRIPTS->setJavaScriptFile('mediagallery', '/mediagallery/js/mediagallery.js');
+    $_SCRIPTS->setJavaScriptFile('mediagallery', MG_assetUrl180('/mediagallery/js/mediagallery.js'));
 
     $_SCRIPTS->setJavaScriptLibrary('jquery');
 
     if (! $_MG_CONF['disable_lightbox']) {
-        $_SCRIPTS->setJavaScriptFile('jquery.slimbox2', '/mediagallery/js/slimbox2.js');
+        $_SCRIPTS->setJavaScriptFile('jquery.slimbox2', MG_assetUrl180('/mediagallery/js/slimbox2.js'));
     }
 
-    $_SCRIPTS->setJavaScriptFile('jquery.cyclelite', '/mediagallery/js/jquery.cycle.lite.min.js');
+    $_SCRIPTS->setJavaScriptFile('jquery.cyclelite', MG_assetUrl180('/mediagallery/js/jquery.cycle.lite.min.js'));
 
     $frameStyleRelative = '/mediagallery/frames/' . $_MG_CONF['random_skin'] . '/style.css';
     $frameStylePath = $_CONF['path_html'] . ltrim($frameStyleRelative, '/');
@@ -717,11 +719,35 @@ function plugin_getheadercode_mediagallery()
     }
     $_SCRIPTS->setCSSFile(
         'mg.framecss' . $_MG_CONF['random_skin'],
-        $frameStyleRelative . '?v=' . rawurlencode($frameCacheVersion),
+        MG_assetUrl180($frameStyleRelative),
         false
     );
 
     return $retval;
+}
+
+/**
+ * Return whether MediaGallery is currently enabled in Geeklog.
+ *
+ * Plugin callbacks may remain callable after a plugin is disabled, depending
+ * on the calling core path or an existing PHP block. Public callbacks must
+ * therefore not assume that loading functions.inc means the plugin is enabled.
+ *
+ * @return bool
+ */
+function MG_pluginEnabled190()
+{
+    global $_TABLES;
+
+    if (empty($_TABLES['plugins'])) {
+        return false;
+    }
+
+    return ((int) DB_getItem(
+        $_TABLES['plugins'],
+        'pi_enabled',
+        "pi_name = 'mediagallery'"
+    ) === 1);
 }
 
 /**
@@ -732,6 +758,7 @@ function plugin_whatsnewsupported_mediagallery()
 {
     global $_CONF, $_MG_CONF, $LANG_MG00;
 
+    if (!MG_pluginEnabled190()) return '';
     if ($_MG_CONF['whatsnew'] == 0) return '';
     if ($_MG_CONF['installed_version'] != $_MG_CONF['pi_version']) return '';
     if (COM_isAnonUser() && $_MG_CONF['loginrequired'] == 1) return '';
@@ -747,6 +774,10 @@ function plugin_whatsnewsupported_mediagallery()
 function plugin_getwhatsnew_mediagallery()
 {
     global $_TABLES, $_CONF, $_MG_CONF, $_USER, $LANG_MG03;
+
+    if (!MG_pluginEnabled190()) {
+        return array();
+    }
 
     require_once $_CONF['path'].'plugins/mediagallery/include/classAlbum.php';
 
@@ -823,6 +854,10 @@ function plugin_getwhatsnewcomment_mediagallery($numreturn = 0, $uid = 0)
 {
     global $_CONF, $_TABLES, $_DLM_CONF;
 
+    if (!MG_pluginEnabled190()) {
+        return array();
+    }
+
     $stwhere = ($uid > 0) ? "AND (c.uid = $uid) " : ' ';
 
     if ($numreturn == 0) {
@@ -866,6 +901,10 @@ function plugin_showstats_mediagallery($showsitestats)
 {
     global $_CONF;
 
+    if (!MG_pluginEnabled190()) {
+        return '';
+    }
+
     require_once $_CONF['path'] . 'plugins/mediagallery/include/statistics.php';
     return MG_showstats($showsitestats);
 }
@@ -875,6 +914,7 @@ function plugin_statssummary_mediagallery()
 {
     global $_CONF, $_MG_CONF, $_TABLES, $LANG_MG00, $_USER;
 
+    if (!MG_pluginEnabled190()) return '';
     if (COM_isAnonUser() && $_MG_CONF['loginrequired'] == 1) return '';
 
     // This shows in the summary box
@@ -1249,6 +1289,10 @@ function phpblock_mg_randommedia($parm1=array(), $parm2='')
 {
     global $_CONF, $_MG_CONF, $_TABLES, $_USER, $LANG_MG03, $_DB_dbms;
 
+    if (!MG_pluginEnabled190()) {
+        return '';
+    }
+
     require_once $_CONF['path'] . 'plugins/mediagallery/include/common.php';
 
     $retval = '';
@@ -1345,6 +1389,10 @@ function phpblock_mg_maenroll()
 {
     global $_CONF, $_MG_CONF, $_TABLES, $_USER, $LANG_MG03;
 
+    if (!MG_pluginEnabled190()) {
+        return '';
+    }
+
     // PHP blocks are invoked from normal Geeklog pages as well as MediaGallery
     // pages, so load the shared helpers explicitly just like randommedia does.
     require_once $_CONF['path'] . 'plugins/mediagallery/include/common.php';
@@ -1378,7 +1426,7 @@ function plugin_chkVersion_mediagallery()
 {
     global $_MG_CONF;
 
-    return $_MG_CONF['pi_version'];
+    return MG_VERSION;
 }
 
 
@@ -1723,9 +1771,9 @@ function plugin_getiteminfo_mediagallery($id, $what, $uid = 0, $options = array(
                         break;
                     case 'url':
                         if (empty($A['id'])) {
-                            $props['url'] = $_MG_CONF['site_url'].'/media.php?f=0&amp;sort=0&amp;s='.$id;
+                            $props['url'] = $_MG_CONF['site_url'].'/media.php?f=0&sort=0&s='.$id;
                         } else {
-                            $props['url'] = $_MG_CONF['site_url'].'/media.php?f=0&amp;sort=0&amp;s='.$A['media_id'];
+                            $props['url'] = $_MG_CONF['site_url'].'/media.php?f=0&sort=0&s='.$A['media_id'];
                         }
                         break;
                     case 'label':

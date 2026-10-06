@@ -100,15 +100,15 @@ function MG_getMediaPickerButton($options = array())
 
     $_SCRIPTS->setJavaScriptFile(
         'mediagallery-media-picker',
-        $_MG_CONF['site_url'] . '/js/media-picker.js'
+        MG_assetUrl180('/mediagallery/js/media-picker.js')
     );
     $_SCRIPTS->setCSSFile(
         'mediagallery-media-picker',
-        $_MG_CONF['site_url'] . '/media-picker.css'
+        MG_assetUrl180('/mediagallery/media-picker.css')
     );
 
     $url = $_MG_CONF['site_url'] . '/picker.php?target=' . rawurlencode($target)
-         . '&amp;tag=' . rawurlencode($tag);
+         . '&tag=' . rawurlencode($tag);
     $charset = empty($_CONF['default_charset']) ? 'UTF-8' : $_CONF['default_charset'];
 
     return '<button type="button" class="' . htmlspecialchars($class, ENT_QUOTES, $charset)

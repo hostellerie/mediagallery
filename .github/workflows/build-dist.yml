@@ -1,6 +1,9 @@
 name: Build MediaGallery installable archive
 
 on:
+  push:
+    branches:
+      - mediagallery_1.9.0
   workflow_call:
   workflow_dispatch:
 
@@ -23,13 +26,21 @@ jobs:
           ref: ${{ github.sha }}
           fetch-depth: 0
 
+      - name: Run public item-display contract test
+        shell: bash
+        run: |
+          set -euo pipefail
+          php tests/public_item_display_contract_test.php
+
       - name: Build dist archive
         shell: bash
         run: |
           set -euo pipefail
 
           SOURCE_SHA="$(git rev-parse HEAD)"
-          ARCHIVE="mediagallery_1.8.0_2.1.1.zip"
+          PLUGIN_VERSION="$(php -r "require 'version.php'; echo MG_VERSION;")"
+          GEEKLOG_MIN="$(php -r "require 'version.php'; echo MG_MIN_GEEKLOG_VERSION;")"
+          ARCHIVE="mediagallery_${PLUGIN_VERSION}_${GEEKLOG_MIN}.zip"
 
           rm -rf package
           mkdir -p package/mediagallery dist
@@ -47,9 +58,9 @@ jobs:
             --exclude='tmp/'
 
           cat > package/mediagallery/BUILD_INFO.txt <<EOF
-          MediaGallery 1.8.0 test archive
-          Geeklog target: 2.1.1+
-          Source branch: modernize-1.8.0
+          MediaGallery ${PLUGIN_VERSION} installable archive
+          Geeklog minimum: ${GEEKLOG_MIN}
+          Source branch: mediagallery_1.9.0
           Source commit: ${SOURCE_SHA}
           EOF
 
@@ -70,6 +81,7 @@ jobs:
           set -euo pipefail
           unzip -t "dist/${ARCHIVE}" >/dev/null
           unzip -Z1 "dist/${ARCHIVE}" | grep -qx 'mediagallery/functions.inc'
+          unzip -Z1 "dist/${ARCHIVE}" | grep -qx 'mediagallery/version.php'
           unzip -Z1 "dist/${ARCHIVE}" | grep -qx 'mediagallery/autoinstall.php'
           unzip -Z1 "dist/${ARCHIVE}" | grep -qx 'mediagallery/BUILD_INFO.txt'
           unzip -Z1 "dist/${ARCHIVE}" | grep -qx 'mediagallery/admin/navigation.php'
@@ -78,6 +90,10 @@ jobs:
           unzip -Z1 "dist/${ARCHIVE}" | grep -qx 'mediagallery/templates/admin_navigation.thtml'
           unzip -Z1 "dist/${ARCHIVE}" | grep -qx 'mediagallery/public_html/admin.css'
           unzip -Z1 "dist/${ARCHIVE}" | grep -qx 'mediagallery/public_html/js/upload.js'
+          unzip -p "dist/${ARCHIVE}" mediagallery/public_html/album.php \
+            | grep -Fq "PLG_itemDisplay(MG_albumItemId180(\$album_id), 'mediagallery')"
+          unzip -p "dist/${ARCHIVE}" mediagallery/public_html/media.php \
+            | grep -Fq "PLG_itemDisplay((string) \$mid, 'mediagallery')"
           unzip -p "dist/${ARCHIVE}" mediagallery/templates/userupload.thtml \
             | grep -q 'name="newmedia\[\]" multiple{upload_accept}'
           unzip -p "dist/${ARCHIVE}" mediagallery/templates/mediaitems.thtml \
@@ -104,6 +120,25 @@ jobs:
           unzip -p "dist/${ARCHIVE}" mediagallery/include/config_180.php \
             | grep -q "isset(\$_MG_CONF\['installed_version'\])"
 
+          php -r '
+          require "version.php";
+          require "autoinstall.php";
+          $manifest = json_decode(file_get_contents("plugin.json"), true);
+          $install = plugin_autoinstall_mediagallery("mediagallery");
+          if ($install["info"]["pi_version"] !== MG_VERSION) {
+              fwrite(STDERR, "autoinstall pi_version does not match MG_VERSION\n");
+              exit(1);
+          }
+          if ($install["info"]["pi_gl_version"] !== MG_MIN_GEEKLOG_VERSION) {
+              fwrite(STDERR, "autoinstall pi_gl_version does not match MG_MIN_GEEKLOG_VERSION\n");
+              exit(1);
+          }
+          if ($manifest["requires"]["geeklog"] !== MG_MIN_GEEKLOG_VERSION) {
+              fwrite(STDERR, "plugin.json Geeklog requirement does not match MG_MIN_GEEKLOG_VERSION\n");
+              exit(1);
+          }
+          '
+
           python3 - <<'PY'
           import os
           import re
@@ -128,7 +163,7 @@ jobs:
                       invalid.append(path)
 
           if invalid:
-              print('Unsafe archive filenames for Geeklog 2.2.2:')
+              print('Unsafe archive filenames for the supported Geeklog range:')
               for path in invalid:
                   print(' - ' + path)
               sys.exit(1)
@@ -139,8 +174,8 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          git fetch origin modernize-1.8.0
-          BRANCH_SHA="$(git rev-parse origin/modernize-1.8.0)"
+          git fetch origin mediagallery_1.9.0
+          BRANCH_SHA="$(git rev-parse origin/mediagallery_1.9.0)"
           if [ "$BRANCH_SHA" != "$SOURCE_SHA" ]; then
             echo "A newer branch commit exists; this archive is stale and will not be committed."
             echo "commit_archive=false" >> "$GITHUB_OUTPUT"
@@ -148,7 +183,7 @@ jobs:
             echo "commit_archive=true" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: Commit archive to modernize-1.8.0
+      - name: Commit archive to mediagallery_1.9.0
         if: steps.freshness.outputs.commit_archive == 'true'
         shell: bash
         run: |
@@ -160,5 +195,5 @@ jobs:
             echo 'No dist changes to commit.'
             exit 0
           fi
-          git commit -m "Build mediagallery_1.8.0_2.1.1.zip for ${SOURCE_SHA} [skip ci]"
-          git push origin HEAD:modernize-1.8.0
+          git commit -m "Build ${ARCHIVE} for ${SOURCE_SHA} [skip ci]"
+          git push origin HEAD:mediagallery_1.9.0

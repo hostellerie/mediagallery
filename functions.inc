@@ -2,7 +2,7 @@
 // +--------------------------------------------------------------------------+
 // | Media Gallery Plugin - Geeklog                                           |
 // +--------------------------------------------------------------------------+
-// | MediaGallery 1.8.0 bootstrap                                             |
+// | MediaGallery 1.9.0 bootstrap                                             |
 // +--------------------------------------------------------------------------+
 
 if (strpos(strtolower($_SERVER['PHP_SELF']), strtolower(basename(__FILE__))) !== false) {
@@ -10,10 +10,12 @@ if (strpos(strtolower($_SERVER['PHP_SELF']), strtolower(basename(__FILE__))) !==
 }
 
 /*
- * Keep the proven 1.7.3 implementation intact while the 1.8.0 modernization
- * is introduced in controlled layers. This transitional include can be folded
- * back into functions.inc once the configuration/template refactor is stable.
+ * Keep the proven legacy implementation isolated while the maintained
+ * modernization layers provide current configuration, interoperability,
+ * storage, security and UI behavior.
  */
+require_once __DIR__ . '/version.php';
+
 require_once __DIR__ . '/include/input_compat_180.php';
 require_once __DIR__ . '/functions_legacy.inc';
 require_once __DIR__ . '/include/interoperability_180.php';

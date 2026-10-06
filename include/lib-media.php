@@ -537,6 +537,29 @@ function MG_buildContent($media, &$opt)
 {
     global $_MG_CONF;
 
+    /*
+     * Normalize optional database/media metadata before dispatching to the
+     * format-specific renderers. Older records and some import paths may not
+     * provide every key expected by the legacy display code. Keeping the
+     * defaults here avoids PHP 8.x undefined-array-key warnings without
+     * scattering defensive checks through each renderer.
+     *
+     * See Geeklog-Plugins/mediagallery issue #11.
+     */
+    $mediaDefaults = array(
+        'resolution_x'       => 0,
+        'resolution_y'       => 0,
+        'media_resolution_x' => 0,
+        'media_resolution_y' => 0,
+        'remote_media'       => 0,
+        'remote_url'         => '',
+    );
+    foreach ($mediaDefaults as $key => $default) {
+        if (!isset($media[$key])) {
+            $media[$key] = $default;
+        }
+    }
+
     switch ($media['mime_type']) {
         case 'image/gif' :
         case 'image/jpeg' :
@@ -639,13 +662,16 @@ function MG_displayMedia($id, $full=0, $sortOrder=0, $comments=0, $spage=0)
     if (isset($mg_album->pid)) {
         $pid = $mg_album->pid;
     }
-    $aOffset = -1;
     $aOffset = $mg_album->getOffset();
-    if ($aOffset == -1 || $mg_album->access == 0) {
+    if ($mg_album->access == 0) {
         $retval = COM_startBlock($LANG_ACCESS['accessdenied'], '', COM_getBlockTemplate('_msg_block', 'header'))
                  . '<br'.XHTML.'>' . $LANG_MG00['access_denied_msg']
+                 . ' [MediaGallery: album access]'
                  . COM_endBlock(COM_getBlockTemplate('_msg_block', 'footer'));
-        return array($LANG_MG00['access_denied_msg'], $retval);
+        return array($LANG_MG00['access_denied_msg'], $retval, (int) $aid);
+    }
+    if ($aOffset < 0) {
+        $aOffset = 0;
     }
 
     $sql = MG_buildMediaSql(array(
@@ -657,6 +683,7 @@ function MG_displayMedia($id, $full=0, $sortOrder=0, $comments=0, $spage=0)
 
     $total_media = $nRows;
     $media_array = array();
+    $id_array = array();
     while ($row = DB_fetchArray($result)) {
         $media_array[] = $row;
         $id_array[] = $row['media_id'];
@@ -666,8 +693,9 @@ function MG_displayMedia($id, $full=0, $sortOrder=0, $comments=0, $spage=0)
     if ($key === false) {
         $retval = COM_startBlock($LANG_ACCESS['accessdenied'], '', COM_getBlockTemplate('_msg_block', 'header'))
                 . '<br'.XHTML.'>' . $LANG_MG00['access_denied_msg']
+                . ' [MediaGallery: media not found in album]'
                 . COM_endBlock(COM_getBlockTemplate('_msg_block', 'footer'));
-        return array($LANG_MG00['access_denied_msg'], $retval);
+        return array($LANG_MG00['access_denied_msg'], $retval, (int) $aid);
     }
 
     $media = $media_array[$key];

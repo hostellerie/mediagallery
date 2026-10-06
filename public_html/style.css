@@ -395,9 +395,11 @@ a.SWFUProgressCancel:hover {
 .MG_autotag_left,
 .MG_autotag_right,
 .MG_autotag_center,
+.MG_autotag_none,
 .MG_autotag_nb_left,
 .MG_autotag_nb_right,
-.MG_autotag_nb_center {
+.MG_autotag_nb_center,
+.MG_autotag_nb_none {
   text-align: center;
   padding: 5px;
   margin-bottom: 5px;
@@ -405,14 +407,23 @@ a.SWFUProgressCancel:hover {
 
 .MG_autotag_left,
 .MG_autotag_right,
-.MG_autotag_center {
+.MG_autotag_center,
+.MG_autotag_none {
   border: 1px solid silver;
 }
 
 .MG_autotag_nb_left,
 .MG_autotag_nb_right,
-.MG_autotag_nb_center {
+.MG_autotag_nb_center,
+.MG_autotag_nb_none {
   border: none;
+}
+
+.MG_autotag_none,
+.MG_autotag_nb_none {
+  float: none;
+  margin-left: 0;
+  margin-right: 0;
 }
 
 .MG_autotag_left,
@@ -3580,3 +3591,16 @@ a.SWFUProgressCancel:hover {
 .mg-media-editor .mg-hidden-form{display:none}
 .mg-media-editor .mg-rotate-button{display:inline-flex;align-items:center;justify-content:center;padding:0;border:0;background:transparent;cursor:pointer}
 .mg-media-editor .mg-rotate-button img{display:block;width:1.25rem;height:1.25rem;object-fit:contain}
+
+
+/* MediaGallery 1.9 responsive autotag media */
+.MG_autotag,
+.MG_autotag_nb {
+  max-width: 100%;
+}
+.MG_autotag img,
+.MG_autotag_nb img,
+.MG_autotag_media img {
+  max-width: 100%;
+  height: auto !important;
+}

@@ -1,9 +1,11 @@
 <?php
 
+require_once dirname(__DIR__) . '/version.php';
+
 // +--------------------------------------------------------------------------+
 // | Media Gallery Plugin - Geeklog                                           |
 // +--------------------------------------------------------------------------+
-// | MediaGallery 1.8.0 runtime configuration                                 |
+// | MediaGallery runtime configuration (introduced in 1.8.0)                 |
 // +--------------------------------------------------------------------------+
 
 if (strpos(strtolower($_SERVER['PHP_SELF']), strtolower(basename(__FILE__))) !== false) {
@@ -22,7 +24,7 @@ function MG_prepareDirectory180($path)
         return true;
     }
 
-    COM_errorLog('Media Gallery 1.8.0: unable to create directory ' . $path);
+    COM_errorLog('Media Gallery: unable to create directory ' . $path);
     return false;
 }
 
@@ -55,11 +57,56 @@ function MG_prepareMediaStorage180($root)
     return true;
 }
 
+/**
+ * Add a cache-busting version to a MediaGallery public CSS/JS asset.
+ *
+ * The plugin version identifies the release while filemtime invalidates the
+ * browser cache for asset changes made during development of the same release.
+ */
+function MG_assetUrl180($url)
+{
+    global $_CONF, $_MG_CONF;
+
+    $url = (string) $url;
+    if ($url === '') {
+        return $url;
+    }
+
+    $path = '';
+    $publicPrefix = '/mediagallery/';
+    $sitePrefix = isset($_MG_CONF['site_url'])
+        ? rtrim((string) $_MG_CONF['site_url'], '/') . '/'
+        : '';
+
+    if (strpos($url, $publicPrefix) === 0) {
+        $path = rtrim($_CONF['path_html'], '/\\') . '/mediagallery/'
+              . substr($url, strlen($publicPrefix));
+    } elseif ($sitePrefix !== '' && strpos($url, $sitePrefix) === 0) {
+        $path = rtrim($_CONF['path_html'], '/\\') . '/mediagallery/'
+              . substr($url, strlen($sitePrefix));
+    }
+
+    $version = !empty($_MG_CONF['pi_version'])
+        ? (string) $_MG_CONF['pi_version']
+        : (!empty($_MG_CONF['installed_version']) ? (string) $_MG_CONF['installed_version'] : 'mediagallery');
+
+    if ($path !== '') {
+        $mtime = @filemtime($path);
+        if ($mtime !== false) {
+            $version .= '-' . $mtime;
+        }
+    }
+
+    return $url
+        . (strpos($url, '?') === false ? '?' : '&')
+        . 'v=' . rawurlencode($version);
+}
+
 function MG_applyRuntimeConfiguration180()
 {
     global $_CONF, $_MG_CONF, $_TABLES;
 
-    $_MG_CONF['pi_version'] = '1.8.0';
+    $_MG_CONF['pi_version'] = MG_VERSION;
 
     /*
      * functions.inc is loaded by Geeklog while a plugin archive is being
@@ -95,7 +142,7 @@ function MG_applyRuntimeConfiguration180()
     $_MG_CONF['template_path'] = $_CONF['path'] . 'plugins/mediagallery/templates';
 
     /*
-     * MediaGallery 1.8.0 keeps all persistent public media below Geeklog's
+     * MediaGallery keeps all persistent public media below Geeklog's
      * images root, outside the replaceable public_html/mediagallery directory.
      * This protects media from Geeklog's native plugin ZIP upgrade process and
      * naturally isolates shared-code multisite installations when each site
@@ -107,7 +154,7 @@ function MG_applyRuntimeConfiguration180()
         $_MG_CONF['mediaobjects_url'] = $storage['url'];
         if (!MG_prepareMediaStorage180($_MG_CONF['path_mediaobjects'])) {
             COM_errorLog(
-                'Media Gallery 1.8.0: persistent media storage is not writable: '
+                'Media Gallery: persistent media storage is not writable: '
                 . $_MG_CONF['path_mediaobjects'],
                 1
             );
@@ -219,7 +266,7 @@ function MG_updateConfig180()
 }
 
 /**
- * Ensure fresh 1.8.0 installations receive the same Configuration API keys
+ * Ensure fresh installations receive the same Configuration API keys
  * as upgraded installations. This is intentionally idempotent.
  */
 function MG_ensureConfig180()

@@ -1,0 +1,69 @@
+<script type="text/javascript">
+function InsertHtml(htmltag)
+{
+    if (!window.opener || window.opener.closed) {
+        return false;
+    }
+    window.opener.postMessage({
+        source: 'mediagallery',
+        action: 'insert',
+        target: {target_json},
+        value: htmltag
+    }, window.location.origin);
+    return true;
+}
+</script>
+
+<form class="mg-picker" name="mediabrowser" method="post" action="{s_form_action}"
+      data-selection-key="{selection_key_attr}"
+      data-selected-singular="{selected_singular_attr}"
+      data-selected-plural="{selected_plural_attr}"
+      data-insert-one="{insert_one_attr}"
+      data-insert-many="{insert_many_attr}">
+<input type="hidden" name="i" value="{instance}">
+<input type="hidden" name="target" value="{target_attr}">
+<input type="hidden" name="navigation" value="none">
+<input type="hidden" name="current_album_id" value="{album_id}">
+
+<header class="mg-picker__header">
+  <div>
+    <h1 class="mg-picker__title">{lang_thumbnails}</h1>
+    <p class="mg-picker__help">{picker_help}</p>
+  </div>
+  <button class="mg-picker__close" type="button" onclick="window.close();">{lang_cancel}</button>
+</header>
+
+<section class="mg-picker__album">
+  <div class="mg-picker__album-nav">
+    <div class="mg-picker__album-select">{jumpbox}</div>
+    <div class="mg-picker__pagination">
+      <button type="submit" aria-label="Previous page" onclick='document.mediabrowser.navigation.value="prev"'{prev_disabled}>&lsaquo;</button>
+      <span>{page_number}</span>
+      <button type="submit" aria-label="Next page" onclick='document.mediabrowser.navigation.value="next"'{next_disabled}>&rsaquo;</button>
+    </div>
+  </div>
+  <div class="mg-picker__album-action">
+    <button class="mg-picker__button mg-picker__button--secondary" type="button" onclick="return insertAlbum(this.form);">
+      {insert_album}
+    </button>
+  </div>
+</section>
+
+<section class="mg-picker__media" aria-label="{lang_thumbnails}">
+  {album_body}
+</section>
+
+<footer class="mg-picker__footer">
+  <div class="mg-picker__selection-status" aria-live="polite">
+    <strong id="mg-picker-selected-count">0</strong>
+    <span id="mg-picker-selected-label">{selected_plural}</span>
+    <button id="mg-picker-clear" class="mg-picker__clear" type="button">{clear_selection}</button>
+  </div>
+  <div class="mg-picker__footer-actions">
+    <button id="mg-picker-insert" class="mg-picker__button mg-picker__button--primary" type="button" onclick="return insertImages(this.form);" disabled>
+      {insert_media}
+    </button>
+    <button class="mg-picker__button" type="button" onclick="window.close();">{lang_cancel}</button>
+  </div>
+</footer>
+</form>

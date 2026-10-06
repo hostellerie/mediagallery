@@ -1,21 +1,19 @@
-# MediaGallery 1.8.0 for Geeklog
+# MediaGallery 1.9.0 for Geeklog
 
-MediaGallery is a full-featured media gallery plugin for Geeklog. The `modernize-1.8.0` branch is the active development line for MediaGallery 1.8.0 and is based on the historical 1.7.3 codebase.
+MediaGallery is a full-featured media gallery plugin for Geeklog. The `mediagallery_1.9.0` branch is the release line for MediaGallery 1.9.0 and builds on the modernization completed in 1.8.0.
 
-> **Release status:** MediaGallery 1.8.0 has completed its release validation for Geeklog 2.1.1 and Geeklog 2.2.2. Keep complete database and media backups before upgrading an existing production site.
+> **Release status:** MediaGallery 1.9.0 is in final pre-release validation for Geeklog 2.1.1 through 2.2.2. Keep complete database and media backups before upgrading an existing production site.
 
 ## Compatibility target
 
-- Geeklog **2.1.1 or newer**
-- Geeklog 2.2.2 supported
-- PHP source remains compatible with **PHP 5.6 syntax** for legacy Geeklog 2.1.1 deployments
-- Development/lint coverage also targets PHP 7.4, 8.1 and 8.3
+- Geeklog **2.1.1 or newer**, including Geeklog 2.2.2
+- PHP **5.6 or newer**; syntax validation covers PHP 5.6, 7.4, 8.1 and 8.3
 
-Geeklog 2.0.x is not a target for MediaGallery 1.8.0.
+MediaGallery 1.9.0 preserves the transition compatibility policy introduced in 1.8.0 so existing Geeklog 2.1.1 sites can upgrade before or alongside a Geeklog core migration.
 
-## What 1.8.0 changes
+## What 1.9.0 includes
 
-MediaGallery 1.8.0 is primarily a modernization and hardening release. The major work already implemented includes:
+MediaGallery 1.9.0 carries forward the 1.8.0 modernization and hardening work and adds the current SEO/interoperability maintenance release. The maintained feature set includes:
 
 - persistent media storage outside the replaceable plugin public directory;
 - safer upgrades from existing 1.7.x installations;
@@ -29,8 +27,9 @@ MediaGallery 1.8.0 is primarily a modernization and hardening release. The major
 - generic album/media lifecycle events for IndexNow, XML Sitemap, Hub and other Geeklog consumers;
 - improved album thumbnail sharpness and portrait-image rendering;
 - Geeklog 2.1.1-compatible PHP-block and batch-session fixes.
+- 13 maintained UTF-8 translations synchronized with the current English language contract: Spanish, Italian, Japanese, Russian, Chinese (Simplified), Chinese (Traditional), Hebrew, Persian, French Canada, French France, German, German Formal and Spanish Argentina.
 
-See [ROADMAP.md](ROADMAP.md) for the completed 1.8.0 implementation and validation record.
+See [RELEASE_NOTES.md](RELEASE_NOTES.md) for 1.9.0 changes and [ROADMAP.md](ROADMAP.md) for the broader implementation record.
 
 ## Persistent media storage
 
@@ -74,9 +73,9 @@ Older MediaGallery installations may still store user media in:
 public_html/mediagallery/mediaobjects/
 ```
 
-Geeklog's plugin ZIP updater replaces the plugin's public directory before MediaGallery's upgrade code can run. Therefore **do not upload the 1.8.0 ZIP over a 1.7.x installation until legacy media have been pre-migrated**.
+Geeklog's plugin ZIP updater replaces the plugin's public directory before MediaGallery's upgrade code can run. Therefore **do not upload a 1.8.0-or-newer ZIP over a 1.7.x installation until legacy media have been pre-migrated**.
 
-Extract the 1.8.0 package on the server and run:
+Extract the target MediaGallery package on the server and run:
 
 ```bash
 php tools/migrate-media-storage.php /path/to/geeklog
@@ -96,11 +95,11 @@ MediaGallery uses Geeklog's configured `$_CONF['image_lib']` backend:
 - `imagemagick` — the configured ImageMagick tools must be executable;
 - `netpbm` — the configured NetPBM tools must be executable.
 
-MediaGallery 1.8.0 checks backend availability before resize, conversion, rotation and watermark operations and returns a clear error when the configured backend is unavailable.
+MediaGallery checks backend availability before resize, conversion, rotation and watermark operations and returns a clear error when the configured backend is unavailable.
 
 Non-image media such as PDF/ZIP files may not require image conversion.
 
-## Security work in 1.8.0
+## Security foundation introduced in 1.8.0
 
 The modernization branch hardens the main mutation and import paths, including:
 
@@ -127,7 +126,7 @@ This avoids false “security token expired” failures during multi-step batch 
 
 ## Modern public output
 
-The maintained MediaGallery 1.8.0 templates now include:
+The maintained MediaGallery templates include:
 
 - responsive CSS Grid/Flexbox album and media layouts;
 - semantic headings and navigation landmarks;
@@ -143,7 +142,7 @@ The maintained MediaGallery 1.8.0 templates now include:
 
 ### Shared capability discovery
 
-MediaGallery 1.8.0 declares provider-neutral capabilities for Agent, Eclipse, Hub and future Geeklog consumers. It exposes bounded read-only album/media services and an administration `dashboard_summary` service, while keeping MediaGallery permissions authoritative and avoiding direct consumer access to `mg_*` tables.
+MediaGallery declares provider-neutral capabilities for Agent, Eclipse, Hub and future Geeklog consumers. It exposes bounded read-only album/media services and an administration `dashboard_summary` service, while keeping MediaGallery permissions authoritative and avoiding direct consumer access to `mg_*` tables.
 
 
 ### Album discovery
@@ -186,7 +185,7 @@ This allows IndexNow 1.3.0, XML Sitemap, Hub and future connectors to react thro
 
 ## Configuration
 
-MediaGallery 1.8.0 does not restore the old manually edited MediaGallery `config.php` model.
+MediaGallery does not restore the old manually edited MediaGallery `config.php` model.
 
 Administrator preferences stay in Geeklog's Configuration API where appropriate. Runtime-derived values such as plugin URLs, template paths and storage paths are calculated from the active Geeklog site configuration.
 
@@ -197,12 +196,12 @@ Obsolete Flash/FlowPlayer controls are no longer created on fresh installations.
 The release branch produces one installable archive:
 
 ```text
-dist/mediagallery_1.8.0_2.1.1.zip
+dist/mediagallery_1.9.0_2.1.1.zip
 ```
 
-The archive contains one top-level `mediagallery/` directory and excludes repository/build-only content. Automated validation checks PHP syntax, required 1.8 helpers and Geeklog-compatible archive filenames.
+The archive contains one top-level `mediagallery/` directory and excludes repository/build-only content. Automated validation checks PHP syntax, required MediaGallery helpers, public item-display contracts and Geeklog-compatible archive filenames.
 
-The archive is rebuilt automatically from validated source changes and is the package intended for the 1.8.0 release.
+The archive is rebuilt automatically from validated source changes and is the package intended for the 1.9.0 release.
 
 ## Documentation
 

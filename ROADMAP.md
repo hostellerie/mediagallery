@@ -306,3 +306,213 @@ Phases A–D are green; the release freeze now keeps the validated compatibility
 ## Release principle
 
 MediaGallery 1.8.0 should be safer to upgrade than 1.7.x, preserve user media outside replaceable plugin code, work naturally in single-site and shared-code multisite installations, provide modern accessible public output, use Geeklog-native APIs wherever practical, expose content changes to the wider Geeklog ecosystem, and fail explicitly when required runtime capabilities are unavailable.
+
+---
+
+# MediaGallery 1.9.0 — Event / Quick Share roadmap
+
+MediaGallery 1.9.0 introduces an event-oriented capture, publishing and delivery workflow while keeping MediaGallery albums and media as the canonical storage model. The feature must not create a parallel media library.
+
+**Core model:** Special Events album → Events → Sessions → MediaGallery media.
+
+## 15. Event foundation
+
+- [ ] Add an optional Event / Quick Share mode based on a special MediaGallery album type/container dedicated to Events.
+- [ ] Allow a special Events album to contain multiple distinct events instead of creating one normal MediaGallery album per event.
+- [ ] Allow an administrator to designate/create one or more special Events albums where useful (for example separate professional and private event collections).
+- [ ] Allow an administrator or authorized photographer to create an event inside a selected special Events album.
+- [ ] Keep uploaded photographs as normal MediaGallery media so existing permissions, metadata, derivatives, storage, lifecycle notifications and interoperability remain usable.
+- [ ] Add event status and lifecycle controls: draft, active, closed and optionally expired.
+- [ ] Allow optional event start/end dates and configurable retention/expiration without deleting canonical media unexpectedly.
+- [ ] Keep the feature optional so normal MediaGallery installations and album workflows remain unchanged.
+
+## 16. Mobile-first quick upload
+
+- [ ] Provide a minimal responsive upload interface designed first for iPhone and Android browsers.
+- [ ] Use the device-native photo picker and support multiple-photo selection.
+- [ ] Treat the native picker as the initial batch selection only: do not upload immediately after files are chosen.
+- [ ] Build a local pre-upload review workflow so selected photographs can be inspected without first sending them to the server.
+- [ ] Provide a large-format mobile viewer as the primary photo-selection interface; small thumbnails may be used for navigation/overview but must not be the only way to judge and select photographs.
+- [ ] Allow swipe/previous/next navigation through the locally selected photographs.
+- [ ] Provide touch zoom / pinch-to-zoom where browser capabilities allow, so the photographer can inspect focus, faces, expressions and image detail before publication.
+- [ ] Allow each photograph to be explicitly selected or rejected from the large viewer, with a persistent selected/total counter.
+- [ ] Provide a thumbnail/grid recap after review with select all, deselect all and individual selection correction.
+- [ ] Show a final action such as “Upload 7 photos” reflecting the actual number selected for publication.
+- [ ] Upload only the photographs retained after the local review step.
+- [ ] Allow direct upload into the currently selected event/session with as few interactions as possible after review.
+- [ ] Display per-file upload progress, individual success/failure states, overall completion state and retry of failed uploads without resending successful files.
+- [ ] Support immediate publication when the operator has permission, with optional moderation where required.
+- [ ] Preserve MediaGallery upload validation, MIME checks, quotas, image processing and security rules.
+- [ ] Make interrupted/partial mobile uploads recoverable where practical.
+- [ ] Avoid requiring a dedicated mobile application for the baseline workflow.
+
+## 17. Event QR code and public gallery
+
+- [ ] Generate a QR code for each event.
+- [ ] Provide a stable event sharing URL suitable for printing or displaying on a screen.
+- [ ] Allow visitors to scan the QR code and open the event gallery without navigating the full MediaGallery hierarchy.
+- [ ] Make newly published photographs appear in the event gallery with minimal delay.
+- [ ] Support public events and permission-controlled/private events.
+- [ ] Provide individual photo download where permitted.
+- [ ] Provide multi-select and ZIP download where permitted and operationally safe.
+- [ ] Reuse MediaGallery thumbnails/display images for browsing while allowing controlled access to originals.
+- [ ] Provide administrator controls to disable sharing without deleting the album or media.
+
+## 18. Sessions and participant delivery
+
+- [ ] Allow an event to contain lightweight photo sessions (for example session #042).
+- [ ] Associate one or more MediaGallery media items with a session without duplicating the files.
+- [ ] Generate a unique share URL and QR code for each session.
+- [ ] Allow a participant to scan the session QR and see only the photographs assigned to that session.
+- [ ] Support adding more photographs to an active session after its QR has already been issued.
+- [ ] Provide session states such as active, closed and revoked.
+- [ ] Allow optional expiration of a session share link independently from the canonical MediaGallery media.
+- [ ] Provide download controls at session level.
+- [ ] Keep session identifiers separate from personally identifying information by default.
+
+## 19. Participant-first QR workflow
+
+A later 1.9.x stage should support a reverse workflow suitable for high-volume event photography:
+
+1. the participant receives or displays a session QR;
+2. the photographer scans that QR before shooting;
+3. the mobile upload interface switches to that participant/session;
+4. subsequent selected photographs are attached automatically to that session;
+5. the participant can use the same QR to retrieve the photographs as they are published.
+
+Implementation requirements:
+
+- [ ] Generate participant/session QR codes without requiring facial recognition.
+- [ ] Add a mobile QR scanner using browser capabilities where supported, with a manual token/code fallback.
+- [ ] Clearly show the currently active session before upload to prevent photographs being assigned to the wrong participant.
+- [ ] Provide a one-tap way to end/switch the active session.
+- [ ] Allow correction/reassignment by an authorized operator.
+- [ ] Never use facial recognition as a hidden fallback.
+
+## 20. Share-link security and privacy
+
+- [ ] Use cryptographically strong, non-sequential, non-guessable share tokens.
+- [ ] Never expose internal database IDs as sufficient authorization for a private session.
+- [ ] Store share tokens safely and make revocation possible.
+- [ ] Apply MediaGallery/Geeklog permissions before serving originals or downloads.
+- [ ] Add configurable expiry for event/session links.
+- [ ] Prevent directory indexing and direct bypass of private delivery controls.
+- [ ] Rate-limit or otherwise protect expensive ZIP/download operations where appropriate.
+- [ ] Avoid collecting participant names, email addresses or other personal data unless explicitly required by a future workflow.
+- [ ] Document privacy/retention implications for event operators.
+
+## 21. Event administration and UX
+
+- [ ] Add an Event administration view listing event name, parent Events album, status, sessions, media count and sharing state.
+- [ ] Provide fast actions: Open upload, New session, Show QR, Copy link, Close event and Disable sharing.
+- [ ] Provide a session view with assigned photographs and reassignment/removal controls.
+- [ ] Allow QR presentation in a large high-contrast view suitable for showing directly on the photographer's phone.
+- [ ] Allow QR export/printing for event signage.
+- [ ] Keep public participant pages deliberately simple: gallery, selection and permitted download actions.
+- [ ] Ensure the workflow remains usable with touch interfaces and narrow screens.
+- [ ] Keep templates compatible with maintained Geeklog themes including Denim and Eclipse.
+
+## 22. Data model and interoperability
+
+- [ ] Add event/session tables only for workflow metadata and relationships; do not duplicate MediaGallery media records.
+- [ ] Define explicit relations between special Events album, event, session and media IDs.
+- [ ] Ensure deleting/revoking a session does not delete canonical media unless an administrator explicitly performs a normal MediaGallery deletion.
+- [ ] Define behavior when event media are moved outside their Events container or deleted through normal MediaGallery tools.
+- [ ] Extend MediaGallery services/capabilities only where a generic event/session read contract is useful.
+- [ ] Emit appropriate lifecycle notifications for event/session publication changes without coupling MediaGallery to Hub, Eclipse, Agent or another consumer.
+- [ ] Keep the implementation compatible with shared-code multisite isolation.
+- [ ] Do not allow event/session tokens or relationships to cross site boundaries.
+
+## 23. Performance and event-scale operation
+
+- [ ] Avoid regenerating existing image derivatives solely for Event mode.
+- [ ] Use bounded/paginated gallery loading for large events.
+- [ ] Support incremental refresh so participants can see newly published photographs without reloading an entire large gallery.
+- [ ] Design ZIP generation to avoid PHP memory/time exhaustion; use bounded/background preparation if required by scale.
+- [ ] Define cleanup for expired temporary ZIP files and upload state.
+- [ ] Test concurrent photographer uploads and participant browsing.
+- [ ] Establish practical test scenarios for 100, 500, 1,000+ photographs per event.
+
+## 24. 1.9.0 implementation phases
+
+### Phase A — Event MVP
+- [ ] Special MediaGallery Events album/container capable of holding multiple events.
+- [ ] Event creation inside the selected Events album without requiring a separate normal album for every event.
+- [ ] Mobile multi-photo quick upload.
+- [ ] Local pre-upload review of the selected batch.
+- [ ] Large-format photo viewer optimized for judging image quality on a phone.
+- [ ] Swipe navigation, select/reject controls and selected/total counter.
+- [ ] Touch zoom / pinch-to-zoom where supported.
+- [ ] Grid recap and correction before upload.
+- [ ] Upload only the final selected photographs, with per-file progress and failed-file retry.
+- [ ] Event share URL and QR code.
+- [ ] Public/permission-aware event gallery.
+- [ ] Individual downloads.
+- [ ] Share revocation.
+
+### Phase B — Sessions
+- [ ] Session creation inside an event.
+- [ ] Media-to-session assignment.
+- [ ] Unique session URL/token/QR.
+- [ ] Session-only gallery.
+- [ ] Session download and expiration controls.
+
+### Phase C — Professional rapid workflow
+- [ ] Participant-first QR workflow.
+- [ ] Photographer QR scanning.
+- [ ] Persistent active-session indicator during mobile upload.
+- [ ] Fast session switching and reassignment.
+- [ ] Multi-select/ZIP delivery.
+
+### Phase D — Hardening
+- [ ] Security review of tokens, permissions and direct-download paths.
+- [ ] Mobile Safari and Android/Chrome regression tests.
+- [ ] Large-event performance tests.
+- [ ] Multisite isolation tests.
+- [ ] Accessibility and theme regression.
+- [ ] Documentation and operator workflow examples.
+
+## 25. Optional paid session access / Store integration
+
+Paid delivery must remain optional. MediaGallery must not implement its own checkout/payment system and must continue to operate normally when the Store plugin is absent or disabled.
+
+- [ ] Add an optional paid access mode at Event Session level alongside free/private sharing modes.
+- [ ] Keep MediaGallery independent from Store: expose the purchasable session/resource and entitlement checks through a bounded interoperability contract rather than direct Store SQL/table knowledge.
+- [ ] Let Store own product/price, checkout, payment, order/refund state and purchase entitlement.
+- [ ] Start with a simple product model: unlock/download the complete session for a configured price.
+- [ ] Keep the data model extensible for later per-photo or selected-photo purchasing without making those models mandatory for 1.9.0.
+- [ ] Allow protected previews before purchase where configured, using reduced-resolution and/or watermarked derivatives while keeping originals and protected downloads inaccessible.
+- [ ] A session QR/share token identifies the session but must never by itself prove payment or grant paid download entitlement.
+- [ ] After confirmed payment, allow MediaGallery to resolve a Store-issued entitlement and unlock the permitted originals/session ZIP.
+- [ ] Revoke or update entitlement appropriately after cancellation/refund where Store reports that state.
+- [ ] Define safe behavior when Store is unavailable: never accidentally unlock paid content and never break ordinary free/private Event workflows.
+
+### Guest purchase without site account
+
+Creating a Geeklog user account must **not** be required to buy and retrieve Event photographs.
+
+- [ ] Support Store guest checkout for paid Event Sessions without requiring registration or login on the Geeklog site.
+- [ ] Do not silently create a permanent Geeklog account as a side effect of guest purchase.
+- [ ] Bind guest purchase entitlement to the Store order and Event Session using a cryptographically strong, non-guessable, revocable access/download token rather than a logged-in user ID.
+- [ ] Return the purchaser to the unlocked session immediately after successful payment when the payment flow allows it.
+- [ ] Provide a secure recovery/delivery mechanism for later access (for example a Store-generated secure order/download link) without requiring account creation.
+- [ ] Minimize purchaser personal data; MediaGallery must not require name/email/PII beyond what Store/payment processing actually needs.
+- [ ] Never expose order IDs, sequential session IDs or predictable values as sufficient download authorization.
+- [ ] Support expiration/rotation/revocation of guest download tokens independently from canonical MediaGallery media.
+- [ ] Ensure a leaked session QR cannot be combined with public order information to derive a paid download URL.
+- [ ] Keep entitlement verification server-side for original-file and ZIP delivery; hiding download controls in the browser is not authorization.
+- [ ] Document guest purchase, successful payment, failed/cancelled payment, refund, expired token and link-recovery test cases.
+
+### Paid-session delivery UX
+
+- [ ] Clearly distinguish preview access from purchased download access.
+- [ ] Show session price and what the purchase unlocks before checkout.
+- [ ] Provide a direct “Unlock / Buy session” action from the QR-opened session page when Store integration is available.
+- [ ] After purchase, return to the same session context rather than forcing the participant to navigate MediaGallery.
+- [ ] Provide individual and/or full-session ZIP download according to the purchased entitlement.
+- [ ] Keep the participant workflow mobile-first and usable entirely from the phone used to scan the QR code.
+
+## 26. 1.9.0 design principle
+
+Event / Quick Share is a workflow layer, not a second gallery system. MediaGallery albums and media remain canonical. A special Events album acts as a container for multiple events; an event is not required to become a separate normal MediaGallery album. Events organize temporary/event-oriented publication inside that container; sessions provide selective delivery; QR codes provide fast access. The architecture should remain useful for weddings, parties, trade shows, sports, excursions, associations and professional event photographers without forcing personal-data collection or facial recognition.
+

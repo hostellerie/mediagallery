@@ -93,24 +93,67 @@ while ($A = DB_fetchArray($result)) {
         DB_change($_TABLES['mg_media'], 'media_views', $media_views, 'media_id', DB_escapeString($mid));
     }
 
-    $path = MG_getFilePath('orig', $A['media_filename'], $A['media_mime_ext']);
+    $relative = 'orig/' . $A['media_filename'][0] . '/'
+              . $A['media_filename'] . '.' . ltrim($A['media_mime_ext'], '.');
+    $resolved = MG_resolveMediaStorageFile180($relative);
+
+    if ($resolved === false) {
+        COM_errorLog(
+            'MediaGallery download: media file is missing for ' . $mid
+            . ' (expected relative path: ' . $relative . ')',
+            1
+        );
+
+        http_response_code(404);
+        $display = COM_startBlock(
+            'Media file not found',
+            '',
+            COM_getBlockTemplate('_msg_block', 'header')
+        )
+        . '<p>The database record exists, but the physical media file is missing.</p>'
+        . '<p><code>' . htmlspecialchars($relative, ENT_QUOTES, COM_getCharset()) . '</code></p>'
+        . COM_endBlock(COM_getBlockTemplate('_msg_block', 'footer'));
+        $display = MG_createHTMLDocument($display, 'Media file not found');
+        COM_output($display);
+        exit;
+    }
+
+    $path = $resolved['path'];
+    $size = @filesize($path);
+    if ($size === false) {
+        http_response_code(500);
+        COM_errorLog('MediaGallery download: unable to read file size for ' . $path, 1);
+        exit;
+    }
+
+    $downloadName = basename($filename);
+    if ($mime_type === '') {
+        $mime_type = 'application/octet-stream';
+    }
 
     header("Pragma: public");
     header("Expires: 0");
     header("Cache-Control: must-revalidate, post-check=0,pre-check=0");
-    header("Cache-Control: private",false);
-    header("Content-type:" . $mime_type);
-    header("Content-Disposition: attachment; filename=\"" . $filename . "\";");
+    header("Cache-Control: private", false);
+    header("Content-Type: " . $mime_type);
+    header("Content-Disposition: attachment; filename=\"" . $downloadName . "\"");
     header("Content-Transfer-Encoding: binary");
-    header("Content-Length: " . filesize($path));
-    $fp = fopen($path, 'r');
-    if ($fp != NULL) {
-        while (!feof($fp)) {
-            $buf = fgets($fp, 8192);
-            echo $buf;
-        }
-        fclose($fp);
+    header("Content-Length: " . $size);
+
+    $fp = @fopen($path, 'rb');
+    if ($fp === false) {
+        COM_errorLog('MediaGallery download: unable to open media file ' . $path, 1);
+        exit;
     }
+
+    while (!feof($fp)) {
+        $buf = fread($fp, 8192);
+        if ($buf === false) {
+            break;
+        }
+        echo $buf;
+    }
+    fclose($fp);
 }
 return;
 ?>

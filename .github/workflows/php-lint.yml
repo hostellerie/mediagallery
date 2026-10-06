@@ -3,7 +3,7 @@ name: MediaGallery PHP lint
 on:
   push:
     branches:
-      - modernize-1.8.0
+      - mediagallery_1.9.0
     paths-ignore:
       - 'dist/**'
   pull_request:
@@ -51,7 +51,7 @@ jobs:
   build-archive:
     name: Build validated test archive
     needs: php-lint
-    if: github.event_name == 'push' && github.ref == 'refs/heads/modernize-1.8.0'
+    if: github.event_name == 'push' && github.ref == 'refs/heads/mediagallery_1.9.0'
     permissions:
       contents: write
     uses: ./.github/workflows/build-dist.yml

@@ -250,5 +250,5 @@ function MG_itemToURL180($id)
         return $_MG_CONF['site_url'] . '/album.php?aid=' . intval($item['id']);
     }
 
-    return $_MG_CONF['site_url'] . '/media.php?f=0&amp;sort=0&amp;s=' . $item['id'];
+    return $_MG_CONF['site_url'] . '/media.php?f=0&sort=0&s=' . $item['id'];
 }

@@ -1,8 +1,30 @@
 # MediaGallery changelog
 
-This changelog tracks the maintained MediaGallery development line. MediaGallery 1.8.0 is still under development; items listed for 1.8.0 describe changes already implemented on the `modernize-1.8.0` branch unless explicitly marked as pending validation.
+This changelog tracks the maintained MediaGallery development line. MediaGallery 1.9.0 is the current release line; the 1.8.0 section below records the modernization foundation carried forward into 1.9.0.
 
-## 1.8.0 — development
+## 1.9.0 — release candidate
+
+### SEO and interoperability
+
+- Add album `CollectionPage` / `ItemList` structured data and retain content-aware media schema.
+- Normalize local media URLs used in structured data.
+- Add content-specific description fallbacks.
+- Add optional OGP integration while preserving standalone Open Graph/Twitter metadata fallbacks.
+
+### Language updates
+
+- Add or refresh the maintained UTF-8 translations for Spanish, Italian, Japanese, Russian, Chinese Simplified, Chinese Traditional, Hebrew, Persian, French Canada, French France, German, German Formal and Spanish Argentina.
+- Synchronize the maintained language files with the current English language contract and include them in the 1.9.0 distribution archive.
+
+### PHP 8 compatibility and release hardening
+
+- Normalize optional media renderer metadata to prevent undefined-array-key warnings on PHP 8.x for legacy/imported records.
+- Complete the remaining compatibility work tracked by upstream issue #11.
+- Preserve the MediaGallery 1.8 compatibility baseline: Geeklog 2.1.1 or newer, including 2.2.2.
+- Run PHP syntax validation on the actual `mediagallery_1.9.0` branch.
+- Build `dist/mediagallery_1.9.0_2.1.1.zip` from the validated branch.
+
+## 1.8.0 — modernization foundation
 
 ### Compatibility and platform
 
@@ -136,7 +158,7 @@ This changelog tracks the maintained MediaGallery development line. MediaGallery
 - Replace the old 1.6-era public usage guide with a current MediaGallery 1.8.0 `public_html/docs/usage.html` guide.
 - Document the public service/lifecycle interoperability contract in `docs/SERVICES.md`.
 
-### Still pending before the 1.8.0 release candidate
+### Historical 1.8.0 validation checklist
 
 - Complete the full live regression matrix on Geeklog 2.1.1 and 2.2.2.
 - Complete live PHP 8.2/8.3 warning/deprecation validation.

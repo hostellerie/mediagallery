@@ -263,13 +263,16 @@ function MG_autotags($op, $content = '', $autotag = '')
         $parm1 = COM_applyFilter(substr($autotag['parm1'], 1, strlen($autotag['parm1']) - 1));
     } else {
         $parm1 = COM_applyFilter($autotag['parm1']);
-        if ($aSet == 0 || $align == 'auto') {
-            $align=(!($side_count % 2) ? 'left' : 'right');
-            $side_count++;
+        if ($aSet == 0) {
+            $align = 'none';
+        } elseif ($align == 'auto') {
+            // MediaGallery 1.9: "auto" now means natural inline placement.
+            // Explicit left/right/center values continue to opt into alignment.
+            $align = 'none';
         }
     }
-    if ($align == 'none') {
-        $align = '';
+    if ($align == '') {
+        $align = 'none';
     }
     // sanity check incase the album has been deleted or something...
     if (!in_array($autotag['tag'], array('media','image','video','audio','download','oimage','img','mlink','alink','playall'))) {
