@@ -166,26 +166,39 @@ function MG_albumIsPublic180($album_id)
  */
 function MG_getAlbumItemInfo180($album_id, $what, $uid = 0)
 {
-    global $_TABLES, $_MG_CONF;
+    global $_TABLES, $_MG_CONF, $_USER;
 
     $album_id = intval($album_id);
     if ($album_id <= 0) {
         return false;
     }
 
-    $result = DB_query(
-        "SELECT album_id, album_title, album_desc, last_update, hidden, perm_anon "
-        . "FROM {$_TABLES['mg_albums']} WHERE album_id=" . $album_id . " LIMIT 1"
-    );
+    $effective_uid = (int) $uid;
+    if ($effective_uid <= 0) {
+        $effective_uid = isset($_USER['uid']) ? (int) $_USER['uid'] : 1;
+    }
+
+    $sql = "SELECT album_id, album_title, album_desc, last_update, hidden, "
+         . "owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon "
+         . "FROM {$_TABLES['mg_albums']} WHERE album_id=" . $album_id;
+
+    $is_current_admin = isset($_USER['uid'])
+        && (int) $_USER['uid'] === $effective_uid
+        && SEC_hasRights('mediagallery.admin');
+
+    if (!$is_current_admin) {
+        $sql .= " AND hidden = 0";
+        $sql .= COM_getPermSQL('AND', $effective_uid, 2);
+    }
+
+    $sql .= " LIMIT 1";
+
+    $result = DB_query($sql);
     if (!$result || DB_numRows($result) !== 1) {
         return false;
     }
 
     $row = DB_fetchArray($result);
-    if ((int) $uid === 1 && ((int) $row['hidden'] !== 0 || (((int) $row['perm_anon']) & 2) !== 2)) {
-        return false;
-    }
-
     $url = $_MG_CONF['site_url'] . '/album.php?aid=' . $album_id;
     $properties = explode(',', $what);
     $values = array();
@@ -197,6 +210,7 @@ function MG_getAlbumItemInfo180($album_id, $what, $uid = 0)
                 $values[$property] = MG_albumItemId180($album_id);
                 break;
             case 'url':
+            case 'canonical_url':
                 $values[$property] = $url;
                 break;
             case 'title':
@@ -204,11 +218,29 @@ function MG_getAlbumItemInfo180($album_id, $what, $uid = 0)
                 break;
             case 'description':
             case 'excerpt':
+                $values[$property] = PLG_replaceTags($row['album_desc']);
+                break;
             case 'raw-description':
                 $values[$property] = $row['album_desc'];
                 break;
+            case 'date-created':
             case 'date-modified':
                 $values[$property] = intval($row['last_update']);
+                break;
+            case 'type':
+                $values[$property] = 'mediagallery';
+                break;
+            case 'subtype':
+                $values[$property] = 'album';
+                break;
+            case 'album_id':
+                $values[$property] = $album_id;
+                break;
+            case 'uid':
+                $values[$property] = isset($row['owner_id']) ? (int) $row['owner_id'] : 0;
+                break;
+            case 'status':
+                $values[$property] = 1;
                 break;
             default:
                 $values[$property] = '';
@@ -220,12 +252,6 @@ function MG_getAlbumItemInfo180($album_id, $what, $uid = 0)
         return isset($values[$properties[0]]) ? $values[$properties[0]] : '';
     }
 
-    /*
-     * Geeklog's historical PLG_getItemInfo() contract returns values for a
-     * single item as a numerically indexed array in the same order as the
-     * requested property list. Consumers such as XMLSitemap still rely on
-     * offsets 0..n even on Geeklog 2.2.2.
-     */
     $ordered = array();
     foreach ($properties as $property) {
         $property = trim($property);
@@ -233,6 +259,153 @@ function MG_getAlbumItemInfo180($album_id, $what, $uid = 0)
     }
 
     return $ordered;
+}
+
+/**
+ * Return a permission-filtered collection of albums for generic consumers.
+ *
+ * @param string $what
+ * @param int    $uid
+ * @param array  $options
+ * @return array
+ */
+function MG_getAlbumCollection180($what, $uid = 0, $options = array())
+{
+    global $_TABLES, $_MG_CONF, $_USER;
+
+    $options = is_array($options) ? $options : array();
+    $effective_uid = (int) $uid;
+    if ($effective_uid <= 0) {
+        $effective_uid = isset($_USER['uid']) ? (int) $_USER['uid'] : 1;
+    }
+
+    $properties = array();
+    foreach (explode(',', (string) $what) as $property) {
+        $property = trim($property);
+        if ($property !== '' && !in_array($property, $properties, true)) {
+            $properties[] = $property;
+        }
+    }
+    if (empty($properties)) {
+        return array();
+    }
+
+    $limit = isset($options['limit']) ? (int) $options['limit'] : 50;
+    if ($limit < 1) {
+        $limit = 50;
+    } elseif ($limit > 500) {
+        $limit = 500;
+    }
+
+    $sql = "SELECT album_id, album_title, album_desc, last_update, hidden, "
+         . "owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon "
+         . "FROM {$_TABLES['mg_albums']} WHERE album_id > 0";
+
+    $is_current_admin = isset($_USER['uid'])
+        && (int) $_USER['uid'] === $effective_uid
+        && SEC_hasRights('mediagallery.admin');
+
+    if (!$is_current_admin) {
+        $sql .= " AND hidden = 0";
+        $sql .= COM_getPermSQL('AND', $effective_uid, 2);
+    }
+
+    if (isset($options['since']) && $options['since'] !== '' && $options['since'] !== null) {
+        $since = $options['since'];
+        if (is_numeric($since)) {
+            $since_ts = (int) $since;
+        } else {
+            $since_ts = strtotime((string) $since);
+            if ($since_ts === false) {
+                $since_ts = 0;
+            }
+        }
+
+        if ($since_ts > 0) {
+            $sql .= " AND last_update >= " . $since_ts;
+        }
+    }
+
+    $order = isset($options['order'])
+        ? strtolower(trim((string) $options['order']))
+        : 'modified-desc';
+
+    switch ($order) {
+        case 'modified-asc':
+        case 'created-asc':
+            $sql .= " ORDER BY last_update ASC, album_id ASC";
+            break;
+        case 'created-desc':
+        case 'modified-desc':
+        default:
+            $sql .= " ORDER BY last_update DESC, album_id DESC";
+            break;
+    }
+
+    $sql .= " LIMIT " . $limit;
+
+    $result = DB_query($sql);
+    $retval = array();
+
+    while ($row = DB_fetchArray($result)) {
+        $album_id = (int) $row['album_id'];
+        $url = $_MG_CONF['site_url'] . '/album.php?aid=' . $album_id;
+        $props = array();
+
+        foreach ($properties as $property) {
+            switch ($property) {
+                case 'id':
+                    $props[$property] = MG_albumItemId180($album_id);
+                    break;
+                case 'url':
+                case 'canonical_url':
+                    $props[$property] = $url;
+                    break;
+                case 'title':
+                    $props[$property] = $row['album_title'];
+                    break;
+                case 'description':
+                case 'excerpt':
+                    $props[$property] = PLG_replaceTags($row['album_desc']);
+                    break;
+                case 'raw-description':
+                    $props[$property] = $row['album_desc'];
+                    break;
+                case 'date-created':
+                case 'date-modified':
+                    $props[$property] = (int) $row['last_update'];
+                    break;
+                case 'type':
+                    $props[$property] = 'mediagallery';
+                    break;
+                case 'subtype':
+                    $props[$property] = 'album';
+                    break;
+                case 'album_id':
+                    $props[$property] = $album_id;
+                    break;
+                case 'uid':
+                    $props[$property] = isset($row['owner_id']) ? (int) $row['owner_id'] : 0;
+                    break;
+                case 'status':
+                    $props[$property] = 1;
+                    break;
+                default:
+                    $props[$property] = '';
+                    break;
+            }
+        }
+
+        $mapped = array();
+        foreach ($props as $key => $value) {
+            if ($value !== '') {
+                $mapped[$key] = $value;
+            }
+        }
+        $retval[] = $mapped;
+    }
+
+    return $retval;
 }
 
 /**
