@@ -1,3 +1,27 @@
+# MediaGallery 2.0.0 release notes
+
+MediaGallery 2.0.0 is an interoperability, sitemap and SEO release built on the 1.9.0 compatibility line.
+
+## Highlights
+
+- Adds a native `plugin_collectSitemapItems_mediagallery()` collector for XMLSitemap.
+- Emits stable public URLs for the MediaGallery root, public albums and public media.
+- Deduplicates media that belong to more than one album.
+- Excludes hidden and non-public albums from anonymous sitemap output.
+- Prevents wildcard or placeholder URLs such as `media.php?...&s=*` from entering the sitemap.
+- Adds sitemap-specific priorities and change frequencies.
+- Keeps sitemap collection safe during Geeklog plugin activation state transitions.
+- Preserves Geeklog 2.1.1+ and PHP 5.6-compatible syntax while validating current PHP releases.
+- No database schema migration is required from MediaGallery 1.9.0.
+
+## Compatibility
+
+- Geeklog 2.1.1 or newer, including Geeklog 2.2.2.
+- PHP 5.6-compatible syntax.
+- Upgrade path: 1.9.0 → 2.0.0 requires metadata/runtime upgrade only; no schema migration.
+
+---
+
 # MediaGallery 1.9.0 release notes
 
 MediaGallery 1.9.0 extends the SEO/interoperability work introduced in 1.8.0 while keeping OGP optional.
