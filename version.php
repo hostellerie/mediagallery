@@ -8,7 +8,7 @@
 // +--------------------------------------------------------------------------+
 
 if (!defined('MG_VERSION')) {
-    define('MG_VERSION', '1.9.0');
+    define('MG_VERSION', '2.0.0');
 }
 
 if (!defined('MG_MIN_GEEKLOG_VERSION')) {
