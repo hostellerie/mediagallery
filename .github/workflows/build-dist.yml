@@ -3,7 +3,7 @@ name: Build MediaGallery installable archive
 on:
   push:
     branches:
-      - mediagallery_1.9.0
+      - mediagallery_2.0.0
   workflow_call:
   workflow_dispatch:
 
@@ -11,7 +11,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: mediagallery-test-archive
+  group: mediagallery-2.0.0-archive
   cancel-in-progress: true
 
 jobs:
@@ -60,7 +60,7 @@ jobs:
           cat > package/mediagallery/BUILD_INFO.txt <<EOF
           MediaGallery ${PLUGIN_VERSION} installable archive
           Geeklog minimum: ${GEEKLOG_MIN}
-          Source branch: mediagallery_1.9.0
+          Source branch: mediagallery_2.0.0
           Source commit: ${SOURCE_SHA}
           EOF
 
@@ -174,8 +174,8 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          git fetch origin mediagallery_1.9.0
-          BRANCH_SHA="$(git rev-parse origin/mediagallery_1.9.0)"
+          git fetch origin mediagallery_2.0.0
+          BRANCH_SHA="$(git rev-parse origin/mediagallery_2.0.0)"
           if [ "$BRANCH_SHA" != "$SOURCE_SHA" ]; then
             echo "A newer branch commit exists; this archive is stale and will not be committed."
             echo "commit_archive=false" >> "$GITHUB_OUTPUT"
@@ -183,7 +183,7 @@ jobs:
             echo "commit_archive=true" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: Commit archive to mediagallery_1.9.0
+      - name: Commit archive to mediagallery_2.0.0
         if: steps.freshness.outputs.commit_archive == 'true'
         shell: bash
         run: |
@@ -196,4 +196,4 @@ jobs:
             exit 0
           fi
           git commit -m "Build ${ARCHIVE} for ${SOURCE_SHA} [skip ci]"
-          git push origin HEAD:mediagallery_1.9.0
+          git push origin HEAD:mediagallery_2.0.0
