@@ -606,6 +606,25 @@ content.url.resolve
 The owning MediaGallery plugin remains authoritative for permissions and public
 visibility.
 
+## Native XML Sitemap collector
+
+- [x] Add `plugin_collectSitemapItems_mediagallery($uid, $limit)`.
+- [x] Keep XMLSitemap generation separate from the generic Item Info collection fallback.
+- [x] Emit the MediaGallery root, public albums and public media as distinct canonical resources.
+- [x] Deduplicate media that belong to multiple albums.
+- [x] Exclude hidden and unauthorized albums/media for anonymous sitemap generation.
+- [x] Prevent wildcard/placeholder sitemap URLs such as `s=*`.
+- [x] Provide sitemap-specific priority and change-frequency values.
+- [x] Guard sitemap collection during Geeklog's transient plugin activation state.
+
+## 2.0.0 packaging
+
+- [x] Promote canonical runtime version to 2.0.0.
+- [x] Add the no-schema-change upgrade transition from 1.9.0 to 2.0.0.
+- [x] Point PHP lint and archive workflows at `mediagallery_2.0.0`.
+- [x] Generate the installable archive only after the PHP validation matrix succeeds.
+- [ ] Confirm the generated `dist/mediagallery_2.0.0_2.1.1.zip` installs and upgrades correctly on Geeklog 2.1.1 and 2.2.2.
+
 ## 2.0.0 validation
 
 Before release:
