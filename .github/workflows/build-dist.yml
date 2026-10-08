@@ -1,9 +1,6 @@
 name: Build MediaGallery installable archive
 
 on:
-  push:
-    branches:
-      - mediagallery_2.0.0
   workflow_call:
   workflow_dispatch:
 
