@@ -1,19 +1,19 @@
-# MediaGallery 1.9.0 for Geeklog
+# MediaGallery 2.0.0 for Geeklog
 
-MediaGallery is a full-featured media gallery plugin for Geeklog. The `mediagallery_1.9.0` branch is the release line for MediaGallery 1.9.0 and builds on the modernization completed in 1.8.0.
+MediaGallery is a full-featured media gallery plugin for Geeklog. The `mediagallery_2.0.0` branch is the release line for MediaGallery 2.0.0 and builds on the modernization completed in 1.8.0 and the compatibility/interoperability work completed in 1.9.0.
 
-> **Release status:** MediaGallery 1.9.0 is in final pre-release validation for Geeklog 2.1.1 through 2.2.2. Keep complete database and media backups before upgrading an existing production site.
+> **Release status:** MediaGallery 2.0.0 is in active release validation for Geeklog 2.1.1 through 2.2.2. Keep complete database and media backups before upgrading an existing production site.
 
 ## Compatibility target
 
 - Geeklog **2.1.1 or newer**, including Geeklog 2.2.2
 - PHP **5.6 or newer**; syntax validation covers PHP 5.6, 7.4, 8.1 and 8.3
 
-MediaGallery 1.9.0 preserves the transition compatibility policy introduced in 1.8.0 so existing Geeklog 2.1.1 sites can upgrade before or alongside a Geeklog core migration.
+MediaGallery 2.0.0 preserves the transition compatibility policy introduced in 1.8.0 so existing Geeklog 2.1.1 sites can upgrade before or alongside a Geeklog core migration.
 
-## What 1.9.0 includes
+## What 2.0.0 includes
 
-MediaGallery 1.9.0 carries forward the 1.8.0 modernization and hardening work and adds the current SEO/interoperability maintenance release. The maintained feature set includes:
+MediaGallery 2.0.0 carries forward the 1.8.0 modernization and 1.9.0 compatibility work, with the current interoperability, sitemap and SEO improvements. The maintained feature set includes:
 
 - persistent media storage outside the replaceable plugin public directory;
 - safer upgrades from existing 1.7.x installations;
@@ -29,7 +29,7 @@ MediaGallery 1.9.0 carries forward the 1.8.0 modernization and hardening work an
 - Geeklog 2.1.1-compatible PHP-block and batch-session fixes.
 - 13 maintained UTF-8 translations synchronized with the current English language contract: Spanish, Italian, Japanese, Russian, Chinese (Simplified), Chinese (Traditional), Hebrew, Persian, French Canada, French France, German, German Formal and Spanish Argentina.
 
-See [RELEASE_NOTES.md](RELEASE_NOTES.md) for 1.9.0 changes and [ROADMAP.md](ROADMAP.md) for the broader implementation record.
+See [RELEASE_NOTES.md](RELEASE_NOTES.md) for 2.0.0 changes and [ROADMAP.md](ROADMAP.md) for the broader implementation record.
 
 ## Persistent media storage
 
