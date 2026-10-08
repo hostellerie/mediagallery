@@ -425,3 +425,108 @@ function MG_itemToURL180($id)
 
     return $_MG_CONF['site_url'] . '/media.php?f=0&sort=0&s=' . $item['id'];
 }
+
+
+/**
+ * Collect public MediaGallery URLs for XMLSitemap.
+ *
+ * Keep sitemap generation independent from the generic getiteminfo collection
+ * API. Media items may belong to several albums, so URLs are deduplicated
+ * explicitly. Hidden or non-readable albums are excluded for anonymous users.
+ *
+ * @param int $uid User id used for permission checks
+ * @param int $limit Maximum number of items, 0 = unlimited
+ * @return array
+ */
+function plugin_collectSitemapItems_mediagallery($uid = 1, $limit = 0)
+{
+    global $_MG_CONF, $_TABLES, $_PLUGINS;
+
+    /*
+     * XMLSitemap can rebuild during a plugin state change before Geeklog has
+     * refreshed $_PLUGINS. Avoid querying MediaGallery in that transient state.
+     */
+    if (!is_array($_PLUGINS) || !in_array('mediagallery', $_PLUGINS, true)) {
+        return array();
+    }
+
+    $uid = (int) $uid;
+    $limit = (int) $limit;
+    $items = array();
+    $seen = array();
+
+    $append = function ($url, $modified, $priority, $frequency) use (&$items, &$seen, $limit) {
+        if ($url === '' || isset($seen[$url])) {
+            return false;
+        }
+
+        $entry = array(
+            'url' => $url,
+            'priority' => $priority,
+            'change-freq' => $frequency
+        );
+        if (!empty($modified)) {
+            $entry['date-modified'] = (int) $modified;
+        }
+
+        $seen[$url] = true;
+        $items[] = $entry;
+
+        return ($limit > 0 && count($items) >= $limit);
+    };
+
+    // MediaGallery landing page.
+    if ($append($_MG_CONF['site_url'] . '/index.php', 0, 0.6, 'weekly')) {
+        return $items;
+    }
+
+    // Public albums.
+    $sql = "SELECT a.album_id, a.last_update "
+         . "FROM {$_TABLES['mg_albums']} a "
+         . "WHERE a.album_id > 0 AND a.hidden = 0 "
+         . COM_getPermSQL('AND', $uid, 2, 'a')
+         . " ORDER BY a.album_id ASC";
+    $result = DB_query($sql);
+
+    while ($row = DB_fetchArray($result)) {
+        $url = $_MG_CONF['site_url'] . '/album.php?aid=' . (int) $row['album_id'];
+        if ($append($url, $row['last_update'], 0.6, 'weekly')) {
+            return $items;
+        }
+    }
+
+    // Public media. DISTINCT avoids duplicates when one media item is in
+    // several albums; the URL itself is also deduplicated as a final guard.
+    $sql = "SELECT DISTINCT m.media_id, m.media_upload_time "
+         . "FROM {$_TABLES['mg_media']} m "
+         . "INNER JOIN {$_TABLES['mg_media_albums']} ma ON m.media_id=ma.media_id "
+         . "INNER JOIN {$_TABLES['mg_albums']} a ON ma.album_id=a.album_id "
+         . "WHERE m.media_id<>'' AND a.hidden=0 "
+         . COM_getPermSQL('AND', $uid, 2, 'a')
+         . " ORDER BY m.media_upload_time DESC, m.media_id ASC";
+    $result = DB_query($sql);
+
+    while ($row = DB_fetchArray($result)) {
+        $media_id = (string) $row['media_id'];
+        if ($media_id === '') {
+            continue;
+        }
+
+        $modified = 0;
+        if (!empty($row['media_upload_time'])) {
+            $modified = strtotime($row['media_upload_time']);
+            if ($modified === false) {
+                $modified = 0;
+            }
+        }
+
+        $url = $_MG_CONF['site_url']
+             . '/media.php?f=0&sort=0&s=' . rawurlencode($media_id);
+
+        if ($append($url, $modified, 0.5, 'monthly')) {
+            break;
+        }
+    }
+
+    return $items;
+}
