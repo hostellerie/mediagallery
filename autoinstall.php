@@ -259,6 +259,12 @@ function MG_upgrade()
             break;
 
         case '1.9.0':
+            // 2.0.0 is an interoperability/SEO release. No schema
+            // migration is required beyond the existing 1.9.0 state.
+            $current_version = '2.0.0';
+            break;
+
+        case '2.0.0':
         default:
             $done = true;
             break;
