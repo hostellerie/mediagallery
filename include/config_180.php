@@ -13,6 +13,7 @@ if (strpos(strtolower($_SERVER['PHP_SELF']), strtolower(basename(__FILE__))) !==
 }
 
 require_once __DIR__ . '/storage_180.php';
+require_once __DIR__ . '/persistent_uploads_200.php';
 
 function MG_prepareDirectory180($path)
 {
@@ -178,10 +179,18 @@ function MG_applyRuntimeConfiguration180()
     if (!empty($_CONF['path_data'])) {
         $workRoot = rtrim($_CONF['path_data'], '/\\') . '/mediagallery/';
         $_MG_CONF['tmp_path'] = $workRoot . 'tmp/';
-        $_MG_CONF['ftp_path'] = $workRoot . 'uploads/';
-
+        $persistentRoot = MG_persistentImportRoot200();
+        $legacyUploads = $workRoot . 'uploads/';
+        $_MG_CONF['ftp_path'] = $persistentRoot !== false ? $persistentRoot . 'uploads/' : '';
         MG_prepareDirectory180($_MG_CONF['tmp_path']);
-        MG_prepareDirectory180($_MG_CONF['ftp_path']);
+        if ($_MG_CONF['ftp_path'] === ''
+            || !MG_prepareDirectory180($_MG_CONF['ftp_path'])
+            || !MG_migratePrivateUploads200($legacyUploads, $_MG_CONF['ftp_path'])
+        ) {
+            // Fail closed for imports: do not silently fall back to cache-cleanable data.
+            $_MG_CONF['ftp_path'] = '';
+            COM_errorLog('MediaGallery: persistent uploads unavailable; FTP imports disabled until migration succeeds.', 1);
+        }
     }
 }
 
