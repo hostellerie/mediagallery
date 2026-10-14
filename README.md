@@ -65,6 +65,17 @@ public_html/images/site-a/mediagallery/
 
 Private temporary/upload working data is likewise derived from each site's Geeklog `path_data`.
 
+
+### Private FTP import persistence (2.0.0)
+
+The `uploads/` FTP import staging directory is **persistent user data**, not cache. It is now site-scoped using the Memorandum convention:
+
+```text
+<parent of path_data>/<basename(path_data)>-mediagallery/uploads/
+```
+
+For example, `data/g2/` maps to `data/g2-mediagallery/uploads/`. The temporary working directory `path_data/mediagallery/tmp/` remains disposable. Existing `path_data/mediagallery/uploads/` files are copied recursively, with SHA-256 verification, without overwriting conflicting destination files. The old files remain in place and must not be deleted until independently backed up and inspected. A failed migration disables FTP imports rather than reverting to the cache-cleanable location; check Geeklog logs and permissions. In multisite setups every site is migrated independently on first initialization. Back up legacy imports **before clearing Geeklog caches**.
+
 ## Important: upgrading a 1.7.x site
 
 Older MediaGallery installations may still store user media in:
