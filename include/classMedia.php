@@ -36,6 +36,10 @@ if (strpos(strtolower($_SERVER['PHP_SELF']), strtolower(basename(__FILE__))) !==
     die('This file can not be used on its own!');
 }
 
+// Load shared image helpers before Media methods can be called from Geeklog plugin callbacks.
+// In particular, MG_getImageInfo180() is defined in common.php.
+require_once __DIR__ . '/common.php';
+
 class Media {
     var $id;
     var $title;
